@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.2 — October 23, 2026
+
+- Added SDK-matched expo-dev-client and explicit development, standalone internal preview, and production/store profiles.
+- Added custom development-client launch/build commands while preserving explicit Expo Go commands.
+- Configured the supplied EAS project ID locally, a NodeCast deep-link scheme and a non-example iOS bundle identifier. Remote project ownership/slug and Apple identifier availability still require authenticated validation.
+- Added Windows native-build/signing instructions and a default Expo tunnel fallback for ngrok startup errors.
+- This is native build preparation, not a completed signed IPA or a claim that native compilation/device tests passed.
+
+
 ## 0.2.1 — October 23, 2026
 
 - Added text Back/Close navigation and a safe-area provider inside full-screen modals. Player loading/failure screens retain escape and external-player controls.

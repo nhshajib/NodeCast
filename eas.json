@@ -4,7 +4,22 @@
     "appVersionSource": "remote"
   },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      }
+    },
+    "preview": {
+      "developmentClient": false,
+      "distribution": "internal",
+      "ios": {
+        "simulator": false
+      }
+    },
     "production": {
+      "developmentClient": false,
       "distribution": "store",
       "autoIncrement": true
     }

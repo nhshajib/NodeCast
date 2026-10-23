@@ -2,13 +2,13 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.example.nodecast",
+      "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -34,8 +34,15 @@
     },
     "plugins": [
       "expo-secure-store",
-      "expo-video"
+      "expo-video",
+      "expo-dev-client"
     ],
-    "backgroundColor": "#F5F5F8"
+    "backgroundColor": "#F5F5F8",
+    "scheme": "nodecast",
+    "extra": {
+      "eas": {
+        "projectId": "49ee7c99-08db-4b89-ad01-022961dcfd6c"
+      }
+    }
   }
 }

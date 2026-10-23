@@ -30,3 +30,10 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - The original milestone browser regression also passes: movie progress, resume, restart, completion, track preference, favorites/category organization, metadata-only storage and cached refresh failure.
 - Screenshots 15 and 16 show actual browser fixture screens, with no real account data.
 - Exact real-provider live failure remains unverified. iPhone safe-area behavior, actual HLS/TS content and VLC handoff require the user's retest. Existing local profiles are preserved; no server credentials were accessed.
+
+## 0.2.2 custom native build workflow
+
+- Added Expo SDK-matched expo-dev-client and separate development, preview and production EAS profiles.
+- TypeScript and all 57 existing tests pass. Expo native configuration introspection resolves the dev-client, video and secure-store plugins and generates iOS plist/entitlement/pod configuration. This is not an Xcode compile or physical-device validation.
+- EAS project ID is locally configured from the user's supplied value. The selected bundle identifier is com.nhshajib.nodecast; neither remote project ownership/slug nor Apple identifier availability is established by local config.
+- No cloud build, submission or Apple signing was performed from this workspace. See docs/NATIVE-BUILDS.md.

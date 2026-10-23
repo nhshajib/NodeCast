@@ -1,5 +1,10 @@
-export const appVersion = '0.2.1';
+export const appVersion = '0.2.2';
 export const releases = [
+  { version: '0.2.2', date: 'October 23, 2026', title: 'Ready for native testing.', changes: [
+    'Added a custom development-client workflow to test native settings outside Expo Go.',
+    'Separate development, standalone preview and App Store build profiles.',
+    'Expo Go remains available for quick checks. Custom iPhone builds require Apple signing.',
+  ] },
   { version: '0.2.1', date: 'October 23, 2026', title: 'Clearer navigation. More flexible live TV.', changes: [
     'Visible Back and Close controls on full-screen pages, with safe-area handling for iPhone modals.',
     'Back to library and external-player controls stay available during loading and playback failures.',

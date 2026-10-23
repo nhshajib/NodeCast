@@ -1,13 +1,14 @@
 {
   "name": "nodecast-iphone",
-  "description": "Standalone IPTV player for iPhone using Expo Go",
+  "description": "Standalone iPhone IPTV player with Expo development and production builds",
   "license": "GPL-3.0-only",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "expo": "~58.0.17",
+    "expo-dev-client": "~58.0.14",
     "expo-font": "~58.0.9",
     "expo-linear-gradient": "~58.0.3",
     "expo-secure-store": "~58.0.2",
@@ -24,14 +25,19 @@
     "typescript": "~6.0.3"
   },
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "typecheck": "tsc --noEmit",
     "test": "node tests/run.mjs",
     "start:go": "expo start --go",
-    "start:tunnel": "expo start --go --tunnel"
+    "start:tunnel": "expo start --go --tunnel",
+    "start:dev": "expo start --dev-client",
+    "start:dev:tunnel": "expo start --dev-client --tunnel",
+    "build:dev": "npx eas-cli@latest build --platform ios --profile development",
+    "build:preview": "npx eas-cli@latest build --platform ios --profile preview",
+    "build:production": "npx eas-cli@latest build --platform ios --profile production"
   },
   "private": true
 }
