@@ -1,0 +1,18 @@
+{
+  "passed": [
+    "explicit export-link import",
+    "show/hide password",
+    "category visibility",
+    "cross-media hidden-category search",
+    "favorite ordering",
+    "actual video progress events",
+    "one-tap resume",
+    "start over",
+    "completed item leaves resume",
+    "saved subtitle preference",
+    "cached results survive refresh failure",
+    "no provider credentials in browsing/history storage",
+    "close cancels recovery"
+  ],
+  "page_errors": []
+}

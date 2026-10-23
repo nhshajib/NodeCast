@@ -1,0 +1,18 @@
+NodeCast for iPhone — Expo edition
+Initial mobile implementation: 2026-10-23.
+
+Inspired by NodeCast TV:
+https://github.com/technomancer702/nodecast-tv
+Upstream license: GNU GPL version 3 only.
+The first prototype adapted the upstream dark/indigo design palette.
+The 0.2.0 interface uses an independent light iOS-style layout and mint palette.
+This version implements a new React Native interface, provider client, M3U parser,
+secure storage, and Expo player; it does not embed the upstream Node.js server.
+
+This modified/adapted project is distributed under GPL-3.0-only.
+See LICENSE. There is no warranty, to the extent permitted by law.
+If distributing a compiled build, supply the corresponding source, including
+package-lock.json and build configuration, as required by the license.
+
+2026-10-23: added Home IP checks with explicit VPN uncertainty, local multi-profile
+secure storage, per-profile favorites, and VLC/Infuse handoff selection.

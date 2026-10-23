@@ -1,0 +1,23 @@
+{
+  "screenshots": 13,
+  "passed": [
+    "welcome",
+    "home IP/location",
+    "reference IP comparison",
+    "stale IP handling",
+    "live library",
+    "favorites",
+    "movie grid and search",
+    "movie details",
+    "external handoff disclosure and browser fallback",
+    "native player screen",
+    "player preference",
+    "provider validation",
+    "Xtream connection",
+    "series episodes",
+    "multiple profiles",
+    "favorite isolation",
+    "delete cancellation and confirmation"
+  ],
+  "page_errors": []
+}
