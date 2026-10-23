@@ -1,0 +1,17 @@
+{
+  "passed": [
+    "Playback Back and Close",
+    "saved profile live format",
+    "Settings version history",
+    "search across previously selected category",
+    "BBC1 and BBC-1 search",
+    "HLS failure falls back to TS endpoint with actual video events",
+    "close cancels pending fallback",
+    "failed-stream back and external controls",
+    "MPEG-TS external selection disclosure",
+    "320px modal navigation"
+  ],
+  "page_errors": [],
+  "expected_sdk_web_media_rejections": 4,
+  "note": "TS fixture returns MP4 bytes to verify fallback mechanics, not native MPEG-TS codec support."
+}

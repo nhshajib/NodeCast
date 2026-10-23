@@ -1,0 +1,17 @@
+export const appVersion = '0.2.1';
+export const releases = [
+  { version: '0.2.1', date: 'October 23, 2026', title: 'Clearer navigation. More flexible live TV.', changes: [
+    'Visible Back and Close controls on full-screen pages, with safe-area handling for iPhone modals.',
+    'Back to library and external-player controls stay available during loading and playback failures.',
+    'Xtream live playback can try HLS and MPEG-TS; VLC uses MPEG-TS by default in Automatic mode. A per-profile format choice is available in Playback.',
+    'Corrected retry scheduling and source replacement; failed streams show recovery actions instead of a stalled video surface.',
+    'Provider-supplied direct live URLs are preserved. M3U stream links remain unchanged.',
+    'Channel search spans visible categories and handles punctuation, accents and spacing such as BBC1 / BBC 1.',
+    'Version history is now available in Settings.',
+  ] },
+  { version: '0.2.0', date: 'October 23, 2026', title: 'Your personal TV space.', changes: [
+    'Lavender and cream design, local profiles, Xtream Codes and M3U libraries.',
+    'Favorites, Continue watching, cached browsing, category organization and now/next schedules.',
+    'Public IP and approximate location, external-player choice and audio/subtitle preferences.',
+  ] },
+];

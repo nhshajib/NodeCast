@@ -4,7 +4,7 @@
 
 A standalone React Native IPTV player for **Expo Go on iPhone**. Connect directly to your own Xtream Codes provider or M3U playlist. No NodeCast server, Mac, Xcode, paid Expo plan, or Apple Developer membership is needed for this development/testing workflow.
 
-The current 0.2.0 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
+The current 0.2.1 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 
@@ -65,7 +65,7 @@ A later independent iPhone build has separate signing and distribution requireme
 
 ## Playback and Expo Go limits
 
-- HLS (`.m3u8`) and supported MP4 codecs are the best starting point. Xtream live streams request HLS.
+- HLS (`.m3u8`) and supported MP4 codecs are the best starting point. Xtream Automatic mode tries HLS, then MPEG-TS; its VLC handoff starts with MPEG-TS unless the provider supplied a direct stream URL. Settings → Default player → Live TV format offers a per-profile override. Raw MPEG-TS/its codecs may require VLC; fallback cannot make unsupported codecs playable. M3U stream URLs remain unchanged.
 - Some providers return MPEG-TS, MKV, incompatible audio/video codecs, expiring URLs, or require special HTTP headers. These are not guaranteed to play. No transcoding or VLC engine is included. Embedding an alternate native player would require a custom development build. Opening a separately installed external player is different: the app attempts a URL-scheme handoff, but that app’s own stream support still applies.
 - HTTP is unencrypted. Prefer HTTPS. The project's native config allows HTTP for a future custom build, but **app.json cannot change Expo Go's own native transport policy**. An HTTP-only provider may still be blocked in Expo Go; a custom build or HTTPS provider endpoint may be necessary.
 - Full XMLTV programme grids, background playback, explicit Picture in Picture integration, and downloads are not implemented yet. Xtream now/next schedules and local watch history are included. Audio/subtitle choices depend on tracks exposed by the stream and platform.

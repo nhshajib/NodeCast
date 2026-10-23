@@ -24,10 +24,10 @@ export function hydrateMedia(item: MediaSummary, provider: Provider): Media {
   return result;
 }
 export const catalogSections: Section[] = ['live', 'movies', 'series'];
-export const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase().replace(/\s+/g, ' ').trim();
-export function createSearchIndex(items: Media[]) { return items.map(item => ({ item, text: normalizeSearch(`${item.name} ${item.group}`) })); }
+export const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^\p{L}\p{M}\p{N}]+/gu, ' ').trim();
+export function createSearchIndex(items: Media[]) { return items.map(item => ({ item, text: normalizeSearch(`${item.name} ${item.group}`), compactName: normalizeSearch(item.name).replace(/ /g, '') })); }
 export function searchIndex(index: ReturnType<typeof createSearchIndex>, query: string, group = 'All', hidden: string[] = [], includeHidden = false): Media[] {
   const terms = normalizeSearch(query).split(' ').filter(Boolean);
   const excluded = new Set(hidden);
-  return index.filter(({ item, text }) => (includeHidden || !excluded.has(item.group)) && (group === 'All' || item.group === group) && terms.every(term => text.includes(term))).map(row => row.item);
+  return index.filter(({ item, text, compactName }) => (includeHidden || !excluded.has(item.group)) && (group === 'All' || item.group === group) && (terms.every(term => text.includes(term)) || (!!terms.length && compactName.includes(terms.join(''))))).map(row => row.item);
 }

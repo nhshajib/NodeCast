@@ -37,3 +37,25 @@ Enter Expo credentials only in your own terminal/browser, never in chat. Expo CL
 Record iPhone model, iOS version, Expo Go version, media kind, symptom and steps. Do not include passwords, full provider URLs, playlist links or unredacted screenshots of credentials. HTTP-only providers, codecs and headers may be restricted by Expo Go; app.json cannot change Expo Go’s native policies.
 
 No physical-device pass is claimed until these checks are performed. Cloud accounts and standalone IPA distribution remain outside this test workflow.
+
+## Windows login and tunnel troubleshooting
+
+PowerShell may block npm.ps1: use npm.cmd and npx.cmd. If browser login fails in cmd.exe, run:
+
+```powershell
+npx.cmd expo login --no-browser --username YOUR_EXPO_USERNAME
+npx.cmd expo whoami
+```
+
+The CLI username must match the account in Expo Go. For the alternative tunnel:
+
+```powershell
+npm.cmd install --no-save --package-lock=false "@expo/ngrok@^4.1.0"
+npx.cmd expo start --go --tunnel ngrok --clear
+```
+
+Running npm ci afterward removes the temporary helper; install it again if needed.
+
+## Live TV troubleshooting in 0.2.1
+
+In Settings → Default player, use Automatic first. If live TV still fails, set Live TV format to MPEG-TS and choose VLC, then reopen a channel. HLS is generally preferable for the built-in iPhone player; raw MPEG-TS and its codecs are not guaranteed there. Movie success does not establish live endpoint availability. Also test the same live subscription in another IPTV app, and check provider connection limits/VPN requirements. Do not share full provider links or credentials in logs.

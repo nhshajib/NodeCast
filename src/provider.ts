@@ -2,6 +2,7 @@ export type Provider = { kind: 'xtream' | 'm3u'; name: string; address: string; 
 export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
+  playbackURLs?: string[]; externalURL?: string;
   kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
 export class ProviderError extends Error {}
@@ -155,7 +156,7 @@ export async function loadLibrary(provider: Provider, section: Section, signal?:
       logo: artwork(row.stream_icon || row.cover), kind: section, streamId: String(id),
       description: typeof row.plot === 'string' ? row.plot : undefined,
       rating: row.rating ? String(row.rating) : undefined, containerExtension: section === 'live' ? 'm3u8' : ext,
-      url: section === 'series' ? undefined : streamURL(provider, section === 'live' ? 'live' : 'movie', String(id), section === 'live' ? 'm3u8' : ext),
+      url: section === 'series' ? undefined : section === 'live' && artwork(row.direct_source) ? artwork(row.direct_source) : streamURL(provider, section === 'live' ? 'live' : 'movie', String(id), section === 'live' ? 'm3u8' : ext),
     }];
   });
 }

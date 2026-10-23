@@ -24,3 +24,7 @@ Physical iPhone testing remains necessary for Expo Go playback, native tracks, K
 Full XMLTV guide import and mapping; richer series metadata and episode navigation; persistent mini-player; device-validated PiP/AirPlay; per-channel player overrides; further accessibility/family controls. DVR, downloads, multiview and optional cloud accounts remain separate later work. Sign-in/Supabase is deferred as requested.
 
 No ZIP/package was rebuilt or replaced.
+
+## 0.2.1 follow-up
+
+Visible modal navigation, per-profile live format selection, bounded HLS/TS fallback, original direct-URL preservation, VLC TS defaults, broader category search and Settings version history are implemented. Retry timer/source replacement defects found during reproduction are corrected. Current automated count: 57 tests; see verification/RESULTS.md and CHANGELOG.md for scope and device limits.

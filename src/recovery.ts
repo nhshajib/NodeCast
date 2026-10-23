@@ -25,7 +25,7 @@ export class RecoveryCoordinator {
   private state: (state: RecoveryState) => void;
   private schedule: typeof setTimeout;
   private cancel: typeof clearTimeout;
-  constructor(operation: () => Promise<void>, state: (state: RecoveryState) => void, schedule = setTimeout, cancel = clearTimeout) {
+  constructor(operation: () => Promise<void>, state: (state: RecoveryState) => void, schedule = setTimeout.bind(globalThis), cancel = clearTimeout.bind(globalThis)) {
     this.operation = operation; this.state = state; this.schedule = schedule; this.cancel = cancel;
   }
   request(kind: FailureKind) {
