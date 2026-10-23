@@ -1,17 +1,19 @@
-export type FailureKind = 'network' | 'format' | 'access' | 'unknown';
+export type FailureKind = 'network' | 'format' | 'access' | 'server' | 'unknown';
 export function classifyFailure(message = ''): FailureKind {
   const value = message.toLowerCase();
   if (/\b(401|403)\b|unauthori[sz]ed|forbidden/.test(value)) return 'access';
+  if (/\b405\b|byte range and no content length|coremediaerrordomain[^\n]*-12939/.test(value)) return 'server';
   if (/unsupported|decoder|decode|codec|format not|format is not/.test(value)) return 'format';
   if (/network|timed? ?out|connection|internet|offline|\b(502|503|504)\b/.test(value)) return 'network';
   return 'unknown';
 }
 export function recoveryDelay(attempts: number, kind: FailureKind): number | null {
-  return kind === 'format' || kind === 'access' || attempts >= 2 ? null : [1000, 3000][attempts] ?? null;
+  return kind === 'format' || kind === 'access' || kind === 'server' || attempts >= 2 ? null : [1000, 3000][attempts] ?? null;
 }
 export const failureMessage = (kind: FailureKind) => kind === 'format'
   ? 'This stream uses a format this player could not open. Try another player.'
   : kind === 'access' ? 'Your provider refused this stream. Check your account or its simultaneous-stream limit.'
+  : kind === 'server' ? 'The server response is incompatible with this playback engine. Try built-in VLC in a custom NodeCast build or use external VLC.'
   : kind === 'network' ? 'The connection dropped or the provider did not respond. Check your network and try again.'
   : 'The stream could not be played. Try again or choose another player.';
 export type RecoveryState = { mode: 'waiting' | 'reconnecting' | 'failed'; attempt: number; kind: FailureKind };

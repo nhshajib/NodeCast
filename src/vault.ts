@@ -1,6 +1,6 @@
 import type { Provider } from './provider';
 
-export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; liveFormat?: 'auto' | 'hls' | 'ts'; tracks?: { audio?: string; subtitles?: string } };
+export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; liveFormat?: 'auto' | 'hls' | 'ts'; liveEngine?: 'auto' | 'native' | 'vlc'; tracks?: { audio?: string; subtitles?: string } };
 export type Vault = { version: 2; activeId: string | null; profiles: Profile[] };
 export const emptyVault = (): Vault => ({ version: 2, activeId: null, profiles: [] });
 export function validateVault(value: unknown): Vault {
@@ -12,6 +12,7 @@ export function validateVault(value: unknown): Vault {
       !['xtream', 'm3u'].includes(p.provider.kind) ||
       !['name', 'address', 'username', 'password'].every(key => typeof p.provider[key as keyof Provider] === 'string') ||
       !Array.isArray(p.favorites) || p.favorites.some(id => typeof id !== 'string')) throw new Error('Invalid saved profile.');
+    if (p.liveEngine !== undefined && !['auto', 'native', 'vlc'].includes(p.liveEngine)) throw new Error('Invalid playback engine.');
     if (p.liveFormat !== undefined && !['auto', 'hls', 'ts'].includes(p.liveFormat)) throw new Error('Invalid live format.');
     if (p.hiddenGroups && (!Array.isArray(p.hiddenGroups) || p.hiddenGroups.some(group => typeof group !== 'string'))) throw new Error('Invalid category preferences.');
     if (p.tracks && (typeof p.tracks !== 'object' || Object.values(p.tracks).some(value => value !== undefined && (typeof value !== 'string' || value.length > 30)))) throw new Error('Invalid language preferences.');

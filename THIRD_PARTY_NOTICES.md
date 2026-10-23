@@ -45,3 +45,7 @@ Big Buck Bunny (2008) and Sintel (2010) are Blender Foundation open films. Demo 
 - Sintel: https://www.rottentomatoes.com/m/sintel ; project https://durian.blender.org/ .
 
 The cream TV mascot in this app is an original native-view illustration. The supplied healthcare design references are not bundled or redistributed in the app.
+
+## Embedded LibVLC integration
+
+expo-libvlc-player 58.0.0 by David Cornejo is MIT licensed. Source/license: https://github.com/cornejobarraza/expo-libvlc-player . Its wrapper license is reproduced in assets/licenses/expo-libvlc-player-MIT.txt. Native builds pull VideoLAN VLCKit/LibVLC separately (iOS podspec currently VLCKit 4.0.0a25). Retain applicable native component licenses/notices in distributions; see https://code.videolan.org/videolan/VLCKit and https://www.videolan.org/legal.html . This integration is not endorsed by VideoLAN. No VLC logo/trademark artwork is added.

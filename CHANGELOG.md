@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.3 — October 23, 2026
+
+- Added an embedded live-TV VLC engine in new custom builds using expo-libvlc-player 58.0.0. Automatic selects it only when the actual native module is present.
+- Added per-profile engine choice, live controls and stream track selection; movies/episodes retain the native player. Expo Go/older binaries explain the required rebuild without importing the unavailable native module.
+- Embedded playback prioritizes the same TS/direct endpoint used by external VLC, with bounded recovery and local recent-channel updates.
+- HTTP 405 / incompatible byte-range responses now show compatibility guidance instead of repeatedly retrying the same URL.
+- Native compilation and physical-iPhone playback remain unverified. This implements the compatibility path; no successful signed IPA or real-provider playback is claimed.
+
+
 ## 0.2.2 — October 23, 2026
 
 - Added SDK-matched expo-dev-client and explicit development, standalone internal preview, and production/store profiles.

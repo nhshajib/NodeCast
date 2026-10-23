@@ -37,3 +37,12 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - TypeScript and all 57 existing tests pass. Expo native configuration introspection resolves the dev-client, video and secure-store plugins and generates iOS plist/entitlement/pod configuration. This is not an Xcode compile or physical-device validation.
 - EAS project ID is locally configured from the user's supplied value. The selected bundle identifier is com.nhshajib.nodecast; neither remote project ownership/slug nor Apple identifier availability is established by local config.
 - No cloud build, submission or Apple signing was performed from this workspace. See docs/NATIVE-BUILDS.md.
+
+## 0.2.3 embedded live-TV compatibility engine
+
+- TypeScript and **65 automated tests** pass; final web and iOS Metro exports succeed. Engine-policy tests cover module absence, native overrides, movie/episode isolation, TS/direct URL order, signed M3U preservation, profile migration and observed server error classification.
+- Native config introspection resolves expo-libvlc-player; this checks configuration, not CocoaPods resolution/Xcode compilation.
+- EAS whoami reports Not logged in in this workspace. No signed build was produced or submitted.
+- expo-libvlc-player currently references VLCKit 4.0.0a25 on iOS. Native dependency compilation, actual in-app VLC decoding, track controls, interruptions and stream release remain unverified until a custom iPhone build is tested.
+- User confirmed external VLC plays the provider; the supplied log showed HTTP 405 and byte-range/content-length incompatibility in Apple's player. No credentials, real URLs or pasted logs are included in this repository.
+- Browser fallback regression passes, including disabled built-in VLC when the module is absent, clear rebuild guidance, Back/Close, search, format persistence, alternate URL mechanics and narrow layout. See compatibility-engine-ui.json. Four expected SDK web media rejections came from intentionally failed streams; no unexpected page errors. This does not test native VLC.

@@ -1,0 +1,104 @@
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { ActivityIndicator, AppState, Pressable, ScrollView, Text, View } from 'react-native';
+import type { LibVlcPlayerViewRef, MediaTracks, Tracks } from 'expo-libvlc-player';
+import type { Media } from './provider';
+import type { PlaybackSnapshot } from './activity';
+import { compatibilityURLs } from './playbackPolicy';
+import { classifyFailure, failureMessage, RecoveryCoordinator } from './recovery';
+import type { RecoveryState } from './recovery';
+import { Button, colors, u } from './ui';
+// Imported only when the installed binary exposes ExpoLibVlcPlayer. Expo Go never evaluates this require.
+function nativeView(): typeof import('expo-libvlc-player').LibVlcPlayerView {
+  return require('expo-libvlc-player').LibVlcPlayerView;
+}
+const mediaOptions = [':network-caching=1500', ':live-caching=1500'];
+export default function CompatibilityPlayer({ item, onProgress, onClose, onExternal }: {
+  item: Media; onProgress: (snapshot: PlaybackSnapshot) => void; onClose: () => void; onExternal: () => void;
+}) {
+  const NativeView = useMemo(nativeView, []);
+  const urls = useMemo(() => compatibilityURLs(item), [item.url, item.externalURL, item.playbackURLs]);
+  const player = useRef<LibVlcPlayerViewRef | null>(null);
+  const lastNative = useRef<LibVlcPlayerViewRef | null>(null);
+  const [generation, setGeneration] = useState(0);
+  const [source, setSource] = useState<string | null>(urls[0] || null);
+  const [status, setStatus] = useState<'loading' | 'playing' | 'paused'>('loading');
+  const [recovery, setRecovery] = useState<RecoveryState | null>(null);
+  const [showTracks, setShowTracks] = useState(false);
+  const [availableTracks, setAvailableTracks] = useState<MediaTracks>({ audio: [], video: [], subtitle: [] });
+  const [tracks, setTracks] = useState<Tracks>({});
+  const index = useRef(0);
+  const alive = useRef(false);
+  const foreground = useRef(AppState.currentState !== 'background' && AppState.currentState !== 'inactive');
+  const started = useRef(false);
+  const lastWrite = useRef(0);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const persist = useRef(onProgress); persist.current = onProgress;
+  const controller = useRef<RecoveryCoordinator | null>(null);
+  const attempt = useRef<((advance?: boolean) => Promise<void>) | null>(null);
+  function clearTimer() { if (timer.current !== null) clearTimeout(timer.current); timer.current = null; }
+  function save(force = false) {
+    if (!started.current || (!force && Date.now() - lastWrite.current < 10000)) return;
+    lastWrite.current = Date.now(); persist.current({ position: 0, duration: 0 });
+  }
+  function armTimeout() { clearTimer(); timer.current = setTimeout(() => { if (foreground.current) controller.current?.request('network'); }, 20000); }
+  useEffect(() => {
+    alive.current = true;
+    const retry = async (advance = true) => {
+      clearTimer();
+      await player.current?.stop();
+      if (!alive.current || !foreground.current) return;
+      if (advance && index.current < urls.length - 1) index.current++;
+      setStatus('loading'); setAvailableTracks({ audio: [], video: [], subtitle: [] }); setTracks({});
+      // A stop completes before a new source is assigned; no second simultaneous stream.
+      setSource(urls[index.current] || null); armTimeout();
+      setGeneration(value => value + 1);
+    };
+    const coordinator = new RecoveryCoordinator(() => retry(), state => { if (alive.current) setRecovery(state); });
+    controller.current = coordinator; attempt.current = retry; armTimeout();
+    const appState = AppState.addEventListener('change', state => {
+      foreground.current = state === 'active';
+      if (state !== 'active') {
+        clearTimer(); coordinator.reset(); save(true);
+        void player.current?.pause().catch(() => {});
+        if (alive.current) { setRecovery(null); setStatus('paused'); }
+      }
+    });
+    return () => {
+      alive.current = false; clearTimer(); coordinator.dispose(); controller.current = null; attempt.current = null; appState.remove(); save(true);
+      // Stop errors on an already released native view are harmless during unmount.
+      void lastNative.current?.stop().catch(() => {});
+    };
+  }, [urls]);
+  const failed = recovery?.mode === 'failed';
+  const reconnecting = recovery?.mode === 'waiting' || recovery?.mode === 'reconnecting';
+  function onPlaying() { if (!alive.current) return; if (!foreground.current) { void player.current?.pause().catch(() => {}); return; } clearTimer(); controller.current?.ready(); setRecovery(null); setStatus('playing'); started.current = true; save(); }
+  function onError(message: string) {
+    if (!alive.current || !foreground.current) return;
+    clearTimer();
+    controller.current?.request(index.current < urls.length - 1 ? 'network' : classifyFailure(message));
+  }
+  async function toggle() {
+    try {
+      if (status === 'playing') await player.current?.pause();
+      else { setStatus('loading'); armTimeout(); await player.current?.play(); }
+    } catch { onError('Playback failed'); }
+  }
+  function retry() {
+    index.current = 0; controller.current?.reset(); setRecovery(null);
+    void attempt.current?.(false).catch(() => onError('Reconnect failed'));
+  }
+  return <ScrollView style={{ flex: 1, backgroundColor: '#090124' }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: 18, paddingBottom: 24 }}>
+    <Text style={{ color: '#C4C0CF', textAlign: 'center', fontSize: 12 }}>Built-in VLC · Live TV</Text>
+    <View style={{ display: failed ? 'none' : 'flex' }}><NativeView key={generation} ref={instance => { player.current = instance; if (instance) lastNative.current = instance; }} source={source} options={mediaOptions} autoplay contentFit="contain" aspectRatio="16:9" style={{ width: '100%' }} tracks={tracks}
+      onPlaying={onPlaying} onPaused={() => { if (alive.current) { setStatus('paused'); save(true); } }}
+      onEncounteredError={event => onError(event.message)} onTimeChanged={() => save()}
+      onESAdded={event => { if (alive.current) setAvailableTracks(event); }}
+      onDialogDisplay={() => { void player.current?.dismiss().catch(() => {}); onError('Provider requires additional authorization'); }}
+    /></View>
+    {(status === 'loading' || reconnecting) && !failed && <View style={{ alignItems: 'center', gap: 10 }}><ActivityIndicator color={colors.mint} /><Text style={{ color: '#C4C0CF', fontSize: 13 }}>{reconnecting ? `Reconnecting · ${recovery.attempt} of 2` : 'Opening live TV…'}</Text></View>}
+    {failed ? <View style={{ paddingHorizontal: 24, gap: 16 }}><Text style={[u.h2, { color: '#fff' }]}>Couldn’t open this channel</Text><Text style={[u.body, { color: '#C4C0CF' }]}>{failureMessage(recovery.kind)}</Text><Button title="Try again" onPress={retry} /><Button title="Choose an external player" variant="secondary" onPress={onExternal} /></View> : <View style={{ paddingHorizontal: 24, gap: 12 }}><Button title={status === 'playing' ? 'Pause live TV' : status === 'paused' ? 'Play live TV' : 'Stop loading'} onPress={status === 'loading' ? onClose : () => { void toggle(); }} /><Button title="Audio & subtitles" variant="secondary" onPress={() => setShowTracks(value => !value)} /></View>}
+    {showTracks && !failed && <View style={{ marginHorizontal: 20, padding: 18, borderRadius: 20, gap: 12, backgroundColor: '#211A36' }}><Text style={{ color: '#C4C0CF', fontSize: 12 }}>For this live stream. Language preferences from the native player do not apply here.</Text><Text style={{ color: colors.mint }}>Audio</Text>{availableTracks.audio.length ? availableTracks.audio.map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => setTracks(value => ({ ...value, audio: track.id }))} style={{ paddingVertical: 10 }}><Text style={{ color: '#fff' }}>{track.name}{tracks.audio === track.id ? ' ✓' : ''}</Text></Pressable>) : <Text style={{ color: '#C4C0CF' }}>No selectable audio tracks reported.</Text>}<Text style={{ color: colors.mint }}>Subtitles</Text>{[{ id: -1, name: 'Off' }, ...availableTracks.subtitle.filter(track => track.id !== -1)].map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => setTracks(value => ({ ...value, subtitle: track.id }))} style={{ paddingVertical: 10 }}><Text style={{ color: '#fff' }}>{track.name}{tracks.subtitle === track.id ? ' ✓' : ''}</Text></Pressable>)}</View>}
+    {!failed && <Pressable accessibilityRole="button" onPress={onExternal} style={{ alignSelf: 'center', padding: 12 }}><Text style={{ color: colors.mint }}>Choose another player</Text></Pressable>}
+    <Pressable accessibilityRole="button" onPress={onClose} style={{ alignSelf: 'center', padding: 14 }}><Text style={{ color: '#fff', fontSize: 15, fontWeight: '600' }}>Back to library</Text></Pressable>
+  </ScrollView>;
+}

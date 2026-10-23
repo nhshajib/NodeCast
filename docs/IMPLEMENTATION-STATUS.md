@@ -28,3 +28,7 @@ No ZIP/package was rebuilt or replaced.
 ## 0.2.1 follow-up
 
 Visible modal navigation, per-profile live format selection, bounded HLS/TS fallback, original direct-URL preservation, VLC TS defaults, broader category search and Settings version history are implemented. Retry timer/source replacement defects found during reproduction are corrected. Current automated count: 57 tests; see verification/RESULTS.md and CHANGELOG.md for scope and device limits.
+
+## 0.2.3 native engine integration
+
+Embedded VLC is implemented for live TV in new custom builds, with capability-gated native imports and explicit Expo Go guidance. See LIVE-TV-COMPATIBILITY.md. The native engine has not been compiled or device-tested here; 65 pure tests and JavaScript exports do not establish that it works on an iPhone.

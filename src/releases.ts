@@ -1,5 +1,11 @@
-export const appVersion = '0.2.2';
+export const appVersion = '0.2.3';
 export const releases = [
+  { version: '0.2.3', date: 'October 23, 2026', title: 'A new engine for live TV.', changes: [
+    'Added an embedded VLC engine for live TV in new custom NodeCast builds; Automatic selects it when available.',
+    'Expo Go keeps its native player and clearly explains when a custom build is required.',
+    'Added a saved built-in engine choice, live playback controls, stream track selection and bounded recovery.',
+    'HTTP 405 and incompatible byte-range responses now show server compatibility guidance instead of repeated retries.',
+  ] },
   { version: '0.2.2', date: 'October 23, 2026', title: 'Ready for native testing.', changes: [
     'Added a custom development-client workflow to test native settings outside Expo Go.',
     'Separate development, standalone preview and App Store build profiles.',

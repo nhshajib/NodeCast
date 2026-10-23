@@ -79,3 +79,7 @@ npx.cmd expo start --go --tunnel --clear
 ```
 
 If ngrok startup reports `Cannot read properties of undefined (reading 'body')`, that is a tunnel-service/helper failure before app loading. It does not establish a NodeCast playback error. Try the default tunnel rather than repeating the same ngrok command. LAN remains available with npm.cmd run start:go when network/firewall configuration permits it.
+
+## Embedded VLC in 0.2.3
+
+Rebuild the custom app to include expo-libvlc-player. A new JavaScript bundle cannot add the native library to Expo Go or an older development binary. See LIVE-TV-COMPATIBILITY.md.
