@@ -1,12 +1,14 @@
 # NodeCast for iPhone — Expo edition
 
+**Design audit and screenshots:** [Review the 0.2.4 polish](docs/DESIGN-REVIEW.md).
+
 **Windows beginner setup:** [Start here](START-HERE-WINDOWS.md).
 
 **Native development / preview / TestFlight:** [Native build guide](docs/NATIVE-BUILDS.md). The project includes expo-dev-client; use `start:go` explicitly for Expo Go, or `start:dev` for an installed custom development app.
 
 A standalone React Native IPTV player for **Expo Go on iPhone**. Connect directly to your own Xtream Codes provider or M3U playlist. No NodeCast server, Mac, Xcode, paid Expo plan, or Apple Developer membership is needed for this development/testing workflow.
 
-The current 0.2.3 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
+The current 0.2.4 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 

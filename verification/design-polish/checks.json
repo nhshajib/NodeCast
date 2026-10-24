@@ -1,0 +1,36 @@
+{
+  "viewport": "390x844 and 320x568",
+  "screenshots": [
+    "01-welcome",
+    "02-add-playlist",
+    "03-home",
+    "04-live-library",
+    "05-movies",
+    "06-movie-details",
+    "07-favorites-empty",
+    "08-settings",
+    "09-playback",
+    "10-live-options",
+    "11-version-history",
+    "12-compact-playback",
+    "13-compact-home-ipv6",
+    "14-compact-form"
+  ],
+  "passed": [
+    "no horizontal page overflow",
+    "long profile name layout",
+    "IPv6/long location layout",
+    "input focus feedback",
+    "scoped search count",
+    "empty search reset",
+    "favorites empty-state browse action",
+    "primary player selection semantics",
+    "advanced playback progressive disclosure",
+    "saved live format change",
+    "unavailable native engine remains disabled",
+    "version history expand/collapse",
+    "compact Back/Close reachability"
+  ],
+  "page_errors": [],
+  "fixtures": "Documentation IPs, local sample provider, no real account"
+}

@@ -46,3 +46,10 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - expo-libvlc-player currently references VLCKit 4.0.0a25 on iOS. Native dependency compilation, actual in-app VLC decoding, track controls, interruptions and stream release remain unverified until a custom iPhone build is tested.
 - User confirmed external VLC plays the provider; the supplied log showed HTTP 405 and byte-range/content-length incompatibility in Apple's player. No credentials, real URLs or pasted logs are included in this repository.
 - Browser fallback regression passes, including disabled built-in VLC when the module is absent, clear rebuild guidance, Back/Close, search, format persistence, alternate URL mechanics and narrow layout. See compatibility-engine-ui.json. Four expected SDK web media rejections came from intentionally failed streams; no unexpected page errors. This does not test native VLC.
+
+## 0.2.4 design audit and polish
+
+- TypeScript and all 65 existing behavior tests pass. Actual browser review covers 390×844 and 320×568, long names/IPv6, field focus, current player selection, saved live format, unavailable native engine, advanced options and release expansion. See design-polish/checks.json. No browser page errors.
+- Captures in design-polish use simulated provider/profile data and documentation-only IPs. See docs/DESIGN-REVIEW.md for the findings, implemented fixes, selected contrast pairs and screenshot gallery.
+- No real-iPhone keyboard, Dynamic Type, VoiceOver or native VLC validation is established by these screenshots. Standalone IPA work remains separate.
+- Final web and iOS Metro exports pass. These validate JavaScript packaging, not an IPA or native compilation.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.4 — October 23, 2026
+
+- Audited and refined Home, Library, Settings, provider setup, guide controls and supporting screens while retaining the reference palette and original mascot.
+- Improved typography/contrast, card rhythm, input focus/busy states and common touch targets. Home handles long profile names and IPv6 addresses without crowding.
+- Default playback choices are separate from advanced live options; version history now expands by release. Search count labels use singular/plural correctly.
+- Added design audit notes, contrast-token measurements and actual browser screenshots in docs/DESIGN-REVIEW.md. Native accessibility/device behavior is not claimed from browser checks.
+
+
 ## 0.2.3 — October 23, 2026
 
 - Added an embedded live-TV VLC engine in new custom builds using expo-libvlc-player 58.0.0. Automatic selects it only when the actual native module is present.

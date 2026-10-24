@@ -1,5 +1,11 @@
-export const appVersion = '0.2.3';
+export const appVersion = '0.2.4';
 export const releases = [
+  { version: '0.2.4', date: 'October 23, 2026', title: 'A calmer, clearer NodeCast.', changes: [
+    'Refined typography, contrast, spacing and touch targets throughout the app.',
+    'A cleaner Home, readable connection card and layouts that handle long names.',
+    'Simpler Playback settings with advanced live options tucked away until needed.',
+    'Compact, expandable version history and clearer form focus states.',
+  ] },
   { version: '0.2.3', date: 'October 23, 2026', title: 'A new engine for live TV.', changes: [
     'Added an embedded VLC engine for live TV in new custom NodeCast builds; Automatic selects it when available.',
     'Expo Go keeps its native player and clearly explains when a custom build is required.',
