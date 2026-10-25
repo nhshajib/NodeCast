@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.5 — October 24, 2026
+
+- Added an optional Buy me a coffee link in Settings pointing to https://buymeacoffee.com/hexorbd. NodeCast remains free; no feature is gated by support. Opens the external website with a clear link label and failure message.
+
+
 ## 0.2.4 — October 23, 2026
 
 - Audited and refined Home, Library, Settings, provider setup, guide controls and supporting screens while retaining the reference palette and original mascot.

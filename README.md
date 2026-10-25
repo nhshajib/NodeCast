@@ -8,7 +8,7 @@
 
 A standalone React Native IPTV player for **Expo Go on iPhone**. Connect directly to your own Xtream Codes provider or M3U playlist. No NodeCast server, Mac, Xcode, paid Expo plan, or Apple Developer membership is needed for this development/testing workflow.
 
-The current 0.2.4 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
+The current 0.2.5 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 
@@ -98,3 +98,7 @@ GPL-3.0-only. See LICENSE, NOTICE, and THIRD_PARTY_NOTICES.md. Keep the license 
 See `docs/DESIGN-DIRECTION.md` for the final visual system and `docs/FEATURE-RESEARCH-AND-PLAN.md` for cited public-community research and the prioritized implementation roadmap. Proposed features are explicitly separated from implemented behavior. Current page captures are in `verification/screenshots`; see `verification/RESULTS.md` for their limits. No new source ZIP has been created for this design pass.
 
 See [implementation status](docs/IMPLEMENTATION-STATUS.md) for the current milestone and remaining work.
+
+## Optional support
+
+NodeCast is free. If you would like to support development, [buy me a coffee](https://buymeacoffee.com/hexorbd). Support is optional and does not unlock features. The link is also available in Settings.

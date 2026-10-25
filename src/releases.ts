@@ -1,5 +1,8 @@
-export const appVersion = '0.2.4';
+export const appVersion = '0.2.5';
 export const releases = [
+  { version: '0.2.5', date: 'October 24, 2026', title: 'A little support, always optional.', changes: [
+    'Added Buy me a coffee in Settings. NodeCast stays free, with no features locked behind support.',
+  ] },
   { version: '0.2.4', date: 'October 23, 2026', title: 'A calmer, clearer NodeCast.', changes: [
     'Refined typography, contrast, spacing and touch targets throughout the app.',
     'A cleaner Home, readable connection card and layouts that handle long names.',
