@@ -11,7 +11,7 @@ This workflow makes an **unsigned physical-iPhone Release IPA**, with embedded J
 5. Extract the downloaded ZIP. Inside is `NodeCast-<version>-unsigned.ipa`, `SHA256SUMS.txt` and `INSTALL.txt`.
 6. Keep the extracted IPA on your PC for future refreshes. The GitHub artifact is retained seven days; that download retention is separate from Apple's signing expiry.
 
-If no successful run exists, use **Run workflow → main → Run workflow**. Compilation uses a GitHub macOS runner and is subject to GitHub Actions availability, billing and usage limits. It can take several minutes. A completed pipeline checks device platform, arm64, embedded JavaScript, native VLC linkage and ZIP integrity; real iPhone decoding still needs a device test.
+If no successful run exists, use **Run workflow → main → Run workflow**. Compilation uses the GitHub macos-26 runner (Swift 6.2+ is required by the installed Expo native modules) and is subject to GitHub Actions availability, billing and usage limits. It can take several minutes. A completed pipeline checks device platform, arm64, embedded JavaScript, native VLC linkage and ZIP integrity; real iPhone decoding still needs a device test.
 
 ## Install with Sideloadly
 

@@ -13,7 +13,7 @@ concurrency:
 jobs:
   build:
     name: Unsigned iPhone Release IPA
-    runs-on: macos-15
+    runs-on: macos-26
     timeout-minutes: 60
     env:
       CI: '1'
@@ -36,6 +36,7 @@ jobs:
       - name: Configure build environment
         run: |
           xcodebuild -version
+          xcrun swift --version
           pod --version
           printf 'export NODE_BINARY="%s"\n' "$(command -v node)" > ios/.xcode.env.local
       - name: Install native dependencies including VLC
