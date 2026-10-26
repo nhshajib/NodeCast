@@ -1,5 +1,9 @@
-export const appVersion = '0.2.5';
+export const appVersion = '0.2.6';
 export const releases = [
+  { version: '0.2.6', date: 'October 26, 2026', title: 'Ready for personal sideloading.', changes: [
+    'Added a standalone iPhone Release build workflow for personal signing with Sideloadly.',
+    'The IPA includes the app bundle and embedded VLC; free signing still needs periodic renewal.',
+  ] },
   { version: '0.2.5', date: 'October 24, 2026', title: 'A little support, always optional.', changes: [
     'Added Buy me a coffee in Settings. NodeCast stays free, with no features locked behind support.',
   ] },

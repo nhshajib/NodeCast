@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.6 — October 26, 2026
+
+- Added a manually triggered GitHub macOS workflow to compile an unsigned physical-iPhone Release IPA for personal signing in Sideloadly. It does not require Expo/Apple credentials in CI.
+- Packaging checks device platform, arm64 architecture, embedded JavaScript and native VLC linkage, and produces a checksum and installation notes. Artifact download retention is seven days; Apple signing is performed separately by the user.
+- Added a Windows download/install/refresh guide. A workflow/configuration alone is not a successful native build; check its actual run result.
+
+
 ## 0.2.5 — October 24, 2026
 
 - Added an optional Buy me a coffee link in Settings pointing to https://buymeacoffee.com/hexorbd. NodeCast remains free; no feature is gated by support. Opens the external website with a clear link label and failure message.

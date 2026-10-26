@@ -6,3 +6,7 @@ web-build/
 .env*
 !.env.example
 .DS_Store
+
+build/
+__pycache__/
+*.pyc
