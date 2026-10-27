@@ -6,5 +6,5 @@ export default function FocusPressable({ style, onFocus, onBlur, ...props }: Rea
   return <Pressable {...props} focusable={props.focusable ?? true}
     onFocus={e => { setFocused(true); onFocus?.(e); }} onBlur={e => { setFocused(false); onBlur?.(e); }}
     style={state => [typeof style === 'function' ? style(state) : style,
-      isTVBuild && focused && { outlineWidth: 3, outlineColor: '#6655AC', outlineOffset: -3, opacity: 1 }]} />;
+      isTVBuild && focused && { outlineWidth: 3, outlineStyle: 'solid', outlineColor: '#6655AC', outlineOffset: -3, opacity: 1 }]} />;
 }

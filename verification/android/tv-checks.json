@@ -1,0 +1,13 @@
+{
+  "passed": [
+    "Xtream connection with synthetic provider",
+    "100-channel library",
+    "Search",
+    "Favorites saved and filtered",
+    "Three columns at 1280x720",
+    "Visible keyboard focus outline",
+    "Version history and Back navigation"
+  ],
+  "errors": [],
+  "scope": "Browser UI checks. Native D-pad, decoder and hardware behavior require device tests."
+}
