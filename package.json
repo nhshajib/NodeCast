@@ -1,6 +1,6 @@
 {
   "name": "nodecast-iphone",
-  "description": "Standalone iPhone IPTV player with Expo development and production builds",
+  "description": "Standalone IPTV player for iPhone, Android mobile and Android TV",
   "license": "GPL-3.0-only",
   "version": "0.3.1",
   "main": "index.ts",

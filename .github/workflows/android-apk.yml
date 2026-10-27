@@ -63,3 +63,27 @@ jobs:
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
+  publish:
+    name: Publish separate APK downloads
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: NodeCast-Android-*
+          path: apks
+      - name: Publish Android testing release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="android-v${VERSION}"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "NodeCast ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
+          fi
+          gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 --clobber
