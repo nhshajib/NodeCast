@@ -6,6 +6,8 @@ The project shares provider, storage and playback code across editions. Mobile u
 
 ## Start on your Windows PC (also works on macOS/Linux)
 
+In Windows PowerShell, use `npm.cmd` / `npx.cmd` if the `.ps1` launcher is blocked by the execution policy.
+
 1. Install **Node.js 24 LTS** (24.3 or newer) from https://nodejs.org. Node 22.13+ is also supported by this Expo SDK.
 2. Install **Expo Go** from the iPhone App Store and update it to the latest version.
 3. Extract the project ZIP on your PC. Open PowerShell or a terminal inside the `nodecast-expo` folder that contains `package.json`.

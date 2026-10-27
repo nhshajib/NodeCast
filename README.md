@@ -21,19 +21,19 @@
 <tr>
 <td width="33%" valign="top" align="center">
 <a href="iphone/README.md"><img src="assets/readme/iphone.svg" alt="Explore NodeCast for iPhone" width="100%" /></a>
-<p><strong>iPhone · 0.3.0</strong><br />Standalone IPA · Personal Apple signing</p>
+<p><strong>iPhone</strong><br />0.3.0 · IPA</p>
 <p><a href="iphone/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="iphone/CHANGELOG.md">Changelog</a> · <a href="iphone/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-mobile/README.md"><img src="assets/readme/android-mobile.svg" alt="Explore NodeCast for Android phones and tablets" width="100%" /></a>
-<p><strong>Android mobile · 0.4.0</strong><br />Signed APK · Android 7+</p>
+<p><strong>Android</strong><br />0.4.0 · APK</p>
 <p><a href="android-mobile/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-mobile/CHANGELOG.md">Changelog</a> · <a href="android-mobile/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-tv/README.md"><img src="assets/readme/android-tv.svg" alt="Explore NodeCast for Android TV and Google TV" width="100%" /></a>
-<p><strong>Android TV · 0.4.0</strong><br />Signed TV APK · Android TV / Google TV</p>
+<p><strong>Android TV</strong><br />0.4.0 · APK</p>
 <p><a href="android-tv/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-tv/CHANGELOG.md">Changelog</a> · <a href="android-tv/build.json">Build details</a></p>
 </td>
@@ -60,11 +60,11 @@ A fullscreen player with a **bottom-right Next episode button**. It follows your
 
 ## Downloads at a glance
 
-| Edition | Published build | File | Installation | Renewal |
-| --- | --- | --- | --- | --- |
-| [iPhone](iphone/README.md) | **0.3.0** | [Download IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) | Sign with your Apple account using a compatible installer | Free Apple signing normally lasts 7 days |
-| [Android mobile](android-mobile/README.md) | **0.4.0** | [Download APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-mobile-0.4.0.apk) | Open the APK on your phone or tablet | No weekly renewal |
-| [Android TV](android-tv/README.md) | **0.4.0** | [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk) | Transfer to your TV and open with a file manager | No weekly renewal |
+| Edition | Version | Download | Renewal |
+| --- | --- | --- | --- |
+| [iPhone](iphone/README.md) | **0.3.0** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) | Normally 7 days with free Apple signing |
+| [Android mobile](android-mobile/README.md) | **0.4.0** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-mobile-0.4.0.apk) | No weekly renewal |
+| [Android TV](android-tv/README.md) | **0.4.0** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk) | No weekly renewal |
 
 These are personal testing releases. Android uses the standard Android test signing key; the iPhone IPA needs personal signing. Install updates over the existing app with the same signing identity to preserve local profiles. Keep your own copy of provider details.
 
