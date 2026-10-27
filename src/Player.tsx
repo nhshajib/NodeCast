@@ -9,7 +9,7 @@ import { classifyFailure, failureMessage, RecoveryCoordinator } from './recovery
 import type { RecoveryState } from './recovery';
 import { playbackURLs, streamFormat } from './livePlayback';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { timeLabel } from './activity';
+import { playbackClock } from './activity';
 import { Button, Icon, colors, u } from './ui';
 // Keep the native/video surface stable while status/format controls rerender.
 // On web, rerendering a changed src during replaceAsync can cancel the play request.
@@ -102,7 +102,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
       if (!active || handoff.current) return;
       setStatus(value); clearLoadTimer();
       if (value === 'readyToPlay') {
-        if (television) setIsPlaying(player.playing);
+        if (television) { setIsPlaying(player.playing); setClock({ position: lastSnapshot.current.position, duration: Number.isFinite(player.duration) ? player.duration : 0 }); }
         coordinator.ready(); setRecovery(null);
         if (needsSeek.current && Number.isFinite(player.duration) && player.duration > 5 && !player.isLive) {
           player.currentTime = Math.max(0, Math.min(desiredSeek.current, player.duration - 5)); needsSeek.current = false;
@@ -193,9 +193,9 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
     </View>}
     <View style={{ position: 'absolute', bottom: Math.max(insets.bottom, 20), left: 24, right: 24, padding: 14, borderRadius: 24, backgroundColor: '#090124E8', flexDirection: 'row', gap: 12, alignItems: 'center' }}>
       <Pressable hasTVPreferredFocus accessibilityRole="button" accessibilityLabel={isPlaying ? 'Pause video' : 'Play video'} disabled={failed || advancing} onPress={() => { try { if (isPlaying) player.pause(); else { if (player.duration > 0 && player.currentTime >= player.duration - .5) player.currentTime = 0; player.play(); } } catch { setTrackNotice('Couldn’t change playback. Try again.'); } }} style={{ width: 52, height: 52, borderRadius: 26, backgroundColor: colors.mint, alignItems: 'center', justifyContent: 'center' }}><Icon name={isPlaying ? 'pause' : 'play'} size={24} /></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="Rewind 10 seconds" disabled={status !== 'readyToPlay' || clock.duration <= 0 || advancing} onPress={() => seek(-10)} style={{ padding: 12 }}><Icon name="play-back" color="#fff" /></Pressable>
-      <Pressable accessibilityRole="button" accessibilityLabel="Forward 30 seconds" disabled={status !== 'readyToPlay' || clock.duration <= 0 || advancing} onPress={() => seek(30)} style={{ padding: 12 }}><Icon name="play-forward" color="#fff" /></Pressable>
-      <View style={{ flex: 1, gap: 4 }}><Text style={{ color: '#fff', fontSize: 13 }}>{timeLabel(clock.position)} / {timeLabel(clock.duration)}</Text>{!!trackNotice && <Text numberOfLines={2} style={{ color: '#FAE7C8', fontSize: 11 }}>{trackNotice}</Text>}</View>
+      <Pressable accessibilityRole="button" accessibilityLabel="Rewind 10 seconds" disabled={status !== 'readyToPlay' || clock.duration <= 0 || advancing} onPress={() => seek(-10)} style={{ padding: 12 }}><View style={{ alignItems: 'center', gap: 2 }}><Icon name="play-back" color="#fff" /><Text style={{ color: '#fff', fontSize: 10 }}>10s</Text></View></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Forward 30 seconds" disabled={status !== 'readyToPlay' || clock.duration <= 0 || advancing} onPress={() => seek(30)} style={{ padding: 12 }}><View style={{ alignItems: 'center', gap: 2 }}><Icon name="play-forward" color="#fff" /><Text style={{ color: '#fff', fontSize: 10 }}>30s</Text></View></Pressable>
+      <View style={{ flex: 1, gap: 4 }}><Text style={{ color: '#fff', fontSize: 13 }}>{playbackClock(clock.position)} / {clock.duration > 0 ? playbackClock(clock.duration) : '—:—'}</Text>{!!trackNotice && <Text numberOfLines={2} style={{ color: '#FAE7C8', fontSize: 11 }}>{trackNotice}</Text>}</View>
       <Pressable accessibilityRole="button" accessibilityLabel="Audio and subtitles" onPress={() => setShowTracks(value => !value)} style={{ padding: 12 }}><Icon name="options-outline" color="#fff" /></Pressable>
       {nextEpisode && <Pressable testID="next-episode" accessibilityRole="button" accessibilityLabel={`Next episode: ${nextEpisode.item.group} · ${nextEpisode.item.name}`} accessibilityState={{ disabled: advancing, busy: advancing }} disabled={advancing} onPress={() => { void advanceEpisode(); }} style={{ maxWidth: '38%', minHeight: 54, paddingHorizontal: 18, paddingVertical: 10, borderRadius: 18, backgroundColor: colors.mint, flexDirection: 'row', gap: 10, alignItems: 'center' }}>
         {advancing ? <ActivityIndicator color={colors.text} /> : <Icon name="play-skip-forward" />}
