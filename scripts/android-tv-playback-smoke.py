@@ -1,5 +1,5 @@
 """Exercise TV import + native VLC with a locally generated, credential-free test stream."""
-import http.server, json, re, subprocess, threading, time, tempfile
+import http.server, json, re, subprocess, threading, time
 from pathlib import Path
 import xml.etree.ElementTree as ET
 OUT=Path('verification/android')
@@ -26,9 +26,8 @@ def click(label,scroll=False):
 def text(label,value):
  click(label,True);adb('shell','input','text',value);time.sleep(.3)
 
-with tempfile.TemporaryDirectory(prefix='nodecast-test-video-') as folder:
- video=Path(folder)/'test.ts'
- subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-f','lavfi','-i','testsrc=size=640x360:rate=24','-t','25','-c:v','libx264','-preset','ultrafast','-pix_fmt','yuv420p','-f','mpegts',str(video)],check=True)
+if True:
+ video=Path('tests/fixtures/android-live-test.mpegts')
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def do_GET(self):
