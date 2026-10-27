@@ -1,0 +1,21 @@
+{
+  "version": "0.3.0",
+  "edition": "iphone",
+  "file": "NodeCast-0.3.0-unsigned.ipa",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.3.0",
+  "bytes": 34698269,
+  "sha256": "45af08453ae8e9faaad9cb994b0c6737c75e77f38dba1e38c99f2076c01e36d4",
+  "bundleIdentifier": "com.nhshajib.nodecast",
+  "architectures": [
+    "arm64"
+  ],
+  "sourceCommit": "62f56e414b086da2ea41734c67f6f1a0fbe0460a",
+  "originalBuildRun": 40437282300,
+  "originalArtifactId": 12704902438,
+  "signing": "Unsigned IPA; personal Apple signing required",
+  "freeAppleSigningRenewal": "Normally seven days",
+  "distribution": "Permanent release copy of the original verified binary; no rebuild",
+  "releasePublicationRun": 40537159809,
+  "releaseCopyChecksumVerified": true
+}

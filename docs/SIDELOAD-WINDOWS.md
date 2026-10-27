@@ -2,9 +2,15 @@
 
 This workflow makes an **unsigned physical-iPhone Release IPA**, with embedded JavaScript and VLC. It is not a Simulator build or a Metro-dependent development client. It is for signing with your own Apple account in Sideloadly, not App Store/TestFlight submission. No Apple ID, signing certificate, IPTV credentials or Expo token is required in GitHub.
 
-## Download a completed build
+## Current download
 
-1. Open https://github.com/nhshajib/iptvplayer/actions and sign in to the GitHub account that can access this private repository.
+[Download NodeCast 0.3.0 IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) · [iPhone product page, versions and changelog](../iphone/README.md)
+
+The release download is a permanent copy of the verified IPA. Sign into GitHub with repository access before downloading.
+
+## Alternative: download a build artifact
+
+1. Open https://github.com/nhshajib/NodeCast/actions and sign in to the GitHub account that can access this private repository.
 2. Select **Build iPhone IPA for Sideloadly**.
 3. Open a successful (green) run. A failed/red run has no usable IPA.
 4. Under **Artifacts**, download **NodeCast-iPhone-IPA**.

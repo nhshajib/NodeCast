@@ -1,0 +1,36 @@
+# iPhone version history
+
+[← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
+
+## 0.3.0 · October 26, 2026 · Current IPA
+
+- Short tab transitions with a sliding lavender indicator and immediate press feedback.
+- Visited tabs stay mounted, preserving Home / Settings scroll positions.
+- Library and Favorites keep independent search and category selections.
+- Cached library indexes reduce repeat work during navigation.
+- Settings retain content through dismissal; Reduce Motion removes navigation movement.
+- Inactive Home stops IP-check timers/listeners and refreshes when revisited.
+
+[Download 0.3.0 IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) · [Build record](build.json)
+
+## 0.2.9 · October 26, 2026
+
+- Animated NodeCast intro with brand mark, signal rings and cream wordmark.
+- Launch handoff waits for the intro's first frame and local profiles, without waiting for provider/IP services.
+- Reduced-motion introduction and delayed setup prompts.
+
+## 0.2.8 · October 26, 2026
+
+- Live video moved outside scrolling content to prevent fullscreen offsets and clipped edges.
+- Controls overlay the fullscreen picture, with the same native player kept mounted through rotation.
+
+## 0.2.7 · October 26, 2026
+
+- Fullscreen landscape live playback, native launch artwork and app icon.
+- Optional home-IP setup with explicit VPN-off confirmation.
+- Clearer M3U HTTP 404 guidance, playlist parsing and request-header support.
+- Optional Buy me a coffee support; the app remains free.
+
+## Earlier foundations
+
+Local profiles, search/favorites, viewing progress, playback settings, embedded VLC and personal-sideloading builds. See the in-app **Settings → Version history** and [archived source milestones](../docs/CHANGELOG-ARCHIVE.md) for the longer source history.

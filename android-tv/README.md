@@ -1,19 +1,67 @@
-# NodeCast for Android TV / Google TV
+[← All editions](../README.md) · [iPhone](../iphone/README.md) · [Other Android edition](../android-mobile/README.md)
 
-A separate landscape interface in `TVApp.tsx`: a left navigation rail, three-column library, large remote-selectable controls with lavender focus outlines, search, categories, favorites, profile management, home-IP reference, version history and optional support. Live TV uses embedded VLC. Series use fullscreen playback with a bottom-right **Next episode** button. It follows the server’s season/episode list, crosses into the next season and starts the next episode from the beginning. It is hidden for the last episode, movies and live channels. Plain M3U playlists without series metadata do not get guessed next episodes. Press the remote's Back button to close a page/player, clear a search, or return to Live TV before exiting.
+<img src="../assets/readme/android-tv.svg" alt="NodeCast for Android TV" width="400" />
 
-Package: `com.nhshajib.nodecast.tv`. Separate app/data from the phone edition. Android 7+, ARM32, ARM64 and x86-64. Built for Android TV / Google TV devices; this is not a Samsung Tizen or LG webOS app.
+# NodeCast for Android TV
 
-## Download and install
+A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-[Download NodeCast tv APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.4.0)
+**[Download TV APK · 0.4.0](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.4.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
-Open **Actions → Build Android phone and TV APKs**, select the latest successful run and download **NodeCast-Android-tv**. Unzip and transfer the `.apk` to the TV using a USB drive or a trusted file-transfer app. Open it in a TV file manager and allow installation from that file manager if prompted. NodeCast TV appears in the TV app launcher. Enter your own Xtream Codes details or M3U URL using the on-screen keyboard or the Google TV phone remote keyboard.
+While this repository is private, sign into GitHub with repository access before downloading.
 
-No Expo Go, PC connection or weekly renewal is needed after installation. Install updates over the existing app to retain local profiles. Remote, video-decoder and network behavior still need testing on your TV model.
+## Version at a glance
 
-## Build
+| | Current download |
+| --- | --- |
+| Version | **0.4.0** · October 27, 2026 |
+| File | `NodeCast-tv-0.4.0.apk` · 218.0 MB |
+| Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
+| App ID | `com.nhshajib.nodecast.tv` |
+| Signing | Signed personal-testing APK · standard Android test key |
+| Watching | No Expo Go, running PC or weekly signing renewal |
+| Profiles | Local storage; no account or cloud sync |
 
-The shared dependencies, playback and provider code live at the repository root. CI selects this entry with `NODECAST_TARGET=tv EXPO_PUBLIC_APP_VARIANT=tv`, configures a TV launcher/banner, makes touchscreen optional and locks landscape. Both APKs use the template Android test key for personal testing. Configure a private signing key before store distribution.
+<details>
+<summary>Preview the TV player</summary>
+<br />
+<img src="../verification/android/native-tv-next-0.4.0.png" alt="NodeCast Android TV native emulator preview" width="900" />
+<p>Native Android emulator capture with a generated test video.</p>
+</details>
 
-To generate locally, set those two variables before `npx expo prebuild --platform android --clean`, then run `./gradlew assembleRelease` inside `android/`. Local and CI builds use the same template test key.
+## Install
+
+1. Download the **TV APK** above on a phone or PC signed into GitHub.
+2. Transfer the APK to the TV using a USB drive or a trusted file-transfer app.
+3. Open the APK with a TV file manager.
+4. If Android TV asks, allow **Install unknown apps** for that file manager, then choose **Install**.
+5. Open **NodeCast TV** from the TV app launcher. Complete or skip the home-IP setup and add your server or playlist.
+6. Use the on-screen keyboard, or your Google TV phone remote keyboard, to enter long server/playlist links.
+
+Choose this APK for Android TV / Google TV. Samsung Tizen and LG webOS use different app formats.
+
+## Remote and Next episode
+
+Use the D-pad to move between highlighted controls and Select/OK to activate them. **Back** closes the current page/player, clears a search or returns to Live TV before exiting.
+
+For Xtream series, open the series and choose an episode. The fullscreen player's **Next episode** button sits at the bottom right and shows the following title/season. Select it to open that episode automatically from the beginning. It uses the provider's actual ordered episode list, crosses into the next season and releases the previous stream first. The final episode has no Next button. Plain M3U playlists without structured series metadata do not supply that sequence.
+
+Movies and live TV keep their own playback controls. Audio/subtitle language choices for movies/episodes are remembered per profile when matching tracks are available.
+
+## Update without losing profiles
+
+Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
+
+Version 0.4.0 fixes a VLC startup race found in earlier Android testing builds. Use this version when updating from 0.3.3.
+
+## Changelog and verification
+
+[Read the TV changelog](CHANGELOG.md) · [Exact build record](build.json) · [Native verification](../verification/android/README.md)
+
+Release signatures, embedded JavaScript/VLC and architecture checks passed. Repeated cold starts passed on Android emulators. The TV test also passed native test-stream playback and D-pad/Select next-episode changes. Test your provider and hardware on your own device. Configure a private signing key before store distribution.
+
+## Build from source
+
+Shared dependencies and provider/playback code live at the repository root. The TV interface is in `TVApp.tsx`. See the [developer guide](../docs/DEVELOPMENT.md). From the root, `npm run build:android:tv` regenerates the matching native project and builds a local Release app with the template test key. Android SDK/Java tooling is required for local compilation.
+
+[Download help](../docs/DOWNLOADS.md) · [All editions](../README.md) · [Support NodeCast](https://buymeacoffee.com/hexorbd)
