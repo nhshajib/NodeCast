@@ -1,0 +1,35 @@
+name: Publish existing iPhone IPA download
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NodeCast-iPhone-IPA
+          path: existing-ipa
+          run-id: 40437282300
+          github-token: ${{ github.token }}
+      - name: Verify archived IPA and publish download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, zipfile
+          from pathlib import Path
+          ipa = next(Path('existing-ipa').rglob('NodeCast-0.3.0-unsigned.ipa'))
+          digest = hashlib.sha256(ipa.read_bytes()).hexdigest()
+          assert digest == '45af08453ae8e9faaad9cb994b0c6737c75e77f38dba1e38c99f2076c01e36d4'
+          with zipfile.ZipFile(ipa) as archive:
+              assert archive.testzip() is None
+              assert any(name.endswith('/main.jsbundle') for name in archive.namelist())
+          Path('existing-ipa/SHA256SUMS.txt').write_text(f'{digest}  {ipa.name}\n')
+          PY
+          IPA=$(find existing-ipa -name 'NodeCast-0.3.0-unsigned.ipa' -print -quit)
+          gh release upload ios-v0.3.0 "$IPA" existing-ipa/SHA256SUMS.txt --clobber
