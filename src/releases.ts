@@ -1,5 +1,10 @@
-export const appVersion = '0.2.7';
+export const appVersion = '0.2.8';
 export const releases = [
+  { version: '0.2.8', date: 'October 27, 2026', title: 'A better fullscreen fit.', changes: [
+    'Moved live video outside scrolling content to prevent retained offsets and clipped picture edges in fullscreen.',
+    'Fullscreen uses a fixed edge-to-edge video area; controls overlay the picture without reserving a top strip.',
+    'The same native player stays mounted when entering, rotating or leaving fullscreen.',
+  ] },
   { version: '0.2.7', date: 'October 27, 2026', title: 'Made for the big picture.', changes: [
     'Fullscreen live TV with landscape rotation, tap-to-show controls and a visible exit. Movies use the native fullscreen player.',
     'New NodeCast launch artwork and app icon in lavender, cream and deep ink.',

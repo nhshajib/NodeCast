@@ -65,3 +65,10 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - Additional browser check exercised the complete M3U-404 → explicit Xtream alternative → loaded profile flow against a fixture server. Recovery screenshot uses example-only login details.
 - Isolated iOS prebuild confirmed `EXDefaultScreenOrientationMask=Portrait`, all landscape directions in supported orientations, `UIRequiresFullScreen=true`, and the generated 200-point branded launch storyboard.
 - Native Release build succeeded in GitHub run 40428846265. Packager verified arm64 iPhoneOS, embedded JavaScript, linked VLC and IPA ZIP integrity. Artifact download succeeded through the GitHub connector. The 34,688,244-byte IPA is `NodeCast-0.2.7-unsigned.ipa`; metadata/checksum is in `verification/home-ip/iphone-build.json`.
+
+## 0.2.8 — fullscreen clipping correction
+
+- Live video now stays outside the ScrollView in a stable sibling stage. Fullscreen uses absolute bounds on all four edges, without retained scrolling or automatic content insets; controls are overlaid. The library's video wrapper receives explicit 100% width/height in both modes, with the inline 16:9 ratio applied only to its containing stage.
+- TypeScript and 70 tests pass; iOS Metro export succeeded.
+- Browser geometry regression fixture uses the actual `LivePlayerLayout` with a 16:9 test card, not a native VLC render. All picture corners remain inside the viewport at 1280×588, 844×390, 852×393 and 393×852. A retained details-scroll position does not shift fullscreen. Five repeated fullscreen cycles keep the test surface mounted once; no page errors. Reproducible fixture, script, screenshot and measurements are in `verification/fullscreen`.
+- Physical iPhone playback/rotation still needs the updated IPA. Aspect-ratio fitting can leave side bars on a wider screen; the picture should remain complete.

@@ -1,0 +1,52 @@
+{
+  "sizes": [
+    {
+      "width": 1280,
+      "height": 588,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 1280,
+        "height": 588
+      },
+      "allCornersVisible": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 844,
+        "height": 390
+      },
+      "allCornersVisible": true
+    },
+    {
+      "width": 852,
+      "height": 393,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 852,
+        "height": 393
+      },
+      "allCornersVisible": true
+    },
+    {
+      "width": 393,
+      "height": 852,
+      "stage": {
+        "x": 0,
+        "y": 0,
+        "width": 393,
+        "height": 852
+      },
+      "allCornersVisible": true
+    }
+  ],
+  "repeatedFullscreenCycles": 5,
+  "surfaceMounts": 1,
+  "errors": [],
+  "scope": "Production layout with a test-card surface. Confirms geometry and stable mounting, not physical iOS VLC rendering."
+}
