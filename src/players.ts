@@ -7,12 +7,11 @@ export const players: { id: PlayerChoice; name: string; detail: string }[] = [
   { id: 'vlc', name: 'VLC', detail: 'Requires VLC installed on your device' },
   { id: 'infuse', name: 'Infuse', detail: 'Requires Infuse installed; format support varies' },
 ];
-export function externalPlayerURL(player: ExternalPlayer, stream: string, platform: string = 'ios'): string {
+export function androidVLCIntent(stream: string) {
+  return { data: httpURL(stream), type: 'video/*', packageName: 'org.videolan.vlc', className: 'org.videolan.vlc.gui.video.VideoPlayerActivity' };
+}
+export function externalPlayerURL(player: ExternalPlayer, stream: string): string {
   const url = httpURL(stream);
-  if (platform === 'android' && player === 'vlc') {
-    const parsed = new URL(url); parsed.hash = '';
-    return `${parsed.toString().replace(/^https?:/, 'intent:')}#Intent;scheme=${parsed.protocol.slice(0, -1)};package=org.videolan.vlc;type=video/*;end`;
-  }
   if (player === 'vlc') return `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(url)}`;
   if (player === 'infuse') return `infuse://x-callback-url/play?url=${encodeURIComponent(url)}`;
   throw new Error('Unsupported external player.');

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Linking, Platform, Text, View } from 'react-native';
 import type { Media } from './provider';
 import type { ExternalPlayer } from './players';
-import { externalPlayerURL } from './players';
+import { androidVLCIntent, externalPlayerURL } from './players';
 import { streamFormat } from './livePlayback';
 import { Button, Icon, Notice, u } from './ui';
 export default function ExternalSheet({ item, preferred, onInternal, onOpened }: { item: Media; preferred?: ExternalPlayer; onInternal: () => void; onOpened: () => void }) {
@@ -16,7 +16,10 @@ export default function ExternalSheet({ item, preferred, onInternal, onOpened }:
     try {
       // Do not use canOpenURL: custom-scheme queries are restricted in Expo Go's
       // own native manifest. Attempt the requested handoff and handle rejection.
-      await Linking.openURL(externalPlayerURL(player, item.externalURL || item.url, Platform.OS));
+      if (Platform.OS === 'android') {
+        const { startActivityAsync } = await import('expo-intent-launcher');
+        await startActivityAsync('android.intent.action.VIEW', androidVLCIntent(item.externalURL || item.url));
+      } else await Linking.openURL(externalPlayerURL(player, item.externalURL || item.url));
       onOpened();
     } catch { setError(`Couldn’t open ${player === 'vlc' ? 'VLC' : 'Infuse'}. Install it on your device and try again, or use the NodeCast player. Expo Go can also restrict some app handoffs.`); }
     finally { setOpening(false); }
