@@ -1,6 +1,7 @@
 export const appVersion = '0.4.0';
 export const releases = [
   { version: '0.4.0', date: 'October 27, 2026', title: 'One episode flows into the next.', changes: [
+    'Fixed an Android VLC startup race when the native activity is not attached yet.',
     'TV series have a bottom-right Next episode button, using the provider’s actual season and episode order.',
     'Next opens the following episode from the beginning, including season changes, and closes the previous stream first.',
     'Fullscreen TV movie and episode controls include play/pause, seeking, saved language preferences and remote focus.',

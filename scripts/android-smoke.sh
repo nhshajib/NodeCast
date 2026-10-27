@@ -7,6 +7,13 @@ mkdir -p verification/android
 trap 'adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt" || true' EXIT
 adb install "$(find apk -name '*.apk' -print -quit)"
 adb logcat -c
+# Exercise repeated cold starts to catch activity/module initialization races.
+for ATTEMPT in 1 2 3; do
+  adb shell am start -W -n "$PACKAGE/.MainActivity"
+  sleep 5
+  adb shell pidof "$PACKAGE"
+  adb shell am force-stop "$PACKAGE"
+done
 # No Metro is running: these must be self-contained Release APKs.
 adb shell am start -W -n "$PACKAGE/.MainActivity"
 sleep 12

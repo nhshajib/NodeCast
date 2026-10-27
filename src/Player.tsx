@@ -84,7 +84,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
       } catch { /* No unavailable feature is presented as a supported track. */ }
     }
     const operation = async (advance = true) => {
-      if (!active || !source) return;
+      if (!active || !source || handoff.current) return;
       player.pause();
       desiredSeek.current = lastSnapshot.current.position;
       needsSeek.current = item.kind !== 'live' && desiredSeek.current > 0;

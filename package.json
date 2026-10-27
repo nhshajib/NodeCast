@@ -43,7 +43,8 @@
     "build:preview": "npx eas-cli@latest build --platform ios --profile preview",
     "build:production": "npx eas-cli@latest build --platform ios --profile production",
     "build:android:mobile": "node scripts/run-android.cjs mobile",
-    "build:android:tv": "node scripts/run-android.cjs tv"
+    "build:android:tv": "node scripts/run-android.cjs tv",
+    "postinstall": "node scripts/patch-android-vlc.cjs"
   },
   "private": true
 }
