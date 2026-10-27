@@ -1,0 +1,15 @@
+{
+  "ipa": "NodeCast-0.3.0-unsigned.ipa",
+  "version": "0.3.0",
+  "bundleIdentifier": "com.nhshajib.nodecast",
+  "architectures": [
+    "arm64"
+  ],
+  "sha256": "45af08453ae8e9faaad9cb994b0c6737c75e77f38dba1e38c99f2076c01e36d4",
+  "bytes": 34698269,
+  "run": "https://github.com/nhshajib/iptvplayer/actions/runs/40437282300",
+  "artifact": "https://github.com/nhshajib/iptvplayer/actions/runs/40437282300/artifacts/12704902438",
+  "sourceCommit": "62f56e414b086da2ea41734c67f6f1a0fbe0460a",
+  "expires": "2026-11-03T02:20:21Z",
+  "validation": "Release build passed; CI verified arm64 iPhoneOS, embedded JavaScript, linked VLC and IPA ZIP integrity. GitHub connector artifact download succeeded. Physical iPhone navigation feel and native frame timing remain to be checked."
+}
