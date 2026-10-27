@@ -23,6 +23,9 @@ if [ "$TARGET" = tv ]; then
   adb pull /sdcard/nodecast-remote.xml "verification/android/emulator-$TARGET-remote.xml"
   adb exec-out screencap -p > "verification/android/emulator-$TARGET-remote.png"
 fi
+if [ "$TARGET" = tv ]; then
+  python3 scripts/android-tv-playback-smoke.py
+fi
 adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt"
 adb shell pidof "$PACKAGE"
 if rg -q 'FATAL EXCEPTION|ReactNativeJS:.*(Error:|Invariant Violation|TypeError)' "verification/android/emulator-$TARGET-logcat.txt"; then
