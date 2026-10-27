@@ -1,5 +1,9 @@
-export const appVersion = '0.3.1';
+export const appVersion = '0.3.2';
 export const releases = [
+  { version: '0.3.2', date: 'October 27, 2026', title: 'The finishing touches for Android.', changes: [
+    'Dark status icons on the mobile welcome screen, restored correctly after the animated intro.',
+    'TV keeps system bars hidden across setup, settings and playback.',
+  ] },
   { version: '0.3.1', date: 'October 27, 2026', title: 'Your TV space, on Android.', changes: [
     'Separate standalone Android phone and Android TV editions, with embedded VLC and local profiles.',
     'TV gets a landscape sidebar, larger three-column library, visible remote focus and Back-button navigation.',

@@ -435,7 +435,7 @@ export default function App() {
   const onReady = useCallback(() => setDataReady(true), []);
   const onFinish = useCallback(() => setLaunchComplete(true), []);
   if (!loaded && !error) return <View style={{ flex: 1, backgroundColor: '#090124' }} />;
-  return <NavigationMotionProvider><SafeAreaProvider><View style={{ flex: 1 }}><View style={{ flex: 1 }} aria-hidden={!launchComplete} accessibilityElementsHidden={!launchComplete} importantForAccessibility={launchComplete ? 'auto' : 'no-hide-descendants'} pointerEvents={launchComplete ? 'auto' : 'none'}><NodeCast onReady={onReady} launchComplete={launchComplete} /></View>{!launchComplete && <StartupSplash ready={dataReady} onFinish={onFinish} />}</View></SafeAreaProvider></NavigationMotionProvider>;
+  return <NavigationMotionProvider><SafeAreaProvider><StatusBar barStyle="dark-content" /><View style={{ flex: 1 }}><View style={{ flex: 1 }} aria-hidden={!launchComplete} accessibilityElementsHidden={!launchComplete} importantForAccessibility={launchComplete ? 'auto' : 'no-hide-descendants'} pointerEvents={launchComplete ? 'auto' : 'none'}><NodeCast onReady={onReady} launchComplete={launchComplete} /></View>{!launchComplete && <StartupSplash ready={dataReady} onFinish={onFinish} />}</View></SafeAreaProvider></NavigationMotionProvider>;
 }
 const s = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 },

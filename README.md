@@ -14,7 +14,7 @@
 
 A standalone React Native IPTV player for your own Xtream Codes server or M3U playlist. Installed IPA/APK builds include the app and playback engine, so they do not need a running PC or Expo Go. Android phone and TV editions have separate folders, interfaces and application IDs, with shared provider and playback code.
 
-The 0.3.1 interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings and rounded controls. The phone interface has Home / Library / Favorites / Settings tabs. The TV edition uses a landscape navigation rail, a three-column library and visible remote focus. This is a new mobile/TV implementation inspired by NodeCast TV, rather than a feature-for-feature copy of its original web application.
+The 0.3.2 interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings and rounded controls. The phone interface has Home / Library / Favorites / Settings tabs. The TV edition uses a landscape navigation rail, a three-column library and visible remote focus. This is a new mobile/TV implementation inspired by NodeCast TV, rather than a feature-for-feature copy of its original web application.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 

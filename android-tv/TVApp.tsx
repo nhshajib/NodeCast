@@ -163,7 +163,7 @@ export default function TVApp() {
   const [fonts, fontError] = useFonts({ CrimsonText: require('../assets/fonts/CrimsonText-Regular.ttf') });
   const [ready, setReady] = useState(false); const [finished, setFinished] = useState(false);
   if (!fonts && !fontError) return <View style={{ flex: 1, backgroundColor: colors.text }} />;
-  return <NavigationMotionProvider><SafeAreaProvider><View style={{ flex: 1 }}><View style={{ flex: 1 }} pointerEvents={finished ? 'auto' : 'none'} importantForAccessibility={finished ? 'auto' : 'no-hide-descendants'}><TVContent onReady={() => setReady(true)} launchComplete={finished} /></View>{!finished && <StartupSplash ready={ready} onFinish={() => setFinished(true)} />}</View></SafeAreaProvider></NavigationMotionProvider>;
+  return <NavigationMotionProvider><SafeAreaProvider><StatusBar hidden /><View style={{ flex: 1 }}><View style={{ flex: 1 }} pointerEvents={finished ? 'auto' : 'none'} importantForAccessibility={finished ? 'auto' : 'no-hide-descendants'}><TVContent onReady={() => setReady(true)} launchComplete={finished} /></View>{!finished && <StartupSplash ready={ready} onFinish={() => setFinished(true)} />}</View></SafeAreaProvider></NavigationMotionProvider>;
 }
 const s = StyleSheet.create({
   root: { flex: 1, flexDirection: 'row', padding: 24, gap: 24, backgroundColor: colors.bg },
