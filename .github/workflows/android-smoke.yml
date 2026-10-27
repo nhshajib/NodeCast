@@ -2,6 +2,11 @@ name: Test Android APK startup and TV remote
 on:
   workflow_dispatch:
     inputs:
+      target:
+        description: Android edition to check
+        type: choice
+        default: both
+        options: [both, mobile, tv]
       build_run:
         description: Successful Android APK workflow run ID
         required: true
@@ -15,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [mobile, tv]
+        target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4

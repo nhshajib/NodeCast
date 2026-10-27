@@ -8,7 +8,7 @@ Package: `com.nhshajib.nodecast`. Android 7 or later, ARM32, ARM64 and x86-64.
 
 [Download NodeCast mobile APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.3/NodeCast-mobile-0.3.3.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.3)
 
-Open the repository's **Actions → Build Android phone and TV APKs**, choose the latest successful run, and download **NodeCast-Android-mobile**. Unzip it, transfer the `.apk` to your phone and open it. Allow installation from the browser or Files app when Android asks. Future APK updates should be installed over this app to retain profiles.
+Open the repository's **Actions → Build Android phone and TV APKs**, choose a successful run containing the mobile artifact, and download **NodeCast-Android-mobile**. Unzip it, transfer the `.apk` to your phone and open it. Allow installation from the browser or Files app when Android asks. Future APK updates should be installed over this app to retain profiles.
 
 The workflows build Release APKs signed with the Expo template's standard Android test key, verify the signature, embedded JavaScript and VLC libraries, and publish separate downloads. No development server or weekly signing renewal is needed. Keep a copy of your provider details; uninstalling removes local app data.
 

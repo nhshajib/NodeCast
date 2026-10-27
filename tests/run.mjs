@@ -7,3 +7,5 @@ import './compatibility-engine.test.mjs';
 import './upgrade.test.mjs';
 
 import './android.test.mjs';
+
+import './episodes.test.mjs';

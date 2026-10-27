@@ -1,20 +1,26 @@
 name: Build Android phone and TV APKs
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: Android edition to build
+        type: choice
+        default: both
+        options: [both, mobile, tv]
 permissions:
   contents: read
-concurrency:
-  group: nodecast-android-${{ github.ref }}
-  cancel-in-progress: false
 jobs:
   build:
+    concurrency:
+      group: nodecast-android-${{ matrix.target }}
+      cancel-in-progress: false
     name: Android ${{ matrix.target }} release APK
     runs-on: ubuntu-latest
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
-        target: [mobile, tv]
+        target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     env:
       CI: '1'
       EXPO_NO_TELEMETRY: '1'

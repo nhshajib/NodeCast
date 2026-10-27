@@ -1,5 +1,11 @@
-export const appVersion = '0.3.3';
+export const appVersion = '0.4.0';
 export const releases = [
+  { version: '0.4.0', date: 'October 27, 2026', title: 'One episode flows into the next.', changes: [
+    'TV series have a bottom-right Next episode button, using the provider’s actual season and episode order.',
+    'Next opens the following episode from the beginning, including season changes, and closes the previous stream first.',
+    'Fullscreen TV movie and episode controls include play/pause, seeking, saved language preferences and remote focus.',
+    'The button is hidden for movies, live TV and the last available episode; no stream URLs or episode IDs are guessed.',
+  ] },
   { version: '0.3.3', date: 'October 27, 2026', title: 'Remember your preferred language.', changes: [
     'Android TV saves movie and episode audio/subtitle language choices per profile, matching the mobile edition.',
   ] },

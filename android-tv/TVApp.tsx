@@ -1,4 +1,5 @@
 import TVConnection from './TVConnection';
+import { followingEpisode } from '../src/episodes';
 import React, { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, BackHandler, FlatList, Image, Linking, ScrollView, StatusBar, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -40,6 +41,8 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const [edit, setEdit] = useState<Profile | undefined>();
   const [items, setItems] = useState<Media[]>([]);
   const [episodes, setEpisodes] = useState<Media[]>([]);
+  const [episodeQueue, setEpisodeQueue] = useState<{ profileId: string; seriesId: string; items: Media[] } | null>(null);
+  const [playFromStart, setPlayFromStart] = useState(false);
   const [query, setQuery] = useState('');
   const [group, setGroup] = useState('All');
   const [busy, setBusy] = useState(false);
@@ -55,6 +58,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const writes = useRef(Promise.resolve());
   const active = vault.profiles.find(p => p.id === vault.activeId);
   const activeId = active?.id;
+  const next = useMemo(() => episodeQueue && episodeQueue.profileId === activeId ? followingEpisode(episodeQueue.items, playing) : null, [episodeQueue, activeId, playing]);
   const deferred = useDeferredValue(query);
   async function updateVault(change: (current: Vault) => Vault) {
     const action = writes.current.then(async () => {
@@ -77,7 +81,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
     if (ready && launchComplete && !preferences.homeIPSetup) setOverlay('home-ip');
   }, [ready, launchComplete]);
   useEffect(() => {
-    setViewing([]);
+    setViewing([]); setEpisodeQueue(null);
     if (!activeId) return;
     let live = true;
     void readViewing(activeId).then(entries => { if (live) setViewing(entries); }).catch(() => {});
@@ -122,16 +126,17 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   }
   async function open(item: Media) {
     setError('');
-    if (item.kind === 'series') {
+    if (item.kind === 'series' && !item.id.startsWith('episode:')) {
       if (!active) return;
       request.current?.abort(); const controller = new AbortController(); request.current = controller;
-      setOverlay('episodes'); setEpisodes([]); setBusy(true);
-      try { const result = await loadEpisodes(active.provider, item, controller.signal); if (!controller.signal.aborted) setEpisodes(result); }
+      setOverlay('episodes'); setEpisodes([]); setEpisodeQueue(null); setBusy(true);
+      try { const result = await loadEpisodes(active.provider, item, controller.signal); if (!controller.signal.aborted) { setEpisodes(result); setEpisodeQueue({ profileId: active.id, seriesId: item.id, items: result }); } }
       catch (e) { if (!controller.signal.aborted) setError((e as Error).message); }
       finally { if (!controller.signal.aborted) setBusy(false); }
       return;
     }
-    setOverlay(null); setFullscreen(true); setPlaying(preparePlayback(item, active?.provider || null, active?.liveFormat));
+    if (!item.id.startsWith('episode:')) setEpisodeQueue(null);
+    setPlayFromStart(false); setOverlay(null); setFullscreen(true); setPlaying(preparePlayback(item, active?.provider || null, active?.liveFormat));
   }
   function favorite(item: Media) {
     if (!activeId) return;
@@ -143,8 +148,8 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   if (overlay === 'home-ip') return sheet('Home IP reference', <HomeIPSetup onSave={async baseline => { await updatePreferences({ baseline, homeIPSetup: 'saved' }); setOverlay(null); }} onSkip={async () => { await updatePreferences({ homeIPSetup: 'skipped' }); setOverlay(null); }} />);
   if (overlay === 'history') return sheet('Version history', <VersionHistory />);
   if (overlay === 'external' && playing) return sheet('External player', <ScrollView><ExternalSheet item={playing} onInternal={() => setOverlay(null)} onOpened={() => { setPlaying(null); setOverlay(null); }} /></ScrollView>);
-  if (overlay === 'episodes') return sheet('Episodes', <View style={{ flex: 1, padding: 20 }}>{busy && <ActivityIndicator />}{!!error && <Notice danger>{error}</Notice>}<FlatList data={episodes} keyExtractor={i => i.id} ListEmptyComponent={!busy ? <Text style={u.body}>No episodes returned.</Text> : undefined} renderItem={({ item }) => <Pressable onPress={() => { void open(item); }} style={s.episode}><Text style={u.label}>{item.name}</Text></Pressable>} /></View>);
-  if (playing) return <View style={{ flex: 1, backgroundColor: colors.text }}><BuiltInPlayer key={playing.id} item={playing} fullscreen={fullscreen} onFullscreenChange={setFullscreen} onClose={() => setPlaying(null)} onExternal={() => setOverlay('external')} resumeAt={resumePosition(viewing.find(v => v.item.id === playing.id))} tracks={active?.tracks} onTracks={tracks => { if (activeId) void updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === activeId ? { ...profile, tracks } : profile) })).catch(() => setError('Could not save language preferences.')); }} onProgress={snapshot => {
+  if (overlay === 'episodes') return sheet('Episodes', <View style={{ flex: 1, padding: 20 }}>{busy && <ActivityIndicator />}{!!error && <Notice danger>{error}</Notice>}<FlatList data={episodes} keyExtractor={i => i.id} ListEmptyComponent={!busy ? <Text style={u.body}>No episodes returned.</Text> : undefined} renderItem={({ item }) => <Pressable onPress={() => { void open(item); }} style={s.episode}><Text style={u.label}>{item.name}</Text><Text style={u.small}>{item.group}</Text></Pressable>} /></View>);
+  if (playing) return <View style={{ flex: 1, backgroundColor: colors.text }}><BuiltInPlayer television nextEpisode={next ? { item: next, onPress: () => { setPlayFromStart(true); setFullscreen(true); setPlaying(current => current?.id === playing.id ? next : current); } } : undefined} key={playing.id} item={playing} fullscreen={fullscreen} onFullscreenChange={setFullscreen} onClose={() => setPlaying(null)} onExternal={() => setOverlay('external')} resumeAt={playFromStart ? 0 : resumePosition(viewing.find(v => v.item.id === playing.id))} tracks={active?.tracks} onTracks={tracks => { if (activeId) void updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === activeId ? { ...profile, tracks } : profile) })).catch(() => setError('Could not save language preferences.')); }} onProgress={snapshot => {
     if (!activeId) return;
     const entries = recordViewing(viewingRef.current, playing, snapshot); viewingRef.current = entries; setViewing(entries);
     void writeViewing(activeId, entries).catch(() => {});
@@ -155,7 +160,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
     {page === 'settings' ? <ScrollView contentContainerStyle={{ gap: 16, paddingBottom: 32 }}><Text style={u.h2}>Your profiles</Text>{vault.profiles.map(p => <View key={p.id} style={[u.card, { gap: 10 }]}><Text style={u.label}>{p.provider.name}{p.id === activeId ? ' · Active' : ''}</Text><View style={u.row}><Button title="Use profile" variant="secondary" onPress={() => { void updateVault(v => ({ ...v, activeId: p.id })).catch(() => setError('Could not switch profile.')); }} /><Button title="Edit" variant="secondary" onPress={() => { setEdit(p); setError(''); setOverlay('provider'); }} /><Button title="Remove" variant="danger" onPress={() => Alert.alert('Remove profile?', 'This removes local favorites. Your subscription stays active.', [{ text: 'Cancel', style: 'cancel' }, { text: 'Remove', style: 'destructive', onPress: () => { void updateVault(v => removeProfile(v, p.id)).catch(() => setError('Could not remove profile.')); } }])} /></View></View>)}<Button title="Add playlist" onPress={add} disabled={!!storageError} /><NetworkCard baseline={preferences.baseline} onBaseline={baseline => updatePreferences({ baseline })} /><Button title="Set home IP reference" variant="secondary" onPress={() => setOverlay('home-ip')} /><Button title="Version history" variant="secondary" onPress={() => setOverlay('history')} /><View style={u.card}><Text style={u.h2}>Support NodeCast</Text><Text style={u.body}>NodeCast is free. If it makes your evenings better, a little support is appreciated.</Text><Button title="Buy me a coffee" variant="mint" onPress={() => { void Linking.openURL('https://buymeacoffee.com/hexorbd').catch(() => setError('Open buymeacoffee.com/hexorbd on your phone to support NodeCast.')); }} /></View>{!!error && <Notice danger>{error}</Notice>}</ScrollView> : !active ? <View style={[u.center, { gap: 18 }]}><Text style={u.h1}>A bigger screen. All yours.</Text><Text style={u.body}>Connect your Xtream Codes server or M3U playlist.</Text><Button title="Add your playlist" onPress={add} disabled={!ready || !!storageError} /></View> : <>
       <TextInput accessibilityLabel="Search channels and titles" placeholder="Search channels and titles" placeholderTextColor={colors.secondary} value={query} onChangeText={setQuery} style={s.search} />
       <View style={{ height: 66 }}><ScrollView horizontal contentContainerStyle={{ gap: 10, alignItems: 'center', paddingHorizontal: 4 }} showsHorizontalScrollIndicator={false}>{groups.map(g => <Pressable key={g} onPress={() => setGroup(g)} style={[s.chip, group === g && { backgroundColor: colors.mint }]}><Text numberOfLines={1} style={u.label}>{g}</Text></Pressable>)}</ScrollView></View>
-      {busy ? <View style={u.center}><ActivityIndicator color={colors.accent} /><Text style={u.body}>Loading your library…</Text></View> : error ? <View style={u.center}><Notice danger>{error}</Notice><Button title="Try again" onPress={() => setRevision(r => r + 1)} /></View> : <FlatList key={page} data={filtered} numColumns={3} keyExtractor={i => i.id} columnWrapperStyle={{ gap: 14 }} contentContainerStyle={{ gap: 14, padding: 5, paddingBottom: 30 }} ListEmptyComponent={<Text style={u.body}>{page === 'favorites' ? 'Save a favorite using the heart below any title.' : 'No titles match. Try another search or category.'}</Text>} renderItem={({ item }) => <View style={s.tile}><Pressable accessibilityRole="button" accessibilityLabel={`Play ${item.name}`} onPress={() => { void open(item); }} style={s.tilePlay}><View style={s.art}>{item.logo ? <Image source={{ uri: item.logo }} resizeMode="contain" style={{ width: '100%', height: '100%' }} /> : <Icon name="play-circle-outline" size={32} color={colors.accent} />}</View><Text numberOfLines={2} style={u.label}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${active.favorites.includes(item.id) ? 'Remove' : 'Save'} favorite: ${item.name}`} onPress={() => favorite(item)} style={s.favorite}><Text style={{ fontSize: 22, color: colors.accent }}>{active.favorites.includes(item.id) ? '♥' : '♡'}</Text></Pressable></View>} />}
+      {busy ? <View style={u.center}><ActivityIndicator color={colors.accent} /><Text style={u.body}>Loading your library…</Text></View> : error ? <View style={u.center}><Notice danger>{error}</Notice><Button title="Try again" onPress={() => setRevision(r => r + 1)} /></View> : <FlatList key={page} data={filtered} numColumns={3} keyExtractor={i => i.id} columnWrapperStyle={{ gap: 14 }} contentContainerStyle={{ gap: 14, padding: 5, paddingBottom: 30 }} ListEmptyComponent={<Text style={u.body}>{page === 'favorites' ? 'Save a favorite using the heart below any title.' : 'No titles match. Try another search or category.'}</Text>} renderItem={({ item }) => <View style={s.tile}><Pressable accessibilityRole="button" accessibilityLabel={`${item.kind === 'series' ? 'Open' : 'Play'} ${item.name}`} onPress={() => { void open(item); }} style={s.tilePlay}><View style={s.art}>{item.logo ? <Image source={{ uri: item.logo }} resizeMode="contain" style={{ width: '100%', height: '100%' }} /> : <Icon name="play-circle-outline" size={32} color={colors.accent} />}</View><Text numberOfLines={2} style={u.label}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel={`${active.favorites.includes(item.id) ? 'Remove' : 'Save'} favorite: ${item.name}`} onPress={() => favorite(item)} style={s.favorite}><Text style={{ fontSize: 22, color: colors.accent }}>{active.favorites.includes(item.id) ? '♥' : '♡'}</Text></Pressable></View>} />}
     </>}
   </View></View>;
 }

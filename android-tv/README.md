@@ -1,12 +1,12 @@
 # NodeCast for Android TV / Google TV
 
-A separate landscape interface in `TVApp.tsx`: a left navigation rail, three-column library, large remote-selectable controls with lavender focus outlines, search, categories, favorites, profile management, home-IP reference, version history and optional support. Live TV uses embedded VLC. Press the remote's Back button to close a page/player, clear a search, or return to Live TV before exiting.
+A separate landscape interface in `TVApp.tsx`: a left navigation rail, three-column library, large remote-selectable controls with lavender focus outlines, search, categories, favorites, profile management, home-IP reference, version history and optional support. Live TV uses embedded VLC. Series use fullscreen playback with a bottom-right **Next episode** button. It follows the server’s season/episode list, crosses into the next season and starts the next episode from the beginning. It is hidden for the last episode, movies and live channels. Plain M3U playlists without series metadata do not get guessed next episodes. Press the remote's Back button to close a page/player, clear a search, or return to Live TV before exiting.
 
 Package: `com.nhshajib.nodecast.tv`. Separate app/data from the phone edition. Android 7+, ARM32, ARM64 and x86-64. Built for Android TV / Google TV devices; this is not a Samsung Tizen or LG webOS app.
 
 ## Download and install
 
-[Download NodeCast tv APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.3/NodeCast-tv-0.3.3.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.3)
+[Download NodeCast tv APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.4.0)
 
 Open **Actions → Build Android phone and TV APKs**, select the latest successful run and download **NodeCast-Android-tv**. Unzip and transfer the `.apk` to the TV using a USB drive or a trusted file-transfer app. Open it in a TV file manager and allow installation from that file manager if prompted. NodeCast TV appears in the TV app launcher. Enter your own Xtream Codes details or M3U URL using the on-screen keyboard or the Google TV phone remote keyboard.
 
