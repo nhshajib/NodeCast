@@ -1,0 +1,15 @@
+{
+  "ipa": "NodeCast-0.2.8-unsigned.ipa",
+  "version": "0.2.8",
+  "bundleIdentifier": "com.nhshajib.nodecast",
+  "architectures": [
+    "arm64"
+  ],
+  "sha256": "70083f4c4d6138c1205c15c61f09461bba937e8c0694d792c5308fe31910926e",
+  "bytes": 34688373,
+  "run": "https://github.com/nhshajib/iptvplayer/actions/runs/40431252010",
+  "artifact": "https://github.com/nhshajib/iptvplayer/actions/runs/40431252010/artifacts/12701584814",
+  "sourceCommit": "a3d3ee45147d03ba81528b0fcc7f96843f8f279a",
+  "expires": "2026-11-03T01:17:39Z",
+  "validation": "CI verified arm64 iPhoneOS, embedded JavaScript, linked VLC and IPA ZIP integrity. GitHub connector artifact download succeeded. Physical iPhone rendering remains to be checked."
+}

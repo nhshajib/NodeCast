@@ -72,3 +72,4 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - TypeScript and 70 tests pass; iOS Metro export succeeded.
 - Browser geometry regression fixture uses the actual `LivePlayerLayout` with a 16:9 test card, not a native VLC render. All picture corners remain inside the viewport at 1280×588, 844×390, 852×393 and 393×852. A retained details-scroll position does not shift fullscreen. Five repeated fullscreen cycles keep the test surface mounted once; no page errors. Reproducible fixture, script, screenshot and measurements are in `verification/fullscreen`.
 - Physical iPhone playback/rotation still needs the updated IPA. Aspect-ratio fitting can leave side bars on a wider screen; the picture should remain complete.
+- Native Release build and IPA validation succeeded in GitHub run 40431252010. The artifact download was verified through the GitHub connector. Build metadata and SHA-256: `verification/fullscreen/iphone-build.json`.
