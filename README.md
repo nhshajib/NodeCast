@@ -1,4 +1,8 @@
-# NodeCast for iPhone — Expo edition
+# NodeCast — iPhone, Android mobile and Android TV
+
+**Android phone APK and source:** [android-mobile](android-mobile/README.md).
+
+**Android TV / Google TV APK and source:** [android-tv](android-tv/README.md).
 
 **Design audit and screenshots:** [Review the 0.2.4 polish](docs/DESIGN-REVIEW.md).
 
@@ -8,9 +12,9 @@
 
 **Native development / preview / TestFlight:** [Native build guide](docs/NATIVE-BUILDS.md). The project includes expo-dev-client; use `start:go` explicitly for Expo Go, or `start:dev` for an installed custom development app.
 
-A standalone React Native IPTV player for **Expo Go on iPhone**. Connect directly to your own Xtream Codes provider or M3U playlist. No NodeCast server, Mac, Xcode, paid Expo plan, or Apple Developer membership is needed for this development/testing workflow.
+A standalone React Native IPTV player for your own Xtream Codes server or M3U playlist. Installed IPA/APK builds include the app and playback engine, so they do not need a running PC or Expo Go. Android phone and TV editions have separate folders, interfaces and application IDs, with shared provider and playback code.
 
-The current 0.2.6 design is a new mobile implementation inspired by NodeCast TV. Its iOS-style interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings, rounded cards, and Home / Library / Favorites / Settings navigation. Chime is a visual reference only and is not affiliated with this app. It is not yet a feature-for-feature copy of the original application.
+The 0.3.1 interface uses spacious layouts, lavender/cream surfaces, Crimson Text headings and rounded controls. The phone interface has Home / Library / Favorites / Settings tabs. The TV edition uses a landscape navigation rail, a three-column library and visible remote focus. This is a new mobile/TV implementation inspired by NodeCast TV, rather than a feature-for-feature copy of its original web application.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 
