@@ -64,3 +64,4 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - IP comparisons never report a verified VPN state. Warnings are suppressed while refreshing, after a failed lookup or when the result is older than a minute.
 - Additional browser check exercised the complete M3U-404 → explicit Xtream alternative → loaded profile flow against a fixture server. Recovery screenshot uses example-only login details.
 - Isolated iOS prebuild confirmed `EXDefaultScreenOrientationMask=Portrait`, all landscape directions in supported orientations, `UIRequiresFullScreen=true`, and the generated 200-point branded launch storyboard.
+- Native Release build succeeded in GitHub run 40428846265. Packager verified arm64 iPhoneOS, embedded JavaScript, linked VLC and IPA ZIP integrity. Artifact download succeeded through the GitHub connector. The 34,688,244-byte IPA is `NodeCast-0.2.7-unsigned.ipa`; metadata/checksum is in `verification/home-ip/iphone-build.json`.
