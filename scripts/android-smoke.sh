@@ -28,10 +28,10 @@ if [ "$TARGET" = tv ]; then
 fi
 adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt"
 adb shell pidof "$PACKAGE"
-if rg -q 'FATAL EXCEPTION|ReactNativeJS:.*(Error:|Invariant Violation|TypeError)' "verification/android/emulator-$TARGET-logcat.txt"; then
+if grep -Eq 'FATAL EXCEPTION|ReactNativeJS:.*(Error:|Invariant Violation|TypeError)' "verification/android/emulator-$TARGET-logcat.txt"; then
   echo 'Native or JavaScript crash detected'; exit 1
 fi
-if ! rg -q 'Disconnect|home.IP|playlist|My TV' "verification/android/emulator-$TARGET-initial.xml"; then
+if ! grep -Eq 'Disconnect|home.IP|playlist|My TV' "verification/android/emulator-$TARGET-initial.xml"; then
   echo 'Expected application UI not found'; exit 1
 fi
 echo "Standalone $TARGET startup passed on Android emulator. This is not a physical TV playback test."
