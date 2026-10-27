@@ -3,6 +3,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { readSecureVault, writeSecureVault, emptyVault } from './vault';
 import type { SecretStore, Vault } from './vault';
+import { isIP } from './network';
 import type { PlayerChoice } from './players';
 
 const webSession = new Map<string, string>();
@@ -34,14 +35,15 @@ export function saveVault(vault: Vault): Promise<void> {
   writes = write.catch(() => {});
   return write;
 }
-export type Preferences = { onboarded: boolean; player: PlayerChoice; baseline: { ip: string; savedAt: string } | null };
+export type Preferences = { onboarded: boolean; player: PlayerChoice; baseline: { ip: string; savedAt: string } | null; homeIPSetup?: 'saved' | 'skipped' };
 const defaults: Preferences = { onboarded: false, player: 'internal', baseline: null };
 export async function loadPreferences(): Promise<Preferences> {
   const raw = await AsyncStorage.getItem('nodecast.preferences.v2');
   if (!raw) return { ...defaults };
   const value = JSON.parse(raw);
   return { onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
-    baseline: value.baseline && typeof value.baseline.ip === 'string' && typeof value.baseline.savedAt === 'string' ? value.baseline : null };
+    baseline: value.baseline && isIP(value.baseline.ip) && typeof value.baseline.savedAt === 'string' ? value.baseline : null,
+    homeIPSetup: value.homeIPSetup === 'saved' || value.homeIPSetup === 'skipped' ? value.homeIPSetup : undefined };
 }
 let preferenceWrites: Promise<void> = Promise.resolve();
 export function savePreferences(preferences: Preferences): Promise<void> {

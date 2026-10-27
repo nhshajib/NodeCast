@@ -10,7 +10,8 @@ export function isIP(value: unknown): value is string {
 export function compareIP(current: ExitIP | null, baseline: string | null, stale = false): IPComparison {
   if (!current || stale) return 'unknown';
   if (!baseline) return 'no-baseline';
-  return current.ip.toLowerCase() === baseline.toLowerCase() ? 'same' : 'changed';
+  const normalized = (ip: string) => { try { return ip.includes(':') ? new URL(`http://[${ip}]/`).hostname.toLowerCase() : ip.split('.').map(Number).join('.'); } catch { return ip.toLowerCase(); } };
+  return normalized(current.ip) === normalized(baseline) ? 'same' : 'changed';
 }
 export async function lookupExitIP(signal?: AbortSignal): Promise<ExitIP> {
   const controller = new AbortController();

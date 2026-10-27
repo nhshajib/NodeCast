@@ -9,7 +9,8 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
   const [reveal, setReveal] = useState(false);
   const [imported, setImported] = useState(false);
   const [form, setForm] = useState<Provider>(profile?.provider || blank);
-  const detected = form.kind === 'xtream' ? importXtreamLink(form.address) : null;
+  const exportLogin = importXtreamLink(form.address);
+  const detected = form.kind === 'xtream' ? exportLogin : null;
   const change = (key: keyof Provider, value: string) => setForm(old => ({ ...old, [key]: value }));
   return <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={u.content}>
     <View style={{ gap: 10 }}><Text style={u.h1}>{profile ? 'Profile details' : 'Connect your playlist'}</Text><Text style={u.body}>Live channels, films, and series from your own provider.</Text></View>
@@ -20,6 +21,7 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
     {imported && <Text style={u.small}>Login details filled on this device. Check them below before connecting.</Text>}
     {form.kind === 'xtream' && <><Field label="Username" placeholder="Your provider username" value={form.username} onChangeText={v => change('username', v)} editable={!busy} textContentType="username" /><Field label="Password" placeholder="Your provider password" value={form.password} onChangeText={v => change('password', v)} secureTextEntry={!reveal} editable={!busy} textContentType="password" /><Pressable accessibilityRole="button" accessibilityLabel={reveal ? 'Hide password' : 'Show password'} onPress={() => setReveal(value => !value)} style={{ alignSelf: 'flex-end', minHeight: 44, justifyContent: 'center', paddingHorizontal: 8 }}><Text style={u.link}>{reveal ? 'Hide password' : 'Show password'}</Text></Pressable></>}
     {!!error && <Notice danger>{error}</Notice>}
+    {form.kind === 'm3u' && exportLogin && /HTTP 404/.test(error) && <View style={[u.card, { backgroundColor: colors.pale }]}><Text style={u.label}>Use the working server connection</Text><Text style={u.small}>This link includes Xtream login details. If your provider does not offer this playlist endpoint, connect directly with those details instead.</Text><Button title="Connect with Xtream instead" busy={busy} onPress={() => { const provider = { ...form, ...exportLogin, kind: 'xtream' as const }; setForm(provider); onSave(provider, profile); }} /></View>}
     <Button title={busy ? 'Connecting to your provider…' : 'Connect playlist'} busy={busy} onPress={() => onSave(form, profile)} icon="arrow-forward" />
     <View style={[u.row, { alignItems: 'flex-start', gap: 8 }]}><Icon name="lock-closed-outline" size={16} color={colors.accent} /><Text style={[u.small, { flex: 1 }]}>{Platform.OS === 'web' ? 'Preview only. Save profiles securely in the iPhone app.' : 'Saved securely on this iPhone. Shared only with your provider when connecting.'}</Text></View>
     <Text style={u.small}>Use HTTPS when available. HTTP connections send details without encryption. You’ll need your own IPTV subscription or playlist.</Text>

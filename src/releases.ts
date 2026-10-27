@@ -1,5 +1,13 @@
-export const appVersion = '0.2.6';
+export const appVersion = '0.2.7';
 export const releases = [
+  { version: '0.2.7', date: 'October 27, 2026', title: 'Made for the big picture.', changes: [
+    'Fullscreen live TV with landscape rotation, tap-to-show controls and a visible exit. Movies use the native fullscreen player.',
+    'New NodeCast launch artwork and app icon in lavender, cream and deep ink.',
+    'Optional home-IP setup asks you to disconnect your VPN before saving. Home warns on a fresh match; this does not verify VPN status.',
+    'Clearer M3U HTTP 404 guidance and an explicit Xtream alternative for compatible provider links.',
+    'Improved playlist redirects, quoted attributes and supported stream request headers.',
+    'NodeCast stays free. Optional support is appreciated through Buy me a coffee.',
+  ] },
   { version: '0.2.6', date: 'October 26, 2026', title: 'Ready for personal sideloading.', changes: [
     'Added a standalone iPhone Release build workflow for personal signing with Sideloadly.',
     'The IPA includes the app bundle and embedded VLC; free signing still needs periodic renewal.',

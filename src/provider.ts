@@ -2,10 +2,13 @@ export type Provider = { kind: 'xtream' | 'm3u'; name: string; address: string; 
 export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
-  playbackURLs?: string[]; externalURL?: string;
+  playbackURLs?: string[]; externalURL?: string; headers?: Record<string, string>;
   kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
-export class ProviderError extends Error {}
+export class ProviderError extends Error {
+  status?: number;
+  constructor(message: string, status?: number) { super(message); this.status = status; }
+}
 
 export function httpURL(value: string, base?: string): string {
   try {
@@ -52,25 +55,30 @@ export function parseM3U(text: string, base: string): Media[] {
   const items: Media[] = [];
   let metadata: { name: string; group: string; logo?: string; id?: string } | undefined;
   let groupOverride: string | undefined;
-  if (!text.trimStart().replace(/^\uFEFF/, '').startsWith('#EXTM3U')) {
+  let streamHeaders: Record<string, string> = {};
+  if (!/^#EXTM3U/i.test(text.trimStart().replace(/^\uFEFF/, ''))) {
     throw new ProviderError('This link did not return an M3U playlist. Use the full playlist URL.');
   }
   if (/^#EXT-X-(TARGETDURATION|STREAM-INF|MEDIA-SEQUENCE|MEDIA):/m.test(text)) {
     throw new ProviderError('This is a single HLS stream, not a channel playlist. Add your provider’s M3U channel list instead.');
   }
-  for (const raw of text.replace(/^\uFEFF/, '').split(/\r?\n/)) {
+  for (const raw of text.replace(/^\uFEFF/, '').split(/\r\n|\n|\r/)) {
     const line = raw.trim();
-    if (line.startsWith('#EXTINF:')) {
+    if (/^#EXTINF:/i.test(line)) {
       const attrs: Record<string, string> = {};
-      for (const match of line.matchAll(/([\w-]+)\s*=\s*"([^"]*)"/g)) attrs[match[1]] = match[2];
-      let quoted = false, delimiter = -1;
+      for (const match of line.matchAll(/([\w-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)) attrs[match[1].toLowerCase()] = match[2] ?? match[3];
+      let quote = '', delimiter = -1;
       for (let i = 0; i < line.length; i++) {
-        if (line[i] === '"') quoted = !quoted;
-        if (line[i] === ',' && !quoted) { delimiter = i; break; }
+        if ((line[i] === '"' || line[i] === "'") && (!quote || quote === line[i])) quote = quote ? '' : line[i];
+        if (line[i] === ',' && !quote) { delimiter = i; break; }
       }
       metadata = { name: (delimiter >= 0 ? line.slice(delimiter + 1) : attrs['tvg-name'])?.trim() || 'Unnamed channel',
         group: attrs['group-title'] || 'Uncategorized', logo: artwork(attrs['tvg-logo'], base), id: attrs['tvg-id'] };
-      groupOverride = undefined;
+      groupOverride = undefined; streamHeaders = {};
+    } else if (/^#EXTVLCOPT:http-(user-agent|referrer)=/i.test(line)) {
+      const match = line.match(/^#EXTVLCOPT:http-(user-agent|referrer)=(.*)$/i);
+      const value = match?.[2]?.trim();
+      if (value && value.length <= 1000 && !/[\r\n]/.test(value)) streamHeaders[match![1].toLowerCase() === 'user-agent' ? 'User-Agent' : 'Referer'] = value;
     } else if (line.startsWith('#EXTGRP:')) {
       groupOverride = line.slice(8).trim();
     } else if (line && !line.startsWith('#')) {
@@ -78,9 +86,9 @@ export function parseM3U(text: string, base: string): Media[] {
         const url = httpURL(line, base);
         const kind: Section = /\.(mp4|mkv|mov|avi|m4v)(\?|$)/i.test(url) ? 'movies' : 'live';
         items.push({ id: `m3u:${opaqueID(url)}`, name: metadata?.name || 'Unnamed stream',
-          group: groupOverride || metadata?.group || 'Uncategorized', logo: metadata?.logo, url, kind });
+          group: groupOverride || metadata?.group || 'Uncategorized', logo: metadata?.logo, url, kind, ...(Object.keys(streamHeaders).length ? { headers: { ...streamHeaders } } : {}) });
       } catch { /* Non-HTTP media is unsupported by the native player. */ }
-      metadata = undefined; groupOverride = undefined;
+      metadata = undefined; groupOverride = undefined; streamHeaders = {};
     }
   }
   // Duplicate entries otherwise create duplicate React keys and favourites.
@@ -100,7 +108,7 @@ async function request(url: string, signal?: AbortSignal, format: 'json' | 'text
   const timer = setTimeout(abort, timeoutMs);
   try {
     const response = await fetch(url, { signal: timeout.signal });
-    if (!response.ok) throw new ProviderError(`The provider returned HTTP ${response.status}. Check your connection details.`);
+    if (!response.ok) throw new ProviderError(`The provider returned HTTP ${response.status}. Check your connection details.`, response.status);
     return format === 'text' ? await response.text() : await response.json();
   } catch (error) {
     if (signal?.aborted) throw new ProviderError('Connection cancelled.');
@@ -135,8 +143,8 @@ export async function authenticate(provider: Provider, signal?: AbortSignal): Pr
 }
 export async function loadLibrary(provider: Provider, section: Section, signal?: AbortSignal): Promise<Media[]> {
   if (provider.kind === 'm3u') {
-    const text = await request(provider.address, signal, 'text');
-    const items = parseM3U(text, provider.address);
+    const playlist = await loadM3U(provider.address, signal);
+    const items = parseM3U(playlist.text, playlist.base);
     if (!items.length) throw new ProviderError('No supported HTTP streams were found in this playlist.');
     return items;
   }
@@ -176,4 +184,28 @@ export async function loadNowNext(provider: Provider, streamId: string, signal?:
   if (provider.kind !== 'xtream' || !/^\d+$/.test(streamId)) throw new ProviderError('This profile does not provide Xtream guide data.');
   const response = await request(apiURL(provider, 'get_short_epg', { stream_id: streamId, limit: '8' }), signal, 'json', 8000);
   return response?.epg_listings;
+}
+
+export async function loadM3U(address: string, signal?: AbortSignal): Promise<{ text: string; base: string }> {
+  const controller = new AbortController();
+  const abort = () => controller.abort();
+  if (signal?.aborted) controller.abort(); else signal?.addEventListener('abort', abort, { once: true });
+  const timer = setTimeout(abort, 30000);
+  try {
+    const options: RequestInit = { signal: controller.signal, headers: { Accept: 'application/x-mpegURL, application/vnd.apple.mpegurl, text/plain, */*' } };
+    let response = await fetch(address, options);
+    // Some IPTV panels reject a generic mobile HTTP client. Retry only these responses once.
+    if ([403, 405, 406].includes(response.status) && !controller.signal.aborted) response = await fetch(address, { ...options, headers: { ...options.headers, 'User-Agent': 'VLC/3.0.21 LibVLC/3.0.21' } });
+    if (!response.ok) throw new ProviderError(response.status === 404
+      ? 'The playlist link returned HTTP 404: the playlist endpoint was not found. Check the full M3U link, or connect with Xtream Codes instead.'
+      : `The playlist server returned HTTP ${response.status}. Check the playlist link and account access.`, response.status);
+    const text = await response.text();
+    const base = response.url ? httpURL(response.url) : address;
+    if (/^\s*</.test(text)) throw new ProviderError('This link returned a web page, not a playlist. Use the direct M3U download link from your provider.');
+    return { text, base };
+  } catch (error) {
+    if (signal?.aborted) throw new ProviderError('Connection cancelled.');
+    if (error instanceof ProviderError) throw error;
+    throw new ProviderError(controller.signal.aborted ? 'The playlist server took too long to respond. Try again.' : 'Could not download the playlist. Check the link, connection, or VPN required by your provider.');
+  } finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); }
 }

@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Setup confirmation required",
+    "IP lookup and save",
+    "Continues to provider",
+    "Fresh home IP warning",
+    "No Chime disclaimer",
+    "Settings opens home IP setup",
+    "Skip returns to Settings",
+    "Version history 0.2.7"
+  ],
+  "errors": [],
+  "note": "Browser UI with a documentation-only IP fixture; native fullscreen and provider access require iPhone testing."
+}

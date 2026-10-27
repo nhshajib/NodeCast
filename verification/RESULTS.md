@@ -53,3 +53,12 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - Captures in design-polish use simulated provider/profile data and documentation-only IPs. See docs/DESIGN-REVIEW.md for the findings, implemented fixes, selected contrast pairs and screenshot gallery.
 - No real-iPhone keyboard, Dynamic Type, VoiceOver or native VLC validation is established by these screenshots. Standalone IPA work remains separate.
 - Final web and iOS Metro exports pass. These validate JavaScript packaging, not an IPA or native compilation.
+
+## 0.2.7 — fullscreen, launch artwork and home IP
+
+- TypeScript and 70 automated tests pass. Added cases for M3U HTTP 404 privacy and guidance, final redirect URLs, bounded VLC-agent retry, single-quoted metadata, stream-header isolation and equivalent IPv6 addresses.
+- Metro exports succeeded for iOS, Android and web. Native configuration includes the splash-screen and screen-orientation plugins, portrait initial orientation and fullscreen iPad support for rotation locks.
+- Browser checks (393 × 852) used a documentation-only public IP fixture. Confirmed setup requires explicit home Wi-Fi/VPN-off confirmation, saves the IP, proceeds to provider entry, shows a matching-home warning, supports skip and Settings re-entry, and displays 0.2.7 history. No page errors. Screenshots: `verification/home-ip`.
+- Native VLC stays in the same keyed stage when fullscreen changes. Landscape controls include exit, rotate, pause and retry; movie fullscreen uses expo-video's native controller. Physical-device rotation and launch-screen appearance require verification with the new IPA.
+- A provider's HTTP 404 means its playlist endpoint is unavailable. The app explains the error and offers user-selected Xtream connection when the M3U export link contains compatible details. No claim of a successful provider-specific M3U import without a working endpoint.
+- IP comparisons never report a verified VPN state. Warnings are suppressed while refreshing, after a failed lookup or when the result is older than a minute.
