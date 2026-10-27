@@ -1,0 +1,23 @@
+# Android 0.4.0 verification
+
+Both editions are published in the private repository's Android 0.4.0 release. Sign into GitHub to download. Exact APK sizes, SHA-256 hashes, app IDs and source commits are in `android-mobile/build.json` and `android-tv/build.json`.
+
+## Checks completed
+
+- TypeScript and **76 automated tests** pass. Android intent parameters, different application IDs, next-episode order, unrelated-show isolation, final-episode behavior, duplicate/missing rows and playback clock formatting are covered.
+- Both standalone Release APKs compiled, passed signature verification, are non-debuggable, contain embedded JavaScript and VLC for ARM32, ARM64 and x86-64, and passed package / launcher checks.
+- Native build: https://github.com/nhshajib/NodeCast/actions/runs/40529764464
+- Native emulator checks: https://github.com/nhshajib/NodeCast/actions/runs/40532664044 — **both jobs succeeded**, using the exact APKs from that build.
+- Each edition passed three force-stop/cold-start cycles plus the normal test launch, without Metro or Expo Go.
+- The TV test connected to a local synthetic Xtream server, played generated H.264 MPEG-TS through embedded VLC, returned with remote Back, then played native MP4 episodes fullscreen. It used **D-pad/Select** to advance through actual provider IDs **401 → 905 → 1002**, crossing a season boundary, and verified that the last episode has no Next button.
+- Browser episode tests additionally verified starting the next episode at zero despite saved progress, button placement and ordered metadata. Shared iOS and Android Metro exports pass.
+
+## Startup race fixed
+
+The first TV episode build exposed `The current activity is no longer available` during Expo's initial module export. The stack was symbolicated with a matching Hermes source map to `NativeModulesProxy.native.js`. The VLC picture-in-picture manager eagerly read the activity in its constructor. `scripts/patch-android-vlc.cjs` makes that lookup a nullable getter, applied reproducibly after npm install for the pinned dependency. It is idempotent and rejects an unexpected dependency/source version. This changes Android source only.
+
+## Evidence and limits
+
+`native-*.png` screenshots are from Android API 35 x86-64 emulators: Pixel 2 hardware profile for mobile, TV 1080p hardware profile with the Google APIs system image for TV. `tv-*.png` files without the native prefix are browser fixtures. All IPTV credentials and videos used by the tests are synthetic; no customer server was contacted.
+
+Physical Android phones/TVs, real-provider streams, hardware codecs and device-specific focus behavior still need user testing. These APKs use the standard Android test key. Configure private signing before store distribution. Install updates over the existing app to retain local profiles.

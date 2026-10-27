@@ -1,0 +1,27 @@
+{
+  "version": "0.4.0",
+  "versionCode": 400,
+  "edition": "tv",
+  "package": "com.nhshajib.nodecast.tv",
+  "apk": "NodeCast-tv-0.4.0.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk",
+  "bytes": 218034729,
+  "sha256": "81b9e317c5a78cb7c6b769bba68c6530739ded561179d6dfbebf04014376accc",
+  "sourceCommit": "a70e88a11cd85d5f8319b37a5935a8a978105928",
+  "buildRun": 40529764464,
+  "artifactId": 12746737148,
+  "nativeCheckRun": 40532664044,
+  "architectures": [
+    "armeabi-v7a",
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "minAndroidSdk": 24,
+  "signing": "Standard Android test key; personal testing, not store distribution",
+  "verification": {
+    "releaseSignatureAndBundle": "passed",
+    "repeatedColdStarts": "passed",
+    "physicalDeviceTested": false,
+    "nativeVLCAndSeriesNextWithRemote": "passed using generated MPEG-TS/MP4 and synthetic Xtream metadata"
+  }
+}

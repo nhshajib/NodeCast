@@ -1,4 +1,4 @@
-Two separate standalone Android editions. Choose the correct APK:
+Two separate standalone Android editions. Version 0.4.0 also fixes a VLC startup race affecting Android activity initialization. Choose the correct APK:
 
 - [**NodeCast mobile 0.4.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-mobile-0.4.0.apk): Android phone/tablet interface.
 - [**NodeCast TV 0.4.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk): Android TV / Google TV with fullscreen series playback and a bottom-right Next episode button.

@@ -92,3 +92,12 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - TypeScript, 70 tests and iOS Metro export pass. Actual App browser verification used a synthetic 30,000-channel server. Checks cover independent queries, retained Home/Settings nodes and scroll positions (210/180 points), Playback → Settings return, retained closing content, 24 rapid tab changes, no empty sampled transition frame (minimum opacity sum 1), indicator alignment and compact Reduce Motion. No page errors or >50 ms long tasks were observed during that browser rapid-tap sample; this does not establish native device FPS.
 - Screenshots, reproducible script and browser navigation clip: `verification/navigation`. Final UIKit transition feel and native frame timing require an iPhone check with the updated standalone build.
 - Standalone iPhone 0.3.0 Release build succeeded in GitHub run 40437282300. The package checks verified arm64 iPhoneOS, embedded JavaScript, linked VLC and ZIP integrity; GitHub connector artifact download succeeded. Checksum and build metadata: `verification/navigation/iphone-build.json`.
+
+## Android 0.4.0 mobile and TV
+
+- Separate `android-mobile` and `android-tv` entry points, installation notes, download links and verified build metadata.
+- Both APKs include embedded VLC and run without Expo Go, a PC server or weekly renewal.
+- TV adds fullscreen movie/episode controls with a bottom-right Next episode action that follows provider episode ordering, crosses seasons and hides at the final episode. The previous stream is released before the following episode opens.
+- Fixed a native Android VLC activity-initialization race; repeated cold starts passed on both editions.
+- TypeScript, 76 tests, browser episode/retained UI checks and shared Metro exports pass. Exact signed APKs passed native emulator startup; TV also passed generated MPEG-TS / MP4 playback, remote Next selection and Back navigation.
+- Source: a70e88a11cd85d5f8319b37a5935a8a978105928. Build: 40529764464. Native verification: 40532664044. See `verification/android/README.md` for evidence and scope. Physical hardware / customer provider streams remain untested.

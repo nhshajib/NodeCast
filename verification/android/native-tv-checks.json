@@ -1,0 +1,13 @@
+{
+  "passed": [
+    "Local synthetic Xtream connection",
+    "Native VLC reports playing H.264 MPEG-TS",
+    "Remote Back returns to library",
+    "Fullscreen native episode playback",
+    "Next follows episode IDs 401 \u2192 905 \u2192 1002",
+    "Next button is bottom-right and activated with D-pad/Select",
+    "Cross-season next episode",
+    "Last episode has no Next button"
+  ],
+  "scope": "Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified."
+}

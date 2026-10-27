@@ -1,0 +1,26 @@
+{
+  "version": "0.4.0",
+  "versionCode": 400,
+  "edition": "mobile",
+  "package": "com.nhshajib.nodecast",
+  "apk": "NodeCast-mobile-0.4.0.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-mobile-0.4.0.apk",
+  "bytes": 219461673,
+  "sha256": "dfc7a7c15e3cae02252fcf8ad8e4aac2f024a43bf17a29ad49f285f72c586b1c",
+  "sourceCommit": "a70e88a11cd85d5f8319b37a5935a8a978105928",
+  "buildRun": 40529764464,
+  "artifactId": 12747291817,
+  "nativeCheckRun": 40532664044,
+  "architectures": [
+    "armeabi-v7a",
+    "arm64-v8a",
+    "x86_64"
+  ],
+  "minAndroidSdk": 24,
+  "signing": "Standard Android test key; personal testing, not store distribution",
+  "verification": {
+    "releaseSignatureAndBundle": "passed",
+    "repeatedColdStarts": "passed",
+    "physicalDeviceTested": false
+  }
+}
