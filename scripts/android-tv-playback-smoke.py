@@ -14,6 +14,7 @@ def find(label, timeout=15, scroll=False):
  while time.monotonic()<end:
   root=dump()
   nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
+  if label in ['Profile name','Server address','Username','Password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:n.get('clickable')!='true')
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
@@ -25,8 +26,22 @@ def click(label,scroll=False):
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
 def text(label,value):
  click(label,True);adb('shell','input','text',value);adb('shell','input','keyevent','66');time.sleep(.3)
+def remote_next(label):
+ target=find(label)
+ for _ in range(12):
+  root=dump(); focused=next((n for n in root.iter('node') if n.get('focused')=='true'),None)
+  if focused is not None and label in (focused.get('content-desc') or ''):
+   adb('shell','input','keyevent','23');time.sleep(.7);return
+  bounds=list(map(int,re.findall(r'\d+',focused.get('bounds','')))) if focused is not None else []
+  if len(bounds)==4:
+   dx=(target[0]+target[2]-bounds[0]-bounds[2])/2;dy=(target[1]+target[3]-bounds[1]-bounds[3])/2
+   key='20' if dy>80 else '19' if dy < -80 else '22' if dx>0 else '21'
+  else:key='20'
+  adb('shell','input','keyevent',key);time.sleep(.2)
+ raise RuntimeError('Next episode is not reachable with the remote')
 
-if True:
+
+def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
@@ -68,15 +83,17 @@ if True:
   box=find('Next episode: Season 1 · Episode Two')
   assert box[2]>width*.8 and box[1]>height*.7, box
   OUT.joinpath('emulator-tv-next-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  click('Next episode: Season 1 · Episode Two');find('Episode Two');find('Pause video',timeout=35)
-  click('Next episode: Season 2 · Final Episode');find('Final Episode');find('Pause video',timeout=35)
+  remote_next('Next episode: Season 1 · Episode Two');find('Episode Two');find('Pause video',timeout=35)
+  remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');find('Pause video',timeout=35)
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   adb('shell','input','keyevent','4');find('Open Sample Series')
-  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right','Cross-season next episode','Last episode has no Next button'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
+  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
  except Exception:
   OUT.joinpath('emulator-tv-playback-failure.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-playback-failure.xml').write_text(ET.tostring(dump(),encoding='unicode'))
   raise
  finally:server.shutdown()
+
+if __name__ == '__main__': main()
