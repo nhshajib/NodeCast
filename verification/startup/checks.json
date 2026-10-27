@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Actual App animated intro appears and dismisses",
+    "Logo movement and wordmark reveal verified",
+    "Launch completes with IP service unavailable",
+    "Welcome appears after launch",
+    "Returning-user setup waits for intro",
+    "Reduce Motion has stationary text",
+    "Compact 320x568 launch completes"
+  ],
+  "errors": [],
+  "scope": "Browser App startup with native splash unavailable. Physical iPhone launch-screen handoff requires the IPA."
+}

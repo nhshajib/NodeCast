@@ -1,11 +1,17 @@
-export const appVersion = '0.2.8';
+export const appVersion = '0.2.9';
 export const releases = [
-  { version: '0.2.8', date: 'October 27, 2026', title: 'A better fullscreen fit.', changes: [
+  { version: '0.2.9', date: 'October 26, 2026', title: 'A warmer welcome.', changes: [
+    'New animated NodeCast intro with a floating brand mark, fine signal rings and a cream serif wordmark.',
+    'The native launch screen hands off to the animation after its first frame is ready, avoiding an early disappearance.',
+    'Startup waits for local profiles, without waiting for network, playlist or IP requests. Setup prompts appear after the intro.',
+    'Reduce Motion uses a brief still introduction with no movement.',
+  ] },
+  { version: '0.2.8', date: 'October 26, 2026', title: 'A better fullscreen fit.', changes: [
     'Moved live video outside scrolling content to prevent retained offsets and clipped picture edges in fullscreen.',
     'Fullscreen uses a fixed edge-to-edge video area; controls overlay the picture without reserving a top strip.',
     'The same native player stays mounted when entering, rotating or leaving fullscreen.',
   ] },
-  { version: '0.2.7', date: 'October 27, 2026', title: 'Made for the big picture.', changes: [
+  { version: '0.2.7', date: 'October 26, 2026', title: 'Made for the big picture.', changes: [
     'Fullscreen live TV with landscape rotation, tap-to-show controls and a visible exit. Movies use the native fullscreen player.',
     'New NodeCast launch artwork and app icon in lavender, cream and deep ink.',
     'Optional home-IP setup asks you to disconnect your VPN before saving. Home warns on a fresh match; this does not verify VPN status.',

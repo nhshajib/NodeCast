@@ -73,3 +73,11 @@ The existing source ZIP has not been rebuilt or replaced. Screenshot images/PDF 
 - Browser geometry regression fixture uses the actual `LivePlayerLayout` with a 16:9 test card, not a native VLC render. All picture corners remain inside the viewport at 1280×588, 844×390, 852×393 and 393×852. A retained details-scroll position does not shift fullscreen. Five repeated fullscreen cycles keep the test surface mounted once; no page errors. Reproducible fixture, script, screenshot and measurements are in `verification/fullscreen`.
 - Physical iPhone playback/rotation still needs the updated IPA. Aspect-ratio fitting can leave side bars on a wider screen; the picture should remain complete.
 - Native Release build and IPA validation succeeded in GitHub run 40431252010. The artifact download was verified through the GitHub connector. Build metadata and SHA-256: `verification/fullscreen/iphone-build.json`.
+
+## 0.2.9 — animated startup
+
+- Replaced the immediately dismissed static-only launch with a native-image → animated React Native intro → app handoff. The intro waits for its own image and layout before hiding the native splash, then lifts the brand mark, expands fine signal rings and reveals the serif wordmark and tagline. Native-driver opacity/transform animation runs once per app mount.
+- Local profiles load behind the overlay; provider and IP requests do not block its completion. Setup modals and accessibility/touch access to the underlying app wait until the intro completes. Reduce Motion uses a brief still introduction.
+- TypeScript and 70 tests pass. Final Metro exports succeed on iOS, Android and web.
+- Actual App browser checks confirm the mark moves, the wordmark reveals, the intro completes with IP lookup unavailable, Welcome becomes usable, returning-user setup appears only afterward, and Reduce Motion keeps text stationary at compact 320×568. No page errors. Screenshots and a browser animation recording are in `verification/startup`; these are not recordings of native iPhone handoff.
+- Native iOS initial status-bar style is light for the ink launch screen. Physical iPhone launch handoff still needs confirmation after installing the new IPA and fully closing/reopening the app.

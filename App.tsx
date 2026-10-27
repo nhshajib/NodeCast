@@ -1,5 +1,5 @@
 import { useFonts } from 'expo-font';
-import React, { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, FlatList, Image, Keyboard, Linking, Modal, Platform, Pressable, ScrollView, StatusBar, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { Media, Provider, Section } from './src/provider';
@@ -25,6 +25,7 @@ import { appVersion } from './src/releases';
 import PlaybackSettings from './src/PlaybackSettings';
 import VersionHistory from './src/VersionHistory';
 import HomeIPSetup from './src/HomeIPSetup';
+import StartupSplash from './src/StartupSplash';
 import * as SplashScreen from 'expo-splash-screen';
 import * as ScreenOrientation from 'expo-screen-orientation';
 void SplashScreen.preventAutoHideAsync().catch(() => {});
@@ -56,7 +57,7 @@ function Artwork({ item, poster = false }: { item: Media; poster?: boolean }) {
 function SettingsRow({ icon, title, subtitle, onPress, trailing }: { icon: IconName; title: string; subtitle?: string; onPress: () => void; trailing?: string }) {
   return <Pressable accessibilityRole="button" accessibilityLabel={title} onPress={onPress} style={s.settingsRow}><View style={s.rowIcon}><Icon name={icon} size={21} /></View><View style={{ flex: 1, gap: 4 }}><Text style={u.label}>{title}</Text>{subtitle && <Text style={u.small}>{subtitle}</Text>}</View>{trailing && <Text style={u.small}>{trailing}</Text>}<Icon name="chevron-forward" size={16} color={colors.secondary} /></Pressable>;
 }
-function NodeCast() {
+function NodeCast({ onReady, launchComplete }: { onReady: () => void; launchComplete: boolean }) {
   const insets = useSafeAreaInsets();
   const compatibilityAvailable = hasCompatibilityPlayer();
   const [vault, setVault] = useState<Vault>(emptyVault());
@@ -123,6 +124,7 @@ function NodeCast() {
       .finally(() => { if (alive.current) setBooting(false); });
     return () => { alive.current = false; connection.current?.abort(); };
   }, []);
+  useEffect(() => { if (!booting) onReady(); }, [booting, onReady]);
   function updateVault(update: (current: Vault) => Vault): Promise<void> {
     const operation = mutations.current.then(async () => {
       const next = update(vaultRef.current);
@@ -149,8 +151,8 @@ function NodeCast() {
     if (homeIPNext.current) { homeIPNext.current = false; addProfile(); }
   }
   useEffect(() => {
-    if (!booting && !storageFailed && preferences.onboarded && !preferences.baseline && !preferences.homeIPSetup && !sheet && !demo) setSheet({ type: 'home-ip' });
-  }, [booting, storageFailed, preferences.onboarded, preferences.baseline, preferences.homeIPSetup, sheet, demo]);
+    if (launchComplete && !booting && !storageFailed && preferences.onboarded && !preferences.baseline && !preferences.homeIPSetup && !sheet && !demo) setSheet({ type: 'home-ip' });
+  }, [launchComplete, booting, storageFailed, preferences.onboarded, preferences.baseline, preferences.homeIPSetup, sheet, demo]);
   useEffect(() => {
     if (sheet?.type !== 'player') {
       setPlayerFullscreen(false);
@@ -396,8 +398,12 @@ function NodeCast() {
 }
 export default function App() {
   const [loaded, error] = useFonts({ CrimsonText: require('./assets/fonts/CrimsonText-Regular.ttf') });
-  if (!loaded && !error) return <View style={{ flex: 1, backgroundColor: '#090124', alignItems: 'center', justifyContent: 'center' }}><Image source={require('./assets/brand/nodecast-mark.png')} style={{ width: 200, height: 200 }} /></View>;
-  return <View style={{ flex: 1 }} onLayout={() => { void SplashScreen.hideAsync().catch(() => {}); }}><SafeAreaProvider><NodeCast /></SafeAreaProvider></View>;
+  const [dataReady, setDataReady] = useState(false);
+  const [launchComplete, setLaunchComplete] = useState(false);
+  const onReady = useCallback(() => setDataReady(true), []);
+  const onFinish = useCallback(() => setLaunchComplete(true), []);
+  if (!loaded && !error) return <View style={{ flex: 1, backgroundColor: '#090124' }} />;
+  return <SafeAreaProvider><View style={{ flex: 1 }}><View style={{ flex: 1 }} accessibilityElementsHidden={!launchComplete} importantForAccessibility={launchComplete ? 'auto' : 'no-hide-descendants'} pointerEvents={launchComplete ? 'auto' : 'none'}><NodeCast onReady={onReady} launchComplete={launchComplete} /></View>{!launchComplete && <StartupSplash ready={dataReady} onFinish={onFinish} />}</View></SafeAreaProvider>;
 }
 const s = StyleSheet.create({
   header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 8, paddingBottom: 12 },
