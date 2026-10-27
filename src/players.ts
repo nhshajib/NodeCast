@@ -9,7 +9,10 @@ export const players: { id: PlayerChoice; name: string; detail: string }[] = [
 ];
 export function externalPlayerURL(player: ExternalPlayer, stream: string, platform: string = 'ios'): string {
   const url = httpURL(stream);
-  if (platform === 'android' && player === 'vlc') return `intent:${url}#Intent;package=org.videolan.vlc;type=video/*;end`;
+  if (platform === 'android' && player === 'vlc') {
+    const parsed = new URL(url); parsed.hash = '';
+    return `${parsed.toString().replace(/^https?:/, 'intent:')}#Intent;scheme=${parsed.protocol.slice(0, -1)};package=org.videolan.vlc;type=video/*;end`;
+  }
   if (player === 'vlc') return `vlc-x-callback://x-callback-url/stream?url=${encodeURIComponent(url)}`;
   if (player === 'infuse') return `infuse://x-callback-url/play?url=${encodeURIComponent(url)}`;
   throw new Error('Unsupported external player.');

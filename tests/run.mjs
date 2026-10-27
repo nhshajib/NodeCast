@@ -5,3 +5,5 @@ import './playback-fixes.test.mjs';
 import './compatibility-engine.test.mjs';
 
 import './upgrade.test.mjs';
+
+import './android.test.mjs';
