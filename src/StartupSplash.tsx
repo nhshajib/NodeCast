@@ -83,7 +83,7 @@ const s = StyleSheet.create({
   root: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: '#090124' },
   center: { flex: 1 },
   mark: { position: 'absolute', width: 200, height: 200, top: '50%', left: '50%', marginLeft: -100, marginTop: -100 },
-  image: { width: 200, height: 200 },
+  image: { width: 200, height: 200, borderRadius: 100 },
   halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: '#B9B4F2' },
   orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: '#FAE7C8' },
   copy: { position: 'absolute', top: '50%', marginTop: 50, left: 20, right: 20, alignItems: 'center', gap: 17 },

@@ -1,11 +1,12 @@
 """Browser checks of the actual App launch; native handoff needs the standalone IPA."""
 from playwright.sync_api import sync_playwright
 from pathlib import Path
-import json
+import json,subprocess,tempfile
 out=Path(__file__).parent
 with sync_playwright() as p:
     browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
-    context=browser.new_context(viewport={'width':393,'height':852},record_video_dir=str(out/'video'),record_video_size={'width':393,'height':852})
+    temporary=tempfile.TemporaryDirectory(prefix='nodecast-startup-video-')
+    context=browser.new_context(viewport={'width':393,'height':852},record_video_dir=temporary.name,record_video_size={'width':393,'height':852})
     page=context.new_page(); errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.route('https://ipwho.is/',lambda r:r.abort())
     page.goto('http://127.0.0.1:8084')
@@ -39,4 +40,6 @@ with sync_playwright() as p:
     assert not errors,errors
     (out/'checks.json').write_text(json.dumps({'checks':['Actual App animated intro appears and dismisses','Logo movement and wordmark reveal verified','Launch completes with IP service unavailable','Welcome appears after launch','Returning-user setup waits for intro','Reduce Motion has stationary text','Compact 320x568 launch completes'],'errors':errors,'scope':'Browser App startup with native splash unavailable. Physical iPhone launch-screen handoff requires the IPA.'},indent=2)+'\n')
     browser.close()
+    subprocess.run(['ffmpeg','-hide_banner','-loglevel','error','-y','-i',str(out/'launch-browser-preview.webm'),'-vf','pad=ceil(iw/2)*2:ceil(ih/2)*2','-an','-c:v','libx264','-pix_fmt','yuv420p','-movflags','+faststart',str(out/'launch-browser-preview.mp4')],check=True)
+    (out/'launch-browser-preview.webm').unlink();temporary.cleanup()
     print('Actual startup, unavailable network, setup ordering and Reduce Motion checks passed.')
