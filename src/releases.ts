@@ -1,8 +1,11 @@
-export const appVersion = '0.3.2';
+export const appVersion = '0.3.3';
 export const releases = [
+  { version: '0.3.3', date: 'October 27, 2026', title: 'Remember your preferred language.', changes: [
+    'Android TV saves movie and episode audio/subtitle language choices per profile, matching the mobile edition.',
+  ] },
   { version: '0.3.2', date: 'October 27, 2026', title: 'The finishing touches for Android.', changes: [
     'Dark status icons on the mobile welcome screen, restored correctly after the animated intro.',
-    'TV keeps system bars hidden across setup, settings and playback.',
+    'TV keeps the status bar hidden across setup, settings and playback.',
   ] },
   { version: '0.3.1', date: 'October 27, 2026', title: 'Your TV space, on Android.', changes: [
     'Separate standalone Android phone and Android TV editions, with embedded VLC and local profiles.',

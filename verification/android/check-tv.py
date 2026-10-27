@@ -49,7 +49,7 @@ with sync_playwright() as p:
  page.get_by_text('Live TV',exact=True).click()
  badge=page.get_by_role('button',name='Connection details in Settings').bounding_box()
  assert badge['y']+badge['height'] <= 540, badge
- footer=page.get_by_text('Free, always. · 0.3.2',exact=True).bounding_box()
+ footer=page.get_by_text('Free, always. · 0.3.3',exact=True).bounding_box()
  assert footer['y']+footer['height'] <= 540, footer
  page.screenshot(path=str(out/'tv-compact-960x540.png'))
  assert not errors,errors

@@ -6,7 +6,7 @@ Package: `com.nhshajib.nodecast`. Android 7 or later, ARM32, ARM64 and x86-64.
 
 ## Download and install
 
-[Download NodeCast mobile APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.2/NodeCast-mobile-0.3.2.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.2)
+[Download NodeCast mobile APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.3/NodeCast-mobile-0.3.3.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.3)
 
 Open the repository's **Actions → Build Android phone and TV APKs**, choose the latest successful run, and download **NodeCast-Android-mobile**. Unzip it, transfer the `.apk` to your phone and open it. Allow installation from the browser or Files app when Android asks. Future APK updates should be installed over this app to retain profiles.
 

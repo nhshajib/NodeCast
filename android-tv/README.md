@@ -6,7 +6,7 @@ Package: `com.nhshajib.nodecast.tv`. Separate app/data from the phone edition. A
 
 ## Download and install
 
-[Download NodeCast tv APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.2/NodeCast-tv-0.3.2.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.2)
+[Download NodeCast tv APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.3.3/NodeCast-tv-0.3.3.apk) · [Android testing release](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.3.3)
 
 Open **Actions → Build Android phone and TV APKs**, select the latest successful run and download **NodeCast-Android-tv**. Unzip and transfer the `.apk` to the TV using a USB drive or a trusted file-transfer app. Open it in a TV file manager and allow installation from that file manager if prompted. NodeCast TV appears in the TV app launcher. Enter your own Xtream Codes details or M3U URL using the on-screen keyboard or the Google TV phone remote keyboard.
 
