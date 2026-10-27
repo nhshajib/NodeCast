@@ -24,7 +24,7 @@ def find(label, timeout=15, scroll=False):
 def click(label,scroll=False):
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
 def text(label,value):
- click(label,True);adb('shell','input','text',value);adb('shell','input','keyevent','4');time.sleep(.3)
+ click(label,True);adb('shell','input','text',value);time.sleep(.3)
 
 with tempfile.TemporaryDirectory(prefix='nodecast-test-video-') as folder:
  video=Path(folder)/'test.ts'
