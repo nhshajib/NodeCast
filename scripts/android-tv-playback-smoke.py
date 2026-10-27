@@ -13,7 +13,7 @@ def find(label, timeout=15, scroll=False):
  end=time.monotonic()+timeout
  while time.monotonic()<end:
   root=dump()
-  nodes=[n for n in root.iter('node') if n.get('content-desc')==label or n.get('text')==label]
+  nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
   nodes.sort(key=lambda n:n.get('clickable')!='true')
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
@@ -31,12 +31,20 @@ if True:
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def do_GET(self):
+   if self.path.split('?')[0].endswith('.mp4'):
+    body=Path('tests/fixtures/android-episode-test.mp4').read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp4');self.send_header('Content-Length',str(len(body)));self.end_headers()
+    try:self.wfile.write(body)
+    except (BrokenPipeError,ConnectionResetError):pass
+    return
    if self.path.split('?')[0].endswith('.ts'):
     body=video.read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp2t');self.send_header('Content-Length',str(len(body)));self.end_headers()
     try:self.wfile.write(body)
     except (BrokenPipeError,ConnectionResetError):pass
     return
-   if 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]
+   if 'get_series_info' in self.path:value={'episodes':{'2':[{'id':1002,'title':'Final Episode','episode_num':1}],'1':[{'id':905,'title':'Episode Two','episode_num':2},{'id':401,'title':'Episode One','episode_num':1}]}}
+   elif 'get_series_categories' in self.path:value=[{'category_id':'1','category_name':'Example series'}]
+   elif 'get_series' in self.path:value=[{'series_id':77,'name':'Sample Series','category_id':'1'}]
+   elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]
    elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1'}]
    elif 'action=' in self.path:value=[]
    else:value={'user_info':{'auth':1,'status':'Active'}}
@@ -55,6 +63,20 @@ if True:
   OUT.joinpath('emulator-tv-live-test.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-live-test.xml').write_text(ET.tostring(dump(),encoding='unicode'))
   adb('shell','input','keyevent','4');find('Play Example Live Test')
-  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
+  click('Series');click('Open Sample Series');click('Episode One')
+  find('Pause video',timeout=35)
+  box=find('Next episode: Season 1 · Episode Two')
+  assert box[2]>width*.8 and box[1]>height*.7, box
+  OUT.joinpath('emulator-tv-next-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  click('Next episode: Season 1 · Episode Two');find('Episode Two');find('Pause video',timeout=35)
+  click('Next episode: Season 2 · Final Episode');find('Final Episode');find('Pause video',timeout=35)
+  assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
+  OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  adb('shell','input','keyevent','4');find('Open Sample Series')
+  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right','Cross-season next episode','Last episode has no Next button'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
+ except Exception:
+  OUT.joinpath('emulator-tv-playback-failure.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  OUT.joinpath('emulator-tv-playback-failure.xml').write_text(ET.tostring(dump(),encoding='unicode'))
+  raise
  finally:server.shutdown()

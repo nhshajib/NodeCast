@@ -4,6 +4,7 @@ TARGET="$1"
 PACKAGE=com.nhshajib.nodecast
 if [ "$TARGET" = tv ]; then PACKAGE="$PACKAGE.tv"; fi
 mkdir -p verification/android
+trap 'adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt" || true' EXIT
 adb install "$(find apk -name '*.apk' -print -quit)"
 adb logcat -c
 # No Metro is running: these must be self-contained Release APKs.

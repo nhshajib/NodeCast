@@ -1,0 +1,19 @@
+{
+  "passed": [
+    "Opens an episode without reloading it as a series",
+    "Fullscreen bottom-right button",
+    "Provider IDs 401 \u2192 905 \u2192 1002, without guessed URLs",
+    "Numerical season and episode ordering",
+    "Cross-season next episode",
+    "Starts at zero despite saved progress",
+    "Last episode has no Next button"
+  ],
+  "requestedFiles": [
+    "905.mp4",
+    "401.mp4",
+    "905.mp4",
+    "1002.mp4"
+  ],
+  "errors": [],
+  "scope": "Chromium UI and playback fixture. Android native playback checked separately."
+}
