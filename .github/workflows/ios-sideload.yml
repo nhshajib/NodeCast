@@ -1,4 +1,4 @@
-name: Build iPhone IPA for Sideloadly
+name: Build iPhone IPA for personal signing
 
 on:
   workflow_dispatch:

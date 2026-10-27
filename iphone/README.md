@@ -17,7 +17,7 @@ While this repository is private, sign into GitHub with repository access before
 | Version | **0.3.0** · October 26, 2026 |
 | File | `NodeCast-0.3.0-unsigned.ipa` · 34.7 MB |
 | Device | Physical iPhone · arm64 |
-| Installation | Personal signing using your Apple account and a compatible installer |
+| Installation | Personal signing with Impactor and your Apple account |
 | Free signing | Normally renew every **7 days** |
 | Watching | No running PC or Expo Go required |
 | Profiles | Local device storage; no NodeCast account or cloud sync |
@@ -42,15 +42,15 @@ This is the original verified 0.3.0 IPA, republished as a permanent release down
 
 ## Install on Windows
 
-**Already installed NodeCast?** Load this IPA into your existing working sideloading tool. Keep the same Apple account and app identifier, and install over the existing app to retain profiles.
+**Already installed NodeCast?** Load this IPA into Impactor. Keep the same Apple account and app identifier, and install over the existing app to retain profiles.
 
-For a first installation, the steps below use [Sideloadly](https://sideloadly.io/). You can use another compatible signing tool you already trust.
+The steps below use **[Impactor (claration/impactor)](https://github.com/claration/impactor/releases)**, the installer used successfully for this setup.
 
 1. Download the **IPA** above to your Windows PC. A direct release download is already an IPA; an Actions artifact ZIP needs extraction first.
-2. Install your signing tool and its required Apple device software/drivers from their official sources.
+2. Download and open **Impactor for Windows** from its official releases page. Install the required Apple device software/drivers if prompted.
 3. Connect your unlocked iPhone using USB. Tap **Trust This Computer** and enter your phone PIN if asked.
-4. Verify the phone appears in Apple Devices/iTunes and in your signing tool.
-5. Load `NodeCast-0.3.0-unsigned.ipa`, choose your phone and sign/install using your own Apple account. Enter credentials and verification codes only in the trusted installer.
+4. Verify the phone appears in Apple Devices/iTunes and in **Impactor**, then select it in Impactor.
+5. Add or drag `NodeCast-0.3.0-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
 6. Follow iOS prompts to trust the developer profile under **Settings → General → VPN & Device Management**. Enable **Developer Mode** under **Settings → Privacy & Security** if iOS requests it.
 7. Open **NodeCast** on the phone and add your Xtream Codes details or full M3U link. Profiles from Expo Go belong to its separate app storage.
 
@@ -58,9 +58,9 @@ The IPA is unsigned and needs signing before it can be installed. [More Windows 
 
 ## Renew or update
 
-With free Apple personal signing, reconnect and refresh/re-sign before the seven-day signing period expires. Keep the same Apple account, installer/app identifier and existing installation. You can turn the PC off while watching.
+With free Apple personal signing, reconnect your phone in Impactor and refresh/re-sign before the seven-day signing period expires. Keep the same Apple account, installer/app identifier and existing installation. You can turn the PC off while watching.
 
-If you miss renewal, the app normally stops opening until it is signed again. Re-sign over the existing app; avoid deleting it. An installer's optional auto-refresh needs the PC available periodically and renews signing. New NodeCast releases are separate downloads.
+If you miss renewal, the app normally stops opening until it is signed again. Re-sign over the existing app; avoid deleting it. Impactor's optional auto-refresh needs the PC and Impactor available periodically, with the phone connected through USB or supported Wi-Fi pairing. It renews signing. New NodeCast releases are separate downloads.
 
 ## Changelog and verification
 

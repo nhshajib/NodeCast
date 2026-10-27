@@ -56,7 +56,7 @@ def main() -> None:
     (out / 'SHA256SUMS.txt').write_text(f'{digest}  {ipa.name}\n')
     (out / 'INSTALL.txt').write_text(
         'NodeCast — unsigned standalone iPhone IPA\n\n'
-        'This file must be signed by Sideloadly with your own Apple account before installation.\n'
+        'This file must be signed using Impactor with your own Apple account before installation.\n'
         'It is not a signed App Store/TestFlight release and cannot install by tapping it.\n'
         'Do not try to install the surrounding GitHub artifact ZIP; extract this .ipa first.\n'
         'With free signing, refresh before the seven-day signing expires.\n'
