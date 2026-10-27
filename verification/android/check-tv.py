@@ -45,6 +45,13 @@ with sync_playwright() as p:
  page.get_by_role('button',name='Back',exact=True).click()
  page.get_by_text('Your profiles',exact=True).wait_for()
  page.screenshot(path=str(out/'tv-settings.png'))
+ page.set_viewport_size({'width':960,'height':540})
+ page.get_by_text('Live TV',exact=True).click()
+ badge=page.get_by_role('button',name='Connection details in Settings').bounding_box()
+ assert badge['y']+badge['height'] <= 540, badge
+ footer=page.get_by_text('Free, always. · 0.3.1',exact=True).bounding_box()
+ assert footer['y']+footer['height'] <= 540, footer
+ page.screenshot(path=str(out/'tv-compact-960x540.png'))
  assert not errors,errors
  (out/'tv-checks.json').write_text(json.dumps({'passed':['Xtream connection with synthetic provider','100-channel library','Search','Favorites saved and filtered','Three columns at 1280x720','Visible keyboard focus outline','Version history and Back navigation'],'errors':errors,'scope':'Browser UI checks. Native D-pad, decoder and hardware behavior require device tests.'},indent=2)+'\n')
  browser.close()
