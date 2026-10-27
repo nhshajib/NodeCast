@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import { appVersion, releases } from './releases';
 import { Icon, colors, u } from './ui';
 export default function VersionHistory() {

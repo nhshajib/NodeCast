@@ -1,5 +1,6 @@
+import Pressable, { isTVBuild } from './FocusPressable';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, Pressable, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, AppState, Text, useWindowDimensions, View } from 'react-native';
 import type { LibVlcPlayerViewRef, MediaTracks, Tracks } from 'expo-libvlc-player';
 import type { Media } from './provider';
 import type { PlaybackSnapshot } from './activity';
@@ -95,7 +96,7 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
     void attempt.current?.(false).catch(() => onError('Reconnect failed'));
   }
   useEffect(() => {
-    if (!fullscreen || !controls || status !== 'playing' || failed) return;
+    if (isTVBuild || !fullscreen || !controls || status !== 'playing' || failed) return;
     const timer = setTimeout(() => setControls(false), 4000); return () => clearTimeout(timer);
   }, [fullscreen, controls, status, failed]);
   return <LivePlayerLayout fullscreen={fullscreen} video={<NativeView key={generation} ref={instance => { player.current = instance; if (instance) lastNative.current = instance; }} source={source} options={mediaOptions} autoplay contentFit="contain" style={{ width: '100%', height: '100%' }} tracks={tracks}
@@ -104,7 +105,7 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
       onESAdded={event => { if (alive.current) setAvailableTracks(event); }}
       onDialogDisplay={() => { void player.current?.dismiss().catch(() => {}); onError('Provider requires additional authorization'); }}
     />} overlay={fullscreen && <View pointerEvents="box-none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
-    <Pressable accessibilityRole="button" accessibilityLabel={controls ? 'Hide player controls' : 'Show player controls'} onPress={() => setControls(value => !value)} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} />
+    <Pressable accessibilityRole="button" accessibilityLabel={controls ? 'Hide player controls' : 'Show player controls'} focusable={!isTVBuild} onPress={() => setControls(value => !value)} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} />
     {(controls || failed || status !== 'playing') && <><View style={{ position: 'absolute', top: Math.max(insets.top, 12), left: Math.max(insets.left, 16), right: Math.max(insets.right, 16), flexDirection: 'row', alignItems: 'center', gap: 12 }}><Pressable accessibilityRole="button" accessibilityLabel="Exit full screen" onPress={() => { setControls(true); orientation.exit(); }} style={{ minHeight: 44, paddingHorizontal: 14, borderRadius: 22, backgroundColor: '#090124CC', flexDirection: 'row', alignItems: 'center', gap: 6 }}><Icon name="contract-outline" color="#fff" size={20} /><Text style={{ color: '#fff', fontWeight: '600' }}>Exit</Text></Pressable><Text numberOfLines={1} style={{ flex: 1, color: '#fff', fontWeight: '600', fontSize: 14, textShadowColor: '#000', textShadowRadius: 3 }}>{item.name}</Text><Pressable accessibilityRole="button" accessibilityLabel="Rotate screen" onPress={() => { setControls(true); orientation.rotate(width <= height); }} style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: '#090124CC', alignItems: 'center', justifyContent: 'center' }}><Icon name="phone-landscape-outline" color="#fff" /></Pressable></View>
     <View style={{ position: 'absolute', bottom: Math.max(insets.bottom, 16), left: Math.max(insets.left, 16), right: Math.max(insets.right, 16), alignItems: 'center', gap: 12 }}>{failed ? <><Text style={{ color: '#fff', textAlign: 'center' }}>Couldn’t open this channel.</Text><Button title="Try again" onPress={retry} /></> : status === 'loading' || reconnecting ? <ActivityIndicator color={colors.mint} /> : <Pressable accessibilityRole="button" accessibilityLabel={status === 'playing' ? 'Pause live TV' : 'Play live TV'} onPress={() => { setControls(true); void toggle(); }} style={{ width: 54, height: 54, borderRadius: 27, backgroundColor: '#090124CC', alignItems: 'center', justifyContent: 'center' }}><Icon name={status === 'playing' ? 'pause' : 'play'} size={26} color="#fff" /></Pressable>}{!!orientation.notice && <Text style={{ color: '#fff', fontSize: 12, backgroundColor: '#090124CC', padding: 6 }}>{orientation.notice}</Text>}</View></>}
   </View>}>

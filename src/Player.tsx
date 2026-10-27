@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, AppState, ScrollView, Text, View } from 'react-native';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import type { AudioTrack, SubtitleTrack, VideoPlayer } from 'expo-video';
 import type { Media } from './provider';

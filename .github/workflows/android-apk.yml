@@ -1,0 +1,63 @@
+name: Build Android phone and TV APKs
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nodecast-android
+  cancel-in-progress: false
+jobs:
+  build:
+    name: Android ${{ matrix.target }} release APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [mobile, tv]
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+      NODECAST_TARGET: ${{ matrix.target }}
+      EXPO_PUBLIC_APP_VARIANT: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: android-actions/setup-android@v3
+      - uses: gradle/actions/setup-gradle@v4
+      - run: npm ci
+      - run: npm run typecheck && npm test
+      - name: Generate Android project
+        run: npx expo prebuild --platform android --no-install
+      - name: Compile standalone release including VLC
+        working-directory: android
+        run: ./gradlew assembleRelease --no-daemon --max-workers=2 -PreactNativeArchitectures=armeabi-v7a,arm64-v8a,x86_64
+      - name: Sign and validate APK
+        shell: bash
+        run: |
+          set -euo pipefail
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+          VERSION=$(node -p "require('./package.json').version")
+          OUT="android-${NODECAST_TARGET}/NodeCast-${NODECAST_TARGET}-${VERSION}.apk"
+          cp android/app/build/outputs/apk/release/app-release.apk "$OUT"
+          "$BUILD_TOOLS/apksigner" verify --verbose --print-certs "$OUT"
+          "$BUILD_TOOLS/aapt" dump badging "$OUT" > "android-${NODECAST_TARGET}/apk-manifest.txt"
+          python3 scripts/verify-android.py "$OUT" "$NODECAST_TARGET" "android-${NODECAST_TARGET}/apk-manifest.txt"
+          sha256sum "$OUT" > "${OUT}.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NodeCast-Android-${{ matrix.target }}
+          path: |
+            android-${{ matrix.target }}/*.apk
+            android-${{ matrix.target }}/*.sha256
+            android-${{ matrix.target }}/apk-manifest.txt
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0

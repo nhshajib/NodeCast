@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 export const colors = { bg: '#F5F5F8', panel: '#ffffff', text: '#090124', secondary: '#676271', accent: '#6655AC', mint: '#B9B4F2', pale: '#EEEDFB', line: '#EAE9EE', danger: '#ae3743', amber: '#916316' };
 export type IconName = keyof typeof Ionicons.glyphMap;

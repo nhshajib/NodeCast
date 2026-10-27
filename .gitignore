@@ -10,3 +10,6 @@ web-build/
 build/
 __pycache__/
 *.pyc
+
+# Native projects are generated separately for phone and TV builds.
+/android/

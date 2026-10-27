@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { KeyboardAvoidingView, Platform, ScrollView, Text, View } from 'react-native';
 import type { Provider } from './provider';
 import { importXtreamLink } from './provider';
 import type { Profile } from './vault';
@@ -23,7 +24,7 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
     {!!error && <Notice danger>{error}</Notice>}
     {form.kind === 'm3u' && exportLogin && /HTTP 404/.test(error) && <View style={[u.card, { backgroundColor: colors.pale }]}><Text style={u.label}>Use the working server connection</Text><Text style={u.small}>This link includes Xtream login details. If your provider does not offer this playlist endpoint, connect directly with those details instead.</Text><Button title="Connect with Xtream instead" busy={busy} onPress={() => { const provider = { ...form, ...exportLogin, kind: 'xtream' as const }; setForm(provider); onSave(provider, profile); }} /></View>}
     <Button title={busy ? 'Connecting to your provider…' : 'Connect playlist'} busy={busy} onPress={() => onSave(form, profile)} icon="arrow-forward" />
-    <View style={[u.row, { alignItems: 'flex-start', gap: 8 }]}><Icon name="lock-closed-outline" size={16} color={colors.accent} /><Text style={[u.small, { flex: 1 }]}>{Platform.OS === 'web' ? 'Preview only. Save profiles securely in the iPhone app.' : 'Saved securely on this iPhone. Shared only with your provider when connecting.'}</Text></View>
+    <View style={[u.row, { alignItems: 'flex-start', gap: 8 }]}><Icon name="lock-closed-outline" size={16} color={colors.accent} /><Text style={[u.small, { flex: 1 }]}>{Platform.OS === 'web' ? 'Preview only. Save profiles securely in the installed app.' : 'Saved securely on this device. Shared only with your provider when connecting.'}</Text></View>
     <Text style={u.small}>Use HTTPS when available. HTTP connections send details without encryption. You’ll need your own IPTV subscription or playlist.</Text>
   </ScrollView></KeyboardAvoidingView>;
 }

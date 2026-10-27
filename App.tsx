@@ -9,7 +9,7 @@ import { emptyVault, removeProfile } from './src/vault';
 import { loadPreferences, loadVault, savePreferences, saveVault } from './src/storage';
 import type { Preferences } from './src/storage';
 import type { ExternalPlayer, PlayerChoice } from './src/players';
-import { players } from './src/players';
+import { players as allPlayers } from './src/players';
 import { demoLibrary } from './src/demo';
 import NetworkCard from './src/NetworkCard';
 import HomeScreen from './src/HomeScreen';
@@ -37,6 +37,7 @@ import { recordViewing, resumePosition, timeLabel } from './src/activity';
 import type { PlaybackSnapshot, ViewingEntry } from './src/activity';
 import { clearProfileData, readCatalog, writeCatalog, readViewing, writeViewing } from './src/libraryStore';
 
+const players = allPlayers.filter(player => Platform.OS !== 'android' || player.id !== 'infuse');
 const emptyIds: string[] = [];
 // Web's full-screen portal shares window insets; measuring inside its slide animation gives stale offsets.
 const ModalSafeAreaProvider = Platform.OS === 'web' ? View : SafeAreaProvider;

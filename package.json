@@ -2,7 +2,7 @@
   "name": "nodecast-iphone",
   "description": "Standalone iPhone IPTV player with Expo development and production builds",
   "license": "GPL-3.0-only",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -40,7 +40,9 @@
     "start:dev:tunnel": "expo start --dev-client --tunnel",
     "build:dev": "npx eas-cli@latest build --platform ios --profile development",
     "build:preview": "npx eas-cli@latest build --platform ios --profile preview",
-    "build:production": "npx eas-cli@latest build --platform ios --profile production"
+    "build:production": "npx eas-cli@latest build --platform ios --profile production",
+    "build:android:mobile": "NODECAST_TARGET=mobile EXPO_PUBLIC_APP_VARIANT=mobile npx expo run:android --variant release",
+    "build:android:tv": "NODECAST_TARGET=tv EXPO_PUBLIC_APP_VARIANT=tv npx expo run:android --variant release"
   },
   "private": true
 }

@@ -1,5 +1,10 @@
-export const appVersion = '0.3.0';
+export const appVersion = '0.3.1';
 export const releases = [
+  { version: '0.3.1', date: 'October 27, 2026', title: 'Your TV space, on Android.', changes: [
+    'Separate standalone Android phone and Android TV editions, with embedded VLC and local profiles.',
+    'TV gets a landscape sidebar, larger three-column library, visible remote focus and Back-button navigation.',
+    'Android external playback offers VLC, and IPTV HTTP connections are supported in installed builds.',
+  ] },
   { version: '0.3.0', date: 'October 26, 2026', title: 'Move through your TV space.', changes: [
     'Short native-driver tab transitions and a sliding lavender tab indicator, with immediate touch feedback.',
     'Visited tabs stay mounted, preserving scroll positions. Library and Favorites retain separate searches and categories.',
