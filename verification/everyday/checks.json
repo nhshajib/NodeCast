@@ -1,0 +1,35 @@
+{
+  "scope": "Chromium with synthetic provider/video, not native device verification",
+  "results": {
+    "mobile": {
+      "passed": [
+        "Category remains selected while typing",
+        "Visible search scope changes results",
+        "Channel-specific player persists and opens external chooser",
+        "Back restores query",
+        "Failed refresh keeps cached search results",
+        "Manual watched state",
+        "Player information excludes server and credentials",
+        "Next episodes 401 \u2192 905 \u2192 1002",
+        "Final episode has no Next",
+        "Back restores season selection access"
+      ],
+      "errors": []
+    },
+    "tv": {
+      "passed": [
+        "Category remains selected while typing",
+        "Visible search scope changes results",
+        "Channel-specific player persists and opens external chooser",
+        "Back restores query",
+        "Failed refresh keeps cached search results",
+        "Manual watched state",
+        "Player information excludes server and credentials",
+        "Next episodes 401 \u2192 905 \u2192 1002",
+        "Final episode has no Next",
+        "Back restores season selection access"
+      ],
+      "errors": []
+    }
+  }
+}

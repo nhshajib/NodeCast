@@ -32,3 +32,7 @@ Visible modal navigation, per-profile live format selection, bounded HLS/TS fall
 ## 0.2.3 native engine integration
 
 Embedded VLC is implemented for live TV in new custom builds, with capability-gated native imports and explicit Expo Go guidance. See LIVE-TV-COMPATIBILITY.md. The native engine has not been compiled or device-tested here; 65 pure tests and JavaScript exports do not establish that it works on an iPhone.
+
+## October 27 follow-up: source 0.5.0
+
+The approved everyday-polish round is implemented across mobile and TV. See [current research and implementation](RESEARCH-2026-10-27.md) and [browser evidence](../verification/everyday/checks.json). It adds explicit scoped search, profile-specific session browsing, resilient cached TV refresh, channel playback overrides, redacted player information and shared series continuity. No new binary is published by this source update. Earlier device-validation statements above describe their historical versions, not validation of the new 0.5.0 native behavior.

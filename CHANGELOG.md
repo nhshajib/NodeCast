@@ -2,6 +2,16 @@
 
 [← Choose your edition](README.md)
 
+## 0.5.0 · Source update, not yet packaged
+
+- Preserved profile-specific browsing state, explicit search scopes and cached TV lists during refresh failures.
+- Added per-channel player, internal engine and live-format preferences, plus redacted player information.
+- Added season selection, watched marks, Continue series and next episode on mobile as well as TV.
+- Remembered embedded-VLC track choices and clearer missing-language feedback.
+- Updated Settings version history. Published downloads below remain unchanged.
+
+[Research, implementation and validation](docs/RESEARCH-2026-10-27.md)
+
 ## Published versions
 
 | Edition | Current download | Version history |

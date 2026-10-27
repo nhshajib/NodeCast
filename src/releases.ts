@@ -1,5 +1,13 @@
-export const appVersion = '0.4.0';
+export const appVersion = '0.5.0';
 export const releases = [
+  { version: '0.5.0', date: 'October 27, 2026', title: 'Your place, remembered.', changes: [
+    'Search keeps your category, with visible scope and an explicit option to include hidden categories.',
+    'Library browsing state stays separate for each profile. TV refresh keeps saved titles and filters available.',
+    'Save a player, built-in engine and live format for an individual channel without changing every channel.',
+    'Player options include a previewable diagnostic report that excludes server URLs, credentials, IP and location.',
+    'Series have season selection, watched marks and Continue series. Next episode now works on mobile too.',
+    'Built-in VLC remembers reported language or track-name choices, and explains unavailable preferences.',
+  ] },
   { version: '0.4.0', date: 'October 27, 2026', title: 'One episode flows into the next.', changes: [
     'Fixed an Android VLC startup race when the native activity is not attached yet.',
     'TV series have a bottom-right Next episode button, using the provider’s actual season and episode order.',

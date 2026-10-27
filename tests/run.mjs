@@ -9,3 +9,5 @@ import './upgrade.test.mjs';
 import './android.test.mjs';
 
 import './episodes.test.mjs';
+
+import './everyday.test.mjs';

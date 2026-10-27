@@ -3,7 +3,7 @@ export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
   playbackURLs?: string[]; externalURL?: string; headers?: Record<string, string>;
-  kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
+  seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
 export class ProviderError extends Error {
   status?: number;
@@ -176,7 +176,7 @@ export async function loadEpisodes(provider: Provider, series: Media, signal?: A
       if (row.id == null) return [];
       const ext = typeof row.container_extension === 'string' && /^[a-z\d]+$/i.test(row.container_extension) ? row.container_extension : 'mp4';
       return [{ id: `episode:${row.id}`, name: String(row.title || `Episode ${row.episode_num || ''}`), group: `Season ${season}`,
-        logo: series.logo, kind: 'series' as const, streamId: String(row.id), containerExtension: ext, url: streamURL(provider, 'series', String(row.id), ext) }];
+        seriesId: series.id, logo: series.logo, kind: 'series' as const, streamId: String(row.id), containerExtension: ext, url: streamURL(provider, 'series', String(row.id), ext) }];
     }));
 }
 

@@ -3,6 +3,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, BackHandler, ScrollView, Text, View } from 'react-native';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import type { AudioTrack, SubtitleTrack, VideoPlayer } from 'expo-video';
+import type { PlaybackInfo } from './viewingPreferences';
 import type { Media } from './provider';
 import type { PlaybackSnapshot } from './activity';
 import { classifyFailure, failureMessage, RecoveryCoordinator } from './recovery';
@@ -18,8 +19,8 @@ const PlaybackSurface = memo(function PlaybackSurface({ player, viewRef, televis
 });
 export type TrackPreferences = { audio?: string; subtitles?: string };
 const language = (value: string) => ({ eng: 'en', fra: 'fr', fre: 'fr', spa: 'es', deu: 'de', ger: 'de', ita: 'it', por: 'pt' }[value.toLowerCase()] || value.toLowerCase().split('-')[0]);
-export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, onTracks, onExternal, onClose, compatibilityAvailable = false, onCompatibility, fullscreen, onFullscreenChange, television = false, nextEpisode }: {
-  television?: boolean; nextEpisode?: { item: Media; onPress: () => void };
+export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, onTracks, onExternal, onClose, compatibilityAvailable = false, onCompatibility, fullscreen, onFullscreenChange, television = false, nextEpisode, onOptions, onInfo }: {
+  onOptions?: () => void; onInfo?: (info: PlaybackInfo) => void; television?: boolean; nextEpisode?: { item: Media; onPress: () => void };
   item: Media; resumeAt?: number; tracks?: TrackPreferences; onProgress: (snapshot: PlaybackSnapshot) => void;
   onTracks: (preferences: TrackPreferences) => void; onExternal: () => void; onClose: () => void; compatibilityAvailable?: boolean; onCompatibility?: () => void; fullscreen?: boolean; onFullscreenChange?: (value: boolean) => void;
 }) {
@@ -41,6 +42,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
   const [showTracks, setShowTracks] = useState(false);
   const [audio, setAudio] = useState<AudioTrack[]>([]);
   const [subtitles, setSubtitles] = useState<SubtitleTrack[]>([]);
+  useEffect(() => { onInfo?.({ engine: 'native', format: format === 'HLS' || format === 'MPEG-TS' ? format : 'Video', state: recovery?.mode === 'failed' ? 'failed' : status === 'readyToPlay' ? (isPlaying ? 'playing' : 'paused') : 'loading', audioTracks: audio.length, subtitleTracks: subtitles.length, attempts: recovery?.attempt || 0 }); }, [format, status, isPlaying, audio.length, subtitles.length, recovery, onInfo]);
   const [trackNotice, setTrackNotice] = useState('');
   const persist = useRef(onProgress); persist.current = onProgress;
   const preference = useRef(tracks); preference.current = tracks;
@@ -67,6 +69,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
         if (preferred) {
           const match = available.find(track => language(track.language || '') === language(preferred));
           if (match) player.audioTrack = match;
+          else if (available.length) setTrackNotice('Your preferred audio is not reported by this stream. You can choose an available track.');
         }
       } catch { /* Native controls remain available when track APIs are unavailable. */ }
     }
@@ -149,11 +152,11 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
   const recovering = recovery?.mode === 'waiting' || recovery?.mode === 'reconnecting';
   const failed = recovery?.mode === 'failed';
   function chooseAudio(track: AudioTrack) {
-    try { player.audioTrack = track; onTracks({ ...preference.current, audio: track.language || undefined }); }
+    try { player.audioTrack = track; const next = { ...preference.current, audio: track.language || undefined }; preference.current = next; onTracks(next); }
     catch { setTrackNotice('This audio track could not be selected. Try the native player controls.'); }
   }
   function chooseSubtitles(track: SubtitleTrack | null) {
-    try { player.subtitleTrack = track; setTrackNotice(''); onTracks({ ...preference.current, subtitles: track ? track.language || undefined : 'off' }); }
+    try { player.subtitleTrack = track; setTrackNotice(''); const next = { ...preference.current, subtitles: track ? track.language || undefined : 'off' }; preference.current = next; onTracks(next); }
     catch { setTrackNotice('This subtitle track could not be selected. Try another available track.'); }
   }
   useEffect(() => {
@@ -182,7 +185,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
     <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}><PlaybackSurface player={player} viewRef={viewRef} television /></View>
     <View style={{ position: 'absolute', top: Math.max(insets.top, 20), left: 24, right: 24, flexDirection: 'row', alignItems: 'center', gap: 16 }}>
       <Pressable accessibilityRole="button" accessibilityLabel="Back to library" onPress={onClose} style={{ backgroundColor: '#090124D9', borderRadius: 24, padding: 14, flexDirection: 'row', alignItems: 'center', gap: 8 }}><Icon name="chevron-back" color="#fff" /><Text style={{ color: '#fff', fontWeight: '600' }}>Back</Text></Pressable>
-      <View style={{ flex: 1 }}><Text numberOfLines={1} style={{ color: '#fff', fontSize: 20, fontWeight: '600', textShadowColor: '#000', textShadowRadius: 4 }}>{item.name}</Text><Text style={{ color: '#EAE9EE', textShadowColor: '#000', textShadowRadius: 4 }}>{item.group}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Choose another player" onPress={onExternal} style={{ backgroundColor: '#090124D9', padding: 14, borderRadius: 24 }}><Icon name="open-outline" color="#fff" /></Pressable>
+      <Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{ padding: 14, backgroundColor: '#090124D9', borderRadius: 24 }}><Icon name="ellipsis-horizontal" color="#fff" /></Pressable><View style={{ flex: 1 }}><Text numberOfLines={1} style={{ color: '#fff', fontSize: 20, fontWeight: '600', textShadowColor: '#000', textShadowRadius: 4 }}>{item.name}</Text><Text style={{ color: '#EAE9EE', textShadowColor: '#000', textShadowRadius: 4 }}>{item.group}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Choose another player" onPress={onExternal} style={{ backgroundColor: '#090124D9', padding: 14, borderRadius: 24 }}><Icon name="open-outline" color="#fff" /></Pressable>
     </View>
     {(status === 'loading' || recovering || failed) && <View style={{ position: 'absolute', top: '28%', left: '20%', right: '20%', alignItems: 'center', gap: 14, padding: 24, borderRadius: 24, backgroundColor: '#090124E8' }}>
       {failed ? <><Text style={{ color: '#fff', fontSize: 18 }}>Couldn’t open this video</Text><Text style={{ color: '#EAE9EE', textAlign: 'center' }}>{failureMessage(recovery.kind)}</Text><Button title="Try again" onPress={() => session.current?.retry()} /><Button title="Choose an external player" variant="secondary" onPress={onExternal} /></> : <><ActivityIndicator color={colors.mint} /><Text style={{ color: '#fff' }}>{recovering ? 'Reconnecting…' : 'Opening your video…'}</Text></>}
@@ -204,6 +207,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
     </View>
   </View>;
   return <ScrollView style={{ flex: 1, backgroundColor: '#090124' }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: 17, paddingBottom: 24 }} keyboardShouldPersistTaps="handled">
+    <Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{ alignSelf: 'flex-end', padding: 14 }}><Icon name="ellipsis-horizontal" color="#fff" /></Pressable>
     {item.kind === 'live' && <Text style={{ color: '#C4C0CF', textAlign: 'center', fontSize: 12 }}>{format} · Live TV</Text>}
     <View style={{ display: failed ? 'none' : 'flex' }}><PlaybackSurface player={player} viewRef={viewRef} /></View>
     {(status === 'loading' || recovering) && !failed && <View style={{ alignItems: 'center', gap: 9 }}><ActivityIndicator color="#B9B4F2" /><Text accessibilityLiveRegion="polite" style={{ fontSize: 12, color: '#C4C0CF' }}>{recovering ? `Reconnecting${recovery.attempt ? ` · ${recovery.attempt} of 2` : '…'}` : 'Opening your stream…'}</Text></View>}
@@ -211,6 +215,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
     {!failed && <View style={{ marginHorizontal: 24 }}><Button title="Full screen" variant="secondary" icon="expand-outline" onPress={() => { void viewRef.current?.enterFullscreen().catch(() => setTrackNotice('Could not enter full screen. Try the video’s native fullscreen control.')); }} /></View>}
     {!failed && <Pressable accessibilityRole="button" accessibilityLabel="Audio & subtitles" onPress={() => setShowTracks(value => !value)} style={{ alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 8, padding: 10 }}><Icon name="options-outline" color="#C4C0CF" size={17} /><Text style={{ fontSize: 12, color: '#EAE9EE' }}>Audio & subtitles</Text></Pressable>}
     {showTracks && <ScrollView style={{ maxHeight: 230, marginHorizontal: 20, backgroundColor: '#211A36', borderRadius: 18 }} contentContainerStyle={{ padding: 16, gap: 12 }}><Text style={{ color: '#fff', fontWeight: '600' }}>Remember for this profile</Text><Text style={{ color: '#AAA4B8', fontSize: 11 }}>Choices made here apply to future streams when the matching language is available.</Text><Text style={{ color: '#B9B4F2', fontSize: 12 }}>Audio</Text>{audio.length ? audio.map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => chooseAudio(track)} style={{ paddingVertical: 9 }}><Text style={{ color: '#fff', fontSize: 13 }}>{track.label || track.language || 'Audio track'}</Text></Pressable>) : <Text style={{ color: '#AAA4B8', fontSize: 12 }}>No selectable audio tracks reported.</Text>}<Text style={{ color: '#B9B4F2', fontSize: 12 }}>Subtitles</Text><Pressable accessibilityRole="button" onPress={() => chooseSubtitles(null)} style={{ paddingVertical: 9 }}><Text style={{ color: '#fff', fontSize: 13 }}>Off</Text></Pressable>{subtitles.map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => chooseSubtitles(track)} style={{ paddingVertical: 9 }}><Text style={{ color: '#fff', fontSize: 13 }}>{track.label || track.language || 'Subtitle track'}</Text></Pressable>)}{!!trackNotice && <Text style={{ fontSize: 12, lineHeight: 18, color: '#FAE7C8' }}>{trackNotice}</Text>}</ScrollView>}
+    {nextEpisode && <View style={{ marginHorizontal: 24 }}><Button title={advancing ? 'Opening next…' : 'Next episode'} disabled={advancing} onPress={() => { void advanceEpisode(); }} icon="play-skip-forward" /></View>}
     {!failed && <Pressable accessibilityRole="button" accessibilityLabel="Choose another player" onPress={onExternal} style={{ alignSelf: 'center', padding: 10 }}><Text style={{ color: '#B9B4F2', fontSize: 13 }}>Choose another player</Text></Pressable>}
     <Pressable accessibilityRole="button" accessibilityLabel="Back to library" onPress={onClose} style={{ alignSelf: 'center', padding: 14 }}><Text style={{ color: '#FFFFFF', fontWeight: '600', fontSize: 15 }}>Back to library</Text></Pressable>
   </ScrollView>;

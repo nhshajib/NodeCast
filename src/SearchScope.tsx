@@ -1,0 +1,8 @@
+import React from 'react';
+import { ScrollView, Text } from 'react-native';
+import Pressable from './FocusPressable';
+import { colors } from './ui';
+export type SearchScope = 'category' | 'section' | 'all';
+export default function SearchScopeControl({ value, onChange, includeHidden, onHidden, favorites = false }: { value: SearchScope; onChange: (value: SearchScope) => void; includeHidden: boolean; onHidden: () => void; favorites?: boolean }) {
+  return <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, flexShrink: 0, height: 60 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 20, paddingVertical: 8, alignItems: 'center' }}>{([{ id: 'category', label: 'This category' }, { id: 'section', label: 'This media type' }, ...(!favorites ? [{ id: 'all', label: 'All media' }] : [])] as { id: SearchScope; label: string }[]).map(option => <Pressable key={option.id} accessibilityRole="radio" accessibilityState={{ checked: value === option.id }} onPress={() => onChange(option.id)} style={{ minHeight: 44, justifyContent: 'center', paddingHorizontal: 14, borderRadius: 22, backgroundColor: value === option.id ? colors.mint : '#fff' }}><Text style={{ color: colors.text, fontSize: 13 }}>{option.label}</Text></Pressable>)}{!favorites && <Pressable accessibilityRole="checkbox" accessibilityState={{ checked: includeHidden }} onPress={onHidden} style={{ minHeight: 44, justifyContent: 'center', paddingHorizontal: 14 }}><Text style={{ color: colors.accent, fontSize: 13 }}>{includeHidden ? '✓ ' : ''}Include hidden categories</Text></Pressable>}</ScrollView>;
+}
