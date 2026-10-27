@@ -28,7 +28,7 @@ adb shell pidof "$PACKAGE"
 if rg -q 'FATAL EXCEPTION|ReactNativeJS:.*(Error:|Invariant Violation|TypeError)' "verification/android/emulator-$TARGET-logcat.txt"; then
   echo 'Native or JavaScript crash detected'; exit 1
 fi
-if ! rg -q 'NodeCast|home|playlist|IP' "verification/android/emulator-$TARGET-initial.xml"; then
+if ! rg -q 'Disconnect|home.IP|playlist|My TV' "verification/android/emulator-$TARGET-initial.xml"; then
   echo 'Expected application UI not found'; exit 1
 fi
 echo "Standalone $TARGET startup passed on Android emulator. This is not a physical TV playback test."

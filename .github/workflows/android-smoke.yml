@@ -35,7 +35,7 @@ jobs:
           api-level: 35
           arch: x86_64
           target: google_apis
-          profile: tv_1080p
+          profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           disable-animations: true
           script: bash scripts/android-smoke.sh ${{ matrix.target }}
       - uses: actions/upload-artifact@v4
