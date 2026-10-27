@@ -1,0 +1,19 @@
+{
+  "checks": [
+    "Synthetic 30,000-channel provider",
+    "Separate Library/Favorites queries",
+    "Home and Settings scroll and native subtree retention",
+    "Playback Back returns to the same Settings position",
+    "Closing content remains during dismissal",
+    "24 rapid tab changes settle correctly",
+    "No empty sampled transition frame",
+    "Moving indicator aligns with selected tab",
+    "Reduce Motion has no navigation displacement"
+  ],
+  "homeScroll": 210,
+  "settingsScroll": 180,
+  "maxObservedLongTaskMs": 0,
+  "minimumSampledOpacitySum": 1,
+  "errors": [],
+  "scope": "Chromium UI/layout verification. This does not measure physical iPhone frame rate or UIKit dismissal."
+}

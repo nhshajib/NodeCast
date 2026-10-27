@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, Modal, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useScreenFocus } from './NavigationMotion';
 import { compareIP, lookupExitIP } from './network';
 import type { ExitIP } from './network';
 import type { Preferences } from './storage';
 import { Button, Icon, IconButton, Notice, colors, u } from './ui';
 export default function NetworkCard({ baseline, onBaseline }: { baseline: Preferences['baseline']; onBaseline: (value: Preferences['baseline']) => Promise<void> }) {
+  const focused = useScreenFocus();
   const [result, setResult] = useState<ExitIP | null>(null);
   const [busy, setBusy] = useState(true);
   const [clock, setClock] = useState(Date.now());
@@ -24,11 +26,12 @@ export default function NetworkCard({ baseline, onBaseline }: { baseline: Prefer
     finally { if (!request.signal.aborted) setBusy(false); }
   }
   useEffect(() => {
+    if (!focused) return;
     void refresh();
     const timer = setInterval(() => setClock(Date.now()), 15000);
     const sub = AppState.addEventListener('change', state => { if (state === 'active') void refresh(); });
     return () => { controller.current?.abort(); clearInterval(timer); sub.remove(); };
-  }, []);
+  }, [focused]);
   const comparison = compareIP(result, baseline?.ip || null, busy || !!error || !!result && clock - Date.parse(result.checkedAt) > 60000);
   const label = comparison === 'changed' ? 'Different from home' : comparison === 'same' ? 'Using home IP' : 'VPN unverified';
   const place = result ? [result.city, result.country].filter(Boolean).join(', ') || 'Location unavailable' : busy ? 'Finding your exit location…' : 'Location unavailable';

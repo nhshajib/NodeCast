@@ -1,5 +1,13 @@
-export const appVersion = '0.2.9';
+export const appVersion = '0.3.0';
 export const releases = [
+  { version: '0.3.0', date: 'October 26, 2026', title: 'Move through your TV space.', changes: [
+    'Short native-driver tab transitions and a sliding lavender tab indicator, with immediate touch feedback.',
+    'Visited tabs stay mounted, preserving scroll positions. Library and Favorites retain separate searches and categories.',
+    'Cached library indexes, filters and categories avoid rebuilding the catalogue when navigating between tabs.',
+    'Settings pages keep their content through dismissal instead of flashing blank; internal page changes use a subtle transition.',
+    'Inactive Home stops its IP-check timers and foreground listeners; returning refreshes the connection.',
+    'Reduce Motion removes navigation movement. The player surface is excluded from internal page animations.',
+  ] },
   { version: '0.2.9', date: 'October 26, 2026', title: 'A warmer welcome.', changes: [
     'New animated NodeCast intro with a floating brand mark, fine signal rings and a cream serif wordmark.',
     'The native launch screen hands off to the animation after its first frame is ready, avoiding an early disappearance.',

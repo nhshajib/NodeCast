@@ -2,7 +2,7 @@
   "name": "nodecast-iphone",
   "description": "Standalone iPhone IPTV player with Expo development and production builds",
   "license": "GPL-3.0-only",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
