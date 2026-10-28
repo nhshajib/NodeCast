@@ -16,9 +16,14 @@ def find(label, timeout=15, scroll=False):
   nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:n.get('clickable')!='true')
+  nav_top=height
+  if width<height and label not in ['Home','Library','Favorites','Settings']:
+   for candidate in root.iter('node'):
+    box=list(map(int,re.findall(r'\d+',candidate.get('bounds',''))))
+    if candidate.get('content-desc') in ['Home','Library','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:nav_top=min(nav_top,box[1])
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
-   if len(b)==4 and b[2]>b[0] and b[3]>b[1] and b[3]<=height and b[1]>=0:return b
+   if len(b)==4 and b[2]>b[0] and b[3]>b[1] and b[3]<=height and b[1]>=0 and (b[1]+b[3])/2<nav_top:return b
   if scroll: adb('shell','input','swipe',str(width//2),str(int(height*.75)),str(width//2),str(int(height*.3)),'350')
   time.sleep(.5)
  raise RuntimeError(f'UI not found: {label}')
