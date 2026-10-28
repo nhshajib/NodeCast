@@ -2,6 +2,19 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.0 · October 28, 2026
+
+- Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
+- Light, Dark and Follow device appearance.
+- Six-digit local family PIN with protected categories, background relocking and reset-based recovery.
+- Persistent mini-player, Fit/Fill, VOD speed and in-app sleep timer.
+- Capability-gated native PiP; iPhone native playback also offers AirPlay. Physical-device confirmation is still needed.
+- Local M3U import, advanced provider headers, sorting, refresh policy and separate cache/history controls.
+- Fixed mobile PIN prompt layering and a TV second-playlist connection race; compact TV guide controls keep programmes visible.
+
+[Feature details and limits](verification/roadmap/README.md). Chromecast, multiview, QR/portal pairing, cloud sync, DVR and downloads remain future work.
+
+
 ## 0.5.0 · October 28, 2026 · All editions
 
 - Preserved profile-specific browsing state, explicit search scopes and cached TV lists during refresh failures.
@@ -16,9 +29,9 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.5.0 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
-| Android mobile | [0.5.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
-| Android TV | [0.5.0 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
+| iPhone | [0.6.0 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
+| Android mobile | [0.6.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
+| Android TV | [0.6.0 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
 
 ## October 27, 2026 · Android 0.4.0
 

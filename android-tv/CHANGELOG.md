@@ -2,7 +2,20 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.5.0 · October 28, 2026 · Current download
+## 0.6.0 · October 28, 2026 · Current download
+
+- Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
+- Light, Dark and Follow device appearance.
+- Six-digit local family PIN with protected categories, background relocking and reset-based recovery.
+- Persistent mini-player, Fit/Fill, VOD speed and in-app sleep timer.
+- Capability-gated native PiP; iPhone native playback also offers AirPlay. Physical-device confirmation is still needed.
+- Local M3U import, advanced provider headers, sorting, refresh policy and separate cache/history controls.
+- Fixed mobile PIN prompt layering and a TV second-playlist connection race; compact TV guide controls keep programmes visible.
+
+[Feature details and limits](../verification/roadmap/README.md). Chromecast, multiview, QR/portal pairing, cloud sync, DVR and downloads remain future work.
+
+
+## 0.5.0 · October 28, 2026
 
 - Signed release validated and repeated native emulator cold starts passed.
 - Native VLC and MP4 playback, cross-season Next episode, D-pad/Select and Back checks passed on the emulator.

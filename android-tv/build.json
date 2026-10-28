@@ -1,16 +1,16 @@
 {
-  "version": "0.5.0",
-  "versionCode": 500,
+  "version": "0.6.0",
+  "versionCode": 600,
   "edition": "tv",
   "package": "com.nhshajib.nodecast.tv",
-  "apk": "NodeCast-tv-0.5.0.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-tv-0.5.0.apk",
-  "bytes": 218075497,
-  "sha256": "6d5bcb26609a75b5d2949c939ef0e9fff3dc3bc052f6f34959024288328d1454",
-  "sourceCommit": "a753597ef445e72ed2ac46323e6fb9880e9eab78",
-  "buildRun": 40634577101,
-  "artifactId": 12793347023,
-  "nativeCheckRun": 40635987164,
+  "apk": "NodeCast-tv-0.6.0.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk",
+  "bytes": 223654875,
+  "sha256": "7fea1df9614074f524efcf4055697e914fa593284a30c2d51383b82b1a735f21",
+  "sourceCommit": "70c92efd4aff4555843e0dd7fdfa82f0a1303c44",
+  "buildRun": 40752820700,
+  "artifactId": 12845765514,
+  "nativeCheckRun": 40756695749,
   "architectures": [
     "armeabi-v7a",
     "arm64-v8a",
@@ -22,11 +22,15 @@
     "releaseSignatureAndBundle": "passed",
     "repeatedColdStarts": "passed",
     "physicalDeviceTested": false,
-    "nativeVLCAndSeriesNextWithRemote": "passed using generated MPEG-TS/MP4 and synthetic Xtream metadata"
+    "nativeVLCAndSeriesNextWithRemote": "passed using generated MPEG-TS/MP4 and synthetic Xtream metadata",
+    "nativeXMLTVSQLitePersistence": "passed",
+    "nativeFamilyPINAndProtectedCategory": "passed",
+    "sameLiveSessionMiniPlayer": "passed"
   },
-  "releaseAssetId": 683882676,
+  "releaseAssetId": 686088391,
   "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
   "updateSigningIdentityMatchesPreviousRelease": true,
-  "nativeCheckSourceCommit": "1c5a56a2f3d4e43e42bea24d4baac9d9f6239d87",
-  "nativeCheckArtifactId": 12793243065
+  "nativeCheckSourceCommit": "258055a93ef5c72f6f637a6f5ad6b944754ba1c1",
+  "nativeCheckArtifactId": 12847196496,
+  "pinSetupEmulatorSeconds": 22.1
 }

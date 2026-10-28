@@ -21,19 +21,19 @@
 <tr>
 <td width="33%" valign="top" align="center">
 <a href="iphone/README.md"><img src="assets/readme/iphone.svg" alt="Explore NodeCast for iPhone" width="100%" /></a>
-<p><strong>iPhone</strong><br />0.5.0 · IPA</p>
+<p><strong>iPhone</strong><br />0.6.0 · IPA</p>
 <p><a href="iphone/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="iphone/CHANGELOG.md">Changelog</a> · <a href="iphone/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-mobile/README.md"><img src="assets/readme/android-mobile.svg" alt="Explore NodeCast for Android phones and tablets" width="100%" /></a>
-<p><strong>Android</strong><br />0.5.0 · APK</p>
+<p><strong>Android</strong><br />0.6.0 · APK</p>
 <p><a href="android-mobile/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-mobile/CHANGELOG.md">Changelog</a> · <a href="android-mobile/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-tv/README.md"><img src="assets/readme/android-tv.svg" alt="Explore NodeCast for Android TV and Google TV" width="100%" /></a>
-<p><strong>Android TV</strong><br />0.5.0 · APK</p>
+<p><strong>Android TV</strong><br />0.6.0 · APK</p>
 <p><a href="android-tv/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-tv/CHANGELOG.md">Changelog</a> · <a href="android-tv/build.json">Build details</a></p>
 </td>
@@ -54,17 +54,17 @@ Installed IPA/APK builds run independently of Expo Go and a development PC. iPho
 
 ### New across all three editions
 
-Search that keeps your place. Playback choices for an individual channel. Seasons, watched marks and **Next episode** on mobile as well as TV, following the provider's real episode order.
+Full TV guides, a persistent mini-player, **Light / Dark / Follow device**, and optional local family controls. Sorting and refresh stay in Library options; display, speed and sleep stay in the player menu. [Feature details and limits →](verification/roadmap/README.md)
 
-[See the TV player →](verification/android/native-tv-next-0.5.0.png) · [Read the Android TV guide →](android-tv/README.md)
+[See the TV player →](verification/android/native-tv-next-0.6.0.png) · [Read the Android TV guide →](android-tv/README.md)
 
 ## Downloads at a glance
 
 | Edition | Version | Download | Renewal |
 | --- | --- | --- | --- |
-| [iPhone](iphone/README.md) | **0.5.0** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.5.0/NodeCast-0.5.0-unsigned.ipa) | Normally 7 days with free Apple signing |
-| [Android mobile](android-mobile/README.md) | **0.5.0** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-mobile-0.5.0.apk) | No weekly renewal |
-| [Android TV](android-tv/README.md) | **0.5.0** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-tv-0.5.0.apk) | No weekly renewal |
+| [iPhone](iphone/README.md) | **0.6.0** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.0/NodeCast-0.6.0-unsigned.ipa) | Normally 7 days with free Apple signing |
+| [Android mobile](android-mobile/README.md) | **0.6.0** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk) | No weekly renewal |
+| [Android TV](android-tv/README.md) | **0.6.0** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk) | No weekly renewal |
 
 These are personal testing releases. Android uses the standard Android test signing key; the iPhone IPA needs personal signing. Install updates over the existing app with the same signing identity to preserve local profiles. Keep your own copy of provider details.
 

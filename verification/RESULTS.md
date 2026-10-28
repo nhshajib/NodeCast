@@ -1,3 +1,11 @@
+# Current verification — NodeCast 0.6.0
+
+TypeScript and 95 tests pass. Mobile/TV browser integration covers local import, programme search, PIN/wrong-PIN/background locking, sleep expiry and the same video element through mini-player restore. Exact released APKs passed native startup, SQLite persistence and family controls; TV also passed VLC, mini-player continuity and D-pad episode navigation. The IPA passed native compilation, arm64/platform/bundle checks, ZIP integrity and SHA-256. Physical PiP/AirPlay and provider compatibility still need device confirmation.
+
+[Scope and limits](roadmap/README.md) · [Build provenance](android/native-0.6.0-builds.json)
+
+The following records describe historical versions.
+
 # Verification — final reference-led design, October 23, 2026
 
 - TypeScript: passed (`npm run typecheck`).

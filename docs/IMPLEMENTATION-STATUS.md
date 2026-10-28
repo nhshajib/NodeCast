@@ -1,3 +1,7 @@
+# Current status — October 28, 2026
+
+The approved 0.6.0 local feature round is implemented and released for all editions. See [features, UI locations and limits](../verification/roadmap/README.md), [browser checks](../verification/roadmap/checks.json), and [native records](../verification/android/native-0.6.0-builds.json). The following sections are historical records, including their original roadmaps and validation limits.
+
 # Implementation status — October 23, 2026
 
 The first research-led implementation milestone is complete in source. The lavender, cream, serif-heading design and four main tabs are retained. Secondary controls live in Library options or the player, rather than adding more main navigation.

@@ -11,3 +11,5 @@ Limits: feed download 8 MB, expanded XML 32 MB, retained schedule past 24 to nex
 The family PIN gates access on this device; it does not encrypt provider content or prevent OS-level access. Forgotten-PIN recovery deletes saved profiles and viewing data. The sleep timer stops the in-app session; external players manage their own timers. Native PiP depends on engine/device support and is disabled while the sleep timer is active. AirPlay is iOS native-engine only. Physical PiP/AirPlay require device testing.
 
 Chromecast discovery/sender integration, multiview, QR pairing, additional portal/MAC protocols, cloud sync, DVR and downloads remain separate future projects; no inactive controls are added for them.
+
+Native release checks passed for both exact APKs. The busy TV emulator took 22.1 seconds to create the family PIN; physical-device PIN timings have not been measured. Native screenshots and per-edition build/check records are in `verification/android`. The iPhone archive passed device-target arm64 compilation and integrity checks; physical PiP/AirPlay remain unverified.

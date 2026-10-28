@@ -1,0 +1,41 @@
+{
+  "version": "0.6.0",
+  "editions": {
+    "iphone": {
+      "sourceCommit": "d0d1dda1fcf8c95f60915c291d7989b851bdd8f1",
+      "buildRun": 40750854541,
+      "artifactId": 12844986086,
+      "releasePublicationRun": 40752372310,
+      "releaseAssetId": 686057707,
+      "bytes": 35765327,
+      "sha256": "1b02458ef4d2bb53b5bd9b0356d1c3d19621e2176666e8af4652e27e493b38e4"
+    },
+    "mobile": {
+      "sourceCommit": "d0d1dda1fcf8c95f60915c291d7989b851bdd8f1",
+      "buildRun": 40750847790,
+      "artifactId": 12843628775,
+      "releaseAssetId": 686060454,
+      "bytes": 225054895,
+      "sha256": "9d9660922b43b0e55024059b56afa8661a12ba7050cca93fb3a9e1c68390379c",
+      "nativeCheckRun": 40755276874,
+      "nativeCheckArtifactId": 12846770516,
+      "checkScriptCommit": "78476c3bac9b4ce72ca33bf2d44a7f585ea670e7"
+    },
+    "tv": {
+      "sourceCommit": "70c92efd4aff4555843e0dd7fdfa82f0a1303c44",
+      "buildRun": 40752820700,
+      "artifactId": 12845765514,
+      "releaseAssetId": 686088391,
+      "bytes": 223654875,
+      "sha256": "7fea1df9614074f524efcf4055697e914fa593284a30c2d51383b82b1a735f21",
+      "nativeCheckRun": 40756695749,
+      "checkScriptCommit": "258055a93ef5c72f6f637a6f5ad6b944754ba1c1",
+      "nativeCheckArtifactId": 12847196496,
+      "pinSetupEmulatorSeconds": 22.1
+    }
+  },
+  "releaseAssetDigestsMatchBuildRecords": true,
+  "androidUpdateCertificatesMatchPreviousRelease": true,
+  "physicalDevicesTested": false,
+  "scope": "API 35 x86-64 emulator checks; arm64 device-target iPhone compilation and archive checks. TV has a later source commit for its compact guide header; that branch does not change mobile execution. Physical PiP/AirPlay and real-provider compatibility need confirmation."
+}

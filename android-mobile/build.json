@@ -1,16 +1,16 @@
 {
-  "version": "0.5.0",
-  "versionCode": 500,
+  "version": "0.6.0",
+  "versionCode": 600,
   "edition": "mobile",
   "package": "com.nhshajib.nodecast",
-  "apk": "NodeCast-mobile-0.5.0.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-mobile-0.5.0.apk",
-  "bytes": 219487305,
-  "sha256": "b6a019e31192998dd24d0fc531844716ad8843b0925d009a9c9418890d9dd9a5",
-  "sourceCommit": "a753597ef445e72ed2ac46323e6fb9880e9eab78",
-  "buildRun": 40634577101,
-  "artifactId": 12793431227,
-  "nativeCheckRun": 40635179300,
+  "apk": "NodeCast-mobile-0.6.0.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk",
+  "bytes": 225054895,
+  "sha256": "9d9660922b43b0e55024059b56afa8661a12ba7050cca93fb3a9e1c68390379c",
+  "sourceCommit": "d0d1dda1fcf8c95f60915c291d7989b851bdd8f1",
+  "buildRun": 40750847790,
+  "artifactId": 12843628775,
+  "nativeCheckRun": 40755276874,
   "architectures": [
     "armeabi-v7a",
     "arm64-v8a",
@@ -21,10 +21,14 @@
   "verification": {
     "releaseSignatureAndBundle": "passed",
     "repeatedColdStarts": "passed",
-    "physicalDeviceTested": false
+    "physicalDeviceTested": false,
+    "nativeXMLTVSQLitePersistence": "passed",
+    "nativeFamilyPINAndProtectedCategory": "passed",
+    "nativePINPromptAndWrongPINHandling": "passed"
   },
-  "releaseAssetId": 683882678,
+  "releaseAssetId": 686060454,
   "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
   "updateSigningIdentityMatchesPreviousRelease": true,
-  "nativeCheckArtifactId": 12792564232
+  "nativeCheckArtifactId": 12846770516,
+  "nativeCheckSourceCommit": "78476c3bac9b4ce72ca33bf2d44a7f585ea670e7"
 }
