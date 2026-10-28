@@ -33,6 +33,8 @@ if [ "$TARGET" = tv ]; then
 fi
 if [ "$TARGET" = tv ]; then
   python3 scripts/android-tv-playback-smoke.py
+else
+  python3 scripts/android-mobile-features-smoke.py
 fi
 adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt"
 adb shell pidof "$PACKAGE"
