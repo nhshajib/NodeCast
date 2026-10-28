@@ -24,7 +24,9 @@ server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Threa
 def back():click('Go back')
 def settings(name):click('Settings');click(name,True)
 try:
- click('Get started');click('Not now',True);click('Add playlist')
+ click('Get started');click('Not now',True)
+ # First-run setup opens the provider form directly; later sessions use Add playlist.
+ if not any(n.get('class')=='android.widget.EditText' and n.get('content-desc')=='Profile name' for n in dump().iter('node')):click('Add playlist')
  for label,value in [('Profile name','PhoneTest'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:text(label,value)
  click('Connect playlist',True);find('Home');click('Library');find('Open Phone Test Channel')
  click('Open TV guide');click('Add full TV guide');text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Phone Guide Match',timeout=45)
