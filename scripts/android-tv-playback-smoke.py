@@ -22,6 +22,22 @@ def find(label, timeout=15, scroll=False):
   if scroll: adb('shell','input','swipe',str(width//2),str(int(height*.75)),str(width//2),str(int(height*.3)),'350')
   time.sleep(.5)
  raise RuntimeError(f'UI not found: {label}')
+def video_ready(timeout=45):
+ # UIAutomator waits for UI idle. A one-second playback clock can keep it busy until
+ # this short fixture ends; a decoded, non-zero completed timeline is also valid.
+ end=time.monotonic()+timeout
+ while time.monotonic()<end:
+  nodes=list(dump().iter('node'))
+  if any('Pause video' in (n.get('content-desc') or '') for n in nodes):return
+  for n in nodes:
+   match=re.fullmatch(r'(\d+):(\d\d) / (\d+):(\d\d)',n.get('text') or '')
+   if match:
+    minutes,seconds,total_minutes,total_seconds=map(int,match.groups())
+    position=minutes*60+seconds;duration=total_minutes*60+total_seconds
+    if duration>0 and position>=duration:return
+  time.sleep(.5)
+ raise RuntimeError('Episode neither played nor reached a decoded non-zero duration')
+
 def click(label,scroll=False):
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
 def text(label,value):
@@ -79,12 +95,12 @@ def main():
   OUT.joinpath('emulator-tv-live-test.xml').write_text(ET.tostring(dump(),encoding='unicode'))
   adb('shell','input','keyevent','4');find('Play Example Live Test')
   click('Series');click('Open Sample Series');click('Episode One')
-  find('Pause video',timeout=35)
+  video_ready()
   box=find('Next episode: Season 1 · Episode Two')
   assert box[2]>width*.8 and box[1]>height*.7, box
   OUT.joinpath('emulator-tv-next-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  remote_next('Next episode: Season 1 · Episode Two');find('Episode Two');find('Pause video',timeout=35)
-  remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');find('Pause video',timeout=35)
+  remote_next('Next episode: Season 1 · Episode Two');find('Episode Two');video_ready()
+  remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');video_ready()
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   adb('shell','input','keyevent','4');find('Play Final Episode')
