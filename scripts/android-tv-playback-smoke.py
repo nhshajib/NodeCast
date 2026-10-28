@@ -15,7 +15,7 @@ def find(label, timeout=15, scroll=False):
   root=dump()
   nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
-  nodes.sort(key=lambda n:n.get('clickable')!='true')
+  nodes.sort(key=lambda n:(n.get('content-desc')!=label and n.get('text')!=label,n.get('clickable')!='true'))
   nav_top=height
   if width<height and label not in ['Home','Library','Favorites','Settings']:
    for candidate in root.iter('node'):
@@ -46,6 +46,8 @@ def video_ready(timeout=45):
 def click(label,scroll=False):
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
 def text(label,value):
+ if label=='Find category to protect':
+  for _ in range(3):adb('shell','input','swipe',str(width//2),str(int(height*.3)),str(width//2),str(int(height*.8)),'350')
  click(label,True);adb('shell','input','text',value);adb('shell','input','keyevent','66');time.sleep(.3)
 def remote_next(label):
  target=find(label)
