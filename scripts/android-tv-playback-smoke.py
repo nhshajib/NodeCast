@@ -118,7 +118,7 @@ def main():
   text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Native Guide Match',timeout=45)
   OUT.joinpath('emulator-tv-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back');click('Settings');click('Appearance');click('dark appearance');click('Back');click('Family controls')
-  text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);text('Find category to protect','Smoke');find('Lock protected content now',timeout=30)
+  text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);text('Find category to protect','Smoke');find('Lock protected content now',timeout=30,scroll=True)
   click('Protect Smoke test');click('Lock protected content now');click('Back');click('Live TV')
   assert not any('Play Example Live Test' in (n.get('content-desc') or '') for n in dump().iter('node'))
   adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity');time.sleep(6)
