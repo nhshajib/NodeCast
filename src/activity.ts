@@ -1,12 +1,12 @@
 import type { Media } from './provider';
-export type MediaSummary = Pick<Media, 'id' | 'name' | 'group' | 'kind' | 'streamId' | 'containerExtension' | 'description' | 'rating' | 'seriesId'>;
+export type MediaSummary = Pick<Media, 'id' | 'name' | 'group' | 'kind' | 'streamId' | 'containerExtension' | 'description' | 'rating' | 'seriesId' | 'epgId' | 'accessGroup'>;
 export type ViewingEntry = { item: MediaSummary; position: number; duration: number; lastPlayedAt: string; completed: boolean; watchedOverride?: boolean };
 export type PlaybackSnapshot = { position: number; duration: number; ended?: boolean };
 export function summarizeMedia(item: Media): MediaSummary {
   // Explicit allowlist. URLs, artwork URLs, and provider credentials never enter history/catalog storage.
   const text = (value: unknown, limit = 12000) => typeof value === 'string' ? value.slice(0, limit) : undefined;
   return { id: text(item.id, 300) || '', name: text(item.name, 500) || 'Unnamed title', group: text(item.group, 300) || 'Uncategorized',
-    kind: item.kind, streamId: text(item.streamId, 100), containerExtension: text(item.containerExtension, 10), description: text(item.description), rating: text(item.rating, 20), seriesId: text(item.seriesId, 300) };
+    kind: item.kind, streamId: text(item.streamId, 100), containerExtension: text(item.containerExtension, 10), description: text(item.description), rating: text(item.rating, 20), seriesId: text(item.seriesId, 300), epgId: text(item.epgId, 300), accessGroup: text(item.accessGroup, 300) };
 }
 // Keep ordinary recents small, retaining up to 2,000 older episode states for series continuity.
 function boundViewing(entries: ViewingEntry[]): ViewingEntry[] {

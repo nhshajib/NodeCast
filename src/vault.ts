@@ -1,7 +1,9 @@
+import { safeHeaders } from './libraryPreferences.ts';
+import type { LibraryPreferences } from './libraryPreferences.ts';
 import type { ChannelPlayback } from './viewingPreferences';
 import type { Provider } from './provider';
 
-export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; channelPlayback?: Record<string, ChannelPlayback>; liveFormat?: 'auto' | 'hls' | 'ts'; liveEngine?: 'auto' | 'native' | 'vlc'; tracks?: { audio?: string; subtitles?: string } };
+export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; library?: LibraryPreferences; restrictedGroups?: string[]; guide?: { url: string; mapping?: Record<string, string> }; displayFit?: 'contain' | 'cover'; channelPlayback?: Record<string, ChannelPlayback>; liveFormat?: 'auto' | 'hls' | 'ts'; liveEngine?: 'auto' | 'native' | 'vlc'; tracks?: { audio?: string; subtitles?: string } };
 export type Vault = { version: 2; activeId: string | null; profiles: Profile[] };
 export const emptyVault = (): Vault => ({ version: 2, activeId: null, profiles: [] });
 export function validateVault(value: unknown): Vault {
@@ -26,6 +28,13 @@ export function validateVault(value: unknown): Vault {
           choice.format !== undefined && !['auto', 'hls', 'ts'].includes(choice.format)) throw new Error('Invalid channel playback choice.');
       }
     }
+    safeHeaders(p.provider.headers);
+    if (p.provider.localText !== undefined && (p.provider.kind !== 'm3u' || typeof p.provider.localText !== 'string' || p.provider.localText.length > 400000)) throw new Error('Imported playlist is too large for secure storage. Use a URL for larger playlists.');
+    if (p.library?.sort && Object.entries(p.library.sort).some(([key, value]) => !['live', 'movies', 'series'].includes(key) || !['provider', 'az', 'za'].includes(value!))) throw new Error('Invalid sort order.');
+    if (p.library?.refreshMinutes !== undefined && ![30,60,360,1440].includes(p.library.refreshMinutes)) throw new Error('Invalid refresh interval.');
+    if (p.restrictedGroups && (!Array.isArray(p.restrictedGroups) || p.restrictedGroups.some(group => typeof group !== 'string'))) throw new Error('Invalid restricted categories.');
+    if (p.displayFit !== undefined && !['contain', 'cover'].includes(p.displayFit)) throw new Error('Invalid display fit.');
+    if (p.guide && (typeof p.guide.url !== 'string' || p.guide.url.length > 4000 || p.guide.mapping && (typeof p.guide.mapping !== 'object' || Object.entries(p.guide.mapping).some(([key,value]) => key.length > 300 || typeof value !== 'string' || value.length > 300)))) throw new Error('Invalid guide settings.');
     ids.add(p.id);
   }
   if (v.activeId !== null && !ids.has(v.activeId)) throw new Error('Invalid active profile.');

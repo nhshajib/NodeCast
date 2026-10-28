@@ -1,3 +1,4 @@
+import {strToU8} from 'fflate';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Media, Provider, Section } from './provider';
 import { restoreCatalog, serializeCatalog } from './catalog';
@@ -29,6 +30,12 @@ export function writeViewing(profile: string, entries: ViewingEntry[]): Promise<
 export async function clearProfileData(profile: string) {
   await (queues.get(profile) || Promise.resolve());
   await clearCatalog(profile);
+  const { clearGuide }=await import('./guideStore');await clearGuide(profile);
   await AsyncStorage.removeItem(key(profile, 'viewing'));
   queues.delete(profile);
+}
+
+export async function cacheSize(profile: string): Promise<number> {
+  const rows = await AsyncStorage.multiGet(['live','movies','series'].map(section => key(profile, section)));
+  return rows.reduce((sum, [, value]) => sum + (value ? strToU8(value).length : 0), 0);
 }

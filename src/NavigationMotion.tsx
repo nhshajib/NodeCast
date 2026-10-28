@@ -1,3 +1,4 @@
+import { themedStyles, useThemeChoice, isDarkTheme } from './theme';
 import React, { createContext, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, Icon } from './ui';
@@ -81,10 +82,10 @@ export function useRetainedModal<T>(route: T | null) {
   }, [route, retained]);
   return { displayed: route ?? retained, onDismiss: () => { if (route === null) setRetained(null); } };
 }
-const n = StyleSheet.create({
+const n = themedStyles(() => ({
   scene: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.bg },
   bar: { position: 'absolute', left: 20, right: 20, flexDirection: 'row', backgroundColor: '#111', borderRadius: 30, paddingVertical: 9, paddingHorizontal: 7, shadowColor: '#090124', shadowOpacity: .13, shadowRadius: 18, shadowOffset: { width: 0, height: 7 } },
   indicator: { position: 'absolute', top: 9, width: 46, height: 29, borderRadius: 19, backgroundColor: '#B9B4F2' },
   tab: { flex: 1, alignItems: 'center', gap: 4, minHeight: 48, justifyContent: 'center' },
   icon: { width: 46, height: 29, alignItems: 'center', justifyContent: 'center' },
-});
+}));

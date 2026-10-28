@@ -16,7 +16,7 @@ export function restoreCatalog(value: unknown, provider: Provider): { savedAt: s
   return { savedAt: raw.savedAt, items };
 }
 export function hydrateMedia(item: MediaSummary, provider: Provider): Media {
-  const result: Media = { ...item };
+  const result: Media = { ...item, ...(provider.headers ? { headers: provider.headers } : {}) };
   if (provider.kind === 'xtream' && item.streamId && /^\d+$/.test(item.streamId) && (item.kind !== 'series' || item.id.startsWith('episode:'))) {
     result.url = streamURL(provider, item.kind === 'live' ? 'live' : item.kind === 'movies' ? 'movie' : 'series', item.streamId,
       item.kind === 'live' ? 'm3u8' : /^[a-z\d]+$/i.test(item.containerExtension || '') ? item.containerExtension! : 'mp4');

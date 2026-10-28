@@ -11,3 +11,5 @@ import './android.test.mjs';
 import './episodes.test.mjs';
 
 import './everyday.test.mjs';
+
+import './roadmap.test.mjs';

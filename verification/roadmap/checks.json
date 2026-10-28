@@ -1,0 +1,38 @@
+{
+  "mobile": {
+    "passed": [
+      "Dark theme selectable",
+      "Sort setting",
+      "XMLTV import",
+      "Programme search",
+      "VOD speed",
+      "Fit/Fill",
+      "Sleep deadline",
+      "Same mini-player video element",
+      "PIN setup and protected category excluded",
+      "Wrong PIN rejected, correct PIN restores access",
+      "Background relocks protection",
+      "Sleep expiry closes playback",
+      "Local M3U import; no token in browser metadata"
+    ],
+    "errors": []
+  },
+  "tv": {
+    "passed": [
+      "Dark theme selectable",
+      "Sort setting",
+      "XMLTV import",
+      "Programme search",
+      "VOD speed",
+      "Fit/Fill",
+      "Sleep deadline",
+      "Same mini-player video element",
+      "PIN setup and protected category excluded",
+      "Wrong PIN rejected, correct PIN restores access",
+      "Background relocks protection",
+      "Sleep expiry closes playback",
+      "Local M3U import; no token in browser metadata"
+    ],
+    "errors": []
+  }
+}

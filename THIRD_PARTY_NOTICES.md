@@ -49,3 +49,14 @@ The cream TV mascot in this app is an original native-view illustration. The sup
 ## Embedded LibVLC integration
 
 expo-libvlc-player 58.0.0 by David Cornejo is MIT licensed. Source/license: https://github.com/cornejobarraza/expo-libvlc-player . Its wrapper license is reproduced in assets/licenses/expo-libvlc-player-MIT.txt. Native builds pull VideoLAN VLCKit/LibVLC separately (iOS podspec currently VLCKit 4.0.0a25). Retain applicable native component licenses/notices in distributions; see https://code.videolan.org/videolan/VLCKit and https://www.videolan.org/legal.html . This integration is not endorsed by VideoLAN. No VLC logo/trademark artwork is added.
+
+## Local guide, file import and family controls
+
+- @noble/hashes 2.4.0: MIT. License: `assets/licenses/noble-hashes.txt`.
+- saxes 6.0.0: ISC. License: `assets/licenses/saxes.txt`.
+- fflate 0.8.3: MIT. License: `assets/licenses/fflate.txt`.
+- expo-crypto 58.0.7: MIT. License: `assets/licenses/expo-crypto.txt`.
+- expo-document-picker 58.0.4: MIT. License: `assets/licenses/expo-document-picker.txt`.
+- expo-file-system 58.0.12: MIT. License: `assets/licenses/expo-file-system.txt`.
+- expo-sqlite 58.0.14: MIT. License: `assets/licenses/expo-sqlite.txt`.
+- expo-system-ui 58.0.7: MIT. License: `assets/licenses/expo-system-ui.txt`.

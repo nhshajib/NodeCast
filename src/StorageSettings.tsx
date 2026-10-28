@@ -1,0 +1,10 @@
+import React, { useEffect, useState } from 'react';
+import { Alert, ScrollView, Text } from 'react-native';
+import type { Profile } from './vault';
+import { cacheSize, clearCatalog } from './libraryStore';
+import { Button, Notice, u } from './ui';
+export default function StorageSettings({ profile, onClearHistory, onCleared }: { profile: Profile | null; onClearHistory: () => void; onCleared: () => void }) {
+  const [size, setSize] = useState<number | null>(null); const [message, setMessage] = useState(''); const [busy,setBusy]=useState(false);
+  useEffect(() => { let alive=true;if(profile)void cacheSize(profile.id).then(value=>{if(alive)setSize(value)}).catch(()=>{});return()=>{alive=false}; },[profile?.id]);
+  return <ScrollView contentContainerStyle={u.content}><Text style={u.h1}>Library & storage</Text><Text style={u.body}>Cached library: {size === null ? 'Not measured' : `${(size/1048576).toFixed(1)} MB`}</Text><Text style={u.small}>Library metadata only. Guide storage is managed separately. Clearing this cache keeps profiles, passwords, favorites and episode progress.</Text><Button title="Clear library cache" variant="secondary" busy={busy} disabled={!profile} onPress={()=>Alert.alert('Clear cached library?','Saved profiles and viewing progress will stay. Your provider will be contacted next time you refresh.',[{text:'Cancel',style:'cancel'},{text:'Clear cache',onPress:()=>{if(!profile)return;setBusy(true);void clearCatalog(profile.id).then(()=>{setSize(0);setMessage('Cached library removed.');onCleared()}).catch(()=>setMessage('Could not clear the cache.')).finally(()=>setBusy(false))}}])}/><Button title="Clear viewing history" variant="secondary" onPress={()=>Alert.alert('Clear viewing history?','This removes recent viewing, episode progress and watched marks for this profile. Favorites and server details stay.',[{text:'Cancel',style:'cancel'},{text:'Clear history',style:'destructive',onPress:onClearHistory}])}/>{!!message&&<Notice>{message}</Notice>}</ScrollView>;
+}

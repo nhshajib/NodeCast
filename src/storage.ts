@@ -35,13 +35,13 @@ export function saveVault(vault: Vault): Promise<void> {
   writes = write.catch(() => {});
   return write;
 }
-export type Preferences = { onboarded: boolean; player: PlayerChoice; baseline: { ip: string; savedAt: string } | null; homeIPSetup?: 'saved' | 'skipped' };
+export type Preferences = { onboarded: boolean; player: PlayerChoice; baseline: { ip: string; savedAt: string } | null; theme?: 'light' | 'dark' | 'system'; homeIPSetup?: 'saved' | 'skipped' };
 const defaults: Preferences = { onboarded: false, player: 'internal', baseline: null };
 export async function loadPreferences(): Promise<Preferences> {
   const raw = await AsyncStorage.getItem('nodecast.preferences.v2');
   if (!raw) return { ...defaults };
   const value = JSON.parse(raw);
-  return { onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
+  return { theme: ['light','dark','system'].includes(value.theme) ? value.theme : 'light', onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
     baseline: value.baseline && isIP(value.baseline.ip) && typeof value.baseline.savedAt === 'string' ? value.baseline : null,
     homeIPSetup: value.homeIPSetup === 'saved' || value.homeIPSetup === 'skipped' ? value.homeIPSetup : undefined };
 }
@@ -52,3 +52,5 @@ export function savePreferences(preferences: Preferences): Promise<void> {
   preferenceWrites = write.catch(() => {});
   return write;
 }
+
+export const privateStore = store;

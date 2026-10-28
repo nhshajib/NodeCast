@@ -14,7 +14,7 @@ def find(label, timeout=15, scroll=False):
  while time.monotonic()<end:
   root=dump()
   nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
-  if label in ['Profile name','Server address','Username','Password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
+  if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:n.get('clickable')!='true')
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
@@ -59,16 +59,22 @@ def remote_next(label):
 
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
+ counts={'guide':0,'ts':0}
+ stamp=lambda value:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(value))
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def do_GET(self):
+   if self.path.split('?')[0].endswith('/guide.xml'):
+    counts['guide']+=1;now=time.time()
+    body=f'<tv><channel id="native-test"><display-name>Native guide channel</display-name></channel><programme channel="native-test" start="{stamp(now-120)}" stop="{stamp(now+3600)}"><title>Native Guide Match</title><desc>Synthetic programme for SQLite verification.</desc></programme></tv>'.encode()
+    self.send_response(200);self.send_header('Content-Type','application/xml');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body);return
    if self.path.split('?')[0].endswith('.mp4'):
     body=Path('tests/fixtures/android-episode-test.mp4').read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp4');self.send_header('Content-Length',str(len(body)));self.end_headers()
     try:self.wfile.write(body)
     except (BrokenPipeError,ConnectionResetError):pass
     return
    if self.path.split('?')[0].endswith('.ts'):
-    body=video.read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp2t');self.send_header('Content-Length',str(len(body)));self.end_headers()
+    counts['ts']+=1;body=video.read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp2t');self.send_header('Content-Length',str(len(body)));self.end_headers()
     try:self.wfile.write(body)
     except (BrokenPipeError,ConnectionResetError):pass
     return
@@ -76,7 +82,7 @@ def main():
    elif 'get_series_categories' in self.path:value=[{'category_id':'1','category_name':'Example series'}]
    elif 'get_series' in self.path:value=[{'series_id':77,'name':'Sample Series','category_id':'1'}]
    elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]
-   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1'}]
+   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test'}]
    elif 'action=' in self.path:value=[]
    else:value={'user_info':{'auth':1,'status':'Active'}}
    body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
@@ -93,6 +99,9 @@ def main():
   find('Pause live TV',timeout=35)
   OUT.joinpath('emulator-tv-live-test.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-live-test.xml').write_text(ET.tostring(dump(),encoding='unicode'))
+  before=counts['ts'];click('Player options');click('Watch while browsing');find('Return to video')
+  OUT.joinpath('emulator-tv-mini-player.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  click('Return to video');find('Pause live TV');assert counts['ts']==before,'Minimizing opened another live stream'
   adb('shell','input','keyevent','4');find('Play Example Live Test')
   click('Series');click('Open Sample Series');click('Episode One')
   video_ready()
@@ -105,7 +114,20 @@ def main():
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   adb('shell','input','keyevent','4');find('Play Final Episode')
   adb('shell','input','keyevent','4');find('Open Sample Series')
-  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
+  click('Live TV');click('TV guide');click('Add full TV guide')
+  text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Native Guide Match',timeout=45)
+  OUT.joinpath('emulator-tv-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  click('Back');click('Settings');click('Appearance');click('dark appearance');click('Back');click('Family controls')
+  text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);text('Find category to protect','Smoke');find('Lock protected content now',timeout=30)
+  click('Protect Smoke test');click('Lock protected content now');click('Back');click('Live TV')
+  assert not any('Play Example Live Test' in (n.get('content-desc') or '') for n in dump().iter('node'))
+  adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity');time.sleep(6)
+  root=dump()
+  if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in root.iter('node')):adb('shell','input','keyevent','4')
+  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=30);click('Back');click('Live TV');find('Play Example Live Test')
+  click('TV guide');find('Native Guide Match',timeout=30);assert counts['guide']==1,'Saved guide was not reused after process restart'
+  OUT.joinpath('emulator-tv-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
  except Exception:
   OUT.joinpath('emulator-tv-playback-failure.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))

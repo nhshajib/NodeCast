@@ -1,9 +1,10 @@
-export type Provider = { kind: 'xtream' | 'm3u'; name: string; address: string; username: string; password: string };
+import { safeHeaders } from './libraryPreferences.ts';
+export type Provider = { kind: 'xtream' | 'm3u'; headers?: Record<string, string>; localText?: string; name: string; address: string; username: string; password: string };
 export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
   playbackURLs?: string[]; externalURL?: string; headers?: Record<string, string>;
-  seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
+  accessGroup?: string; epgId?: string; seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
 export class ProviderError extends Error {
   status?: number;
@@ -22,6 +23,13 @@ function artwork(value: unknown, base?: string): string | undefined {
   try { return httpURL(value, base); } catch { return; }
 }
 export function normalizeProvider(provider: Provider): Provider {
+  safeHeaders(provider.headers);
+  if (provider.localText !== undefined) {
+    if (provider.kind !== 'm3u' || typeof provider.localText !== 'string' || provider.localText.length > 400000) throw new ProviderError('Local playlist is too large. Use a playlist link instead.');
+    if(provider.localText.split(/\r\n|\r|\n/).some(line=>line.trim()&&!line.trim().startsWith('#')&&!/^https?:\/\//i.test(line.trim())))throw new ProviderError('Local files need complete HTTP/HTTPS stream URLs. Use a playlist URL for relative paths.');
+    parseM3U(provider.localText, 'https://import.invalid/');
+    return { ...provider, address:'https://import.invalid/', name: provider.name.trim() || 'Imported playlist' };
+  }
   const address = new URL(httpURL(provider.address));
   if (provider.kind === 'xtream') {
     if (!provider.username.trim() || !provider.password) throw new ProviderError('Enter your provider username and password.');
@@ -86,7 +94,7 @@ export function parseM3U(text: string, base: string): Media[] {
         const url = httpURL(line, base);
         const kind: Section = /\.(mp4|mkv|mov|avi|m4v)(\?|$)/i.test(url) ? 'movies' : 'live';
         items.push({ id: `m3u:${opaqueID(url)}`, name: metadata?.name || 'Unnamed stream',
-          group: groupOverride || metadata?.group || 'Uncategorized', logo: metadata?.logo, url, kind, ...(Object.keys(streamHeaders).length ? { headers: { ...streamHeaders } } : {}) });
+          group: groupOverride || metadata?.group || 'Uncategorized', epgId: metadata?.id, logo: metadata?.logo, url, kind, ...(Object.keys(streamHeaders).length ? { headers: { ...streamHeaders } } : {}) });
       } catch { /* Non-HTTP media is unsupported by the native player. */ }
       metadata = undefined; groupOverride = undefined; streamHeaders = {};
     }
@@ -100,14 +108,14 @@ const asRows = (value: unknown): Row[] => {
   if (!Array.isArray(value)) throw new ProviderError('The provider returned an unexpected library response.');
   return value.filter((item): item is Row => !!item && typeof item === 'object' && !Array.isArray(item));
 };
-async function request(url: string, signal?: AbortSignal, format: 'json' | 'text' = 'json', timeoutMs = 30000): Promise<any> {
+async function request(url: string, signal?: AbortSignal, format: 'json' | 'text' = 'json', timeoutMs = 30000, headers?: Record<string, string>): Promise<any> {
   const timeout = new AbortController();
   const abort = () => timeout.abort();
   if (signal?.aborted) timeout.abort();
   else signal?.addEventListener('abort', abort, { once: true });
   const timer = setTimeout(abort, timeoutMs);
   try {
-    const response = await fetch(url, { signal: timeout.signal });
+    const response = await fetch(url, { signal: timeout.signal, headers: safeHeaders(headers) });
     if (!response.ok) throw new ProviderError(`The provider returned HTTP ${response.status}. Check your connection details.`, response.status);
     return format === 'text' ? await response.text() : await response.json();
   } catch (error) {
@@ -136,24 +144,24 @@ export function streamURL(provider: Provider, type: 'live' | 'movie' | 'series',
 }
 export async function authenticate(provider: Provider, signal?: AbortSignal): Promise<void> {
   if (provider.kind === 'm3u') return;
-  const response = await request(apiURL(provider), signal);
+  const response = await request(apiURL(provider), signal, 'json', 30000, provider.headers);
   if (String(response?.user_info?.auth) !== '1' || String(response?.user_info?.status).toLowerCase() !== 'active') {
     throw new ProviderError('Login rejected or account inactive. Check your username and password.');
   }
 }
 export async function loadLibrary(provider: Provider, section: Section, signal?: AbortSignal): Promise<Media[]> {
   if (provider.kind === 'm3u') {
-    const playlist = await loadM3U(provider.address, signal);
+    const playlist = provider.localText !== undefined ? { text: provider.localText, base: provider.address } : await loadM3U(provider.address, signal, provider.headers);
     const items = parseM3U(playlist.text, playlist.base);
     if (!items.length) throw new ProviderError('No supported HTTP streams were found in this playlist.');
-    return items;
+    return items.map(item => ({ ...item, logo:provider.localText&&item.logo?.startsWith('https://import.invalid/')?undefined:item.logo, headers: { ...safeHeaders(provider.headers), ...item.headers } }));
   }
   const prefix = section === 'movies' ? 'vod' : section;
   const action = section === 'series' ? 'get_series' : `get_${prefix}_streams`;
   const [rawCategories, rawStreams] = await Promise.all([
     // Category lookup is optional; a category endpoint failure should not hide playable content.
-    request(apiURL(provider, `get_${prefix}_categories`), signal).catch(() => []),
-    request(apiURL(provider, action), signal),
+    request(apiURL(provider, `get_${prefix}_categories`), signal, 'json', 30000, provider.headers).catch(() => []),
+    request(apiURL(provider, action), signal, 'json', 30000, provider.headers),
   ]);
   const categories = new Map(asRows(rawCategories).map(row => [String(row.category_id), String(row.category_name || 'Uncategorized')]));
   return asRows(rawStreams).flatMap(row => {
@@ -161,7 +169,7 @@ export async function loadLibrary(provider: Provider, section: Section, signal?:
     if (id == null || typeof row.name !== 'string') return [];
     const ext = typeof row.container_extension === 'string' && /^[a-z\d]+$/i.test(row.container_extension) ? row.container_extension : 'mp4';
     return [{ id: `${section}:${id}`, name: row.name, group: categories.get(String(row.category_id)) || 'Uncategorized',
-      logo: artwork(row.stream_icon || row.cover), kind: section, streamId: String(id),
+      epgId: typeof row.epg_channel_id === 'string' ? row.epg_channel_id : undefined, headers: safeHeaders(provider.headers), logo: artwork(row.stream_icon || row.cover), kind: section, streamId: String(id),
       description: typeof row.plot === 'string' ? row.plot : undefined,
       rating: row.rating ? String(row.rating) : undefined, containerExtension: section === 'live' ? 'm3u8' : ext,
       url: section === 'series' ? undefined : section === 'live' && artwork(row.direct_source) ? artwork(row.direct_source) : streamURL(provider, section === 'live' ? 'live' : 'movie', String(id), section === 'live' ? 'm3u8' : ext),
@@ -169,33 +177,33 @@ export async function loadLibrary(provider: Provider, section: Section, signal?:
   });
 }
 export async function loadEpisodes(provider: Provider, series: Media, signal?: AbortSignal): Promise<Media[]> {
-  const response = await request(apiURL(provider, 'get_series_info', { series_id: series.streamId || '' }), signal);
+  const response = await request(apiURL(provider, 'get_series_info', { series_id: series.streamId || '' }), signal, 'json', 30000, provider.headers);
   if (!response?.episodes || typeof response.episodes !== 'object') throw new ProviderError('No episodes were returned for this series.');
   return Object.entries(response.episodes).sort(([a], [b]) => Number(a) - Number(b)).flatMap(([season, episodes]) =>
     asRows(episodes).sort((a,b) => Number(a.episode_num) - Number(b.episode_num)).flatMap(row => {
       if (row.id == null) return [];
       const ext = typeof row.container_extension === 'string' && /^[a-z\d]+$/i.test(row.container_extension) ? row.container_extension : 'mp4';
       return [{ id: `episode:${row.id}`, name: String(row.title || `Episode ${row.episode_num || ''}`), group: `Season ${season}`,
-        seriesId: series.id, logo: series.logo, kind: 'series' as const, streamId: String(row.id), containerExtension: ext, url: streamURL(provider, 'series', String(row.id), ext) }];
+        accessGroup: series.group, headers: safeHeaders(provider.headers), seriesId: series.id, logo: series.logo, kind: 'series' as const, streamId: String(row.id), containerExtension: ext, url: streamURL(provider, 'series', String(row.id), ext) }];
     }));
 }
 
 export async function loadNowNext(provider: Provider, streamId: string, signal?: AbortSignal) {
   if (provider.kind !== 'xtream' || !/^\d+$/.test(streamId)) throw new ProviderError('This profile does not provide Xtream guide data.');
-  const response = await request(apiURL(provider, 'get_short_epg', { stream_id: streamId, limit: '8' }), signal, 'json', 8000);
+  const response = await request(apiURL(provider, 'get_short_epg', { stream_id: streamId, limit: '8' }), signal, 'json', 8000, provider.headers);
   return response?.epg_listings;
 }
 
-export async function loadM3U(address: string, signal?: AbortSignal): Promise<{ text: string; base: string }> {
+export async function loadM3U(address: string, signal?: AbortSignal, headers?: Record<string, string>): Promise<{ text: string; base: string }> {
   const controller = new AbortController();
   const abort = () => controller.abort();
   if (signal?.aborted) controller.abort(); else signal?.addEventListener('abort', abort, { once: true });
   const timer = setTimeout(abort, 30000);
   try {
-    const options: RequestInit = { signal: controller.signal, headers: { Accept: 'application/x-mpegURL, application/vnd.apple.mpegurl, text/plain, */*' } };
+    const options: RequestInit = { signal: controller.signal, headers: { Accept: 'application/x-mpegURL, application/vnd.apple.mpegurl, text/plain, */*', ...safeHeaders(headers) } };
     let response = await fetch(address, options);
     // Some IPTV panels reject a generic mobile HTTP client. Retry only these responses once.
-    if ([403, 405, 406].includes(response.status) && !controller.signal.aborted) response = await fetch(address, { ...options, headers: { ...options.headers, 'User-Agent': 'VLC/3.0.21 LibVLC/3.0.21' } });
+    if ([403, 405, 406].includes(response.status) && !controller.signal.aborted && !headers?.['User-Agent']) response = await fetch(address, { ...options, headers: { ...options.headers, 'User-Agent': 'VLC/3.0.21 LibVLC/3.0.21' } });
     if (!response.ok) throw new ProviderError(response.status === 404
       ? 'The playlist link returned HTTP 404: the playlist endpoint was not found. Check the full M3U link, or connect with Xtream Codes instead.'
       : `The playlist server returned HTTP ${response.status}. Check the playlist link and account access.`, response.status);
@@ -208,4 +216,14 @@ export async function loadM3U(address: string, signal?: AbortSignal): Promise<{ 
     if (error instanceof ProviderError) throw error;
     throw new ProviderError(controller.signal.aborted ? 'The playlist server took too long to respond. Try again.' : 'Could not download the playlist. Check the link, connection, or VPN required by your provider.');
   } finally { clearTimeout(timer); signal?.removeEventListener('abort', abort); }
+}
+
+/** Category-only requests keep family setup light even for large VOD libraries. */
+export async function loadCategoryGroups(provider: Provider, signal?: AbortSignal): Promise<string[]> {
+  if(provider.kind!=='xtream')return[];
+  const results=await Promise.all(['live','vod','series'].map(async prefix=>{
+    const rows=await request(apiURL(provider,`get_${prefix}_categories`),signal,'json',10000,provider.headers);
+    return asRows(rows).flatMap(row=>typeof row.category_name==='string'?[row.category_name.slice(0,300)]:[]);
+  }));
+  return [...new Set(results.flat())].slice(0,10000).sort();
 }

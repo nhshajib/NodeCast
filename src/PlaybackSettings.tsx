@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { Platform, Pressable, ScrollView, Text, View } from 'react-native';
+import { Platform, ScrollView, Text, View } from 'react-native';
 import type { PlayerChoice } from './players';
 import { players } from './players';
 import type { Profile } from './vault';

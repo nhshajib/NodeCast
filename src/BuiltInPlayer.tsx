@@ -1,5 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { BackHandler, ScrollView, Text, TextInput, View } from 'react-native';
+import {isPictureInPictureSupported,VideoAirPlayButton} from 'expo-video';
+import { AppState } from 'react-native';
+import { useSleepTimer } from './PlayerToolsContext';
+import { sleepExpired, speeds, sleepMinutes } from './playerTools';
+import type { DisplayFit } from './playerTools';
+import React, { useEffect, useRef, useState } from 'react';
+import { BackHandler, Platform, ScrollView, Text, TextInput, View } from 'react-native';
 import Player from './Player';
 import CompatibilityPlayer from './CompatibilityPlayer';
 import ChannelPlaybackOptions from './ChannelPlaybackOptions';
@@ -8,11 +13,29 @@ import type { ChannelPlayback, PlaybackInfo } from './viewingPreferences';
 import { hasCompatibilityPlayer } from './nativePlayback';
 import { chooseEngine } from './playbackPolicy';
 import type { LiveEngine } from './playbackPolicy';
-import { Button, u } from './ui';
-type Props = React.ComponentProps<typeof Player> & { liveEngine?: LiveEngine; channelOptions?: ChannelPlayback; onSaveOptions?: (value?: ChannelPlayback) => Promise<void> };
-export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onSaveOptions, ...props }: Props) {
+import { Button, colors, u } from './ui';
+type Props = React.ComponentProps<typeof Player> & { liveEngine?: LiveEngine; channelOptions?: ChannelPlayback; onSaveOptions?: (value?: ChannelPlayback) => Promise<void>; savedFit?: DisplayFit; onFit?: (fit: DisplayFit) => void; onMinimize?: () => void; minimized?: boolean; onRegisterStop?: (stop: () => Promise<void>) => void };
+export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onSaveOptions, savedFit = 'contain', onFit, onMinimize, minimized = false, onRegisterStop, ...props }: Props) {
   const [override, setOverride] = useState<LiveEngine | null>(null);
-  const [panel, setPanel] = useState<'menu' | 'options' | 'info' | null>(null);
+  const [panel, setPanel] = useState<'menu' | 'options' | 'info' | 'tools' | null>(null);
+  const [fit, setFit] = useState<DisplayFit>(savedFit);
+  const [rate, setRate] = useState(1);
+  const sleep = useSleepTimer();
+  const pip=useRef<(()=>Promise<void>)|null>(null);
+  const [capabilityError,setCapabilityError]=useState('');
+  const registerPip=React.useCallback((action:()=>Promise<void>)=>{pip.current=action},[]);
+  const stop = useRef<(() => Promise<void>) | null>(null);
+  const close = useRef(props.onClose); close.current=props.onClose;
+  const stopping = useRef(false);
+  const parentRegister=useRef(onRegisterStop);parentRegister.current=onRegisterStop;
+  const registerStop = React.useCallback((operation: () => Promise<void>) => { stop.current=operation;parentRegister.current?.(operation); },[]);
+  useEffect(() => {
+    if (sleep.deadline === null) return;
+    const expire = () => { if (!sleepExpired(sleep.deadline) || stopping.current) return; stopping.current=true; sleep.clear(); void (stop.current?.() || Promise.resolve()).finally(() => { close.current(); }); };
+    const timer=setTimeout(expire,Math.max(0,sleep.deadline-Date.now()));
+    const sub=AppState.addEventListener('change',state=>{if(state==='active')expire()});
+    return()=>{clearTimeout(timer);sub.remove()};
+  },[sleep.deadline]);
   const [info, setInfo] = useState<PlaybackInfo>({ engine: 'native' });
   const available = hasCompatibilityPlayer();
   // Capture the effective engine at mount: saved options take effect next time, not mid-stream.
@@ -20,8 +43,8 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
   const engine = chooseEngine(props.item.kind, override || initialEngine, available);
   useEffect(() => { if (!panel) return; const listener = BackHandler.addEventListener('hardwareBackPress', () => { setPanel(null); return true; }); return () => listener.remove(); }, [panel]);
   let surface: React.ReactNode;
-  if (engine === 'vlc') surface = <CompatibilityPlayer item={props.item} tracks={props.tracks} onTracks={props.onTracks} onInfo={setInfo} onOptions={() => setPanel('menu')} onProgress={props.onProgress} onClose={props.onClose} onExternal={props.onExternal} fullscreen={props.fullscreen} onFullscreenChange={props.onFullscreenChange || (() => {})} />;
+  if (engine === 'vlc') surface = <CompatibilityPlayer item={props.item} tracks={props.tracks} onTracks={props.onTracks} onInfo={setInfo} displayFit={fit} minimized={minimized} registerStop={registerStop} onOptions={() => setPanel('menu')} onProgress={props.onProgress} onClose={props.onClose} onExternal={props.onExternal} fullscreen={props.fullscreen} onFullscreenChange={props.onFullscreenChange || (() => {})} />;
   else if (engine === 'unavailable') surface = <View style={[u.center, { padding: 24, backgroundColor: '#090124' }]}><Text style={[u.h2, { color: '#fff' }]}>This build needs the VLC engine</Text><Text style={[u.body, { color: '#C4C0CF' }]}>Install a NodeCast standalone build, or choose an external player.</Text><Button title="Choose an external player" onPress={props.onExternal} /><Button title="Back to library" variant="secondary" onPress={props.onClose} /></View>;
-  else surface = <Player {...props} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
-  return <View style={{ flex: 1 }}><View style={{ flex: 1 }} pointerEvents={panel ? 'none' : 'auto'} accessibilityElementsHidden={!!panel} importantForAccessibility={panel ? 'no-hide-descendants' : 'auto'}>{surface}</View>{panel && <View accessibilityViewIsModal style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: '#F7F6FA', paddingTop: 24 }}><View style={{ paddingHorizontal: 20, paddingBottom: 14 }}><Button title="Back to video" variant="secondary" onPress={() => setPanel(null)} /></View>{panel === 'options' && onSaveOptions ? <ChannelPlaybackOptions value={channelOptions} onSave={onSaveOptions} /> : panel === 'info' ? <ScrollView contentContainerStyle={u.content}><Text style={u.h2}>Playback information</Text><Text style={u.body}>Only details reported by this engine are shown. Buffering alone cannot identify a provider or network fault.</Text><TextInput accessibilityLabel="Redacted playback report, select text to copy" multiline editable={false} selectTextOnFocus value={diagnosticReport(info)} style={{ minHeight: 200, padding: 16, borderRadius: 16, backgroundColor: '#fff', color: '#090124', fontSize: 15 }} /><Text style={u.small}>Select the report text to copy. It excludes your server, stream URL, credentials, public IP and location.</Text></ScrollView> : <ScrollView contentContainerStyle={u.content}><Text style={u.h2}>Player options</Text>{props.item.kind === 'live' && onSaveOptions && <Button title="Playback options for this channel" variant="secondary" onPress={() => setPanel('options')} />}<Button title="Playback information" variant="secondary" onPress={() => setPanel('info')} /></ScrollView>}</View>}</View>;
+  else surface = <Player {...props} registerPip={registerPip} minimized={minimized} displayFit={fit} playbackRate={rate} registerStop={registerStop} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
+  return <View style={{ flex: 1 }}><View style={{ flex: 1 }} pointerEvents={panel ? 'none' : 'auto'} accessibilityElementsHidden={!!panel} importantForAccessibility={panel ? 'no-hide-descendants' : 'auto'}>{surface}</View>{panel && <View accessibilityViewIsModal style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.bg, paddingTop: 24 }}><View style={{ paddingHorizontal: 20, paddingBottom: 14 }}><Button title="Back to video" variant="secondary" onPress={() => setPanel(null)} /></View>{panel === 'options' && onSaveOptions ? <ChannelPlaybackOptions value={channelOptions} onSave={onSaveOptions} /> : panel === 'tools' ? <ScrollView contentContainerStyle={u.content}><Text style={u.h2}>Make yourself comfortable</Text><View style={u.card}><Text style={u.label}>Display</Text>{(['contain','cover'] as const).map(value=><Button key={value} title={`${fit===value?'✓ ':''}${value==='contain'?'Fit · show the whole picture':'Fill · crop the edges'}`} variant="secondary" onPress={()=>{setFit(value);onFit?.(value)}} />)}</View>{props.item.kind !== 'live' && <View style={u.card}><Text style={u.label}>Playback speed</Text>{speeds.map(value=><Button key={value} title={`${rate===value?'✓ ':''}${value}× speed`} variant="secondary" onPress={()=>setRate(value)}/>)}</View>}<View style={u.card}><Text style={u.label}>Sleep timer</Text><Text style={u.small}>Stops in-app playback. Picture in Picture is unavailable while a timer is set.</Text><Text style={u.small}>{sleep.deadline ? `Stops at ${new Date(sleep.deadline).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}` : 'Off'}</Text><Button title="Turn sleep timer off" variant="secondary" onPress={sleep.clear}/>{sleepMinutes.map(value=><Button key={value} title={`Stop after ${value} minutes`} variant="secondary" onPress={()=>sleep.setTimer(value)}/>)}</View></ScrollView> : panel === 'info' ? <ScrollView contentContainerStyle={u.content}><Text style={u.h2}>Playback information</Text><Text style={u.body}>Only details reported by this engine are shown. Buffering alone cannot identify a provider or network fault.</Text><TextInput accessibilityLabel="Redacted playback report, select text to copy" multiline editable={false} selectTextOnFocus value={diagnosticReport(info)} style={{ minHeight: 200, padding: 16, borderRadius: 16, backgroundColor: colors.panel, color: colors.text, fontSize: 15 }} /><Text style={u.small}>Select the report text to copy. It excludes your server, stream URL, credentials, public IP and location.</Text></ScrollView> : <ScrollView contentContainerStyle={u.content}><Text style={u.h2}>Player options</Text>{engine==='native'&&!props.television&&Platform.OS!=='web'&&sleep.deadline===null&&isPictureInPictureSupported()&&<Button title="Picture in Picture" variant="secondary" onPress={()=>{void pip.current?.().then(()=>setPanel(null)).catch(()=>setCapabilityError('Picture in Picture is unavailable for this video or device.'))}}/>}{engine==='native'&&Platform.OS==='ios'&&<View style={u.between}><Text style={u.label}>AirPlay</Text><VideoAirPlayButton tint={colors.accent} style={{width:48,height:48}}/></View>}{!!capabilityError&&<Text style={u.errorText}>{capabilityError}</Text>}<Button title="Display, speed & sleep timer" variant="secondary" onPress={()=>setPanel('tools')}/>{onMinimize && <Button title="Watch while browsing" variant="secondary" onPress={()=>{setPanel(null);onMinimize()}}/>}{props.item.kind === 'live' && onSaveOptions && <Button title="Playback options for this channel" variant="secondary" onPress={() => setPanel('options')} />}<Button title="Playback information" variant="secondary" onPress={() => setPanel('info')} /></ScrollView>}</View>}</View>;
 }

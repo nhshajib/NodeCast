@@ -1,5 +1,15 @@
-export const appVersion = '0.5.0';
+export const appVersion = '0.6.0';
 export const releases = [
+  { version: '0.6.0', date: 'October 28, 2026', title: 'More control. The same calm space.', changes: [
+    'Per-profile sorting, refresh policies, TV library organization and recently watched filtering.',
+    'Fit/Fill, VOD speed and an in-app sleep timer in the player menu.',
+    'Watch while browsing keeps the same player mounted. Supported native videos offer PiP and iOS AirPlay.',
+    'Local M3U import, advanced request headers and separate cache/history controls.',
+    'Full XMLTV/gzip schedules with channel mapping, programme search and synchronized TV timelines.',
+    'Light, Dark and Follow device appearance, with the original palette retained.',
+    'Optional six-digit family PIN, protected categories across browsing and playback, and destructive recovery that clears saved profiles.',
+    'No account or cloud sync. Chromecast, multiview and portal/QR pairing remain separate future work.',
+  ] },
   { version: '0.5.0', date: 'October 27, 2026', title: 'Your place, remembered.', changes: [
     'Search keeps your category, with visible scope and an explicit option to include hidden categories.',
     'Library browsing state stays separate for each profile. TV refresh keeps saved titles and filters available.',

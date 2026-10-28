@@ -2,10 +2,10 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.5.0",
+    "version": "0.6.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
@@ -35,7 +35,13 @@
     },
     "plugins": [
       "expo-secure-store",
-      "expo-video",
+      [
+        "expo-video",
+        {
+          "supportsPictureInPicture": true,
+          "supportsBackgroundPlayback": false
+        }
+      ],
       "expo-dev-client",
       [
         "expo-libvlc-player",
