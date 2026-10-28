@@ -125,13 +125,21 @@ def main():
   text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Native Guide Match',timeout=45,scroll=True)
   OUT.joinpath('emulator-tv-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back');click('Settings');click('Appearance');click('dark appearance');click('Back');click('Family controls')
-  text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);text('Find category to protect','Smoke');find('Lock protected content now',timeout=30,scroll=True)
+  text('New six-digit PIN','123456');text('Confirm PIN','123456');pin_started=time.monotonic();click('Set family PIN',True)
+  # Hermes crypto can take longer on a busy video emulator. Wait for completion,
+  # including offscreen content, before moving the search field into view.
+  while time.monotonic()-pin_started<90:
+   if any(n.get('content-desc')=='Find category to protect' for n in dump().iter('node')):break
+   time.sleep(.5)
+  else:raise RuntimeError('Family PIN setup did not finish within 90 seconds')
+  print(f'Native TV PIN setup completed in {time.monotonic()-pin_started:.1f}s',flush=True)
+  text('Find category to protect','Smoke');find('Lock protected content now',timeout=30,scroll=True)
   click('Protect Smoke test');click('Lock protected content now');click('Back');click('Live TV')
   assert not any('Play Example Live Test' in (n.get('content-desc') or '') for n in dump().iter('node'))
   adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity');time.sleep(6)
   root=dump()
   if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in root.iter('node')):adb('shell','input','keyevent','4')
-  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=30);click('Back');click('Live TV');find('Play Example Live Test')
+  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=90);click('Back');click('Live TV');find('Play Example Live Test')
   click('TV guide');find('Native Guide Match',timeout=30,scroll=True);assert counts['guide']==1,'Saved guide was not reused after process restart'
   OUT.joinpath('emulator-tv-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
