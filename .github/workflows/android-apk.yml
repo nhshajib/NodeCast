@@ -90,6 +90,6 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           TAG="android-v${VERSION}"
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "NodeCast ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
+            gh release create "$TAG" --target "$GITHUB_SHA" --draft --prerelease --title "NodeCast ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
           fi
           gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 --clobber

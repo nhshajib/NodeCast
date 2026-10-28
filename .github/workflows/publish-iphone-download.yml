@@ -1,6 +1,16 @@
-name: Publish existing iPhone IPA download
+name: Publish verified iPhone IPA download
 on:
   workflow_dispatch:
+    inputs:
+      build_run:
+        description: Successful iPhone build run ID
+        required: true
+      source_sha:
+        description: Full source commit built by that run
+        required: true
+      expected_sha256:
+        description: IPA SHA-256 reported by the successful packaging step
+        required: true
 permissions:
   contents: write
   actions: read
@@ -9,27 +19,55 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+      - name: Verify build provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN: ${{ inputs.build_run }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN" > /tmp/build-run.json
+          python3 - <<'PY'
+          import json, os, re
+          run = json.load(open('/tmp/build-run.json'))
+          assert re.fullmatch(r'[0-9a-f]{40}', os.environ['SOURCE_SHA'])
+          assert run['head_sha'] == os.environ['SOURCE_SHA']
+          assert run['conclusion'] == 'success'
+          assert run['path'] == '.github/workflows/ios-sideload.yml'
+          PY
       - uses: actions/download-artifact@v4
         with:
           name: NodeCast-iPhone-IPA
           path: existing-ipa
-          run-id: 40437282300
+          run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
-      - name: Verify archived IPA and publish download
+      - name: Verify archived IPA and upload to existing draft
         env:
           GH_TOKEN: ${{ github.token }}
+          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import hashlib, zipfile
+          import hashlib, json, os, plistlib, re, zipfile
           from pathlib import Path
-          ipa = next(Path('existing-ipa').rglob('NodeCast-0.3.0-unsigned.ipa'))
+          version = json.loads(Path('package.json').read_text())['version']
+          assert re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version)
+          ipa = next(Path('existing-ipa').rglob(f'NodeCast-{version}-unsigned.ipa'))
           digest = hashlib.sha256(ipa.read_bytes()).hexdigest()
-          assert digest == '45af08453ae8e9faaad9cb994b0c6737c75e77f38dba1e38c99f2076c01e36d4'
+          assert digest == os.environ['EXPECTED_SHA256']
           with zipfile.ZipFile(ipa) as archive:
               assert archive.testzip() is None
-              assert any(name.endswith('/main.jsbundle') for name in archive.namelist())
+              assert 'Payload/NodeCast.app/main.jsbundle' in archive.namelist()
+              info = plistlib.loads(archive.read('Payload/NodeCast.app/Info.plist'))
+              assert info['CFBundleShortVersionString'] == version
+              assert info['CFBundleIdentifier'] == 'com.nhshajib.nodecast'
+              assert info['DTPlatformName'] == 'iphoneos'
           Path('existing-ipa/SHA256SUMS.txt').write_text(f'{digest}  {ipa.name}\n')
+          print(json.dumps({'version': version, 'sha256': digest, 'bytes': ipa.stat().st_size}))
           PY
-          IPA=$(find existing-ipa -name 'NodeCast-0.3.0-unsigned.ipa' -print -quit)
-          gh release upload ios-v0.3.0 "$IPA" existing-ipa/SHA256SUMS.txt --clobber
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="ios-v${VERSION}"
+          test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
+          gh release upload "$TAG" "existing-ipa/NodeCast-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber

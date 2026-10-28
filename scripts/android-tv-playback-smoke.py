@@ -87,6 +87,7 @@ def main():
   remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');find('Pause video',timeout=35)
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  adb('shell','input','keyevent','4');find('Play Final Episode')
   adb('shell','input','keyevent','4');find('Open Sample Series')
   OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
