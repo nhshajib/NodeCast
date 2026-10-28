@@ -4,7 +4,7 @@ This workflow makes an **unsigned physical-iPhone Release IPA**, with embedded J
 
 ## Current download
 
-[Download NodeCast 0.3.0 IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) · [iPhone product page, versions and changelog](../iphone/README.md)
+[Download NodeCast 0.5.0 IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.5.0/NodeCast-0.5.0-unsigned.ipa) · [iPhone product page, versions and changelog](../iphone/README.md)
 
 The release download is a permanent copy of the verified IPA. Sign into GitHub with repository access before downloading.
 

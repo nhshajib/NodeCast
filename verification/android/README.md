@@ -21,3 +21,9 @@ The first TV episode build exposed `The current activity is no longer available`
 `native-*.png` screenshots are from Android API 35 x86-64 emulators: Pixel 2 hardware profile for mobile, TV 1080p hardware profile with the Google APIs system image for TV. `tv-*.png` files without the native prefix are browser fixtures. All IPTV credentials and videos used by the tests are synthetic; no customer server was contacted.
 
 Physical Android phones/TVs, real-provider streams, hardware codecs and device-specific focus behavior still need user testing. These APKs use the standard Android test key. Configure private signing before store distribution. Install updates over the existing app to retain local profiles.
+
+## 0.5.0 published binaries · October 28, 2026
+
+Both new APKs passed signature/bundle checks and three repeated cold starts without Metro. The exact TV APK passed synthetic Xtream import, native VLC MPEG-TS playback, native MP4 episode playback, D-pad/Select Next episode across seasons, final-episode handling and Back navigation. The native test recognizes a completed decoded sample when UIAutomator waits for the short clip to finish. No app-binary change was needed for that test adjustment.
+
+[Build and check records](native-0.5.0-builds.json) · [TV results](native-tv-checks-0.5.0.json) · [Mobile startup](native-mobile-0.5.0.png) · [TV Next episode](native-tv-next-0.5.0.png). The 0.5.0 IPA also passed native compilation and physical-device bundle validation; this is not a real-iPhone playback test. Physical hardware, native language-track combinations and real-provider streams still need testing.

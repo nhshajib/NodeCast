@@ -2,7 +2,17 @@
 
 [← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.3.0 · October 26, 2026 · Current IPA
+## 0.5.0 · October 28, 2026 · Current download
+
+- Verified physical-iPhone arm64 build, embedded JavaScript/VLC, archive integrity and SHA-256; physical-phone playback remains to be tested.
+- Explicit search scopes and category retention, with profile-specific browsing context.
+- Per-channel player, engine and live-format choices; redacted player information.
+- Seasons, watched marks and Continue series; Next episode on mobile and TV.
+- Remembered VLC track choices and clearer unavailable-language feedback.
+- Local profiles remain account-free. Install over the existing app with the same signing identity.
+
+
+## 0.3.0 · October 26, 2026
 
 - Short tab transitions with a sliding lavender indicator and immediate press feedback.
 - Visited tabs stay mounted, preserving Home / Settings scroll positions.

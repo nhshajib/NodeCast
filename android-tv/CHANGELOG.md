@@ -2,7 +2,18 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.4.0 · October 27, 2026 · Current TV APK
+## 0.5.0 · October 28, 2026 · Current download
+
+- Signed release validated and repeated native emulator cold starts passed.
+- Native VLC and MP4 playback, cross-season Next episode, D-pad/Select and Back checks passed on the emulator.
+- Explicit search scopes and category retention, with profile-specific browsing context.
+- Per-channel player, engine and live-format choices; redacted player information.
+- Seasons, watched marks and Continue series; Next episode on mobile and TV.
+- Remembered VLC track choices and clearer unavailable-language feedback.
+- Local profiles remain account-free. Install over the existing app with the same signing identity.
+
+
+## 0.4.0 · October 27, 2026
 
 - Dedicated landscape interface with a sidebar, three-column library and visible remote focus.
 - Xtream Codes / M3U connections, local profiles, categories, search and favorites.

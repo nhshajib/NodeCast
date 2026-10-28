@@ -2,13 +2,13 @@
 
 [← Choose your edition](README.md)
 
-## 0.5.0 · Source update, not yet packaged
+## 0.5.0 · October 28, 2026 · All editions
 
 - Preserved profile-specific browsing state, explicit search scopes and cached TV lists during refresh failures.
 - Added per-channel player, internal engine and live-format preferences, plus redacted player information.
 - Added season selection, watched marks, Continue series and next episode on mobile as well as TV.
 - Remembered embedded-VLC track choices and clearer missing-language feedback.
-- Updated Settings version history. Published downloads below remain unchanged.
+- Updated Settings version history and standalone IPA/mobile APK/TV APK downloads.
 
 [Research, implementation and validation](docs/RESEARCH-2026-10-27.md)
 
@@ -16,9 +16,9 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.3.0 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
-| Android mobile | [0.4.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
-| Android TV | [0.4.0 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
+| iPhone | [0.5.0 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
+| Android mobile | [0.5.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
+| Android TV | [0.5.0 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
 
 ## October 27, 2026 · Android 0.4.0
 

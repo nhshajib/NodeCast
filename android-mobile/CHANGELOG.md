@@ -2,7 +2,17 @@
 
 [← Mobile download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.4.0 · October 27, 2026 · Current APK
+## 0.5.0 · October 28, 2026 · Current download
+
+- Signed release validated and repeated native emulator cold starts passed.
+- Explicit search scopes and category retention, with profile-specific browsing context.
+- Per-channel player, engine and live-format choices; redacted player information.
+- Seasons, watched marks and Continue series; Next episode on mobile and TV.
+- Remembered VLC track choices and clearer unavailable-language feedback.
+- Local profiles remain account-free. Install over the existing app with the same signing identity.
+
+
+## 0.4.0 · October 27, 2026
 
 - Fixed a VLC startup race when Android had not attached the native activity yet.
 - Standalone phone/tablet build with embedded VLC, Xtream Codes / M3U, local profiles, search, categories and favorites.

@@ -16,3 +16,5 @@ For an edition's next release:
 The product pages are `iphone/README.md`, `android-mobile/README.md` and `android-tv/README.md`. Shared source's detailed history is in `src/releases.ts`; the site-facing changelogs describe published downloads.
 
 The iPhone 0.3.0 release was promoted from a verified existing artifact with `publish-iphone-download.yml`, without rebuilding it. A future version needs its own verified binary and updated metadata.
+
+For new iPhone builds, `publish-iphone-download.yml` now accepts the successful build run ID, its full source commit and the IPA SHA-256 from that run's packaging log. It validates provenance, archive integrity, bundle ID, version and device platform before uploading into an existing draft release. It uses the publisher's existing permissions; the iPhone build workflow remains read-only. Publish the draft and update product links only after verification. Android builds also upload into a draft until native checks finish.

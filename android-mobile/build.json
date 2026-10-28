@@ -1,16 +1,16 @@
 {
-  "version": "0.4.0",
-  "versionCode": 400,
+  "version": "0.5.0",
+  "versionCode": 500,
   "edition": "mobile",
   "package": "com.nhshajib.nodecast",
-  "apk": "NodeCast-mobile-0.4.0.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-mobile-0.4.0.apk",
-  "bytes": 219461673,
-  "sha256": "dfc7a7c15e3cae02252fcf8ad8e4aac2f024a43bf17a29ad49f285f72c586b1c",
-  "sourceCommit": "a70e88a11cd85d5f8319b37a5935a8a978105928",
-  "buildRun": 40529764464,
-  "artifactId": 12747291817,
-  "nativeCheckRun": 40532664044,
+  "apk": "NodeCast-mobile-0.5.0.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-mobile-0.5.0.apk",
+  "bytes": 219487305,
+  "sha256": "b6a019e31192998dd24d0fc531844716ad8843b0925d009a9c9418890d9dd9a5",
+  "sourceCommit": "a753597ef445e72ed2ac46323e6fb9880e9eab78",
+  "buildRun": 40634577101,
+  "artifactId": 12793431227,
+  "nativeCheckRun": 40635179300,
   "architectures": [
     "armeabi-v7a",
     "arm64-v8a",
@@ -22,5 +22,9 @@
     "releaseSignatureAndBundle": "passed",
     "repeatedColdStarts": "passed",
     "physicalDeviceTested": false
-  }
+  },
+  "releaseAssetId": 683882678,
+  "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "updateSigningIdentityMatchesPreviousRelease": true,
+  "nativeCheckArtifactId": 12792564232
 }

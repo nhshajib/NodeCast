@@ -1,0 +1,17 @@
+{
+  "version": "0.5.0",
+  "sourceCommit": "a753597ef445e72ed2ac46323e6fb9880e9eab78",
+  "androidBuildRun": 40634577101,
+  "iphoneBuildRun": 40634579850,
+  "iphoneReleasePublicationRun": 40635509238,
+  "mobileNativeCheckRun": 40635179300,
+  "tvNativeCheckRun": 40635987164,
+  "tvCheckScriptCommit": "1c5a56a2f3d4e43e42bea24d4baac9d9f6239d87",
+  "androidRepeatedColdStarts": "passed for both exact release APKs without Metro",
+  "tvPlaybackAndRemote": "passed with generated MPEG-TS/MP4, actual ordered episode IDs and D-pad/Select",
+  "iphoneValidation": "physical-iPhone arm64 platform, embedded JavaScript, linked VLC, IPA integrity and SHA-256 passed",
+  "releaseAssetDigestsMatchBuildRecords": true,
+  "androidUpdateCertificatesMatchPreviousRelease": true,
+  "physicalDevicesTested": false,
+  "scope": "Android checks use API 35 x86-64 Google APIs emulator images, including tv_1080p hardware profile. Physical iPhone, mobile and TV behavior and customer-provider streams remain unverified. UIAutomator may wait until the 30-second sample finishes; the test accepts a decoded non-zero completed timeline as well as active playback."
+}

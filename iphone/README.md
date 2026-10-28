@@ -6,7 +6,7 @@
 
 Your live channels, films and series in a calm, native iOS-style interface. Connect your own playlist, keep profiles on your device and watch with built-in playback.
 
-**[Download IPA · 0.3.0](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.3.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download IPA · 0.5.0](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.5.0/NodeCast-0.5.0-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.5.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,15 +14,15 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current iPhone download |
 | --- | --- |
-| Version | **0.3.0** · October 26, 2026 |
-| File | `NodeCast-0.3.0-unsigned.ipa` · 34.7 MB |
+| Version | **0.5.0** · October 28, 2026 |
+| File | `NodeCast-0.5.0-unsigned.ipa` · 34.7 MB |
 | Device | Physical iPhone · arm64 |
 | Installation | Personal signing with Impactor and your Apple account |
 | Free signing | Normally renew every **7 days** |
 | Watching | No running PC or Expo Go required |
 | Profiles | Local device storage; no NodeCast account or cloud sync |
 
-This is the original verified 0.3.0 IPA, republished as a permanent release download. The shared source currently has newer Android features; the table above describes this downloadable iPhone binary.
+This is a newly compiled standalone 0.5.0 IPA with embedded JavaScript and VLC. It includes the latest navigation, playback preferences and series-continuity improvements.
 
 ## What you'll find inside
 
@@ -36,7 +36,7 @@ This is the original verified 0.3.0 IPA, republished as a permanent release down
 <details>
 <summary>Preview the interface</summary>
 <br />
-<img src="../verification/navigation/02-home.png" alt="NodeCast phone interface preview with synthetic sample data" width="300" />
+<img src="../verification/everyday/mobile-series.png" alt="NodeCast phone interface preview with synthetic sample data" width="300" />
 <p>Browser interface capture from the iPhone navigation verification.</p>
 </details>
 
@@ -50,7 +50,7 @@ The steps below use **[Impactor (claration/impactor)](https://github.com/clarati
 2. Download and open **Impactor for Windows** from its official releases page. Install the required Apple device software/drivers if prompted.
 3. Connect your unlocked iPhone using USB. Tap **Trust This Computer** and enter your phone PIN if asked.
 4. Verify the phone appears in Apple Devices/iTunes and in **Impactor**, then select it in Impactor.
-5. Add or drag `NodeCast-0.3.0-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
+5. Add or drag `NodeCast-0.5.0-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
 6. Follow iOS prompts to trust the developer profile under **Settings → General → VPN & Device Management**. Enable **Developer Mode** under **Settings → Privacy & Security** if iOS requests it.
 7. Open **NodeCast** on the phone and add your Xtream Codes details or full M3U link. Profiles from Expo Go belong to its separate app storage.
 
@@ -64,7 +64,7 @@ If you miss renewal, the app normally stops opening until it is signed again. Re
 
 ## Changelog and verification
 
-[Read iPhone version history](CHANGELOG.md) · [Exact build record](build.json) · [Original build run](https://github.com/nhshajib/NodeCast/actions/runs/40437282300) · [Source for this IPA](https://github.com/nhshajib/NodeCast/tree/62f56e414b086da2ea41734c67f6f1a0fbe0460a)
+[Read iPhone version history](CHANGELOG.md) · [Exact build record](build.json) · [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40634579850) · [Source for this IPA](https://github.com/nhshajib/NodeCast/tree/a753597ef445e72ed2ac46323e6fb9880e9eab78)
 
 CI checked the device architecture, embedded JavaScript, native VLC linkage and IPA integrity. Video compatibility depends on the device and provider. The IP comparison does not verify VPN status.
 

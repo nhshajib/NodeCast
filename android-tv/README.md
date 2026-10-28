@@ -6,7 +6,7 @@
 
 A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-**[Download TV APK · 0.4.0](https://github.com/nhshajib/NodeCast/releases/download/android-v0.4.0/NodeCast-tv-0.4.0.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.4.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download TV APK · 0.5.0](https://github.com/nhshajib/NodeCast/releases/download/android-v0.5.0/NodeCast-tv-0.5.0.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.5.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,8 +14,8 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.4.0** · October 27, 2026 |
-| File | `NodeCast-tv-0.4.0.apk` · 218.0 MB |
+| Version | **0.5.0** · October 28, 2026 |
+| File | `NodeCast-tv-0.5.0.apk` · 218.1 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
@@ -25,7 +25,7 @@ While this repository is private, sign into GitHub with repository access before
 <details>
 <summary>Preview the TV player</summary>
 <br />
-<img src="../verification/android/native-tv-next-0.4.0.png" alt="NodeCast Android TV native emulator preview" width="900" />
+<img src="../verification/android/native-tv-next-0.5.0.png" alt="NodeCast Android TV native emulator preview" width="900" />
 <p>Native Android emulator capture with a generated test video.</p>
 </details>
 
@@ -52,7 +52,7 @@ Movies and live TV keep their own playback controls. Audio/subtitle language cho
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.4.0 fixes a VLC startup race found in earlier Android testing builds. Use this version when updating from 0.3.3.
+Version 0.5.0 fixes a VLC startup race found in earlier Android testing builds. Use this version when updating from 0.3.3.
 
 ## Changelog and verification
 

@@ -4,7 +4,7 @@
 - Automated tests: 84 passed, including legacy secure-vault writes and eight new preference/report/search/series tests.
 - Mobile and TV browser checks: passed; see `checks.json` and six PNG screenshots. These use synthetic IPTV metadata and the repository's generated MP4, not a customer's subscription.
 - JavaScript/Hermes exports: iOS, Android mobile and Android TV passed. Web exports for both layouts passed.
-- No IPA/APK built or published. Physical iPhone, Android mobile and TV decoder/track/remote/performance checks remain pending.
+- Follow-up release: IPA and both APKs were built on October 28. Android emulator startup/playback/remote evidence is recorded in the edition build JSON and `../android/native-tv-checks-0.5.0.json`. Physical iPhone, Android mobile and TV decoder/track/remote/performance checks remain pending.
 
 Reproduce the browser checks after exporting mobile web to one static server at `127.0.0.1:8091` and TV web (`NODECAST_TARGET=tv EXPO_PUBLIC_APP_VARIANT=tv`) to another at `127.0.0.1:8092`. From the repository root, run `python verification/everyday/check.py` with Playwright and Chromium available. The script intercepts `provider.example` and the IP service, so it needs no actual IPTV account.
 
