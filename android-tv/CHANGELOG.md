@@ -2,7 +2,13 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.0 · October 28, 2026 · Current download
+## 0.6.1 · October 28, 2026 · Current download
+
+- Rebuilt the Android TV APK from the current source and replaced the 0.6.0 TV download.
+- Version code 601 installs over 0.6.0 and keeps the compact guide layout.
+- The Android phone download remains 0.6.0.
+
+## 0.6.0 · October 28, 2026
 
 - Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
 - Light, Dark and Follow device appearance.

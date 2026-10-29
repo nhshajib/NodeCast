@@ -7,8 +7,6 @@ on:
         type: choice
         default: both
         options: [both, mobile, tv]
-  push:
-    branches: [cursor/release-0-6-1-3b91]
 permissions:
   contents: read
 jobs:
@@ -22,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: ${{ fromJSON(github.event_name == 'push' && '["tv"]' || inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
+        target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     env:
       CI: '1'
       EXPO_NO_TELEMETRY: '1'
@@ -95,52 +93,3 @@ jobs:
             gh release create "$TAG" --target "$GITHUB_SHA" --draft --prerelease --title "NodeCast ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
           fi
           gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 --clobber
-  smoke:
-    name: Android TV emulator check
-    if: github.event_name == 'push'
-    needs: build
-    runs-on: ubuntu-latest
-    timeout-minutes: 45
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: NodeCast-Android-tv
-          path: apk
-      - name: Enable hardware acceleration
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-      - name: Launch offline and exercise remote keys
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 35
-          arch: x86_64
-          target: google_apis
-          profile: tv_1080p
-          disable-animations: true
-          script: bash scripts/android-smoke.sh tv
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: NodeCast-Android-tv-emulator-check
-          path: verification/android/emulator-*
-          if-no-files-found: ignore
-          retention-days: 30
-  release:
-    name: Publish Android TV download
-    if: github.event_name == 'push'
-    needs: [publish, smoke]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Replace the Android TV release download
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          VERSION=$(node -p "require('./package.json').version")
-          gh release edit "android-v${VERSION}" --prerelease --draft=false

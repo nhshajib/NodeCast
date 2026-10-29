@@ -2,7 +2,13 @@
 
 [← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.0 · October 28, 2026 · Current download
+## 0.6.1 · October 28, 2026 · Current download
+
+- Rebuilt the unsigned iPhone IPA from the current source and replaced the 0.6.0 download.
+- Install over the existing app with the same Apple account to keep local profiles.
+- PiP and AirPlay still need confirmation on a physical iPhone.
+
+## 0.6.0 · October 28, 2026
 
 - Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
 - Light, Dark and Follow device appearance.

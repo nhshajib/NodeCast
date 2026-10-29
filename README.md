@@ -21,7 +21,7 @@
 <tr>
 <td width="33%" valign="top" align="center">
 <a href="iphone/README.md"><img src="assets/readme/iphone.svg" alt="Explore NodeCast for iPhone" width="100%" /></a>
-<p><strong>iPhone</strong><br />0.6.0 · IPA</p>
+<p><strong>iPhone</strong><br />0.6.1 · IPA</p>
 <p><a href="iphone/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="iphone/CHANGELOG.md">Changelog</a> · <a href="iphone/build.json">Build details</a></p>
 </td>
@@ -33,7 +33,7 @@
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-tv/README.md"><img src="assets/readme/android-tv.svg" alt="Explore NodeCast for Android TV and Google TV" width="100%" /></a>
-<p><strong>Android TV</strong><br />0.6.0 · APK</p>
+<p><strong>Android TV</strong><br />0.6.1 · APK</p>
 <p><a href="android-tv/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-tv/CHANGELOG.md">Changelog</a> · <a href="android-tv/build.json">Build details</a></p>
 </td>
@@ -62,9 +62,9 @@ Full TV guides, a persistent mini-player, **Light / Dark / Follow device**, and 
 
 | Edition | Version | Download | Renewal |
 | --- | --- | --- | --- |
-| [iPhone](iphone/README.md) | **0.6.0** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.0/NodeCast-0.6.0-unsigned.ipa) | Normally 7 days with free Apple signing |
+| [iPhone](iphone/README.md) | **0.6.1** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.1/NodeCast-0.6.1-unsigned.ipa) | Normally 7 days with free Apple signing |
 | [Android mobile](android-mobile/README.md) | **0.6.0** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk) | No weekly renewal |
-| [Android TV](android-tv/README.md) | **0.6.0** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk) | No weekly renewal |
+| [Android TV](android-tv/README.md) | **0.6.1** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk) | No weekly renewal |
 
 These are personal testing releases. Android uses the standard Android test signing key; the iPhone IPA needs personal signing. Install updates over the existing app with the same signing identity to preserve local profiles. Keep your own copy of provider details.
 
