@@ -54,5 +54,12 @@
     "build:android:tv": "node scripts/run-android.cjs tv",
     "postinstall": "node scripts/patch-android-vlc.cjs && node scripts/patch-ios-playback.cjs"
   },
+  "expo": {
+    "autolinking": {
+      "ios": {
+        "buildFromSource": ["expo-file-system"]
+      }
+    }
+  },
   "private": true
 }

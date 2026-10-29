@@ -89,6 +89,14 @@ test('Picture in Picture stays off until requested and VLC rejects nil media',()
  const video = fs.readFileSync(new URL('../node_modules/expo-video/ios/VideoView.swift', import.meta.url), 'utf8');
  assert.match(video, /session\.setCategory\(\.playback, mode: \.moviePlayback\)/);
 });
+test('iOS file system is compiled from source so launch does not miss EventEmitter.eventRuntime',()=>{
+ const pkg=JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+ assert.deepEqual(pkg.expo.autolinking.ios.buildFromSource, ['expo-file-system']);
+ const fileSystem=fs.readFileSync(new URL('../node_modules/expo-file-system/ios/ExpoFileSystem.podspec', import.meta.url), 'utf8');
+ assert.match(fileSystem, /s\.source_files = "\*\*\/\*\.\{h,m,swift\}"/);
+ const core=fs.readFileSync(new URL('../node_modules/expo-modules-core/ios/Core/Events/EventEmitter.swift', import.meta.url), 'utf8');
+ assert.equal(core.includes('eventRuntime'), false);
+});
 test('iOS scene delegate plist uses the Objective-C class the app actually registers',()=>{
  const {useRegisteredSceneDelegate,SCENE_DELEGATE_CLASS}=require('../plugins/withIosSceneDelegate.js');
  const plist={UIApplicationSceneManifest:{UIApplicationSupportsMultipleScenes:false,UISceneConfigurations:{UIWindowSceneSessionRoleApplication:[{UISceneConfigurationName:'Default Configuration',UISceneDelegateClassName:'$(PRODUCT_MODULE_NAME).SceneDelegate'}]}}};
