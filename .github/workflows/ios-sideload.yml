@@ -2,6 +2,8 @@ name: Build iPhone IPA for personal signing
 
 on:
   workflow_dispatch:
+  push:
+    branches: [cursor/release-0-6-1-3b91]
 
 permissions:
   contents: read
@@ -76,3 +78,48 @@ jobs:
           path: build/xcodebuild.log
           if-no-files-found: ignore
           retention-days: 3
+  publish:
+    name: Publish iPhone IPA download
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NodeCast-iPhone-IPA
+          path: existing-ipa
+      - name: Verify archived IPA and publish the download
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, plistlib, re, zipfile
+          from pathlib import Path
+          version = json.loads(Path('package.json').read_text())['version']
+          assert re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version)
+          ipa = next(Path('existing-ipa').rglob(f'NodeCast-{version}-unsigned.ipa'))
+          recorded = Path('existing-ipa/SHA256SUMS.txt').read_text().split()[0]
+          digest = hashlib.sha256(ipa.read_bytes()).hexdigest()
+          assert digest == recorded
+          with zipfile.ZipFile(ipa) as archive:
+              assert archive.testzip() is None
+              assert 'Payload/NodeCast.app/main.jsbundle' in archive.namelist()
+              info = plistlib.loads(archive.read('Payload/NodeCast.app/Info.plist'))
+              assert info['CFBundleShortVersionString'] == version
+              assert info['CFBundleVersion'] == '601'
+              assert info['CFBundleIdentifier'] == 'com.nhshajib.nodecast'
+              assert info['DTPlatformName'] == 'iphoneos'
+          print(json.dumps({'version': version, 'sha256': digest, 'bytes': ipa.stat().st_size}))
+          PY
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="ios-v${VERSION}"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --title "NodeCast ${VERSION} — iPhone personal testing" --notes "Unsigned ${VERSION} IPA for personal signing with Impactor. Rebuilt from the current source and replaces the previous iPhone download. The Android phone APK remains 0.6.0."
+          fi
+          gh release upload "$TAG" existing-ipa/NodeCast-${VERSION}-unsigned.ipa existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber
+          gh release edit "$TAG" --prerelease --draft=false
