@@ -21,7 +21,7 @@ try:
  system_click('Save',timeout=120)
  if any('Unlock backup & transfer' in (n.get('content-desc') or '') for n in dump().iter('node')):
   click('Unlock backup & transfer');text('Family PIN','123456');click('Unlock');find('Take your setup with you.',timeout=90)
- find('Backup handed to',timeout=30,scroll=True)
+ find('Backup handed to the system file picker or share sheet. Keep the saved file and its password for your new device.',timeout=30,scroll=True)
  # The saved file must outlive app storage. It contains synthetic credentials only.
  end=time.monotonic()+30;paths=[]
  while time.monotonic()<end:
