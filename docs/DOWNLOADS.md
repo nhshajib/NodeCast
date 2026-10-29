@@ -26,6 +26,14 @@ Use the published version shown on your product page. iPhone and Android release
 
 When updating, keep the same app/signing identity and install over the existing app. Deleting the app can remove local profiles. iPhone free signing needs periodic renewal; Android APKs have no weekly signing renewal.
 
+## Move to a different device
+
+In NodeCast 0.6.4 or later, open **Settings → Backup & transfer → Export backup**. Choose a password of at least 12 characters, create the encrypted file, and save it using Files/the system picker. Keep the password separately; it cannot be recovered.
+
+Copy the `.nodecast` file to the new device. Open **Settings → Backup & transfer → Import backup**, choose the file, enter its password, review its contents, then select **Import profiles & settings**. Profiles, provider details, favorites and settings transfer; history is optional. Existing profiles stay. An existing family PIN stays; a fresh device restores the backup PIN. Guides and library caches download again. Check your saved home-IP reference if you have changed networks.
+
+Android TV needs a compatible system document picker/file manager for import and export. Unsupported external-player preferences fall back to the built-in player.
+
 ## Check a downloaded file
 
 Every product page links to its build record with the exact filename, byte size and SHA-256 hash. You can compare the hash on Windows:

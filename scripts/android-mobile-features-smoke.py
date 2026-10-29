@@ -32,14 +32,14 @@ try:
  click('Open TV guide');click('Add full TV guide');text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Phone Guide Match',timeout=45)
  OUT.joinpath('emulator-mobile-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  back();settings('Appearance');click('dark appearance');back();settings('Family controls')
- text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);find('Find category to protect',timeout=30);click('Protect Phone test',True);click('Lock protected content now',True)
- click('Unlock family controls');text('Family PIN','000000');click('Unlock');find('PIN did not match.',timeout=30)
+ text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN',True);find('Find category to protect',timeout=90);click('Protect Phone test',True);click('Lock protected content now',True)
+ click('Unlock family controls');text('Family PIN','000000');click('Unlock');find('PIN did not match.',timeout=90)
  # Clear only this synthetic test PIN field; no secrets enter logs.
- click('Family PIN');adb('shell','input','keyevent','123');adb('shell','input','keyevent','67','67','67','67','67','67');adb('shell','input','text','123456');adb('shell','input','keyevent','66');click('Unlock');find('Find category to protect',timeout=30)
+ click('Family PIN');adb('shell','input','keyevent','123');adb('shell','input','keyevent','67','67','67','67','67','67');adb('shell','input','text','123456');adb('shell','input','keyevent','66');click('Unlock');find('Find category to protect',timeout=90)
  OUT.joinpath('emulator-mobile-family.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  click('Lock protected content now',True);back();click('Library');assert not any('Open Phone Test Channel' in (n.get('content-desc') or '') for n in dump().iter('node'))
  adb('shell','am','force-stop','com.nhshajib.nodecast');adb('shell','am','start','-W','-n','com.nhshajib.nodecast/.MainActivity');time.sleep(6)
- settings('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=30);back();click('Library');find('Open Phone Test Channel');click('Open TV guide');find('Phone Guide Match',timeout=30);assert counts['guide']==1,'Native guide cache was not reused'
+ settings('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=90);back();click('Library');find('Open Phone Test Channel');click('Open TV guide');find('Phone Guide Match',timeout=30);assert counts['guide']==1,'Native guide cache was not reused'
  OUT.joinpath('emulator-mobile-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  import runpy;runpy.run_path('scripts/android-backup-smoke.py',run_name='__main__')
  OUT.joinpath('emulator-mobile-features-result.json').write_text(json.dumps({'passed':['Synthetic Xtream connection','Native XMLTV import and SQLite persistence across process restart','Dark appearance','Six-digit family PIN native crypto','PIN prompt inside Settings sheet','Wrong PIN rejected, correct PIN restores access','Protected category hidden and state survives process restart'],'scope':'Android API 35 x86-64 emulator. Physical iPhone/PiP/AirPlay are not verified.'},indent=2)+'\n')

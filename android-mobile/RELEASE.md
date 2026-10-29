@@ -1,13 +1,8 @@
-Android TV 0.6.1 is a current-source rebuild. It keeps the compact guide layout so programme timelines stay visible, and version code 601 installs over the 0.6.0 TV app. The phone APK in this notes file is still the published 0.6.0 mobile build. Native videos can offer PiP; Chromecast is not included. Choose the correct APK:
+NodeCast 0.6.4 adds Clear recents and password-encrypted backup/import for changing devices. Keep profiles, server details, favorites, playback/guide/appearance choices and optional viewing history. Import adds profile copies and keeps existing profiles. Open Settings → Backup & transfer. No account is required.
 
-- [**NodeCast mobile 0.6.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk): Android phone/tablet interface. This file is unchanged.
-- [**NodeCast TV 0.6.1 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk): Android TV / Google TV with fullscreen series playback and a bottom-right Next episode button.
+- [NodeCast mobile 0.6.4 APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-mobile-0.6.4.apk): Android phone/tablet interface.
+- [NodeCast TV 0.6.4 APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-tv-0.6.4.apk): Android TV / Google TV with remote navigation and Next episode.
 
-Both include embedded VLC, local Xtream Codes / M3U profiles and the JavaScript bundle. No Expo Go, PC connection or weekly signing renewal is needed. Each edition has its own app ID and local storage. Install subsequent updates over the existing app to preserve profiles.
+Both are standalone personal-testing builds with embedded JavaScript and VLC. Install over the existing edition to retain local data; Android has no weekly signing renewal. These APKs use the existing Android test signing key and are not Play Store releases. TV backup transfer requires a compatible system file picker.
 
-These personal testing Release builds use the standard Android test signing key. They are not Play Store releases. Configure a private signing key before public/store distribution. Android may ask permission to install from your browser or file manager.
-
-TV edition instructions: https://github.com/nhshajib/NodeCast/tree/main/android-tv
-Mobile edition instructions: https://github.com/nhshajib/NodeCast/tree/main/android-mobile
-
-Native playback and remote behavior still need confirmation on physical devices. Use only content you are authorized to access.
+[Installation guides](https://github.com/nhshajib/NodeCast#choose-your-edition) · [Version history](https://github.com/nhshajib/NodeCast/blob/main/CHANGELOG.md)

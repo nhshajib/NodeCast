@@ -43,6 +43,7 @@ with sync_playwright() as p:
   pending.value.set_files(str(path));page.get_by_text('Selected:',exact=False).wait_for();page.get_by_label('Backup password',exact=True).fill('wrong-backup-password');page.get_by_role('button',name='Review backup',exact=True).click();page.get_by_text('Could not unlock this backup.',exact=False).wait_for(timeout=60000)
   expect(page.get_by_role('button',name='Import profiles & settings',exact=True)).to_have_count(0)
   page.get_by_label('Backup password',exact=True).fill(password);page.get_by_role('button',name='Review backup',exact=True).click();page.get_by_text('Ready for this device.',exact=True).wait_for(timeout=60000);page.get_by_text('1 profiles · 1 favorites',exact=False).wait_for()
+  page.get_by_text('Ready for this device.',exact=True).scroll_into_view_if_needed()
   page.screenshot(path=str(out/('tv-backup-review.png' if tv else 'mobile-backup-review.png')))
   page.get_by_role('button',name='Import profiles & settings',exact=True).click();page.get_by_role('button',name='Live TV' if tv else 'Add playlist',exact=True).wait_for(timeout=30000)
   if tv:page.get_by_role('button',name='Settings',exact=True).click()
