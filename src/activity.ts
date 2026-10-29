@@ -33,6 +33,10 @@ export function parseViewing(value: unknown): ViewingEntry[] {
     return [{ item: summarizeMedia(entry.item), position: entry.position, duration: entry.duration, lastPlayedAt: entry.lastPlayedAt, completed: entry.watchedOverride === true || (entry.watchedOverride !== false && entry.completed === true), watchedOverride: typeof entry.watchedOverride === 'boolean' ? entry.watchedOverride : undefined }];
   }));
 }
+export function progressPercent(position: number, duration: number): number {
+  if (!Number.isFinite(position) || !Number.isFinite(duration) || duration <= 0) return 0;
+  return Math.min(100, Math.max(0, position / duration * 100));
+}
 export function timeLabel(seconds: number): string {
   const minutes = Math.max(0, Math.floor(seconds / 60));
   return minutes >= 60 ? `${Math.floor(minutes / 60)}h ${minutes % 60}m` : `${minutes}m`;
