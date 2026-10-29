@@ -1,5 +1,10 @@
 # Android native verification
 
+## 0.6.1 published TV binary · October 28, 2026
+
+The current TV download is version 0.6.1, version code 601. Signature, bundle and architecture checks passed, and the emulator startup and remote smoke test passed on the release run. The phone download remains the 0.6.0 APK. Physical hardware and provider streams still need device confirmation.
+
+[TV build record](../../android-tv/build.json) · [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40799293352)
 
 ## 0.6.0 published binaries · October 28, 2026
 

@@ -15,7 +15,7 @@ While this repository is private, sign into GitHub with repository access before
 | | Current download |
 | --- | --- |
 | Version | **0.6.1** · October 28, 2026 |
-| File | `NodeCast-tv-0.6.1.apk` |
+| File | `NodeCast-tv-0.6.1.apk` · 223.7 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
@@ -62,7 +62,7 @@ Version 0.6.1 installs over the existing TV app and preserves profiles. The Andr
 
 [Read the TV changelog](CHANGELOG.md) · [Exact build record](build.json) · [Native verification](../verification/android/README.md)
 
-[Build run](https://github.com/nhshajib/NodeCast/actions/runs/40799293352) signs the APK, checks the embedded bundle and architectures, then exercises startup and the remote on an Android TV emulator. Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check.
+Release signature, embedded JavaScript/VLC and architecture checks passed. The Android TV emulator startup and remote check passed. Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40799293352).
 
 ## Build from source
 

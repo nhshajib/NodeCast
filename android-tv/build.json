@@ -5,8 +5,9 @@
   "package": "com.nhshajib.nodecast.tv",
   "apk": "NodeCast-tv-0.6.1.apk",
   "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk",
-  "bytes": null,
-  "sha256": null,
+  "bytes": 223655215,
+  "sha256": "fd46cea42b169d81c117f2413b67a91c2ccc75544e2e306e6bd076113619fa74",
+  "releaseAssetId": 686970025,
   "sourceCommit": "ba106c07dc4934094dc8e2d9d4117ea5bbfb93fc",
   "buildRun": 40799293352,
   "architectures": [
@@ -17,11 +18,11 @@
   "minAndroidSdk": 24,
   "signing": "Standard Android test key; personal testing, not store distribution",
   "verification": {
-    "releaseSignatureAndBundle": "in progress",
-    "repeatedColdStarts": "in progress",
+    "releaseSignatureAndBundle": "passed",
+    "repeatedColdStarts": "passed",
     "physicalDeviceTested": false,
-    "nativeVLCAndSeriesNextWithRemote": "pending emulator check for this build",
-    "sameLiveSessionMiniPlayer": "not rechecked for 0.6.1"
+    "emulatorStartupAndRemoteSmoke": "passed",
+    "nativeCheckRun": 40799293352
   },
   "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk"
 }
