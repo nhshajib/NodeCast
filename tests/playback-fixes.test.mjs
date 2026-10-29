@@ -89,18 +89,15 @@ test('Picture in Picture stays off until requested and VLC rejects nil media',()
  const video = fs.readFileSync(new URL('../node_modules/expo-video/ios/VideoView.swift', import.meta.url), 'utf8');
  assert.match(video, /session\.setCategory\(\.playback, mode: \.moviePlayback\)/);
 });
-test('iOS scene delegate is registered under the module-qualified name UIKit requests',()=>{
- const {rewriteSceneDelegate}=require('../plugins/withIosSceneDelegate.js');
- const template='internal import Expo\n\n@objc(SceneDelegate)\nclass SceneDelegate: ExpoAppSceneDelegate {\n}\n';
- const rewritten=rewriteSceneDelegate(template);
- assert.equal(rewritten.includes('@objc(SceneDelegate)'), false);
- assert.match(rewritten, /@objc\nclass SceneDelegate/);
- assert.equal(rewriteSceneDelegate(rewritten), rewritten);
- assert.throws(()=>rewriteSceneDelegate('class NotTheDelegate {}\n'));
- const plugin=fs.readFileSync(new URL('../plugins/withIosSceneDelegate.js', import.meta.url), 'utf8');
+test('iOS scene delegate plist uses the Objective-C class the app actually registers',()=>{
+ const {useRegisteredSceneDelegate,SCENE_DELEGATE_CLASS}=require('../plugins/withIosSceneDelegate.js');
+ const plist={UIApplicationSceneManifest:{UIApplicationSupportsMultipleScenes:false,UISceneConfigurations:{UIWindowSceneSessionRoleApplication:[{UISceneConfigurationName:'Default Configuration',UISceneDelegateClassName:'$(PRODUCT_MODULE_NAME).SceneDelegate'}]}}};
+ const next=useRegisteredSceneDelegate(plist);
+ assert.equal(next.UIApplicationSceneManifest.UISceneConfigurations.UIWindowSceneSessionRoleApplication[0].UISceneDelegateClassName, SCENE_DELEGATE_CLASS);
+ assert.equal(SCENE_DELEGATE_CLASS, 'SceneDelegate');
+ assert.throws(()=>useRegisteredSceneDelegate({}));
  const app=JSON.parse(fs.readFileSync(new URL('../app.json', import.meta.url), 'utf8'));
  assert.ok(app.expo.plugins.includes('./plugins/withIosSceneDelegate.js'));
- assert.match(plugin, /rewriteSceneDelegate/);
 });
 test('app, package and displayed release history identify the same current version',()=>{
  assert.equal(releases[0].version,appVersion);

@@ -22,10 +22,10 @@ info = plistlib.load(open(f"{app}/Info.plist", "rb"))
 scenes = info["UIApplicationSceneManifest"]["UISceneConfigurations"]["UIWindowSceneSessionRoleApplication"]
 name = scenes[0]["UISceneDelegateClassName"]
 binary = open(f"{app}/NodeCast", "rb").read()
-if name != "NodeCast.SceneDelegate":
-    raise SystemExit(f"Info.plist scene delegate is {name!r}, expected NodeCast.SceneDelegate")
-if b"NodeCast.SceneDelegate" not in binary:
-    raise SystemExit("The executable does not register NodeCast.SceneDelegate, so UIKit cannot connect the scene.")
+if name != "SceneDelegate":
+    raise SystemExit(f"Info.plist scene delegate is {name!r}, expected SceneDelegate")
+if b"SceneDelegate" not in binary:
+    raise SystemExit("The executable does not contain the SceneDelegate class.")
 print(f"scene delegate class registered: {name}")
 PY
 

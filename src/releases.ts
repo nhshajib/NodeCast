@@ -1,8 +1,8 @@
 export const appVersion = '0.6.3';
 export const releases = [
   { version: '0.6.3', date: 'October 28, 2026', title: 'iPhone opens again.', changes: [
-    'iPhone was closing as soon as it opened because iOS was asked for a scene delegate class that the app does not register.',
-    'The installed app now registers the same scene delegate class iOS looks up, so the first screen can appear.',
+    'iPhone was closing as soon as it opened because iOS was asked for a scene delegate class the app does not register.',
+    'The installed app now names the scene delegate class that is actually registered, so the first screen can appear.',
     'The Android phone and Android TV downloads are unchanged.',
   ] },
   { version: '0.6.2', date: 'October 28, 2026', title: 'iPhone launch and playback crash fix.', changes: [
