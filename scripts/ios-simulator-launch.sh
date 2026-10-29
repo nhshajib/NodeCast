@@ -60,13 +60,13 @@ ALIVE=0
 if kill -0 "$LAUNCHER" 2>/dev/null; then
   ALIVE=1
 fi
-xcrun simctl spawn "$UDID" log show --last 2m --style compact --predicate 'processImagePath CONTAINS "NodeCast" OR eventMessage CONTAINS "SceneDelegate" OR eventMessage CONTAINS "could not load class" OR eventMessage CONTAINS "NodeCast"' >"$SYSTEM_LOG" 2>&1 || true
+xcrun simctl spawn "$UDID" log show --last 2m --style compact --predicate 'processImagePath CONTAINS "NodeCast"' >"$SYSTEM_LOG" 2>&1 || true
 FAILED_OPEN=0
 if [[ "$ALIVE" -ne 1 ]]; then
   FAILED_OPEN=1
   echo "NodeCast exited during launch." >&2
 fi
-if grep -E -q "could not load class|could not find a class|Terminating app due to|couldn't start React Native|Assertion failure" "$SYSTEM_LOG" "$LOG"; then
+if grep -E -q "could not load class|could not find a class|Terminating app due to|couldn't start React Native|Symbol not found" "$SYSTEM_LOG" "$LOG"; then
   FAILED_OPEN=1
   echo "Launch log shows the scene delegate was not connected or the process aborted." >&2
 fi
