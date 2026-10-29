@@ -2,7 +2,15 @@
 
 [← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.1 · October 28, 2026 · Current download
+## 0.6.2 · October 28, 2026 · Current download
+
+- Fixed a launch crash caused by evaluating file, document, and crypto native modules before the first screen.
+- Movie playback no longer turns on Picture in Picture until you ask for it, and the audio session is prepared first.
+- Live TV uses the VLC release that survives an early player stop. A rejected stream URL is reported instead of force-crashing.
+- Theme styles are ordinary objects, so the iOS layout bridge is not given a Proxy.
+- SHA-256 `91a5fc763c056f39b427b1d89ad8b5535903bc7b55694972813c97121d9940c6`. Install over the existing app with the same Apple account to keep local profiles.
+
+## 0.6.1 · October 28, 2026
 
 - Rebuilt the unsigned iPhone IPA from the current source and replaced the 0.6.0 download.
 - Install over the existing app with the same Apple account to keep local profiles.

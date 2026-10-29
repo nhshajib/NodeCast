@@ -1,6 +1,6 @@
 # Current status — October 28, 2026
 
-Version 0.6.1 replaces the iPhone IPA and Android TV APK downloads. The published Android phone APK remains 0.6.0. The approved 0.6.0 local feature round is implemented. See [features, UI locations and limits](../verification/roadmap/README.md), [browser checks](../verification/roadmap/checks.json), and [native records](../verification/android/native-0.6.0-builds.json). The following sections are historical records, including their original roadmaps and validation limits.
+Version 0.6.2 replaces the iPhone IPA and fixes the 0.6.1 launch and playback crash. The published Android TV APK remains 0.6.1 and the Android phone APK remains 0.6.0. The approved 0.6.0 local feature round is implemented. See [features, UI locations and limits](../verification/roadmap/README.md), [browser checks](../verification/roadmap/checks.json), and [native records](../verification/android/native-0.6.0-builds.json). The following sections are historical records, including their original roadmaps and validation limits.
 
 # Implementation status — October 23, 2026
 

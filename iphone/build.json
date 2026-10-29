@@ -1,26 +1,26 @@
 {
-  "version": "0.6.1",
+  "version": "0.6.2",
   "edition": "iphone",
-  "file": "NodeCast-0.6.1-unsigned.ipa",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.1/NodeCast-0.6.1-unsigned.ipa",
-  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.1",
-  "bytes": 35766247,
-  "sha256": "36d4fe47e3c44c643f5edfa9eb8f1ce6f4084cb098c9f2418bb31469fda02237",
-  "releaseAssetId": 686969896,
+  "file": "NodeCast-0.6.2-unsigned.ipa",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.2/NodeCast-0.6.2-unsigned.ipa",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.2",
+  "bytes": 35768485,
+  "sha256": "91a5fc763c056f39b427b1d89ad8b5535903bc7b55694972813c97121d9940c6",
+  "releaseAssetId": 687106368,
   "bundleIdentifier": "com.nhshajib.nodecast",
-  "buildNumber": "601",
+  "buildNumber": "602",
   "architectures": [
     "arm64"
   ],
-  "sourceCommit": "ba106c07dc4934094dc8e2d9d4117ea5bbfb93fc",
-  "buildRun": 40799293406,
+  "sourceCommit": "c38e41b2e561025e41b0d517dab6241cbdf55018",
+  "buildRun": 40805712339,
   "signing": "Unsigned IPA; sign using Impactor and your own Apple account",
   "freeAppleSigningRenewal": "Normally seven days",
-  "distribution": "New standalone physical-iPhone Release build; replaces the 0.6.0 download",
+  "distribution": "Standalone physical-iPhone Release build that fixes the 0.6.1 crash; replaces the 0.6.1 download",
   "verification": {
     "devicePlatformArm64EmbeddedJSAndVLC": "passed",
     "archiveIntegrityAndSha256": "passed",
     "physicalDeviceTested": false
   },
-  "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.0/NodeCast-0.6.0-unsigned.ipa"
+  "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.1/NodeCast-0.6.1-unsigned.ipa"
 }

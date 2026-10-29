@@ -2,6 +2,12 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.2 · October 28, 2026
+
+- Fixed the iPhone crash on launch and during playback. Startup no longer loads file, document, and crypto native modules, Picture in Picture waits until you ask for it, and live TV survives an early VLC stop.
+- Replaced the iPhone download with `NodeCast-0.6.2-unsigned.ipa`. Install over the existing app with the same Apple account to keep local profiles.
+- Android phone and Android TV downloads are unchanged.
+
 ## 0.6.1 · October 28, 2026
 
 - Rebuilt the iPhone IPA and Android TV APK from the current source and replaced those downloads.
@@ -35,7 +41,7 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.6.1 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
+| iPhone | [0.6.2 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
 | Android mobile | [0.6.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
 | Android TV | [0.6.1 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
 
