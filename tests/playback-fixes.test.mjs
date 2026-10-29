@@ -7,6 +7,8 @@ import { releases, appVersion } from '../src/releases.ts';
 import { progressPercent } from '../src/activity.ts';
 import { loadLibrary } from '../src/provider.ts';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 const provider = {kind:'xtream',name:'Test',address:'https://fixture.example/prefix',username:'u@name',password:'p/word'};
 const channel = {id:'live:42',kind:'live',streamId:'42',name:'BBC One HD',group:'UK',url:'https://fixture.example/prefix/live/u%40name/p%2Fword/42.m3u8'};
 test('automatic Xtream playback offers sequential HLS and TS, with TS sent to external players',()=>{
@@ -86,6 +88,19 @@ test('Picture in Picture stays off until requested and VLC rejects nil media',()
  assert.match(media, /mediaPlayer\?\.audio\?\.volume/);
  const video = fs.readFileSync(new URL('../node_modules/expo-video/ios/VideoView.swift', import.meta.url), 'utf8');
  assert.match(video, /session\.setCategory\(\.playback, mode: \.moviePlayback\)/);
+});
+test('iOS scene delegate is registered under the module-qualified name UIKit requests',()=>{
+ const {rewriteSceneDelegate}=require('../plugins/withIosSceneDelegate.js');
+ const template='internal import Expo\n\n@objc(SceneDelegate)\nclass SceneDelegate: ExpoAppSceneDelegate {\n}\n';
+ const rewritten=rewriteSceneDelegate(template);
+ assert.equal(rewritten.includes('@objc(SceneDelegate)'), false);
+ assert.match(rewritten, /@objc\nclass SceneDelegate/);
+ assert.equal(rewriteSceneDelegate(rewritten), rewritten);
+ assert.throws(()=>rewriteSceneDelegate('class NotTheDelegate {}\n'));
+ const plugin=fs.readFileSync(new URL('../plugins/withIosSceneDelegate.js', import.meta.url), 'utf8');
+ const app=JSON.parse(fs.readFileSync(new URL('../app.json', import.meta.url), 'utf8'));
+ assert.ok(app.expo.plugins.includes('./plugins/withIosSceneDelegate.js'));
+ assert.match(plugin, /rewriteSceneDelegate/);
 });
 test('app, package and displayed release history identify the same current version',()=>{
  assert.equal(releases[0].version,appVersion);

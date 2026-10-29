@@ -2,6 +2,9 @@ name: Build iPhone IPA for personal signing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - cursor/fix-ios-open-crash-3b91
 
 permissions:
   contents: read
@@ -39,9 +42,50 @@ jobs:
           xcrun swift --version
           pod --version
           printf 'export NODE_BINARY="%s"\n' "$(command -v node)" > ios/.xcode.env.local
+      - name: Confirm the scene delegate class iOS will look up
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          source = pathlib.Path('ios/NodeCast/SceneDelegate.swift').read_text()
+          plist = pathlib.Path('ios/NodeCast/Info.plist').read_text()
+          if '@objc(SceneDelegate)' in source:
+              raise SystemExit('SceneDelegate is still registered under the short name that Info.plist does not request.')
+          if '@objc' not in source or 'class SceneDelegate' not in source:
+              raise SystemExit('SceneDelegate.swift no longer exposes SceneDelegate to UIKit.')
+          if '$(PRODUCT_MODULE_NAME).SceneDelegate' not in plist:
+              raise SystemExit('Info.plist no longer requests the module-qualified scene delegate.')
+          print('scene delegate source matches Info.plist')
+          PY
       - name: Install native dependencies including VLC
         working-directory: ios
         run: pod install --repo-update
+      - name: Compile Release app for the iPhone simulator
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p build
+          xcodebuild \
+            -workspace ios/NodeCast.xcworkspace \
+            -scheme NodeCast \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/DerivedDataSim \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build/xcodebuild-simulator.log
+      - name: Launch the simulator app and require it to stay open
+        run: bash scripts/ios-simulator-launch.sh
+      - name: Upload simulator console when launch fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NodeCast-simulator-launch
+          path: |
+            build/simulator-console.txt
+            build/simulator-system.log
+            build/xcodebuild-simulator.log
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Compile standalone Release app for iPhone
         shell: bash
         run: |
