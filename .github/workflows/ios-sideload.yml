@@ -2,6 +2,9 @@ name: Build iPhone IPA for personal signing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - cursor/fix-ios-crash-3b91
 
 permissions:
   contents: read

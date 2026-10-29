@@ -4,6 +4,7 @@ import { preparePlayback, playbackURLs } from '../src/livePlayback.ts';
 import { createSearchIndex, searchIndex, serializeCatalog, restoreCatalog } from '../src/catalog.ts';
 import { validateVault, emptyVault } from '../src/vault.ts';
 import { releases, appVersion } from '../src/releases.ts';
+import { progressPercent } from '../src/activity.ts';
 import { loadLibrary } from '../src/provider.ts';
 import fs from 'node:fs';
 const provider = {kind:'xtream',name:'Test',address:'https://fixture.example/prefix',username:'u@name',password:'p/word'};
@@ -51,6 +52,40 @@ test('Xtream API direct live source survives library parsing',async()=>{
  const original=global.fetch;
  global.fetch=async url=>new Response(JSON.stringify(String(url).includes('get_live_categories')?[]:[{stream_id:42,name:'Live',direct_source:'https://edge.example/direct.m3u8?token=test'}]));
  try {const [item]=await loadLibrary(provider,'live');assert.equal(item.url,'https://edge.example/direct.m3u8?token=test');}finally{global.fetch=original;}
+});
+test('continue-watching progress never produces a non-finite Yoga percentage',()=>{
+ assert.equal(progressPercent(30, 120), 25);
+ assert.equal(progressPercent(10, 0), 0);
+ assert.equal(progressPercent(Number.NaN, 10), 0);
+ assert.equal(progressPercent(5, Number.POSITIVE_INFINITY), 0);
+});
+test('theme sheets are plain enumerable objects',()=>{
+ const theme = fs.readFileSync(new URL('../src/theme.tsx', import.meta.url), 'utf8');
+ assert.equal(theme.includes('new Proxy'), false);
+ assert.match(theme, /Object\.assign\(styles, next\)/);
+});
+test('iPhone startup does not evaluate crypto, file or document native modules',()=>{
+ const family = fs.readFileSync(new URL('../src/FamilyControls.tsx', import.meta.url), 'utf8');
+ const playlist = fs.readFileSync(new URL('../src/localPlaylist.ts', import.meta.url), 'utf8');
+ assert.equal(family.includes("from 'expo-crypto'"), false);
+ assert.match(family, /await import\('expo-crypto'\)/);
+ assert.equal(playlist.includes("from 'expo-document-picker'"), false);
+ assert.equal(playlist.includes("from 'expo-file-system'"), false);
+ assert.match(playlist, /await import\('expo-document-picker'\)/);
+ assert.match(playlist, /await import\('expo-file-system'\)/);
+});
+test('Picture in Picture stays off until requested and VLC rejects nil media',()=>{
+ const player = fs.readFileSync(new URL('../src/Player.tsx', import.meta.url), 'utf8');
+ assert.match(player, /allowPip = false/);
+ assert.match(player, /allowsPictureInPicture=\{allowPip\}/);
+ assert.equal(player.includes('isPictureInPictureSupported()'), false);
+ const vlc = JSON.parse(fs.readFileSync(new URL('../node_modules/expo-libvlc-player/package.json', import.meta.url), 'utf8'));
+ assert.equal(vlc.version, '58.0.4');
+ const media = fs.readFileSync(new URL('../node_modules/expo-libvlc-player/ios/Player/MediaPlayer.swift', import.meta.url), 'utf8');
+ assert.match(media, /guard let media = VLCMedia\(url: url\)/);
+ assert.match(media, /mediaPlayer\?\.audio\?\.volume/);
+ const video = fs.readFileSync(new URL('../node_modules/expo-video/ios/VideoView.swift', import.meta.url), 'utf8');
+ assert.match(video, /session\.setCategory\(\.playback, mode: \.moviePlayback\)/);
 });
 test('app, package and displayed release history identify the same current version',()=>{
  assert.equal(releases[0].version,appVersion);

@@ -9,16 +9,27 @@ let darkMode = false;
 export function isDarkTheme() { return darkMode; }
 const Theme = createContext<{ choice: ThemeChoice; setChoice: (value: ThemeChoice) => void }>({ choice: 'light', setChoice: () => {} });
 export const useThemeChoice = () => useContext(Theme);
+const refreshers: Array<() => void> = [];
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [choice, setChoice] = useState<ThemeChoice>('light');
   const [system, setSystem] = useState(Appearance.getColorScheme());
   useEffect(() => { const sub = Appearance.addChangeListener(({ colorScheme }) => setSystem(colorScheme)); return () => sub.remove(); }, []);
   darkMode = choice === 'dark' || choice === 'system' && system === 'dark';
   Object.assign(colors, darkMode ? dark : light);
+  // Plain objects, refreshed before children render. A Proxy stylesheet is not enumerable
+  // and has crashed the iOS style bridge when Fabric walks style props.
+  for (const refresh of refreshers) refresh();
   return <Theme.Provider value={{ choice, setChoice }}>{children}</Theme.Provider>;
 }
 // Recompute sheets when the palette changes; existing components keep their style keys.
 export function themedStyles<T extends Record<string, ViewStyle | TextStyle | ImageStyle>>(factory: () => T): T {
-  let generation: boolean | null = null; let styles: T;
-  return new Proxy({} as T, { get: (_, key: string) => { if (generation !== darkMode) { styles = factory(); generation = darkMode; } return styles[key]; } });
+  const styles = {} as T;
+  const refresh = () => {
+    const next = factory();
+    for (const key of Object.keys(styles)) if (!(key in next)) delete styles[key];
+    Object.assign(styles, next);
+  };
+  refresh();
+  refreshers.push(refresh);
+  return styles;
 }

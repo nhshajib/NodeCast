@@ -1,8 +1,9 @@
 import { Platform } from 'react-native';
-import * as DocumentPicker from 'expo-document-picker';
-import { File } from 'expo-file-system';
 import { parseM3U } from './provider';
 export async function pickPlaylist(): Promise<{ name: string; text: string } | null> {
+  // Load these only when importing. Their native class setup runs at module evaluation and was aborting iOS launch.
+  const DocumentPicker = await import('expo-document-picker');
+  const { File } = await import('expo-file-system');
   const result = await DocumentPicker.getDocumentAsync({ type: '*/*', copyToCacheDirectory: true });
   if (result.canceled) return null;
   const asset = result.assets[0];

@@ -1,5 +1,12 @@
-export const appVersion = '0.6.1';
+export const appVersion = '0.6.2';
 export const releases = [
+  { version: '0.6.2', date: 'October 28, 2026', title: 'iPhone launch and playback crash fix.', changes: [
+    'iPhone no longer loads file, document and crypto native modules during startup, which was aborting the app before the first screen.',
+    'Movie playback no longer enables Picture in Picture until you ask for it, and the audio session is ready first.',
+    'Live TV uses the VLC release that survives an early player stop, and a rejected stream URL no longer force-crashes.',
+    'Theme styles are plain objects, so the iOS layout bridge is not handed a Proxy.',
+    'The Android phone and Android TV downloads are unchanged.',
+  ] },
   { version: '0.6.1', date: 'October 28, 2026', title: 'Current iPhone and TV downloads, refreshed.', changes: [
     'The iPhone IPA and Android TV APK downloads are rebuilt from the current source and replace the previous files.',
     'Android TV keeps the compact guide layout, so programme timelines stay visible, and installs over 0.6.0.',

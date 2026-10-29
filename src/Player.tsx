@@ -2,7 +2,7 @@ import { useSleepTimer } from './PlayerToolsContext';
 import Pressable from './FocusPressable';
 import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, BackHandler, ScrollView, Text, View, Platform } from 'react-native';
-import { VideoView, useVideoPlayer, isPictureInPictureSupported } from 'expo-video';
+import { VideoView, useVideoPlayer } from 'expo-video';
 import type { AudioTrack, SubtitleTrack, VideoPlayer } from 'expo-video';
 import type { PlaybackInfo } from './viewingPreferences';
 import type { Media } from './provider';
@@ -15,8 +15,8 @@ import { playbackClock } from './activity';
 import { Button, Icon, colors, u } from './ui';
 // Keep the native/video surface stable while status/format controls rerender.
 // On web, rerendering a changed src during replaceAsync can cancel the play request.
-const PlaybackSurface = memo(function PlaybackSurface({ player, viewRef, television = false, fit = 'contain', minimized = false, allowPip = true, onPipStop }: { allowPip?: boolean; onPipStop?:()=>void; fit?: 'contain' | 'cover'; minimized?: boolean; player: VideoPlayer; television?: boolean; viewRef: React.RefObject<VideoView | null> }) {
-  return <VideoView ref={viewRef} player={player} style={television ? { width: '100%', height: '100%' } : { width: '100%', aspectRatio: 16 / 9 }} nativeControls={!television && !minimized} onPictureInPictureStop={onPipStop} allowsPictureInPicture={allowPip && Platform.OS !== 'web' && !television && isPictureInPictureSupported()} surfaceType={television ? 'textureView' : undefined} contentFit={fit} fullscreenOptions={{ enable: !television, orientation: 'landscape' }} />;
+const PlaybackSurface = memo(function PlaybackSurface({ player, viewRef, television = false, fit = 'contain', minimized = false, allowPip = false, onPipStop }: { allowPip?: boolean; onPipStop?:()=>void; fit?: 'contain' | 'cover'; minimized?: boolean; player: VideoPlayer; television?: boolean; viewRef: React.RefObject<VideoView | null> }) {
+  return <VideoView ref={viewRef} player={player} style={television ? { width: '100%', height: '100%' } : { width: '100%', aspectRatio: 16 / 9 }} nativeControls={!television && !minimized} onPictureInPictureStop={onPipStop} allowsPictureInPicture={allowPip} surfaceType={television ? 'textureView' : undefined} contentFit={fit} fullscreenOptions={{ enable: !television, orientation: 'landscape' }} />;
 });
 export type TrackPreferences = { audio?: string; subtitles?: string };
 const language = (value: string) => ({ eng: 'en', fra: 'fr', fre: 'fr', spa: 'es', deu: 'de', ger: 'de', ita: 'it', por: 'pt' }[value.toLowerCase()] || value.toLowerCase().split('-')[0]);
@@ -54,7 +54,44 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
   const lastWrite = useRef(0);
   const session = useRef<{ retry: () => void } | null>(null);
   useEffect(()=>{ try { player.playbackRate = item.kind === 'live' ? 1 : playbackRate; } catch { setTrackNotice('This stream does not support that playback speed.'); } },[playbackRate]);
-  useEffect(()=>{registerPip?.(async()=>{player.staysActiveInBackground=true;try{if(!viewRef.current)throw new Error('Unavailable');await viewRef.current.startPictureInPicture()}catch(error){player.staysActiveInBackground=false;throw error;}})},[registerPip,player]);
+  const pipGate = useRef<{ resolve: () => void; reject: (error: unknown) => void } | null>(null);
+  const [pipReady, setPipReady] = useState(false);
+  // Enabling PiP at mount races the audio session and can abort the iOS process. Arm it only after the user asks.
+  useEffect(() => {
+    if (!pipReady || !pipGate.current) return;
+    const gate = pipGate.current;
+    pipGate.current = null;
+    void (async () => {
+      try {
+        if (!viewRef.current) throw new Error('Picture in Picture is unavailable.');
+        await viewRef.current.startPictureInPicture();
+        gate.resolve();
+      } catch (error) {
+        player.staysActiveInBackground = false;
+        gate.reject(error);
+      }
+    })();
+  }, [pipReady, player]);
+  useEffect(() => {
+    registerPip?.(async () => {
+      if (television || Platform.OS === 'web') throw new Error('Picture in Picture is unavailable.');
+      player.staysActiveInBackground = true;
+      if (pipReady) {
+        try {
+          if (!viewRef.current) throw new Error('Picture in Picture is unavailable.');
+          await viewRef.current.startPictureInPicture();
+        } catch (error) {
+          player.staysActiveInBackground = false;
+          throw error;
+        }
+        return;
+      }
+      await new Promise<void>((resolve, reject) => {
+        pipGate.current = { resolve, reject };
+        setPipReady(true);
+      });
+    });
+  }, [registerPip, player, pipReady, television]);
   const desiredSeek = useRef(resumeAt);
   const needsSeek = useRef(resumeAt > 0 && item.kind !== 'live');
 
@@ -212,7 +249,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
       </Pressable>}
     </View>
   </View>;
-  return <View style={{ flex: 1, backgroundColor: '#090124' }}><View style={{ width: '100%', ...(minimized ? { height: '100%' as const } : { aspectRatio: 16 / 9 }), display: failed ? 'none' : 'flex' }}><PlaybackSurface player={player} viewRef={viewRef} fit={displayFit} minimized={minimized} allowPip={sleep.deadline===null} onPipStop={()=>{player.staysActiveInBackground=false}} /></View><ScrollView style={{ flex: 1, backgroundColor: '#090124', display: minimized ? 'none' : 'flex' }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: 17, paddingBottom: 24 }} keyboardShouldPersistTaps="handled">
+  return <View style={{ flex: 1, backgroundColor: '#090124' }}><View style={{ width: '100%', ...(minimized ? { height: '100%' as const } : { aspectRatio: 16 / 9 }), display: failed ? 'none' : 'flex' }}><PlaybackSurface player={player} viewRef={viewRef} fit={displayFit} minimized={minimized} allowPip={pipReady && sleep.deadline===null} onPipStop={()=>{player.staysActiveInBackground=false}} /></View><ScrollView style={{ flex: 1, backgroundColor: '#090124', display: minimized ? 'none' : 'flex' }} contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', gap: 17, paddingBottom: 24 }} keyboardShouldPersistTaps="handled">
     <Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{ alignSelf: 'flex-end', padding: 14 }}><Icon name="ellipsis-horizontal" color="#fff" /></Pressable>
     {item.kind === 'live' && <Text style={{ color: '#C4C0CF', textAlign: 'center', fontSize: 12 }}>{format} · Live TV</Text>}
     {(status === 'loading' || recovering) && !failed && <View style={{ alignItems: 'center', gap: 9 }}><ActivityIndicator color="#B9B4F2" /><Text accessibilityLiveRegion="polite" style={{ fontSize: 12, color: '#C4C0CF' }}>{recovering ? `Reconnecting${recovery.attempt ? ` · ${recovery.attempt} of 2` : '…'}` : 'Opening your stream…'}</Text></View>}

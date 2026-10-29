@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const packagePath = require.resolve('expo-libvlc-player/package.json');
 const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'));
-if (pkg.version !== '58.0.0') throw new Error('Review the Android VLC activity-lifecycle patch for this dependency version.');
+if (pkg.version !== '58.0.4') throw new Error('Review the Android VLC activity-lifecycle patch for this dependency version.');
 const file = path.join(path.dirname(packagePath), 'android/src/main/java/expo/modules/libvlcplayer/managers/PictureInPictureManager.kt');
 const original = '  private val fragmentActivity = activity as? FragmentActivity';
 const fixed = '  private val fragmentActivity: FragmentActivity?\n    get() = appContext.currentActivity as? FragmentActivity';
