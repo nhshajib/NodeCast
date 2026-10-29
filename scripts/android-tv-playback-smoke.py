@@ -13,9 +13,9 @@ def find(label, timeout=15, scroll=False):
  end=time.monotonic()+timeout
  while time.monotonic()<end:
   root=dump()
-  nodes=[n for n in root.iter('node') if label in (n.get('content-desc') or '') or n.get('text')==label]
-  if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
-  nodes.sort(key=lambda n:(n.get('content-desc')!=label and n.get('text')!=label,n.get('clickable')!='true'))
+  nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
+  if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
+  nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))
   nav_top=height
   if width<height and label not in ['Home','Library','Favorites','Settings']:
    for candidate in root.iter('node'):
@@ -142,7 +142,12 @@ def main():
   click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=90);click('Back');click('Live TV');find('Play Example Live Test')
   click('TV guide');find('Native Guide Match',timeout=30,scroll=True);assert counts['guide']==1,'Saved guide was not reused after process restart'
   OUT.joinpath('emulator-tv-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
+  click('Back');click('Live TV');click('Recently watched');click('Clear recents')
+  # Native Alert confirmation follows the button and uses the same visible label.
+  click('Clear recents');assert not any('Play Example Live Test' in (n.get('content-desc') or '') for n in dump().iter('node'))
+  click('Settings');click('Backup & transfer',True);find('Take your setup with you.')
+  OUT.joinpath('emulator-tv-transfer-settings.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart','Clear recents hides watched channels','Backup and transfer settings are available'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
  except Exception:
   OUT.joinpath('emulator-tv-playback-failure.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))

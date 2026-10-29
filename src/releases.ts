@@ -1,5 +1,12 @@
-export const appVersion = '0.6.3';
+export const appVersion = '0.6.4';
 export const releases = [
+  { version: '0.6.4', date: 'October 29, 2026', title: 'Your setup goes with you.', changes: [
+    'Includes the iPhone scene-delegate, file-system linking and playback crash fixes, with a Release simulator launch check before packaging.',
+    'Clear recents from Home, TV recent lists or Library & storage without losing resume positions or watched marks.',
+    'Password-encrypted backup and import for profiles, server details, local playlists, favorites, guide/playback/appearance settings and optional viewing history.',
+    'Transfers add profile copies, preserve existing profiles and restore family protection. Interrupted imports recover safely on startup.',
+    'Backup & transfer lives in Settings. Save using Files or the system file picker; no account or cloud service is required.',
+  ] },
   { version: '0.6.3', date: 'October 28, 2026', title: 'iPhone opens again.', changes: [
     'iPhone was closing as soon as it opened because the file-system library required a function the rest of the app does not provide.',
     'That library is now built with the same modules as the rest of the app, and iOS is given the scene delegate class that is actually registered.',

@@ -1,0 +1,24 @@
+{
+  "mobile": {
+    "passed": [
+      "Backup gated by family unlock",
+      "Encrypted file download with no plaintext credentials",
+      "Wrong password rejected without import",
+      "Review profile and favorite counts",
+      "Import adds profiles while preserving existing profile",
+      "Imported setup reloads and keeps dark appearance"
+    ],
+    "errors": []
+  },
+  "tv": {
+    "passed": [
+      "Backup gated by family unlock",
+      "Encrypted file download with no plaintext credentials",
+      "Wrong password rejected without import",
+      "Review profile and favorite counts",
+      "Import adds profiles while preserving existing profile",
+      "Imported setup reloads and keeps dark appearance"
+    ],
+    "errors": []
+  }
+}

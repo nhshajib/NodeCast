@@ -17,6 +17,7 @@ export function writeCatalog(profile: string, section: Section, items: Media[]) 
 }
 export async function clearCatalog(profile: string) { await (catalogWrites.get(profile) || Promise.resolve()); await AsyncStorage.multiRemove(['live', 'movies', 'series'].map(section => key(profile, section))); }
 export async function readViewing(profile: string): Promise<ViewingEntry[]> {
+  await (queues.get(profile) || Promise.resolve());
   const raw = await AsyncStorage.getItem(key(profile, 'viewing'));
   return raw ? parseViewing(JSON.parse(raw)) : [];
 }

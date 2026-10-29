@@ -41,6 +41,7 @@ try:
  adb('shell','am','force-stop','com.nhshajib.nodecast');adb('shell','am','start','-W','-n','com.nhshajib.nodecast/.MainActivity');time.sleep(6)
  settings('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=30);back();click('Library');find('Open Phone Test Channel');click('Open TV guide');find('Phone Guide Match',timeout=30);assert counts['guide']==1,'Native guide cache was not reused'
  OUT.joinpath('emulator-mobile-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+ import runpy;runpy.run_path('scripts/android-backup-smoke.py',run_name='__main__')
  OUT.joinpath('emulator-mobile-features-result.json').write_text(json.dumps({'passed':['Synthetic Xtream connection','Native XMLTV import and SQLite persistence across process restart','Dark appearance','Six-digit family PIN native crypto','PIN prompt inside Settings sheet','Wrong PIN rejected, correct PIN restores access','Protected category hidden and state survives process restart'],'scope':'Android API 35 x86-64 emulator. Physical iPhone/PiP/AirPlay are not verified.'},indent=2)+'\n')
  print('Native phone guide, family controls and modal navigation passed.')
 except Exception:

@@ -75,6 +75,10 @@ test('iPhone startup does not evaluate crypto, file or document native modules',
  assert.equal(playlist.includes("from 'expo-file-system'"), false);
  assert.match(playlist, /await import\('expo-document-picker'\)/);
  assert.match(playlist, /await import\('expo-file-system'\)/);
+ for (const file of ['backupCrypto.ts','backupFiles.ts']) {
+  const source=fs.readFileSync(new URL('../src/'+file,import.meta.url),'utf8');
+  assert.equal(/^import (?!type)[^\n]*from 'expo-(crypto|file-system|document-picker|intent-launcher)'/m.test(source),false);
+ }
 });
 test('Picture in Picture stays off until requested and VLC rejects nil media',()=>{
  const player = fs.readFileSync(new URL('../src/Player.tsx', import.meta.url), 'utf8');

@@ -1,6 +1,6 @@
 import type { Media } from './provider';
 export type MediaSummary = Pick<Media, 'id' | 'name' | 'group' | 'kind' | 'streamId' | 'containerExtension' | 'description' | 'rating' | 'seriesId' | 'epgId' | 'accessGroup'>;
-export type ViewingEntry = { item: MediaSummary; position: number; duration: number; lastPlayedAt: string; completed: boolean; watchedOverride?: boolean };
+export type ViewingEntry = { item: MediaSummary; position: number; duration: number; lastPlayedAt: string; completed: boolean; watchedOverride?: boolean; hiddenFromRecents?: boolean };
 export type PlaybackSnapshot = { position: number; duration: number; ended?: boolean };
 export function summarizeMedia(item: Media): MediaSummary {
   // Explicit allowlist. URLs, artwork URLs, and provider credentials never enter history/catalog storage.
@@ -30,7 +30,7 @@ export function parseViewing(value: unknown): ViewingEntry[] {
     if (!entry || !entry.item || !['live', 'movies', 'series'].includes(entry.item.kind) || typeof entry.item.id !== 'string' ||
       typeof entry.item.name !== 'string' || typeof entry.item.group !== 'string' || !Number.isFinite(entry.position) || !Number.isFinite(entry.duration) ||
       entry.position < 0 || entry.duration < 0 || typeof entry.lastPlayedAt !== 'string' || !Number.isFinite(Date.parse(entry.lastPlayedAt))) return [];
-    return [{ item: summarizeMedia(entry.item), position: entry.position, duration: entry.duration, lastPlayedAt: entry.lastPlayedAt, completed: entry.watchedOverride === true || (entry.watchedOverride !== false && entry.completed === true), watchedOverride: typeof entry.watchedOverride === 'boolean' ? entry.watchedOverride : undefined }];
+    return [{ item: summarizeMedia(entry.item), position: entry.position, duration: entry.duration, lastPlayedAt: entry.lastPlayedAt, completed: entry.watchedOverride === true || (entry.watchedOverride !== false && entry.completed === true), hiddenFromRecents:entry.hiddenFromRecents===true||undefined, watchedOverride: typeof entry.watchedOverride === 'boolean' ? entry.watchedOverride : undefined }];
   }));
 }
 export function progressPercent(position: number, duration: number): number {
@@ -54,5 +54,8 @@ export function playbackClock(seconds: number): string {
 export function markWatched(entries: ViewingEntry[], item: Media, watched: boolean): ViewingEntry[] {
   const previous = entries.find(entry => entry.item.id === item.id);
   return boundViewing([{ item: summarizeMedia(item), position: watched ? previous?.position || 0 : 0, duration: previous?.duration || 0,
-    lastPlayedAt: new Date().toISOString(), completed: watched, watchedOverride: watched ? true : undefined }, ...entries.filter(entry => entry.item.id !== item.id)]);
+    lastPlayedAt: new Date().toISOString(), completed: watched, watchedOverride: watched ? true : undefined, hiddenFromRecents:previous?.hiddenFromRecents }, ...entries.filter(entry => entry.item.id !== item.id)]);
 }
+
+/** Hide recents while preserving resume positions and watched episode state. */
+export function clearRecents(entries:ViewingEntry[]):ViewingEntry[]{return entries.map(entry=>({...entry,hiddenFromRecents:true}));}

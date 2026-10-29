@@ -13,3 +13,5 @@ import './episodes.test.mjs';
 import './everyday.test.mjs';
 
 import './roadmap.test.mjs';
+
+import "./backup.test.mjs";
