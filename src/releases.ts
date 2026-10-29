@@ -1,5 +1,10 @@
-export const appVersion = '0.6.0';
+export const appVersion = '0.6.1';
 export const releases = [
+  { version: '0.6.1', date: 'October 28, 2026', title: 'Current iPhone and TV downloads, refreshed.', changes: [
+    'The iPhone IPA and Android TV APK downloads are rebuilt from the current source and replace the previous files.',
+    'Android TV keeps the compact guide layout, so programme timelines stay visible, and installs over 0.6.0.',
+    'The Android phone download remains 0.6.0.',
+  ] },
   { version: '0.6.0', date: 'October 28, 2026', title: 'More control. The same calm space.', changes: [
     'Per-profile sorting, refresh policies, TV library organization and recently watched filtering.',
     'Fit/Fill, VOD speed and an in-app sleep timer in the player menu.',
