@@ -52,12 +52,14 @@
     "build:production": "npx eas-cli@latest build --platform ios --profile production",
     "build:android:mobile": "node scripts/run-android.cjs mobile",
     "build:android:tv": "node scripts/run-android.cjs tv",
-    "postinstall": "node scripts/patch-android-vlc.cjs && node scripts/patch-ios-playback.cjs"
+    "postinstall": "node scripts/patch-android-vlc.cjs && node scripts/patch-ios-playback.cjs && node scripts/patch-android-document-result.cjs"
   },
   "expo": {
     "autolinking": {
       "ios": {
-        "buildFromSource": ["expo-file-system"]
+        "buildFromSource": [
+          "expo-file-system"
+        ]
       }
     }
   },
