@@ -21,7 +21,7 @@
 <tr>
 <td width="33%" valign="top" align="center">
 <a href="iphone/README.md"><img src="assets/readme/iphone.svg" alt="Explore NodeCast for iPhone" width="100%" /></a>
-<p><strong>iPhone</strong><br />0.6.2 · IPA</p>
+<p><strong>iPhone</strong><br />0.6.3 · IPA</p>
 <p><a href="iphone/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="iphone/CHANGELOG.md">Changelog</a> · <a href="iphone/build.json">Build details</a></p>
 </td>
@@ -62,7 +62,7 @@ Full TV guides, a persistent mini-player, **Light / Dark / Follow device**, and 
 
 | Edition | Version | Download | Renewal |
 | --- | --- | --- | --- |
-| [iPhone](iphone/README.md) | **0.6.2** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.2/NodeCast-0.6.2-unsigned.ipa) | Normally 7 days with free Apple signing |
+| [iPhone](iphone/README.md) | **0.6.3** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.3/NodeCast-0.6.3-unsigned.ipa) | Normally 7 days with free Apple signing |
 | [Android mobile](android-mobile/README.md) | **0.6.0** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk) | No weekly renewal |
 | [Android TV](android-tv/README.md) | **0.6.1** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk) | No weekly renewal |
 

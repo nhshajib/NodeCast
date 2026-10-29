@@ -2,6 +2,12 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.3 · October 28, 2026
+
+- Fixed the iPhone crash at opening. The file-system library required a function the rest of the app does not provide, so the process closed before the first screen. It is now built with the same modules, and iOS is given the scene delegate class that is actually registered.
+- Replaced the iPhone download with `NodeCast-0.6.3-unsigned.ipa`. A Release simulator launch stayed open. Install over the existing app with the same Apple account to keep local profiles.
+- Android phone and Android TV downloads are unchanged.
+
 ## 0.6.2 · October 28, 2026
 
 - Fixed the iPhone crash on launch and during playback. Startup no longer loads file, document, and crypto native modules, Picture in Picture waits until you ask for it, and live TV survives an early VLC stop.
@@ -41,7 +47,7 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.6.2 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
+| iPhone | [0.6.3 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
 | Android mobile | [0.6.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
 | Android TV | [0.6.1 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
 
