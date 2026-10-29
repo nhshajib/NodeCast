@@ -2,7 +2,15 @@
 
 [← Mobile download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.0 · October 28, 2026 · Current download
+## 0.6.4 · October 29, 2026 · Current download
+
+- Clear recents without deleting resume progress or watched marks.
+- Password-encrypted export/import of profiles, provider details, favorites, settings and optional history. Import previews changes and preserves existing profiles.
+- Family protection transfers to a fresh device; interrupted imports recover before startup.
+- Standalone native startup, guide persistence and family protection checks passed.
+- SHA-256 `610f318a0b2d6a93bd204002b5cd8a7a7f2f0b51f4e611b55e23cf636aa2f329`.
+
+## 0.6.0 · October 28, 2026
 
 - Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
 - Light, Dark and Follow device appearance.

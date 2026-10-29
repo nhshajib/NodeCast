@@ -1,27 +1,31 @@
 {
-  "version": "0.6.3",
+  "version": "0.6.4",
   "edition": "iphone",
-  "file": "NodeCast-0.6.3-unsigned.ipa",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.3/NodeCast-0.6.3-unsigned.ipa",
-  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.3",
-  "bytes": 35715277,
-  "sha256": "cad83b2aa80366ca49bd5c475f65b8d7e08c49046e555f44fbd6902643dbdfdd",
-  "releaseAssetId": 687274119,
+  "file": "NodeCast-0.6.4-unsigned.ipa",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.4/NodeCast-0.6.4-unsigned.ipa",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.4",
+  "bytes": 35738499,
+  "sha256": "0446c791eef20ef6666f3c0ec88e45e7271fda7dbdc46f350f799ad954f48466",
+  "releaseAssetId": 687443904,
   "bundleIdentifier": "com.nhshajib.nodecast",
-  "buildNumber": "603",
+  "buildNumber": "604",
   "architectures": [
     "arm64"
   ],
-  "sourceCommit": "06307b56af91093ae2411519285411befbc6ae81",
-  "buildRun": 40812572707,
+  "sourceCommit": "6232ded65568a11cf36e950608b01761a8e0e96c",
+  "buildRun": 40819882884,
   "signing": "Unsigned IPA; sign using Impactor and your own Apple account",
   "freeAppleSigningRenewal": "Normally seven days",
-  "distribution": "Standalone physical-iPhone Release build that stays open at launch; replaces the 0.6.2 download",
+  "distribution": "Standalone physical-iPhone Release build; simulator startup verified before IPA packaging",
   "verification": {
     "devicePlatformArm64EmbeddedJSAndVLC": "passed",
+    "physicalDeviceTested": false,
+    "clearRecentsPureTests": "passed",
+    "encryptedTransferBrowserIntegration": "passed",
     "archiveIntegrityAndSha256": "passed",
     "simulatorLaunchStayedOpen": "passed",
-    "physicalDeviceTested": false
+    "physicalShareSheetTested": false
   },
-  "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.2/NodeCast-0.6.2-unsigned.ipa"
+  "artifactId": 12874549845,
+  "publishRun": 40822369553
 }

@@ -6,7 +6,7 @@
 
 Phone and tablet layouts with local profiles, search, favorites and built-in playback.
 
-**[Download APK · 0.6.0](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.0) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download APK · 0.6.4](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-mobile-0.6.4.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.4) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,22 +14,22 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.6.0** · October 28, 2026 |
-| File | `NodeCast-mobile-0.6.0.apk` · 225.1 MB |
+| Version | **0.6.4** · October 29, 2026 |
+| File | `NodeCast-mobile-0.6.4.apk` · 225.1 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast` |
 | Signing | Signed personal-testing APK · standard Android test key |
 | Watching | No Expo Go, running PC or weekly signing renewal |
 | Profiles | Local storage; no account or cloud sync |
 
-## New in 0.6.0
+## New in 0.6.4
 
-Full XMLTV guides, local family controls, Light/Dark/System, persistent mini-player, display/speed/sleep tools, local M3U import and library preferences. [Details and limits](../verification/roadmap/README.md).
+Clear recents keeps progress and watched marks. **Settings → Backup & transfer** moves profiles, server details, favorites and settings using a password-encrypted file; viewing history is optional. Import keeps existing profiles. [Transfer details](../verification/transfer/README.md).
 
 <details>
 <summary>Preview the mobile interface</summary>
 <br />
-<img src="../verification/android/native-mobile-guide-persisted-0.6.0.png" alt="NodeCast Android mobile native emulator preview" width="300" />
+<img src="../verification/android/native-mobile-restored-guide-0.6.4.png" alt="NodeCast Android mobile native emulator preview" width="300" />
 <p>Native Android emulator capture.</p>
 </details>
 
@@ -53,7 +53,7 @@ Live playback uses embedded VLC. Movies/episodes use the native player. External
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.6.0 retains the VLC startup fix and adds guides, appearance, family controls and player tools. Install over the existing app to preserve profiles.
+Version 0.6.4 retains the VLC startup fix and adds guides, appearance, family controls and player tools. Install over the existing app to preserve profiles.
 
 ## Changelog and verification
 

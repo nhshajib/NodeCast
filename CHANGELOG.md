@@ -2,6 +2,15 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.4 · October 29, 2026
+
+- Clear recents from Home, TV recent channels and Library & storage; progress and watched marks stay.
+- Encrypted device transfer includes profiles, provider details, favorites, settings and optional history. Import adds copies and preserves existing profiles.
+- Family protection and interrupted-import recovery are included.
+- iPhone launch/linking/playback fixes retained and checked in a Release simulator. Both Android APKs rebuilt and tested.
+
+[Transfer details and verification](verification/transfer/README.md).
+
 ## 0.6.3 · October 28, 2026
 
 - Fixed the iPhone crash at opening. The file-system library required a function the rest of the app does not provide, so the process closed before the first screen. It is now built with the same modules, and iOS is given the scene delegate class that is actually registered.

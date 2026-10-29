@@ -6,7 +6,7 @@
 
 A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-**[Download TV APK · 0.6.1](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.1) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download TV APK · 0.6.4](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-tv-0.6.4.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.4) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,17 +14,17 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.6.1** · October 28, 2026 |
-| File | `NodeCast-tv-0.6.1.apk` · 223.7 MB |
+| Version | **0.6.4** · October 29, 2026 |
+| File | `NodeCast-tv-0.6.4.apk` · 223.7 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
 | Watching | No Expo Go, running PC or weekly signing renewal |
 | Profiles | Local storage; no account or cloud sync |
 
-## New in 0.6.1
+## New in 0.6.4
 
-The current TV download is rebuilt from the current source. Version code 601 installs over 0.6.0 and keeps the compact guide layout so programme timelines stay visible. [Details and limits](../verification/roadmap/README.md).
+Clear recents keeps progress and watched marks. **Settings → Backup & transfer** moves profiles, server details, favorites and settings using a password-encrypted file; viewing history is optional. Import keeps existing profiles. [Transfer details](../verification/transfer/README.md).
 
 <details>
 <summary>Preview the TV player</summary>
@@ -56,13 +56,13 @@ Movies and live TV keep their own playback controls. Audio/subtitle language cho
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.6.1 installs over the existing TV app and preserves profiles. The Android phone download remains 0.6.0.
+Version 0.6.4 installs over the existing TV edition and preserves profiles.
 
 ## Changelog and verification
 
 [Read the TV changelog](CHANGELOG.md) · [Exact build record](build.json) · [Native verification](../verification/android/README.md)
 
-Release signature, embedded JavaScript/VLC and architecture checks passed. The Android TV emulator startup and remote check passed. Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40799293352).
+Release signature, embedded JavaScript/VLC and architecture checks passed. The Android TV emulator startup and remote check passed. Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40822981781).
 
 ## Build from source
 

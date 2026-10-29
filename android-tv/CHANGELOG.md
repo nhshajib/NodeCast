@@ -2,7 +2,15 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.1 · October 28, 2026 · Current download
+## 0.6.4 · October 29, 2026 · Current download
+
+- Clear recents without deleting resume progress or watched marks.
+- Password-encrypted export/import of profiles, provider details, favorites, settings and optional history. Import previews changes and preserves existing profiles.
+- Family protection transfers to a fresh device; interrupted imports recover before startup.
+- Standalone native startup, guide persistence and family protection checks passed.
+- SHA-256 `c9003b3949af6f59917e2627890edf8c0407fca55db52c51215b69ab69e50cee`.
+
+## 0.6.1 · October 28, 2026
 
 - Rebuilt the Android TV APK from the current source and replaced the 0.6.0 TV download.
 - Version code 601 installs over 0.6.0 and keeps the compact guide layout.

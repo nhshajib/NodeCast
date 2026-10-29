@@ -2,7 +2,15 @@
 
 [← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.3 · October 28, 2026 · Current download
+## 0.6.4 · October 29, 2026 · Current download
+
+- Clear recents without deleting resume progress or watched marks.
+- Password-encrypted export/import of profiles, provider details, favorites, settings and optional history. Import previews changes and preserves existing profiles.
+- Family protection transfers to a fresh device; interrupted imports recover before startup.
+- iPhone launch fixes retained; Release simulator startup passed before packaging.
+- SHA-256 `0446c791eef20ef6666f3c0ec88e45e7271fda7dbdc46f350f799ad954f48466`.
+
+## 0.6.3 · October 28, 2026
 
 - Fixed the crash at opening. The file-system library required a function the rest of the app does not provide, so the process closed before the first screen.
 - That library is now built with the same modules, and iOS is given the scene delegate class that is actually registered.

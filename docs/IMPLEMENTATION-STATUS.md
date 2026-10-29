@@ -1,3 +1,9 @@
+# Current status — October 29, 2026
+
+Version 0.6.4 is published for iPhone, Android mobile and Android TV. Clear recents and encrypted profile/settings transfer are implemented in Settings and verified with browser and native checks. The iPhone build includes launch fixes and passed a Release simulator startup check. [Transfer details](../verification/transfer/README.md) · [Exact build records](../verification/android/native-0.6.4-builds.json).
+
+The following sections are historical records.
+
 # Current status — October 28, 2026
 
 Version 0.6.3 replaces the iPhone IPA and fixes the crash at opening. The published Android TV APK remains 0.6.1 and the Android phone APK remains 0.6.0. The approved 0.6.0 local feature round is implemented. See [features, UI locations and limits](../verification/roadmap/README.md), [browser checks](../verification/roadmap/checks.json), and [native records](../verification/android/native-0.6.0-builds.json). The following sections are historical records, including their original roadmaps and validation limits.

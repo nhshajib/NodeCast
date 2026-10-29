@@ -1,4 +1,10 @@
-# Current verification — NodeCast 0.6.3 iPhone
+# Current verification — NodeCast 0.6.4
+
+TypeScript and 110 automated tests pass. Encrypted transfer UI checks passed for mobile and TV, including wrong-password rejection, import preview and keeping existing profiles. Android native checks cover cold starts, SQLite persistence and family protection; mobile additionally saves an encrypted file through DocumentsUI and restores into a fresh emulator app. TV additionally checks VLC, remote Next episode, mini-player continuity and Clear recents. The iPhone Release simulator stayed open before arm64 device compilation and IPA archive verification. Physical iPhone sharing, PiP/AirPlay and real-provider compatibility need device confirmation.
+
+[Build provenance](android/native-0.6.4-builds.json) · [Transfer checks](transfer/README.md)
+
+## Historical verification — NodeCast 0.6.3 iPhone
 
 The current iPhone download is `NodeCast-0.6.3-unsigned.ipa` (35,715,277 bytes, SHA-256 `cad83b2aa80366ca49bd5c475f65b8d7e08c49046e555f44fbd6902643dbdfdd`). It passed arm64 device compilation, embedded JavaScript and VLC linkage, archive integrity and SHA-256. A Release iPhone simulator launch stayed open after the file-system library was built from the same modules as the rest of the app. The current Android TV download is `NodeCast-tv-0.6.1.apk` (223,655,215 bytes, SHA-256 `fd46cea42b169d81c117f2413b67a91c2ccc75544e2e306e6bd076113619fa74`), version code 601. Its release signature, bundle check, and emulator startup/remote smoke test passed. The Android phone download remains the 0.6.0 APK. Physical PiP/AirPlay and provider streams still need device confirmation.
 

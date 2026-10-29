@@ -1,5 +1,11 @@
 # Android native verification
 
+## 0.6.4 published binaries · October 29, 2026
+
+Both final APKs passed signatures, embedded bundle/player checks and native emulator runs. Phone verification saves an encrypted backup through DocumentsUI, clears the disposable emulator's app data, imports the backup and verifies the provider, favorite, guide, dark appearance and family PIN. TV verification includes VLC, remote Next episode, mini-player continuity, SQLite persistence and Clear recents.
+
+[Exact build records](native-0.6.4-builds.json) · [Fresh-device transfer](native-mobile-backup-0.6.4.json) · [Phone checks](native-mobile-checks-0.6.4.json) · [TV checks](native-tv-checks-0.6.4.json). These are API 35 emulator results. Physical iPhone sharing, physical TV file-picker availability and PiP/AirPlay still need device confirmation.
+
 ## 0.6.1 published TV binary · October 28, 2026
 
 The current TV download is version 0.6.1, version code 601. Signature, bundle and architecture checks passed, and the emulator startup and remote smoke test passed on the release run. The phone download remains the 0.6.0 APK. Physical hardware and provider streams still need device confirmation.

@@ -1,0 +1,11 @@
+{
+  "passed": [
+    "Native AES-GCM export through Android Create Document",
+    "Encrypted file persists outside app storage",
+    "Fresh-emulator import through Android document picker",
+    "Provider, favorite, guide and dark appearance restored",
+    "Family PIN and protected category restored and unlocked",
+    "Fresh guide downloads after transfer"
+  ],
+  "scope": "Synthetic credentials and disposable API 35 x86-64 emulator. The iOS share sheet and physical TV file pickers still need device confirmation."
+}

@@ -1,15 +1,15 @@
 {
-  "version": "0.6.1",
-  "versionCode": 601,
+  "version": "0.6.4",
+  "versionCode": 604,
   "edition": "tv",
   "package": "com.nhshajib.nodecast.tv",
-  "apk": "NodeCast-tv-0.6.1.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk",
-  "bytes": 223655215,
-  "sha256": "fd46cea42b169d81c117f2413b67a91c2ccc75544e2e306e6bd076113619fa74",
-  "releaseAssetId": 686970025,
-  "sourceCommit": "ba106c07dc4934094dc8e2d9d4117ea5bbfb93fc",
-  "buildRun": 40799293352,
+  "apk": "NodeCast-tv-0.6.4.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-tv-0.6.4.apk",
+  "bytes": 223706407,
+  "sha256": "c9003b3949af6f59917e2627890edf8c0407fca55db52c51215b69ab69e50cee",
+  "releaseAssetId": 687476611,
+  "sourceCommit": "109cb9a8d5c955b9a1f878c2780c3f169604544e",
+  "buildRun": 40822981781,
   "architectures": [
     "armeabi-v7a",
     "arm64-v8a",
@@ -19,10 +19,21 @@
   "signing": "Standard Android test key; personal testing, not store distribution",
   "verification": {
     "releaseSignatureAndBundle": "passed",
-    "repeatedColdStarts": "passed",
     "physicalDeviceTested": false,
-    "emulatorStartupAndRemoteSmoke": "passed",
-    "nativeCheckRun": 40799293352
+    "clearRecentsPureTests": "passed",
+    "encryptedTransferBrowserIntegration": "passed",
+    "repeatedColdStarts": "passed",
+    "nativeXMLTVSQLitePersistence": "passed",
+    "nativeFamilyPINAndProtectedCategory": "passed",
+    "nativeVLCAndNextEpisode": "passed",
+    "sameLiveSessionMiniPlayer": "passed",
+    "nativeClearRecents": "passed"
   },
-  "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk"
+  "artifactId": 12876070411,
+  "nativeCheckRun": 40823845654,
+  "nativeCheckArtifactId": 12875699201,
+  "nativeCheckSourceCommit": "109cb9a8d5c955b9a1f878c2780c3f169604544e",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.4",
+  "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "updateSigningIdentityMatchesPreviousRelease": true
 }
