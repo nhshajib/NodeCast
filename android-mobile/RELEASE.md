@@ -1,7 +1,7 @@
-Two separate standalone Android editions. Version 0.6.0 adds scoped search, per-channel playback choices, redacted player information, seasons, watched marks and series continuity. It also adds library sorting, Fit/Fill, VOD speed, an in-app sleep timer, persistent mini-player, full XMLTV guides, dark appearance and local family controls. Native videos can offer PiP; Chromecast is not included. Choose the correct APK:
+Android TV 0.6.1 is a current-source rebuild. It keeps the compact guide layout so programme timelines stay visible, and version code 601 installs over the 0.6.0 TV app. The phone APK in this notes file is still the published 0.6.0 mobile build. Native videos can offer PiP; Chromecast is not included. Choose the correct APK:
 
-- [**NodeCast mobile 0.6.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk): Android phone/tablet interface.
-- [**NodeCast TV 0.6.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk): Android TV / Google TV with fullscreen series playback and a bottom-right Next episode button.
+- [**NodeCast mobile 0.6.0 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-mobile-0.6.0.apk): Android phone/tablet interface. This file is unchanged.
+- [**NodeCast TV 0.6.1 APK**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk): Android TV / Google TV with fullscreen series playback and a bottom-right Next episode button.
 
 Both include embedded VLC, local Xtream Codes / M3U profiles and the JavaScript bundle. No Expo Go, PC connection or weekly signing renewal is needed. Each edition has its own app ID and local storage. Install subsequent updates over the existing app to preserve profiles.
 

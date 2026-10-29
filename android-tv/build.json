@@ -1,16 +1,14 @@
 {
-  "version": "0.6.0",
-  "versionCode": 600,
+  "version": "0.6.1",
+  "versionCode": 601,
   "edition": "tv",
   "package": "com.nhshajib.nodecast.tv",
-  "apk": "NodeCast-tv-0.6.0.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk",
-  "bytes": 223654875,
-  "sha256": "7fea1df9614074f524efcf4055697e914fa593284a30c2d51383b82b1a735f21",
-  "sourceCommit": "70c92efd4aff4555843e0dd7fdfa82f0a1303c44",
-  "buildRun": 40752820700,
-  "artifactId": 12845765514,
-  "nativeCheckRun": 40756695749,
+  "apk": "NodeCast-tv-0.6.1.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.1/NodeCast-tv-0.6.1.apk",
+  "bytes": null,
+  "sha256": null,
+  "sourceCommit": "ba106c07dc4934094dc8e2d9d4117ea5bbfb93fc",
+  "buildRun": 40799293352,
   "architectures": [
     "armeabi-v7a",
     "arm64-v8a",
@@ -19,18 +17,11 @@
   "minAndroidSdk": 24,
   "signing": "Standard Android test key; personal testing, not store distribution",
   "verification": {
-    "releaseSignatureAndBundle": "passed",
-    "repeatedColdStarts": "passed",
+    "releaseSignatureAndBundle": "in progress",
+    "repeatedColdStarts": "in progress",
     "physicalDeviceTested": false,
-    "nativeVLCAndSeriesNextWithRemote": "passed using generated MPEG-TS/MP4 and synthetic Xtream metadata",
-    "nativeXMLTVSQLitePersistence": "passed",
-    "nativeFamilyPINAndProtectedCategory": "passed",
-    "sameLiveSessionMiniPlayer": "passed"
+    "nativeVLCAndSeriesNextWithRemote": "pending emulator check for this build",
+    "sameLiveSessionMiniPlayer": "not rechecked for 0.6.1"
   },
-  "releaseAssetId": 686088391,
-  "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
-  "updateSigningIdentityMatchesPreviousRelease": true,
-  "nativeCheckSourceCommit": "258055a93ef5c72f6f637a6f5ad6b944754ba1c1",
-  "nativeCheckArtifactId": 12847196496,
-  "pinSetupEmulatorSeconds": 22.1
+  "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.0/NodeCast-tv-0.6.0.apk"
 }

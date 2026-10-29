@@ -2,6 +2,12 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.1 · October 28, 2026
+
+- Rebuilt the iPhone IPA and Android TV APK from the current source and replaced those downloads.
+- Android TV keeps the compact guide layout, so programme timelines stay visible, and installs over 0.6.0.
+- The Android phone download remains 0.6.0.
+
 ## 0.6.0 · October 28, 2026
 
 - Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
@@ -29,9 +35,9 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.6.0 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
+| iPhone | [0.6.1 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
 | Android mobile | [0.6.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
-| Android TV | [0.6.0 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
+| Android TV | [0.6.1 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
 
 ## October 27, 2026 · Android 0.4.0
 
