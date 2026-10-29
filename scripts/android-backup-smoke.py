@@ -19,6 +19,9 @@ try:
  click('Go back');click('Library');click('Add Phone Test Channel to favorites');open_backup()
  text('Backup password','transfer-test-password-123');text('Confirm backup password','transfer-test-password-123');click('Create encrypted backup',True)
  system_click('Save',timeout=120)
+ if any('Unlock backup & transfer' in (n.get('content-desc') or '') for n in dump().iter('node')):
+  click('Unlock backup & transfer');text('Family PIN','123456');click('Unlock');find('Take your setup with you.',timeout=90)
+ find('Backup handed to',timeout=30,scroll=True)
  # The saved file must outlive app storage. It contains synthetic credentials only.
  end=time.monotonic()+30;paths=[]
  while time.monotonic()<end:
