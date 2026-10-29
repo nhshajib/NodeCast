@@ -15,7 +15,7 @@ While this repository is private, sign into GitHub with repository access before
 | | Current iPhone download |
 | --- | --- |
 | Version | **0.6.1** · October 28, 2026 |
-| File | `NodeCast-0.6.1-unsigned.ipa` |
+| File | `NodeCast-0.6.1-unsigned.ipa` · 35.8 MB |
 | Device | Physical iPhone · arm64 |
 | Installation | Personal signing with Impactor and your Apple account |
 | Free signing | Normally renew every **7 days** |
@@ -70,6 +70,6 @@ If you miss renewal, the app normally stops opening until it is signed again. Re
 
 [Read iPhone version history](CHANGELOG.md) · [Exact build record](build.json) · [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40799293406) · [Source for this IPA](https://github.com/nhshajib/NodeCast/tree/ba106c07dc4934094dc8e2d9d4117ea5bbfb93fc)
 
-The release build checks device architecture, embedded JavaScript, native VLC linkage and IPA integrity before the download is published. Video compatibility depends on the device and provider. The IP comparison does not verify VPN status.
+CI checked the device architecture, embedded JavaScript, native VLC linkage, archive integrity and SHA-256. Video compatibility depends on the device and provider. The IP comparison does not verify VPN status.
 
 [Download help](../docs/DOWNLOADS.md) · [All editions](../README.md) · [Support NodeCast](https://buymeacoffee.com/hexorbd)

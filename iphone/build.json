@@ -4,8 +4,9 @@
   "file": "NodeCast-0.6.1-unsigned.ipa",
   "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.1/NodeCast-0.6.1-unsigned.ipa",
   "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.1",
-  "bytes": null,
-  "sha256": null,
+  "bytes": 35766247,
+  "sha256": "36d4fe47e3c44c643f5edfa9eb8f1ce6f4084cb098c9f2418bb31469fda02237",
+  "releaseAssetId": 686969896,
   "bundleIdentifier": "com.nhshajib.nodecast",
   "buildNumber": "601",
   "architectures": [
@@ -17,8 +18,8 @@
   "freeAppleSigningRenewal": "Normally seven days",
   "distribution": "New standalone physical-iPhone Release build; replaces the 0.6.0 download",
   "verification": {
-    "devicePlatformArm64EmbeddedJSAndVLC": "in progress",
-    "archiveIntegrityAndSha256": "in progress",
+    "devicePlatformArm64EmbeddedJSAndVLC": "passed",
+    "archiveIntegrityAndSha256": "passed",
     "physicalDeviceTested": false
   },
   "previousDownload": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.0/NodeCast-0.6.0-unsigned.ipa"
