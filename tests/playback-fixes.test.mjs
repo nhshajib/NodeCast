@@ -125,3 +125,10 @@ test('default recovery timers retain the global receiver required by browser tim
  try {const coordinator=new RecoveryCoordinator(async()=>{},()=>{});coordinator.request('network');coordinator.dispose();assert.ok(scheduled);assert.ok(cancelled);}
  finally {globalThis.setTimeout=originalSchedule;globalThis.clearTimeout=originalCancel;}
 });
+
+test('Android builds the corrected document-result module from source',()=>{
+ const pkg=JSON.parse(fs.readFileSync(new URL('../package.json',import.meta.url),'utf8'));
+ assert.deepEqual(pkg.expo.autolinking.android.buildFromSource,['expo-intent-launcher']);
+ const module=fs.readFileSync(new URL('../node_modules/expo-intent-launcher/android/src/main/java/expo/modules/intentlauncher/IntentLauncherModule.kt',import.meta.url),'utf8');
+ assert.match(module,/payload\.data\?\.data\?\.let/);
+});

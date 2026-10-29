@@ -60,6 +60,11 @@
         "buildFromSource": [
           "expo-file-system"
         ]
+      },
+      "android": {
+        "buildFromSource": [
+          "expo-intent-launcher"
+        ]
       }
     }
   },
