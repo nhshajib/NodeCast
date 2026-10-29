@@ -7,6 +7,8 @@ import { releases, appVersion } from '../src/releases.ts';
 import { progressPercent } from '../src/activity.ts';
 import { loadLibrary } from '../src/provider.ts';
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 const provider = {kind:'xtream',name:'Test',address:'https://fixture.example/prefix',username:'u@name',password:'p/word'};
 const channel = {id:'live:42',kind:'live',streamId:'42',name:'BBC One HD',group:'UK',url:'https://fixture.example/prefix/live/u%40name/p%2Fword/42.m3u8'};
 test('automatic Xtream playback offers sequential HLS and TS, with TS sent to external players',()=>{
@@ -86,6 +88,24 @@ test('Picture in Picture stays off until requested and VLC rejects nil media',()
  assert.match(media, /mediaPlayer\?\.audio\?\.volume/);
  const video = fs.readFileSync(new URL('../node_modules/expo-video/ios/VideoView.swift', import.meta.url), 'utf8');
  assert.match(video, /session\.setCategory\(\.playback, mode: \.moviePlayback\)/);
+});
+test('iOS file system is compiled from source so launch does not miss EventEmitter.eventRuntime',()=>{
+ const pkg=JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+ assert.deepEqual(pkg.expo.autolinking.ios.buildFromSource, ['expo-file-system']);
+ const fileSystem=fs.readFileSync(new URL('../node_modules/expo-file-system/ios/ExpoFileSystem.podspec', import.meta.url), 'utf8');
+ assert.match(fileSystem, /s\.source_files = "\*\*\/\*\.\{h,m,swift\}"/);
+ const core=fs.readFileSync(new URL('../node_modules/expo-modules-core/ios/Core/Events/EventEmitter.swift', import.meta.url), 'utf8');
+ assert.equal(core.includes('eventRuntime'), false);
+});
+test('iOS scene delegate plist uses the Objective-C class the app actually registers',()=>{
+ const {useRegisteredSceneDelegate,SCENE_DELEGATE_CLASS}=require('../plugins/withIosSceneDelegate.js');
+ const plist={UIApplicationSceneManifest:{UIApplicationSupportsMultipleScenes:false,UISceneConfigurations:{UIWindowSceneSessionRoleApplication:[{UISceneConfigurationName:'Default Configuration',UISceneDelegateClassName:'$(PRODUCT_MODULE_NAME).SceneDelegate'}]}}};
+ const next=useRegisteredSceneDelegate(plist);
+ assert.equal(next.UIApplicationSceneManifest.UISceneConfigurations.UIWindowSceneSessionRoleApplication[0].UISceneDelegateClassName, SCENE_DELEGATE_CLASS);
+ assert.equal(SCENE_DELEGATE_CLASS, 'SceneDelegate');
+ assert.throws(()=>useRegisteredSceneDelegate({}));
+ const app=JSON.parse(fs.readFileSync(new URL('../app.json', import.meta.url), 'utf8'));
+ assert.ok(app.expo.plugins.includes('./plugins/withIosSceneDelegate.js'));
 });
 test('app, package and displayed release history identify the same current version',()=>{
  assert.equal(releases[0].version,appVersion);

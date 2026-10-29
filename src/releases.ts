@@ -1,5 +1,10 @@
-export const appVersion = '0.6.2';
+export const appVersion = '0.6.3';
 export const releases = [
+  { version: '0.6.3', date: 'October 28, 2026', title: 'iPhone opens again.', changes: [
+    'iPhone was closing as soon as it opened because the file-system library required a function the rest of the app does not provide.',
+    'That library is now built with the same modules as the rest of the app, and iOS is given the scene delegate class that is actually registered.',
+    'The Android phone and Android TV downloads are unchanged.',
+  ] },
   { version: '0.6.2', date: 'October 28, 2026', title: 'iPhone launch and playback crash fix.', changes: [
     'iPhone no longer loads file, document and crypto native modules during startup, which was aborting the app before the first screen.',
     'Movie playback no longer enables Picture in Picture until you ask for it, and the audio session is ready first.',

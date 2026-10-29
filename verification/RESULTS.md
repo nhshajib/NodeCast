@@ -1,6 +1,6 @@
-# Current verification — NodeCast 0.6.2 iPhone
+# Current verification — NodeCast 0.6.3 iPhone
 
-The current iPhone download is `NodeCast-0.6.2-unsigned.ipa` (35,768,485 bytes, SHA-256 `91a5fc763c056f39b427b1d89ad8b5535903bc7b55694972813c97121d9940c6`). It passed arm64 device compilation, embedded JavaScript and VLC linkage, archive integrity and SHA-256. It fixes the 0.6.1 launch and playback crash. The current Android TV download is `NodeCast-tv-0.6.1.apk` (223,655,215 bytes, SHA-256 `fd46cea42b169d81c117f2413b67a91c2ccc75544e2e306e6bd076113619fa74`), version code 601. Its release signature, bundle check, and emulator startup/remote smoke test passed. The Android phone download remains the 0.6.0 APK. Physical PiP/AirPlay and provider streams still need device confirmation.
+The current iPhone download is `NodeCast-0.6.3-unsigned.ipa` (35,715,277 bytes, SHA-256 `cad83b2aa80366ca49bd5c475f65b8d7e08c49046e555f44fbd6902643dbdfdd`). It passed arm64 device compilation, embedded JavaScript and VLC linkage, archive integrity and SHA-256. A Release iPhone simulator launch stayed open after the file-system library was built from the same modules as the rest of the app. The current Android TV download is `NodeCast-tv-0.6.1.apk` (223,655,215 bytes, SHA-256 `fd46cea42b169d81c117f2413b67a91c2ccc75544e2e306e6bd076113619fa74`), version code 601. Its release signature, bundle check, and emulator startup/remote smoke test passed. The Android phone download remains the 0.6.0 APK. Physical PiP/AirPlay and provider streams still need device confirmation.
 
 # Verification — NodeCast 0.6.0
 

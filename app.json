@@ -2,12 +2,12 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.6.2",
+    "version": "0.6.3",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "buildNumber": "602",
+      "buildNumber": "603",
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
@@ -64,7 +64,8 @@
         {
           "initialOrientation": "PORTRAIT_UP"
         }
-      ]
+      ],
+      "./plugins/withIosSceneDelegate.js"
     ],
     "backgroundColor": "#090124",
     "scheme": "nodecast",

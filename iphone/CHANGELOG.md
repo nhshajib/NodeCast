@@ -2,7 +2,13 @@
 
 [← iPhone download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.2 · October 28, 2026 · Current download
+## 0.6.3 · October 28, 2026 · Current download
+
+- Fixed the crash at opening. The file-system library required a function the rest of the app does not provide, so the process closed before the first screen.
+- That library is now built with the same modules, and iOS is given the scene delegate class that is actually registered.
+- A Release iPhone simulator launch stayed open. SHA-256 `cad83b2aa80366ca49bd5c475f65b8d7e08c49046e555f44fbd6902643dbdfdd`. Install over the existing app with the same Apple account to keep local profiles.
+
+## 0.6.2 · October 28, 2026
 
 - Fixed a launch crash caused by evaluating file, document, and crypto native modules before the first screen.
 - Movie playback no longer turns on Picture in Picture until you ask for it, and the audio session is prepared first.

@@ -2,7 +2,7 @@
   "name": "nodecast-iphone",
   "description": "Standalone IPTV player for iPhone, Android mobile and Android TV",
   "license": "GPL-3.0-only",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "main": "index.ts",
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
@@ -53,6 +53,13 @@
     "build:android:mobile": "node scripts/run-android.cjs mobile",
     "build:android:tv": "node scripts/run-android.cjs tv",
     "postinstall": "node scripts/patch-android-vlc.cjs && node scripts/patch-ios-playback.cjs"
+  },
+  "expo": {
+    "autolinking": {
+      "ios": {
+        "buildFromSource": ["expo-file-system"]
+      }
+    }
   },
   "private": true
 }

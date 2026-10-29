@@ -39,9 +39,50 @@ jobs:
           xcrun swift --version
           pod --version
           printf 'export NODE_BINARY="%s"\n' "$(command -v node)" > ios/.xcode.env.local
+      - name: Confirm the scene delegate class iOS will look up
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          source = pathlib.Path('ios/NodeCast/SceneDelegate.swift').read_text()
+          plist = pathlib.Path('ios/NodeCast/Info.plist').read_text()
+          if '@objc(SceneDelegate)' not in source:
+              raise SystemExit('SceneDelegate.swift no longer registers the Objective-C class SceneDelegate.')
+          if '$(PRODUCT_MODULE_NAME).SceneDelegate' in plist:
+              raise SystemExit('Info.plist still asks UIKit for the module-qualified class that is not registered.')
+          if '<string>SceneDelegate</string>' not in plist:
+              raise SystemExit('Info.plist does not name the registered SceneDelegate class.')
+          print('scene delegate plist matches @objc(SceneDelegate)')
+          PY
       - name: Install native dependencies including VLC
         working-directory: ios
         run: pod install --repo-update
+      - name: Compile Release app for the iPhone simulator
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p build
+          xcodebuild \
+            -workspace ios/NodeCast.xcworkspace \
+            -scheme NodeCast \
+            -configuration Release \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build/DerivedDataSim \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee build/xcodebuild-simulator.log
+      - name: Launch the simulator app and require it to stay open
+        run: bash scripts/ios-simulator-launch.sh
+      - name: Upload simulator console when launch fails
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NodeCast-simulator-launch
+          path: |
+            build/simulator-console.txt
+            build/simulator-system.log
+            build/xcodebuild-simulator.log
+          if-no-files-found: ignore
+          retention-days: 7
       - name: Compile standalone Release app for iPhone
         shell: bash
         run: |

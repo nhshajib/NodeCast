@@ -6,7 +6,7 @@
 
 Your live channels, films and series in a calm, native iOS-style interface. Connect your own playlist, keep profiles on your device and watch with built-in playback.
 
-**[Download IPA · 0.6.2](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.2/NodeCast-0.6.2-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.2) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download IPA · 0.6.3](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.3/NodeCast-0.6.3-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.3) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,19 +14,19 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current iPhone download |
 | --- | --- |
-| Version | **0.6.2** · October 28, 2026 |
-| File | `NodeCast-0.6.2-unsigned.ipa` · 35.8 MB |
+| Version | **0.6.3** · October 28, 2026 |
+| File | `NodeCast-0.6.3-unsigned.ipa` · 35.7 MB |
 | Device | Physical iPhone · arm64 |
 | Installation | Personal signing with Impactor and your Apple account |
 | Free signing | Normally renew every **7 days** |
 | Watching | No running PC or Expo Go required |
 | Profiles | Local device storage; no NodeCast account or cloud sync |
 
-This is a standalone 0.6.2 IPA with embedded JavaScript and VLC. It replaces the 0.6.1 iPhone download, which crashed on launch and during playback. PiP/AirPlay still need physical-device confirmation.
+This is a standalone 0.6.3 IPA with embedded JavaScript and VLC. It replaces the 0.6.2 iPhone download, which closed as soon as it opened. A Release simulator launch stayed open. PiP/AirPlay still need physical-device confirmation.
 
-## New in 0.6.2
+## New in 0.6.3
 
-The current iPhone download fixes the crash. Startup no longer loads file, document, and crypto native modules before the first screen. Picture in Picture stays off until you ask for it. Live TV uses the VLC release that survives an early stop. Guides, family controls, appearance, and player tools from 0.6.0 remain. [Details and limits](../verification/roadmap/README.md).
+The current iPhone download stays open. The file-system library is built with the same modules as the rest of the app, and iOS is given the scene delegate class that is actually registered. Guides, family controls, appearance, and player tools from 0.6.0 remain. [Details and limits](../verification/roadmap/README.md).
 
 ## What you'll find inside
 
@@ -54,7 +54,7 @@ The steps below use **[Impactor (claration/impactor)](https://github.com/clarati
 2. Download and open **Impactor for Windows** from its official releases page. Install the required Apple device software/drivers if prompted.
 3. Connect your unlocked iPhone using USB. Tap **Trust This Computer** and enter your phone PIN if asked.
 4. Verify the phone appears in Apple Devices/iTunes and in **Impactor**, then select it in Impactor.
-5. Add or drag `NodeCast-0.6.2-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
+5. Add or drag `NodeCast-0.6.3-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
 6. Follow iOS prompts to trust the developer profile under **Settings → General → VPN & Device Management**. Enable **Developer Mode** under **Settings → Privacy & Security** if iOS requests it.
 7. Open **NodeCast** on the phone and add your Xtream Codes details or full M3U link. Profiles from Expo Go belong to its separate app storage.
 
