@@ -17,7 +17,7 @@ module.exports = (config, { tv = false } = {}) => {
   if (tv) {
     manifest['uses-feature'] = [
       ...(manifest['uses-feature'] || []).filter(f => !['android.software.leanback', 'android.hardware.touchscreen'].includes(f.$['android:name'])),
-      { $: { 'android:name': 'android.software.leanback', 'android:required': 'true' } },
+      { $: { 'android:name': 'android.software.leanback', 'android:required': 'false' } },
       { $: { 'android:name': 'android.hardware.touchscreen', 'android:required': 'false' } },
     ];
     app.$['android:banner'] = '@drawable/tv_banner';
@@ -25,7 +25,7 @@ module.exports = (config, { tv = false } = {}) => {
     activity.$['android:screenOrientation'] = 'landscape';
     for (const filter of activity['intent-filter'] || []) {
       if ((filter.action || []).some(a => a.$['android:name'] === 'android.intent.action.MAIN')) {
-        filter.category = [{ $: { 'android:name': 'android.intent.category.LEANBACK_LAUNCHER' } }];
+        filter.category = [{ $: { 'android:name': 'android.intent.category.LEANBACK_LAUNCHER' } }, { $: { 'android:name': 'android.intent.category.LAUNCHER' } }];
       }
     }
   }

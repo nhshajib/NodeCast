@@ -5,6 +5,8 @@ export const releases = [
     'Clear focus highlights, disabled-control skipping, automatic scrolling and focus restoration after Back.',
     'Player menus, audio/subtitles and PIN prompts keep focus inside the active panel instead of behind the video.',
     'TV switches toggle with Select; search and connection fields open the keyboard when selected. TV no longer shows a phone-rotation control.',
+    'Fire TV Menu/long-Select opens context options, with a quick playlist switcher and TV-first dark defaults for new setups.',
+    'Provider-supported Xtream catch-up opens eligible past programmes from the guide, using the server time zone and archive window.',
     'The iPhone and Android phone downloads remain version 0.6.4.',
   ]},
   { version: '0.6.4', date: 'October 29, 2026', title: 'Your setup goes with you.', changes: [

@@ -1,18 +1,19 @@
 import type { Media } from './provider';
-export type MediaSummary = Pick<Media, 'id' | 'name' | 'group' | 'kind' | 'streamId' | 'containerExtension' | 'description' | 'rating' | 'seriesId' | 'epgId' | 'accessGroup'>;
+export type MediaSummary = Pick<Media, 'id' | 'name' | 'group' | 'kind' | 'streamId' | 'containerExtension' | 'description' | 'rating' | 'seriesId' | 'epgId' | 'accessGroup' | 'archiveDays'>;
 export type ViewingEntry = { item: MediaSummary; position: number; duration: number; lastPlayedAt: string; completed: boolean; watchedOverride?: boolean; hiddenFromRecents?: boolean };
 export type PlaybackSnapshot = { position: number; duration: number; ended?: boolean };
 export function summarizeMedia(item: Media): MediaSummary {
   // Explicit allowlist. URLs, artwork URLs, and provider credentials never enter history/catalog storage.
   const text = (value: unknown, limit = 12000) => typeof value === 'string' ? value.slice(0, limit) : undefined;
   return { id: text(item.id, 300) || '', name: text(item.name, 500) || 'Unnamed title', group: text(item.group, 300) || 'Uncategorized',
-    kind: item.kind, streamId: text(item.streamId, 100), containerExtension: text(item.containerExtension, 10), description: text(item.description), rating: text(item.rating, 20), seriesId: text(item.seriesId, 300), epgId: text(item.epgId, 300), accessGroup: text(item.accessGroup, 300) };
+    kind: item.kind, archiveDays:Number.isInteger(item.archiveDays)&&item.archiveDays!>=0?Math.min(30,item.archiveDays!):undefined, streamId: text(item.streamId, 100), containerExtension: text(item.containerExtension, 10), description: text(item.description), rating: text(item.rating, 20), seriesId: text(item.seriesId, 300), epgId: text(item.epgId, 300), accessGroup: text(item.accessGroup, 300) };
 }
 // Keep ordinary recents small, retaining up to 2,000 older episode states for series continuity.
 function boundViewing(entries: ViewingEntry[]): ViewingEntry[] {
   return [...entries.slice(0, 60), ...entries.slice(60).filter(entry => entry.item.kind === 'series' && entry.item.id.startsWith('episode:')).slice(0, 2000)];
 }
 export function recordViewing(entries: ViewingEntry[], item: Media, snapshot: PlaybackSnapshot, now = new Date().toISOString()): ViewingEntry[] {
+  if(item.catchup)return entries; // Archive links expire and must never become ordinary movie resume URLs.
   const duration = Number.isFinite(snapshot.duration) && snapshot.duration > 0 ? snapshot.duration : 0;
   const position = item.kind === 'live' ? 0 : Math.max(0, Number.isFinite(snapshot.position) ? snapshot.position : 0);
   const previous = entries.find(entry => entry.item.id === item.id);

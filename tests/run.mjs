@@ -15,3 +15,5 @@ import './everyday.test.mjs';
 import './roadmap.test.mjs';
 
 import "./backup.test.mjs";
+
+import "./catchup.test.mjs";

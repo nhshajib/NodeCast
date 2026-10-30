@@ -17,9 +17,9 @@ export class XMLTVParser {
   private parser = new SaxesParser({ xmlns: false });
   private stack:string[]=[]; private text=''; private channel:GuideChannel|null=null; private programme:GuideProgramme|null=null;
   private bytes=0; private seen=0; private channels=new Map<string,GuideChannel>(); private programmes:GuideProgramme[]=[];
-  private now:number;
-  constructor(now=Date.now()) {
-    this.now=now;
+  private now:number; private lookbackDays:number;
+  constructor(now=Date.now(),lookbackDays=1) {
+    this.now=now;this.lookbackDays=Number.isFinite(lookbackDays)?Math.max(1,Math.min(7,Math.floor(lookbackDays))):1;
     this.parser.on('doctype',value=>{if(/\[|<!ENTITY/i.test(value))throw new Error('XML internal entities are not supported.');});
     this.parser.on('error',()=>{throw new Error('The guide contains invalid XML.')});
     this.parser.on('opentag',tag=>{
@@ -37,7 +37,7 @@ export class XMLTVParser {
       if(name==='channel'&&this.channel){if(this.channel.id)this.channels.set(this.channel.id,this.channel);this.channel=null;if(this.channels.size>30000)throw new Error('Guide has too many channels. Use a filtered guide feed.');}
       if(name==='programme'){
         this.seen++;if(this.seen>1000000)throw new Error('Guide is too large. Use a filtered feed.');
-        const p=this.programme;if(p?.channel&&p.title&&p.end>this.now-86400000&&p.start<this.now+3*86400000){this.programmes.push(p);if(this.programmes.length>150000)throw new Error('Guide window has too many programmes. Use a filtered feed.');}this.programme=null;
+        const p=this.programme;if(p?.channel&&p.title&&p.end>this.now-this.lookbackDays*86400000&&p.start<this.now+3*86400000){this.programmes.push(p);if(this.programmes.length>150000)throw new Error('Guide window has too many programmes. Use a filtered feed.');}this.programme=null;
       }
       this.stack.pop();this.text='';
     });
@@ -45,13 +45,13 @@ export class XMLTVParser {
   write(text:string){this.bytes+=text.length;if(this.bytes>32*1024*1024)throw new Error('Guide exceeds the 32 MB expanded limit.');this.parser.write(text);}
   finish():GuideData {this.parser.close();return{channels:[...this.channels.values()],programmes:this.programmes,updatedAt:this.now};}
 }
-export async function downloadGuide(address:string,signal:AbortSignal,now=Date.now(),headers?:Record<string,string>,transport:typeof globalThis.fetch=globalThis.fetch):Promise<GuideData>{
+export async function downloadGuide(address:string,signal:AbortSignal,now=Date.now(),headers?:Record<string,string>,transport:typeof globalThis.fetch=globalThis.fetch,lookbackDays=1):Promise<GuideData>{
   let url:URL;try{url=new URL(address);if(!['https:','http:'].includes(url.protocol))throw new Error()}catch{throw new Error('Enter a complete HTTP/HTTPS XMLTV URL.')}
   const controller=new AbortController();const abort=()=>controller.abort();if(signal.aborted)controller.abort();else signal.addEventListener('abort',abort,{once:true});const timeout=setTimeout(abort,60000);
   try{
     const response=await transport(url.href,{signal:controller.signal,headers:safeHeaders(headers)});if(!response.ok)throw new Error(`Guide server returned HTTP ${response.status}.`);
     if(Number(response.headers.get('content-length')||0)>8*1024*1024)throw new Error('Guide download exceeds 8 MB. Use a filtered or compressed feed.');
-    const parser=new XMLTVParser(now);const decoder=new DecodeUTF8(text=>parser.write(text));let prefix:Uint8Array<ArrayBufferLike>=new Uint8Array();let total=0;let gunzip:Gunzip|null=null;let started=false;
+    const parser=new XMLTVParser(now,lookbackDays);const decoder=new DecodeUTF8(text=>parser.write(text));let prefix:Uint8Array<ArrayBufferLike>=new Uint8Array();let total=0;let gunzip:Gunzip|null=null;let started=false;
     const consume=(bytes:Uint8Array,final=false)=>{
       if(controller.signal.aborted)throw new Error('Guide refresh cancelled.');total+=bytes.length;if(total>8*1024*1024)throw new Error('Guide download exceeds 8 MB.');
       if(!started){const joined=new Uint8Array(prefix.length+bytes.length);joined.set(prefix);joined.set(bytes,prefix.length);bytes=joined;if(bytes.length<2&&!final){prefix=bytes;return;}started=true;if(bytes[0]===31&&bytes[1]===139)gunzip=new Gunzip((chunk,last)=>decoder.push(chunk,last));}

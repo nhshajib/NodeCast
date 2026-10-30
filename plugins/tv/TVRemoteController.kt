@@ -57,16 +57,17 @@ class TVRemoteController(private val activity: Activity) {
     return false
   }
   private fun candidates(): List<View> {
-    val views = mutableListOf<View>(); var trap: View? = null
+    val views = mutableListOf<View>(); val occluders=mutableListOf<View>(); var trap: View? = null
     fun visit(view: View) {
       if (!allowed(view)) return
       if (nativeId(view)?.startsWith("tv-trap:") == true) trap = view
+      if (nativeId(view)?.startsWith("tv-scope:mini") == true) occluders.add(view)
       if (actionable(view)) views.add(view)
       if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
     }
     visit(root)
     val active = trap
-    return if (active == null) views else views.filter { inside(it, active) }
+    return views.filter { view -> (active == null || inside(view,active)) && occluders.none { cover -> !inside(view,cover) && rect(cover).contains(rect(view).centerX(),rect(view).centerY()) } }
   }
   private fun rect(view: View): Rect {
     val position = IntArray(2); view.getLocationOnScreen(position)
@@ -129,15 +130,25 @@ class TVRemoteController(private val activity: Activity) {
     best?.let { focus(it.first) }
     return true
   }
+  private fun menu(choices: List<View>) {
+    val focused=activity.currentFocus?.contentDescription?.toString().orEmpty()
+    val channel=if(focused.startsWith("Play "))focused.removePrefix("Play ") else ""
+    val target=choices.firstOrNull { channel.isNotEmpty()&&it.contentDescription?.toString()=="Playback options for $channel" }
+      ?:choices.firstOrNull { it.contentDescription?.toString()=="Player options" }
+      ?:choices.firstOrNull { it.contentDescription?.toString()=="Library options" }
+    target?.performClick()
+  }
   fun dispatch(event: KeyEvent): Boolean {
     // Native IMEs and native dialogs retain their own key handling.
     if (activity.currentFocus is EditText && imeVisible()) return false
     val direction = arrows[event.keyCode]
     val select = event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_SELECT)
     val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)
-    if (direction == null && !select && !media) return false
+    val menuKey=event.keyCode==KeyEvent.KEYCODE_MENU
+    if (direction == null && !select && !media && !menuKey) return false
     val choices = ensureFocus()
     if (choices.isEmpty()) return false
+    if(menuKey){if(event.action==KeyEvent.ACTION_UP)menu(choices);return true;}
     if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) move(direction, choices); return true }
     if (media) {
       if (event.action == KeyEvent.ACTION_UP) {
@@ -146,14 +157,14 @@ class TVRemoteController(private val activity: Activity) {
           KeyEvent.KEYCODE_MEDIA_PAUSE -> listOf("Pause live TV", "Pause video")
           KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> listOf("Forward 30 seconds")
           KeyEvent.KEYCODE_MEDIA_REWIND -> listOf("Rewind 10 seconds")
-          KeyEvent.KEYCODE_MEDIA_STOP -> listOf("Back to library")
+          KeyEvent.KEYCODE_MEDIA_STOP -> listOf("Back to library", "Back to TV guide")
           else -> listOf("Pause live TV", "Play live TV", "Pause video", "Play video")
         }
         choices.firstOrNull { it.contentDescription?.toString() in labels }?.performClick()
       }
       return true
     }
-    if (event.action == KeyEvent.ACTION_DOWN) { if (event.repeatCount == 0) pressed = activity.currentFocus; return true }
+    if (event.action == KeyEvent.ACTION_DOWN) { if (event.repeatCount == 0) pressed = activity.currentFocus;else if(event.repeatCount==1){pressed=null;menu(choices)}; return true }
     if (event.action == KeyEvent.ACTION_UP) {
       val target = pressed; pressed = null
       if (target != null && choices.any { it === target }) {

@@ -92,15 +92,20 @@ def audit_settings(remote,out):
 
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
- counts={'guide':0,'ts':0}
+ counts={'guide':0,'ts':0,'archive':0}
  stamp=lambda value:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(value))
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def do_GET(self):
    if self.path.split('?')[0].endswith('/guide.xml'):
     counts['guide']+=1;now=time.time()
-    body=f'<tv><channel id="native-test"><display-name>Native guide channel</display-name></channel><programme channel="native-test" start="{stamp(now-120)}" stop="{stamp(now+3600)}"><title>Native Guide Match</title><desc>Synthetic programme for SQLite verification.</desc></programme></tv>'.encode()
+    body=f'<tv><channel id="native-test"><display-name>Native guide channel</display-name></channel><programme channel="native-test" start="{stamp(now-120)}" stop="{stamp(now+3600)}"><title>Native Guide Match</title><desc>Synthetic programme for SQLite verification.</desc></programme><programme channel="native-test" start="{stamp(now-7200)}" stop="{stamp(now-3600)}"><title>Archive Fixture</title><desc>A past synthetic broadcast.</desc></programme></tv>'.encode()
     self.send_response(200);self.send_header('Content-Type','application/xml');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body);return
+   if self.path.split('?')[0].startswith('/timeshift/'):
+    counts['archive']+=1;body=video.read_bytes();self.send_response(200);self.send_header('Content-Type','video/mp2t');self.send_header('Content-Length',str(len(body)));self.end_headers()
+    try:self.wfile.write(body)
+    except (BrokenPipeError,ConnectionResetError):pass
+    return
    if self.path.split('?')[0].endswith('.mp4'):
     body=Path('tests/fixtures/android-episode-test.mp4').read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp4');self.send_header('Content-Length',str(len(body)));self.end_headers()
     try:self.wfile.write(body)
@@ -115,9 +120,9 @@ def main():
    elif 'get_series_categories' in self.path:value=[{'category_id':'1','category_name':'Example series'}]
    elif 'get_series' in self.path:value=[{'series_id':77,'name':'Sample Series','category_id':'1'}]
    elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]+[{'category_id':str(i+2),'category_name':f'Remote News {i+1}'} for i in range(8)]
-   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test'}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%8)} for i in range(30)]
+   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test','tv_archive':1,'tv_archive_duration':2}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%8)} for i in range(30)]
    elif 'action=' in self.path:value=[]
-   else:value={'user_info':{'auth':1,'status':'Active'}}
+   else:value={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
    body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
  server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
  try:
@@ -175,10 +180,12 @@ def main():
   OUT.joinpath('emulator-tv-transfer-settings.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   if REMOTE:
    audit_settings(remote,OUT)
+   remote.activate('Switch playlist');remote.activate('✓ NativeTest');remote.activate('TV guide');remote.activate('Earlier');remote.activate('Archive Fixture');find('Watch catch-up');remote.activate('Watch catch-up');video_ready();assert counts['archive']>0,'Archive endpoint was not requested';OUT.joinpath('emulator-tv-catchup.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));remote.activate('Back to TV guide');find('Earlier');remote.activate('Back');remote.focus('Play Example Live Test');remote.key(82);find('Just for this channel');remote.activate('Back')
    OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'input':'D-pad directions, Select, Back and keyboard text; no tap/swipe','activated':remote.visited},indent=2)+'\n')
   OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart','Clear recents hides watched channels','Backup and transfer settings are available'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
  except Exception:
+  if REMOTE:OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'activated':remote.visited,'input':'D-pad/Select/Back only'},indent=2)+'\n')
   OUT.joinpath('emulator-tv-playback-failure.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-playback-failure.xml').write_text(ET.tostring(dump(),encoding='unicode'))
   raise

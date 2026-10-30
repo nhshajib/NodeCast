@@ -40,7 +40,9 @@ def focus(label,timeout=100):
   if i is None:key(20);continue
   path=route(nodes,i,goals[0]) if goals else []
   signature=(name(nodes[i]),tuple(bounds(nodes[i])),tuple(name(n) for n in nodes));seen[signature]+=1
-  if path and seen[signature]<3:direction=path[0]
+  if path and seen[signature]<3:
+   for direction in path[:3]:key(direction)
+   continue
   elif goals:
    a,b=bounds(nodes[i]),bounds(nodes[goals[0]]);dx=b[0]+b[2]-a[0]-a[2];dy=b[1]+b[3]-a[1]-a[3];direction=(22 if dx>0 else 21) if abs(dx)>abs(dy) else (20 if dy>0 else 19)
    if seen[signature]>2:direction=[19,22,20,21][seen[signature]%4]
@@ -51,7 +53,7 @@ def focus(label,timeout=100):
   key(direction)
  raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None))
 def activate(label,timeout=100):
- n=focus(label,timeout);assert match(n,label);key(23);visited.append(label)
+ n=focus(label,timeout);assert match(n,label);key(23);visited.append(label);print('Remote Select: '+label,flush=True)
 def fill(label,value):
  activate(label);time.sleep(.5);adb('shell','input','keyevent','123',*(['67']*100));adb('shell','input','text',value);key(66);time.sleep(.4)
  # IME-specific Back is allowed, but never dismiss the screen itself.

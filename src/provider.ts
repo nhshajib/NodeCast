@@ -4,7 +4,7 @@ export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
   playbackURLs?: string[]; externalURL?: string; headers?: Record<string, string>;
-  accessGroup?: string; epgId?: string; seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
+  archiveDays?:number; catchup?:boolean; accessGroup?: string; epgId?: string; seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
 export class ProviderError extends Error {
   status?: number;
@@ -169,6 +169,7 @@ export async function loadLibrary(provider: Provider, section: Section, signal?:
     if (id == null || typeof row.name !== 'string') return [];
     const ext = typeof row.container_extension === 'string' && /^[a-z\d]+$/i.test(row.container_extension) ? row.container_extension : 'mp4';
     return [{ id: `${section}:${id}`, name: row.name, group: categories.get(String(row.category_id)) || 'Uncategorized',
+      archiveDays:section==='live'?((row.tv_archive===true||String(row.tv_archive)==='1')&&Number.isInteger(Number(row.tv_archive_duration))&&Number(row.tv_archive_duration)>0?Math.min(30,Number(row.tv_archive_duration)):0):undefined,
       epgId: typeof row.epg_channel_id === 'string' ? row.epg_channel_id : undefined, headers: safeHeaders(provider.headers), logo: artwork(row.stream_icon || row.cover), kind: section, streamId: String(id),
       description: typeof row.plot === 'string' ? row.plot : undefined,
       rating: row.rating ? String(row.rating) : undefined, containerExtension: section === 'live' ? 'm3u8' : ext,
@@ -226,4 +227,15 @@ export async function loadCategoryGroups(provider: Provider, signal?: AbortSigna
     return asRows(rows).flatMap(row=>typeof row.category_name==='string'?[row.category_name.slice(0,300)]:[]);
   }));
   return [...new Set(results.flat())].slice(0,10000).sort();
+}
+
+/** Query account/server metadata only when the user requests archive playback. */
+export async function loadServerTimeZone(provider:Provider,signal?:AbortSignal):Promise<string>{
+ if(provider.kind!=='xtream')throw new ProviderError('Catch-up currently requires a supported Xtream provider.');
+ const data=await request(apiURL(provider),signal,'json',15000,provider.headers);
+ if(String(data?.user_info?.auth)!=='1'||String(data?.user_info?.status).toLowerCase()!=='active')throw new ProviderError('Your provider account is inactive or rejected the archive request.');
+ const zone=data?.server_info?.timezone;
+ if(typeof zone!=='string'||!zone||zone.length>100)throw new ProviderError('Your provider did not report its server time zone. Ask your provider about catch-up support.');
+ try{new Intl.DateTimeFormat('en-GB',{timeZone:zone}).format(0)}catch{throw new ProviderError('Your provider returned an unsupported server time zone.');}
+ return zone;
 }
