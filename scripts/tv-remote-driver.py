@@ -58,7 +58,9 @@ def focus(label,timeout=100):
 def activate(label,timeout=100):
  n=focus(label,timeout);assert match(n,label);key(23);visited.append(label);print('Remote Select: '+label,flush=True)
 def fill(label,value):
- activate(label);time.sleep(.5);adb('shell','input','keyevent','123',*(['67']*100));adb('shell','input','text',value);key(66);time.sleep(.4)
+ activate(label);time.sleep(.5);adb('shell','input','keyevent','123',*(['67']*100))
+ if value:adb('shell','input','text',value)
+ key(66);time.sleep(.4)
  # IME-specific Back is allowed, but never dismiss the screen itself.
  state=adb('shell','dumpsys','input_method')
  if 'mInputShown=true' in state or 'isInputViewShown=true' in state:key(4)
