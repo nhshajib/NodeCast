@@ -27,7 +27,7 @@ export function PlaybackChromeProvider({ children, panelOpen, onIdle, playing, m
   useEffect(() => { let alive = true; void AccessibilityInfo.isScreenReaderEnabled().then(value => { if (alive) setScreenReader(value); }); const sub = AccessibilityInfo.addEventListener('screenReaderChanged', setScreenReader); return () => { alive = false; sub.remove(); }; }, []);
   useEffect(() => { if (!playing || screenReader) setVisible(true); activity(); return clear; }, [playing, minimized, panelOpen, screenReader, activity, clear]);
   useEffect(() => { const sub = DeviceEventEmitter.addListener('NodeCastPlaybackActivity', show); return () => sub.remove(); }, [show]);
-  const value = React.useMemo(() => ({ visible, show, toggle, activity, hold }), [visible, show, toggle, activity, hold]);
+  const value = React.useMemo(() => ({ visible: visible && !panelOpen, show, toggle, activity, hold }), [visible, panelOpen, show, toggle, activity, hold]);
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 

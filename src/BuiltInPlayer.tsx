@@ -52,17 +52,17 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
   else surface = <Player {...props} registerPip={registerPip} minimized={minimized} displayFit={fit} playbackRate={rate} registerStop={registerStop} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
   return <PlaybackChromeProvider panelOpen={!!panel} onIdle={() => setPanel(null)} playing={info.state === 'playing'} minimized={minimized}>
     <PlaybackOverlay panel={panel} onClose={() => setPanel(null)} television={!!props.television} surface={surface}>
-      {panel === 'options' && onSaveOptions ? <ChannelOptions value={channelOptions} onSave={onSaveOptions} /> : panel === 'tools' ? <ScrollView contentContainerStyle={glass.content}>
+      {panel === 'options' && onSaveOptions ? <ChannelOptions value={channelOptions} onSave={onSaveOptions} /> : panel === 'tools' ? <ScrollView style={{flexGrow:0,flexShrink:1}} contentContainerStyle={glass.content}>
         <Text style={glass.title}>Make yourself comfortable</Text><Text style={glass.label}>Display</Text>
         {(['contain','cover'] as const).map(value => <Button key={value} title={`${fit===value?'✓ ':''}${value==='contain'?'Fit · show the whole picture':'Fill · crop the edges'}`} onPress={() => { setFit(value); onFit?.(value); }} />)}
         {props.item.kind !== 'live' && <><Text style={glass.label}>Playback speed</Text>{speeds.map(value => <Button key={value} title={`${rate===value?'✓ ':''}${value}× speed`} onPress={() => setRate(value)} />)}</>}
         <Text style={glass.label}>Sleep timer</Text><Text style={glass.text}>Stops in-app playback. Picture in Picture is unavailable while a timer is set.</Text><Text style={glass.text}>{sleep.deadline ? `Stops at ${new Date(sleep.deadline).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}` : 'Off'}</Text>
         <Button title="Turn sleep timer off" onPress={sleep.clear} />{sleepMinutes.map(value => <Button key={value} title={`Stop after ${value} minutes`} onPress={() => sleep.setTimer(value)} />)}
-      </ScrollView> : panel === 'info' ? <ScrollView contentContainerStyle={glass.content}>
+      </ScrollView> : panel === 'info' ? <ScrollView style={{flexGrow:0,flexShrink:1}} contentContainerStyle={glass.content}>
         <Text style={glass.title}>Playback information</Text><Text style={glass.text}>Only details reported by this engine are shown. Buffering alone cannot identify a provider or network fault.</Text>
         {props.television ? <Text selectable style={[glass.text, {fontFamily:'monospace'}]}>{diagnosticReport(info)}</Text> : <TextInput accessibilityLabel="Redacted playback report, select text to copy" multiline editable={false} selectTextOnFocus value={diagnosticReport(info)} style={[glass.text, {minHeight:200, padding:12, backgroundColor:'#FFFFFF10', borderRadius:14}]} />}
         <Text style={glass.text}>Excludes your server, stream URL, credentials, public IP and location.</Text>
-      </ScrollView> : <ScrollView contentContainerStyle={glass.content}>
+      </ScrollView> : <ScrollView style={{flexGrow:0,flexShrink:1}} contentContainerStyle={glass.content}>
         <Text style={glass.title}>Player options</Text>
         {engine==='native' && !props.television && Platform.OS!=='web' && sleep.deadline===null && isPictureInPictureSupported() && <Button title="Picture in Picture" onPress={() => { void pip.current?.().then(() => setPanel(null)).catch(() => setCapabilityError('Picture in Picture is unavailable for this video or device.')); }} />}
         {engine==='native' && Platform.OS==='ios' && <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}><Text style={glass.text}>AirPlay</Text><VideoAirPlayButton tint="#B9B4F2" style={{width:48,height:48}} /></View>}
@@ -88,7 +88,7 @@ function PlaybackOverlay({ panel, onClose, surface, children, television }: { pa
   return <View style={{flex:1}} onTouchStart={() => chrome.hold('touch', true)} onTouchEnd={() => chrome.hold('touch', false)} onTouchCancel={() => chrome.hold('touch', false)}>
     <View collapsable={false} style={{flex:1}} pointerEvents={panel?'none':'auto'} accessibilityElementsHidden={!!panel} importantForAccessibility={panel?'no-hide-descendants':'auto'}>{surface}</View>
     {!!panel && <Pressable accessible={false} focusable={false} onPress={() => { onClose(); chrome.show(); }} style={{position:'absolute',top:0,bottom:0,left:0,right:0}} />}
-    {!!panel && <View nativeID={`tv-trap:player-panel:${panel}`} accessibilityViewIsModal style={[glass.panel, {position:'absolute', top:Math.max(insets.top, 12), bottom:Math.max(insets.bottom, 12), right:Math.max(insets.right, 12), width:television ? '42%' : landscape ? Math.min(360, width * .48) : Math.min(360, width - 24), maxHeight:landscape ? undefined : height * .64}]}>
+    {!!panel && <View nativeID={`tv-trap:player-panel:${panel}`} accessibilityViewIsModal style={[glass.panel, {position:'absolute', top:Math.max(insets.top, 12), right:Math.max(insets.right, 12), width:television ? '42%' : landscape ? Math.min(360, width * .48) : Math.min(360, width - 24), maxHeight:landscape ? height - Math.max(insets.top,12) - Math.max(insets.bottom,12) : height * .64}]}>
       <View style={{padding:12, borderBottomWidth:1, borderBottomColor:'#FFFFFF20'}}><Button nativeID="tv-preferred:close-player-settings" title="Back to video" onPress={() => { onClose(); chrome.show(); }} /></View>
       {children}
     </View>}
