@@ -57,7 +57,7 @@ export default function NetworkCard({ baseline, onBaseline, onOpenDetails, detai
     </ScrollView></SafeAreaView>;
   if(detailsOnly)return <View style={{flex:1,flexDirection:'row',gap:24,padding:20}}>
     <View style={{flex:1,gap:12}}>
-      
+
       <View style={[u.card,{padding:12,gap:6}]}><Text style={u.eyebrow}>{error?'LAST KNOWN PUBLIC IP':'PUBLIC IP ADDRESS'}</Text><Text style={[u.h2,{fontSize:result?.ip.includes(':')?21:30}]}>{result?.ip||(busy?'Checking…':'Unavailable')}</Text><Text style={[u.body,{fontSize:14,lineHeight:19}]}>{place}</Text>{!!result?.isp&&<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result.isp}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result?`Checked ${new Date(result.checkedAt).toLocaleTimeString()}`:'No successful lookup yet.'}</Text></View>
       <View style={[u.card,{padding:12,gap:6}]}><Text style={u.label}>VPN status is unverified</Text><Text style={[u.body,{fontSize:14,lineHeight:19}]}>{comparison==='same'?'This matches your saved home IP. Check your VPN if you expected a different connection.':comparison==='changed'?'This IP differs from your saved home IP. A VPN is one possible reason.':'Save your home IP with the VPN disconnected to compare future connections.'}</Text><Text style={[u.small,{fontSize:12,lineHeight:17}]}>An IP comparison cannot confirm VPN status. Check your VPN app for its actual connection status.</Text></View>
       {!!error&&<Text style={u.errorText}>{error}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>Approximate location from ipwho.is; no GPS or IPTV account details are sent.</Text>

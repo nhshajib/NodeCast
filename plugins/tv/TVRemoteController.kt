@@ -226,7 +226,7 @@ class TVRemoteController(private val activity: Activity) {
     if (event.action == KeyEvent.ACTION_DOWN) { if (event.repeatCount == 0) pressed = activity.currentFocus;else if(event.repeatCount==1){pressed=null;menu(choices)}; return true }
     if (event.action == KeyEvent.ACTION_UP) {
       val target = pressed; pressed = null
-      if (target != null && target.isEnabled && visible(target) && choices.any { it === target }) {
+      if (target != null && target.isEnabled && allowed(target) && visible(target) && choices.any { it === target }) {
         target.performClick()
         if (target is EditText) (activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(target, InputMethodManager.SHOW_IMPLICIT)
       }

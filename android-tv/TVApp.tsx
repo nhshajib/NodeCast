@@ -92,6 +92,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const [transferBusy,setTransferBusy]=useState(false);
   const [recentOnly,setRecentOnly]=useState(false);
   const [playing, setPlaying] = useState<Media | null>(null);
+  const playbackVisible=useRef(false);playbackVisible.current=!!playing&&!minimized;
   const [fullscreen, setFullscreen] = useState(true);
   const [viewing, setViewing] = useState<ViewingEntry[]>([]);
   const viewingOwner = useRef<string | null>(null);
@@ -255,7 +256,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   }
   function changeWatched(item: Media, watched: boolean) {
     if (!activeId || viewingOwner.current !== activeId) { setError('Saved history is not available yet. Try again or restart the app.'); return; }
-    const entries = markWatched(viewingRef.current, item, watched); viewingRef.current = entries; if(minimized)setViewing(entries);
+    const entries = markWatched(viewingRef.current, item, watched); viewingRef.current = entries; setViewing(entries);
     void writeViewing(activeId, entries).catch(() => setError('Could not save watched state.'));
   }
   function favorite(item: Media) {
@@ -300,7 +301,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   return <View style={{flex:1}}><View style={{flex:1}} pointerEvents={playing&&!minimized?'none':'auto'} accessibilityElementsHidden={!!playing&&!minimized} importantForAccessibility={playing&&!minimized?'no-hide-descendants':'auto'}>{renderBody()}</View>{playing&&playerOwner.current===activeId&&<View collapsable={false} nativeID={`${minimized?'tv-scope:mini':'tv-trap:player'}:${playing.id}`} accessibilityViewIsModal={!minimized} style={minimized?{position:'absolute',right:24,bottom:24,width:320,height:180,zIndex:100,backgroundColor:'#000',borderRadius:18,overflow:'hidden'}:{position:'absolute',top:0,bottom:0,left:0,right:0,zIndex:100,backgroundColor:'#000'}}>
 <BuiltInPlayer onRegisterStop={stop=>{playerStop.current=stop}} liveEngine={resolvePlayback(active, playing.id, preferences.player).engine} channelOptions={active?.channelPlayback?.[playing.id]} onSaveOptions={value => saveChannelOptions(playing, value)} minimized={minimized} onMinimize={()=>{setViewing(viewingRef.current);setMinimized(true);setFullscreen(false)}} savedFit={active?.displayFit} onFit={displayFit=>{void patchProfile({displayFit}).catch(()=>setError('Could not save display choice.'))}} television nextEpisode={next ? { item: next, onPress: () => { seasonMemory.current.set(`${activeId}:${episodeQueue?.seriesId}`, next.group); setPlayFromStart(true); setMinimized(false); setFullscreen(true); setPlaying(current => current?.id === playing.id ? next : current); } } : undefined} key={playing.id} item={playing} fullscreen={fullscreen} onFullscreenChange={setFullscreen} onClose={closePlayer} onExternal={()=>{setExternalItem(playing);setPlaying(null);setOverlay('external')}} resumeAt={playFromStart ? 0 : resumePosition(viewing.find(v => v.item.id === playing.id))} tracks={active?.tracks} onTracks={tracks => { if (activeId) void updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === activeId ? { ...profile, tracks } : profile) })).catch(() => setError('Could not save language preferences.')); }} onProgress={snapshot => {
     if (playing.catchup || !activeId || viewingOwner.current !== activeId) return;
-    const entries = recordViewing(viewingRef.current, playing, snapshot); viewingRef.current = entries; if(minimized)setViewing(entries);
+    const entries = recordViewing(viewingRef.current, playing, snapshot); viewingRef.current = entries; if(!playbackVisible.current)setViewing(entries);
     void writeViewing(activeId, entries).catch(() => {});
   }} />
   {minimized&&<View style={{position:'absolute',top:0,bottom:0,left:0,right:0,flexDirection:'row'}}><Pressable accessibilityRole="button" accessibilityLabel="Return to video" onPress={()=>{setMinimized(false);setFullscreen(true)}} style={{flex:1}}/><Pressable accessibilityRole="button" accessibilityLabel="Close mini player" onPress={closePlayer} style={{width:48,height:48,backgroundColor:'#090124CC',alignItems:'center',justifyContent:'center'}}><Icon name="close" color="#fff"/></Pressable></View>}

@@ -1,6 +1,6 @@
 import Pressable, { isTVBuild } from './FocusPressable';
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, ScrollView, Text, useWindowDimensions, View } from 'react-native';
+import { ActivityIndicator, AppState, BackHandler, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import type { LibVlcPlayerViewRef, MediaTracks, Tracks } from 'expo-libvlc-player';
 import type { PlaybackInfo } from './viewingPreferences';
 import type { TrackPreferences } from './Player';
@@ -39,6 +39,11 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
   const [status, setStatus] = useState<'loading' | 'playing' | 'paused'>('loading');
   const [recovery, setRecovery] = useState<RecoveryState | null>(null);
   const [showTracks, setShowTracks] = useState(false);
+  useEffect(()=>{
+    if(!isTVBuild||!showTracks)return;
+    const sub=BackHandler.addEventListener('hardwareBackPress',()=>{setShowTracks(false);return true});
+    return()=>sub.remove();
+  },[showTracks]);
   const [availableTracks, setAvailableTracks] = useState<MediaTracks>({ audio: [], video: [], subtitle: [] });
   const [tracks, setTracks] = useState<Tracks>({});
   const [trackNotice, setTrackNotice] = useState('');

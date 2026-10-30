@@ -94,7 +94,7 @@ def stability(remote,counts):
   remote.activate('Back to video');find('Pause live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
  time.sleep(2);assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
  assert counts['ts']==before,'Player menus restarted the live subscription'
- remote.activate('Audio and subtitles');remote.activate('Off');remote.activate('Close audio and subtitles');video_pixels('emulator-tv-return-tracks')
+ remote.activate('Audio and subtitles');remote.activate('Off');remote.key(4);find('Pause live TV');video_pixels('emulator-tv-return-tracks');remote.activate('Audio and subtitles');remote.activate('Close audio and subtitles');find('Pause live TV')
  remote.key(85);find('Play live TV');remote.key(85);find('Pause live TV')
  remote.key(4);remote.focus('Play Remote Channel 01');adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','reset')
  adb('logcat','-c')
@@ -204,6 +204,8 @@ def main():
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   adb('shell','input','keyevent','4');find('Play Final Episode')
+  mark='Mark unwatched' if any('Mark unwatched' in (n.get('content-desc') or n.get('text') or '') for n in dump().iter('node')) else 'Mark watched'
+  click(mark);find('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');click('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');find(mark)
   adb('shell','input','keyevent','4');find('Open Sample Series')
   click('Live TV');click('TV guide');click('Add full TV guide')
   text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Native Guide Match',timeout=45,scroll=True)
