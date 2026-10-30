@@ -24,8 +24,6 @@ adb exec-out screencap -p > "verification/android/emulator-$TARGET-initial.png"
 if [ "$TARGET" = tv ]; then
   # Home-IP setup is initially offered. Back returns to TV navigation.
   adb shell input keyevent 4
-  adb shell input keyevent 20
-  adb shell input keyevent 23
   sleep 2
   adb shell uiautomator dump /sdcard/nodecast-remote.xml
   adb pull /sdcard/nodecast-remote.xml "verification/android/emulator-$TARGET-remote.xml"
