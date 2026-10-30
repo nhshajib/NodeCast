@@ -8,6 +8,7 @@ mkdir -p verification/android
 trap 'adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt" || true' EXIT
 adb install "$(find apk -name '*.apk' -print -quit)"
 adb logcat -c
+if [ "$TARGET" = tv ]; then adb shell settings put secure show_ime_with_hard_keyboard 1; fi
 # Exercise repeated cold starts to catch activity/module initialization races.
 for ATTEMPT in 1 2 3; do
   adb shell am start -W -n "$PACKAGE/.MainActivity" "${PROFILE_ARGS[@]}"
