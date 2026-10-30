@@ -5,7 +5,12 @@ def adb(*args):
  if args[:2]==('shell','input') and len(args)>2 and args[2] in ['tap','swipe']:raise RuntimeError('Touch input is forbidden in the TV remote audit')
  return subprocess.check_output(['adb',*map(str,args)],text=True).strip()
 def tree():
- adb('shell','uiautomator','dump','/sdcard/tv-remote.xml');return ET.fromstring(adb('shell','cat','/sdcard/tv-remote.xml'))
+ for attempt in range(3):
+  try:
+   adb('shell','rm','-f','/sdcard/tv-remote.xml');adb('shell','uiautomator','dump','/sdcard/tv-remote.xml');return ET.fromstring(adb('shell','cat','/sdcard/tv-remote.xml'))
+  except (subprocess.CalledProcessError,ET.ParseError):
+   if attempt==2:raise
+   time.sleep(.5)
 def bounds(n):
  a=list(map(int,re.findall(r'\d+',n.get('bounds',''))));return a if len(a)==4 else [0,0,0,0]
 def name(n):return (n.get('content-desc') or n.get('text') or '').strip()

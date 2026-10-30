@@ -11,7 +11,7 @@ import FullGuide from '../src/FullGuide';
 import TVLibraryOptions from './TVLibraryOptions';
 import type { OrganizationMode } from './TVLibraryOptions';
 import TVChannelRow, { CHANNEL_ROW_HEIGHT, CHANNEL_ROW_GAP } from './TVChannelRow';
-import { cachedTVSection, favoriteSections, moveTVFavorite, sortTVMedia } from './library';
+import { cachedTVSection, favoriteSections, moveTVFavorite, needsTVArtwork, sortTVMedia } from './library';
 import PlaybackSettings from '../src/PlaybackSettings';
 import { hasCompatibilityPlayer } from '../src/nativePlayback';
 import { themedStyles, useThemeChoice, isDarkTheme } from '../src/theme';
@@ -79,7 +79,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [edit, setEdit] = useState<Profile | undefined>();
   const [libraryData, setLibraryData] = useState<{ key: string; items: Media[] }>({ key: '', items: [] });
-  const memory = useRef(new Map<string, { items: Media[]; savedAt: string }>());
+  const memory = useRef(new Map<string, { items: Media[]; savedAt: string; artworkFresh?: boolean }>());
   const guideWindows=useRef(new Map<string,number>());
   const scrollMemory = useRef(new Map<string, number>());
   const [updatedAt, setUpdatedAt] = useState('');
@@ -178,11 +178,12 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
       const cached = saved.flatMap(row => row?.items || []);
       if (saved.some(Boolean)) { setLibraryData({ key: owner, items: cached }); setUpdatedAt(saved.map(row => row?.savedAt || '').sort()[0] || ''); setBusy(false); }
       const missingArchiveMetadata=profile.provider.kind==='xtream'&&sections.includes('live')&&cached.some(item=>item.kind==='live'&&item.archiveDays===undefined);
-      if(!forced&&!missingArchiveMetadata&&saved.length&&saved.every(row=>row&&Date.now()-Date.parse(row.savedAt)<(active.library?.refreshMinutes||30)*60000)){setBusy(false);return;}
+      const artworkMissing=needsTVArtwork(page,sections,saved,profile.library?.tvLiveLayout,profile.library?.tvChannelLogos);
+      if(!forced&&!missingArchiveMetadata&&!artworkMissing&&saved.length&&saved.every(row=>row&&Date.now()-Date.parse(row.savedAt)<(active.library?.refreshMinutes||30)*60000)){setBusy(false);return;}
       const results = await Promise.allSettled(sections.map(async section => {
         const items = await loadLibrary(profile.provider, section, controller.signal);
         if (controller.signal.aborted) return null;
-        const row = { items, savedAt: new Date().toISOString() };
+        const row = { items, savedAt: new Date().toISOString(), artworkFresh:true };
         memory.current.set(`${profile.id}:${section}`, row);
         void writeCatalog(profile.id, section, items).catch(() => {});
         return row;
@@ -194,7 +195,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
       setBusy(false);
     })().catch(() => { if (!controller.signal.aborted) { setError('Could not load your library. Try Refresh library.'); setBusy(false); } });
     return () => controller.abort();
-  }, [activeId, active?.provider, page, revision, browse.scope, !!deferred.trim(), page==='favorites'?favoriteSectionKey:null]);
+  }, [activeId, active?.provider, page, revision, browse.scope, !!deferred.trim(), page==='favorites'?favoriteSectionKey:null,active?.library?.tvLiveLayout,active?.library?.tvChannelLogos]);
   useEffect(()=>{
     if(!active || overlay!=='organize' || organizeMode==='settings'){setOrganizeBusy(false);return;}
     const controller=new AbortController();const profile=active;
@@ -206,7 +207,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
       const results=await Promise.allSettled(sections.map(async(section,index)=>{
         if(saved[index]&&Date.now()-Date.parse(saved[index]!.savedAt)<(profile.library?.refreshMinutes||30)*60000)return;
         const items=await loadLibrary(profile.provider,section,controller.signal);if(controller.signal.aborted)return;
-        memory.current.set(`${profile.id}:${section}`,{items,savedAt:new Date().toISOString()});void writeCatalog(profile.id,section,items).catch(()=>{});
+        memory.current.set(`${profile.id}:${section}`,{items,savedAt:new Date().toISOString(),artworkFresh:true});void writeCatalog(profile.id,section,items).catch(()=>{});
       }));
       if(controller.signal.aborted)return;setCatalogVersion(value=>value+1);
       if(results.some(result=>result.status==='rejected'))setError('Could not refresh this library. Saved categories and favorites remain available.');

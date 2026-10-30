@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cachedTVSection, favoriteSections, moveTVFavorite, sortTVMedia} from '../android-tv/library.ts';
+import {cachedTVSection, favoriteSections, moveTVFavorite, needsTVArtwork, sortTVMedia} from '../android-tv/library.ts';
 import {emptyVault,validateVault} from '../src/vault.ts';
 const provider={kind:'xtream',name:'Fixture',address:'https://fixture.example',username:'fixture',password:'fixture'};
 const profile={id:'tv',createdAt:new Date().toISOString(),provider,favorites:[]};
@@ -38,4 +38,18 @@ test('TV-only layout and logo preferences survive local profiles and reject inva
  const vault={...emptyVault(),activeId:'tv',profiles:[{...profile,library:{tvLiveLayout:'list',tvChannelLogos:false,tvSearchScope:{live:'category',movies:'all'}}}]};
  assert.deepEqual(validateVault(vault).profiles[0].library,{tvLiveLayout:'list',tvChannelLogos:false,tvSearchScope:{live:'category',movies:'all'}});
  for(const invalid of [{tvLiveLayout:'touch'},{tvChannelLogos:'yes'},{tvSearchScope:{unknown:'all'}},{tvSearchScope:{live:'global'}}])assert.throws(()=>validateVault({...vault,profiles:[{...profile,library:invalid}]}));
+});
+
+test('redacted disk catalogues do not trigger image metadata fetches in the default text list',()=>{
+ const saved={items:[item('live:1','News')],savedAt:new Date().toISOString()};
+ assert.equal(needsTVArtwork('live',['live'],[saved]),false);
+ assert.equal(needsTVArtwork('live',['live'],[saved],'grid'),true);
+ assert.equal(needsTVArtwork('live',['live'],[saved],'list',true),true);
+ assert.equal(needsTVArtwork('movies',['movies'],[saved]),true);
+});
+test('fresh rich metadata is reused and live-only favorites stay lightweight',()=>{
+ const saved={items:[item('live:1','News')],savedAt:new Date().toISOString()};
+ assert.equal(needsTVArtwork('live',['live'],[{...saved,artworkFresh:true}],'grid'),false);
+ assert.equal(needsTVArtwork('favorites',['live'],[saved]),false);
+ assert.equal(needsTVArtwork('favorites',['live','movies'],[saved,saved]),true);
 });

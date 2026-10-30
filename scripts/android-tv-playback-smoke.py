@@ -12,6 +12,7 @@ def adb(*args):
 def dump():
  for attempt in range(3):
   try:
+   adb('shell','rm','-f','/sdcard/nodecast-check.xml')
    adb('shell','uiautomator','dump','/sdcard/nodecast-check.xml')
    return ET.fromstring(adb('shell','cat','/sdcard/nodecast-check.xml'))
   except (subprocess.CalledProcessError,ET.ParseError):
@@ -80,7 +81,13 @@ def text(label,value):
  if REMOTE:remote.fill(label,value);return
  if label=='Find category to protect':
   for _ in range(3):adb('shell','input','swipe',str(width//2),str(int(height*.3)),str(width//2),str(int(height*.8)),'350')
- click(label,True);adb('shell','input','text',value);adb('shell','input','keyevent','66');time.sleep(.3)
+ click(label,True)
+ if label=='Profile name':
+  for char in value:adb('shell','input','text',char);time.sleep(.08)
+  nodes=[n for n in dump().iter('node') if n.get('class')=='android.widget.EditText' and n.get('content-desc')==label]
+  assert nodes and nodes[0].get('text')==value,'Synthetic profile name did not enter completely'
+ else:adb('shell','input','text',value)
+ time.sleep(.25);adb('shell','input','keyevent','66');time.sleep(.3)
 def remote_next(label):
  if REMOTE:remote.activate(label);return
  target=find(label)
