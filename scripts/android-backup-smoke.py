@@ -13,7 +13,11 @@ def system_click(label,timeout=45):
    if len(b)==4 and b[2]>b[0] and b[3]>b[1]:adb('shell','input','tap',str((b[0]+b[2])//2),str((b[1]+b[3])//2));time.sleep(.5);return
   time.sleep(.5)
  raise RuntimeError('System document control unavailable: '+label)
-def open_backup():click('Settings');click('Backup & transfer',True)
+def open_backup():
+ click('Settings');click('Backup & transfer',True)
+ root=dump()
+ if any(n.get('content-desc')=='Unlock backup & transfer' for n in root.iter('node')):
+  click('Unlock backup & transfer');text('Family PIN','123456');click('Unlock');find('Take your setup with you.',timeout=90)
 def shot(name):OUT.joinpath(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 try:
  click('Go back');click('Library');click('Add Phone Test Channel to favorites');open_backup()

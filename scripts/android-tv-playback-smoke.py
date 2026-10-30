@@ -18,6 +18,7 @@ def find(label, timeout=15, scroll=False):
  end=time.monotonic()+timeout
  while time.monotonic()<end:
   root=dump()
+  parents={child:parent for parent in root.iter('node') for child in parent}
   if label!='Show player controls' and REMOTE and any(n.get('content-desc')=='Show player controls' and n.get('focused')=='true' for n in root.iter('node')):
    remote.key(20);continue
   nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
@@ -27,10 +28,13 @@ def find(label, timeout=15, scroll=False):
   if width<height and label not in ['Home','Library','Favorites','Settings']:
    for candidate in root.iter('node'):
     box=list(map(int,re.findall(r'\d+',candidate.get('bounds',''))))
-    if candidate.get('content-desc') in ['Home','Library','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:nav_top=min(nav_top,box[1])
+    if candidate.get('content-desc') in ['Home','Library','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:
+     parent=parents.get(candidate);outer=list(map(int,re.findall(r'\d+',parent.get('bounds','')))) if parent is not None else []
+     top=outer[1] if len(outer)==4 and outer[3]-outer[1]<height*.3 else box[1]
+     nav_top=min(nav_top,top)
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
-   if len(b)==4 and b[2]>b[0] and b[3]>b[1] and b[3]<=height and b[1]>=0 and (b[1]+b[3])/2<nav_top:return b
+   if len(b)==4 and b[2]>b[0] and b[3]>b[1] and b[3]<=height and b[1]>=0 and (b[1]+b[3])/2<nav_top and (n.get('clickable')!='true' or nav_top==height or b[3]<=nav_top):return b
   if scroll:
    if REMOTE:remote.reveal(label,timeout=max(3,end-time.monotonic()))
    else:adb('shell','input','swipe',str(width//2),str(int(height*.75)),str(width//2),str(int(height*.3)),'350')
@@ -162,7 +166,7 @@ def audit_library(remote,counts):
  remote.activate('Settings');remote.activate('Library organization');remote.activate('Organize Movies');remote.activate('Z–A');checked('Z–A');remote.activate('All media');checked('All media');remote.activate('Categories');find('Show Cinema');remote.activate('Library preferences');remote.activate('Organize Live TV');checked('Provider order');checked('Current category');remote.activate('Back')
  assert counts['api'].get('get_vod_streams',0)==1 and not counts['api'].get('get_series',0),'Organization did not load only the selected media type'
  before=dict(counts['api']);adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity','--ez','nodecastTvProfile','true');time.sleep(6)
- if any(n.get('content-desc')=='Not now' for n in dump().iter('node')):remote.activate('Not now')
+ if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in dump().iter('node')):remote.activate('Not now')
  find('Play Remote Channel 01');assert counts['api']==before,'Restart refetched a fresh cached catalogue'
  remote.activate('Settings');remote.activate('Library organization');checked('Channel layout: List');checked('Channel logos in list view',False);remote.activate('Categories');remote.fill('Find category','Smoke test');find('Show Smoke test');checked('Show Smoke test',False)
  shot('emulator-tv-organization-cached-categories');remote.activate('Favorites order');find('Move Remote Channel 02 down');remote.activate('Library preferences');remote.activate('Organize Movies');checked('Z–A');checked('All media');remote.activate('Back');remote.activate('Live TV')
@@ -252,12 +256,12 @@ def main():
   click('Return to video');find('Pause live TV');assert counts['ts']==before,'Minimizing opened another live stream'
   click('Back to library');find('Play Example Live Test')
   click('Series');click('Open Sample Series');click('Episode One')
-  video_ready()
+  video_ready();time.sleep(1);video_pixels('emulator-tv-episode-one-decoded');adb('shell','input','keyevent','127')
   box=find('Next episode: Season 1 · Episode Two')
   assert box[2]>width*.8 and box[1]>height*.7, box
   OUT.joinpath('emulator-tv-next-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  remote_next('Next episode: Season 1 · Episode Two');find('Episode Two');video_ready()
-  remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');video_ready()
+  remote_next('Next episode: Season 1 · Episode Two');video_ready();time.sleep(1);video_pixels('emulator-tv-episode-two-decoded');adb('shell','input','keyevent','127');find('Episode Two')
+  remote_next('Next episode: Season 2 · Final Episode');video_ready();time.sleep(1);video_pixels('emulator-tv-final-episode-decoded');adb('shell','input','keyevent','127');find('Final Episode')
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back to library');find('Play Final Episode')
@@ -294,7 +298,7 @@ def main():
    if suite=='core':
     remote.activate('Back');remote.activate('Live TV');remote.activate('All titles')
    else:audit_settings(remote,OUT)
-   remote.activate('Switch playlist');remote.activate('✓ NativeTest');remote.activate('TV guide');remote.activate('Earlier');remote.activate('Archive Fixture');find('Watch catch-up');OUT.joinpath('emulator-tv-programme-details.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));remote.activate('Watch catch-up');video_ready();assert counts['archive']>0,'Archive endpoint was not requested';OUT.joinpath('emulator-tv-catchup.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));remote.activate('Back to TV guide');find('Earlier');remote.activate('Back');remote.focus('Play Example Live Test');remote.key(82);find('Just for this channel');remote.activate('Back');remote.focus('Play Example Live Test');remote.adb('shell','input','keyevent','--longpress','23');find('Just for this channel');remote.activate('Back')
+   remote.activate('Switch playlist');remote.activate('✓ NativeTest');remote.activate('TV guide');remote.activate('Earlier');remote.activate('Archive Fixture');find('Watch catch-up');OUT.joinpath('emulator-tv-programme-details.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));remote.activate('Watch catch-up');video_ready();time.sleep(1);video_pixels('emulator-tv-catchup-decoded');adb('shell','input','keyevent','127');assert counts['archive']>0,'Archive endpoint was not requested';OUT.joinpath('emulator-tv-catchup.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));remote.activate('Back to TV guide');find('Earlier');remote.activate('Back');remote.focus('Play Example Live Test');remote.key(82);find('Just for this channel');remote.activate('Back');remote.focus('Play Example Live Test');remote.adb('shell','input','keyevent','--longpress','23');find('Just for this channel');remote.activate('Back')
    OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'input':'D-pad directions, Select, Back and keyboard text; no tap/swipe','activated':remote.visited},indent=2)+'\n')
   OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart','Clear recents hides watched channels','Backup and transfer settings are available'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
