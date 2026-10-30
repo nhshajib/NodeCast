@@ -9,7 +9,8 @@ def tree():
 def bounds(n):
  a=list(map(int,re.findall(r'\d+',n.get('bounds',''))));return a if len(a)==4 else [0,0,0,0]
 def name(n):return (n.get('content-desc') or n.get('text') or '').strip()
-def match(n,label):return name(n).casefold()==label.casefold() or label.casefold() in (n.get('content-desc') or '').casefold()
+def match(n,label):
+ return name(n).casefold()==label.casefold() or re.search(r'(?<!\w)'+re.escape(label.casefold())+r'(?!\w)',(n.get('content-desc') or '').casefold()) is not None
 def actions(root):return [n for n in root.iter('node') if n.get('enabled')!='false' and n.get('focusable')=='true' and (n.get('clickable')=='true' or n.get('class')=='android.widget.EditText') and bounds(n)[2]>bounds(n)[0] and bounds(n)[3]>bounds(n)[1]]
 def score(a,b,key):
  a,b=bounds(a),bounds(b);ax,ay=(a[0]+a[2])/2,(a[1]+a[3])/2;bx,by=(b[0]+b[2])/2,(b[1]+b[3])/2
@@ -34,7 +35,9 @@ def focus(label,timeout=100):
  while time.monotonic()<end:
   root=tree();nodes=actions(root);current=focused(root)
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
-  if current is not None and match(current,label):return current
+  if current is not None and goals:
+   goal=nodes[goals[0]]
+   if name(current)==name(goal) and bounds(current)==bounds(goal):return current
   if not nodes:key(20);continue
   i=next((i for i,n in enumerate(nodes) if n.get('focused')=='true'),None)
   if i is None:key(20);continue
