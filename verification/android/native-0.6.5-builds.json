@@ -120,7 +120,7 @@
   },
   "releaseAssetDigestsMatchBuildRecords": true,
   "physicalDevicesTested": false,
-  "scope": "The Android source has a later Android-only document-result dependency patch. Shared application UI and backup format match the iPhone source. API 35 emulators and an iPhone Release simulator were used; physical devices remain unverified.",
+  "scope": "TV 0.6.5 passed separate playback/catch-up and settings/search suites on API 35 emulators. The iPhone and Android mobile 0.6.4 build records are retained unchanged. TV captures use synthetic streams; physical Hisense/Fire TV and real-provider archives were not tested.",
   "versions": {
     "iphone": "0.6.4",
     "mobile": "0.6.4",
