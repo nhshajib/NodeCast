@@ -10,8 +10,13 @@ def adb(*args):
  if REMOTE and args[:2]==('shell','input') and len(args)>2 and args[2] in ['tap','swipe']:raise RuntimeError('Touch input is forbidden in the TV remote audit')
  return subprocess.check_output(['adb', *args], text=True).strip()
 def dump():
- adb('shell','uiautomator','dump','/sdcard/nodecast-check.xml')
- return ET.fromstring(adb('shell','cat','/sdcard/nodecast-check.xml'))
+ for attempt in range(3):
+  try:
+   adb('shell','uiautomator','dump','/sdcard/nodecast-check.xml')
+   return ET.fromstring(adb('shell','cat','/sdcard/nodecast-check.xml'))
+  except (subprocess.CalledProcessError,ET.ParseError):
+   if attempt==2:raise
+   time.sleep(.5)
 size=list(map(int,re.findall(r'\d+',adb('shell','wm','size'))[:2])); width,height=size
 
 def find(label, timeout=15, scroll=False):
@@ -41,6 +46,18 @@ def find(label, timeout=15, scroll=False):
   time.sleep(.5)
  raise RuntimeError(f'UI not found: {label}')
 def video_ready(timeout=45):
+ if REMOTE:
+  # UIAutomator cannot take a stable hierarchy while a native one-second clock
+  # updates. Play real frames, pause with the hardware key, then inspect pixels.
+  end=time.monotonic()+timeout
+  while time.monotonic()<end:
+   remote.key(126);time.sleep(2);remote.key(127)
+   nodes=list(dump().iter('node'))
+   if any('Try again'==(n.get('content-desc') or '') for n in nodes):raise RuntimeError('Native video entered its recovery error state')
+   if any('Play video'==(n.get('content-desc') or '') for n in nodes):
+    try:video_pixels('emulator-tv-video-ready');return
+    except AssertionError:pass
+  raise RuntimeError('Native video did not produce a decoded frame')
  # UIAutomator waits for UI idle. A one-second playback clock can keep it busy until
  # this short fixture ends; a decoded, non-zero completed timeline is also valid.
  end=time.monotonic()+timeout
@@ -177,7 +194,7 @@ def audit_library(remote,counts):
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
  suite=os.environ.get('NODECAST_TV_SUITE','full')
- counts={'guide':0,'ts':0,'archive':0,'logos':0,'api':{}}
+ counts={'guide':0,'ts':0,'archive':0,'logos':0,'api':{},'episodes':[]}
  stamp=lambda value:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(value))
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
@@ -196,6 +213,8 @@ def main():
     except (BrokenPipeError,ConnectionResetError):pass
     return
    if self.path.split('?')[0].endswith('.mp4'):
+    match=re.search(r'/series/[^/]+/[^/]+/(\d+)\.mp4',self.path)
+    if match and (not counts['episodes'] or counts['episodes'][-1]!=int(match[1])):counts['episodes'].append(int(match[1]))
     body=Path('tests/fixtures/android-episode-test.mp4').read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp4');self.send_header('Content-Length',str(len(body)));self.end_headers()
     try:self.wfile.write(body)
     except (BrokenPipeError,ConnectionResetError):pass
@@ -262,6 +281,7 @@ def main():
   OUT.joinpath('emulator-tv-next-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   remote_next('Next episode: Season 1 · Episode Two');video_ready();time.sleep(1);video_pixels('emulator-tv-episode-two-decoded');adb('shell','input','keyevent','127');find('Episode Two')
   remote_next('Next episode: Season 2 · Final Episode');video_ready();time.sleep(1);video_pixels('emulator-tv-final-episode-decoded');adb('shell','input','keyevent','127');find('Final Episode')
+  assert counts['episodes'][:3]==[401,905,1002],'Next episode did not request the expected server IDs'
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back to library');find('Play Final Episode')
