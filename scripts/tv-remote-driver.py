@@ -60,10 +60,11 @@ def activate(label,timeout=100):
 def fill(label,value):
  activate(label);time.sleep(.5);adb('shell','input','keyevent','123',*(['67']*100))
  if value:adb('shell','input','text',value)
- key(66);time.sleep(.4)
+ time.sleep(.4)
  # IME-specific Back is allowed, but never dismiss the screen itself.
  state=adb('shell','dumpsys','input_method')
- if 'mInputShown=true' in state or 'isInputViewShown=true' in state:key(4)
+ shown=re.search(r'\bmInputShown=(true|false)\b',state) or re.search(r'\bisInputViewShown=(true|false)\b',state)
+ if shown and shown.group(1)=='true':key(4)
 def reveal(label,timeout=30):
  end=time.monotonic()+timeout;last=None;direction=20
  while time.monotonic()<end:
