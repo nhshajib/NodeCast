@@ -2,6 +2,9 @@ package __PACKAGE__
 
 import android.app.Activity
 import android.graphics.Rect
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -17,16 +20,37 @@ class TVRemoteController(private val activity: Activity) {
   private val remembered = mutableMapOf<String, String>()
   private var pressed: View? = null
   private var scheduled = false
+  private var dirty = true
+  private var collectedAt=0L
+  private var cached = emptyList<View>()
+  private var highlighted: View? = null
+  private var indicator: LayerDrawable? = null
+  private val indicatorLayout = View.OnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
+    indicator?.setBounds(0,0,view.width,view.height)
+  }
+  private fun highlight(next: View?) {
+    highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout) }
+    highlighted=null;indicator=null
+    if(next==null||!actionable(next))return
+    val dp=next.resources.displayMetrics.density
+    fun line(color:String,width:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=12*dp;setStroke((width*dp).toInt().coerceAtLeast(1),Color.parseColor(color)) }
+    val ring=LayerDrawable(arrayOf(line("#FFFFFF",3f),line("#887BD8",2f)))
+    val inset=(3*dp).toInt();ring.setLayerInset(1,inset,inset,inset,inset)
+    ring.setBounds(0,0,next.width,next.height);next.overlay.add(ring)
+    next.addOnLayoutChangeListener(indicatorLayout);highlighted=next;indicator=ring
+  }
   private val arrows = mapOf(KeyEvent.KEYCODE_DPAD_UP to View.FOCUS_UP, KeyEvent.KEYCODE_DPAD_DOWN to View.FOCUS_DOWN,
     KeyEvent.KEYCODE_DPAD_LEFT to View.FOCUS_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT to View.FOCUS_RIGHT)
   init {
     root.viewTreeObserver.addOnGlobalFocusChangeListener { _, next ->
+      highlight(next)
       if (next != null && allowed(next)) nativeId(next)?.let { remembered[scope(next)] = it; if(remembered.size>300)remembered.remove(remembered.keys.first()) }
     }
     root.viewTreeObserver.addOnGlobalLayoutListener {
+      dirty=true
       if (!scheduled) {
         scheduled = true
-        root.post { scheduled = false; ensureFocus() }
+        root.postDelayed({ scheduled = false; ensureFocus() },80)
       }
     }
   }
@@ -57,17 +81,21 @@ class TVRemoteController(private val activity: Activity) {
     return false
   }
   private fun candidates(): List<View> {
+    val now=android.os.SystemClock.uptimeMillis()
+    if(!dirty&&now-collectedAt<250)return cached.filter { it.isAttachedToWindow&&it.isEnabled&&it.isFocusable }
+    dirty=false;collectedAt=now
     val views = mutableListOf<View>(); val occluders=mutableListOf<View>(); var trap: View? = null
     fun visit(view: View) {
-      if (!allowed(view)) return
+      if (!view.isAttachedToWindow || view.visibility!=View.VISIBLE || view.alpha<=.01f || view.importantForAccessibility==View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) return
       if (nativeId(view)?.startsWith("tv-trap:") == true) trap = view
       if (nativeId(view)?.startsWith("tv-scope:mini") == true) occluders.add(view)
-      if (actionable(view)) views.add(view)
+      if (view.width>0&&view.height>0&&view.isEnabled&&view.isFocusable&&(view is com.facebook.react.views.view.ReactViewGroup&&view.isClickable||view is EditText&&view.keyListener!=null)) views.add(view)
       if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
     }
     visit(root)
     val active = trap
-    return views.filter { view -> (active == null || inside(view,active)) && occluders.none { cover -> !inside(view,cover) && rect(cover).contains(rect(view).centerX(),rect(view).centerY()) } }
+    cached = views.filter { view -> (active == null || inside(view,active)) && occluders.none { cover -> !inside(view,cover) && rect(cover).contains(rect(view).centerX(),rect(view).centerY()) } }
+    return cached
   }
   private fun rect(view: View): Rect {
     val position = IntArray(2); view.getLocationOnScreen(position)
@@ -84,7 +112,7 @@ class TVRemoteController(private val activity: Activity) {
     val frame = Rect(); root.getWindowVisibleDisplayFrame(frame)
     return root.height - frame.bottom > root.height / 4
   }
-  fun onWindowFocus() { root.post { ensureFocus() } }
+  fun onWindowFocus() { dirty=true;root.post { ensureFocus();highlight(activity.currentFocus) } }
   private fun ensureFocus(): List<View> {
     val choices = candidates()
     if (!root.hasWindowFocus()) return choices
@@ -106,7 +134,10 @@ class TVRemoteController(private val activity: Activity) {
   private fun scrollMore(scroll: View, sign: Int, horizontal: Boolean) {
     if(scroll is HorizontalScrollView)scroll.smoothScrollBy(sign*scroll.width/2,0)
     if(scroll is ScrollView)scroll.smoothScrollBy(0,sign*scroll.height/2)
+    val origin=activity.currentFocus
     root.postDelayed({
+      dirty=true
+      if(activity.currentFocus!==origin)return@postDelayed
       val shown=candidates().filter { inside(it,scroll)&&visible(it) }
       val target=if(sign>0)shown.minByOrNull { if(horizontal)rect(it).left else rect(it).top }
         else shown.maxByOrNull { if(horizontal)rect(it).right else rect(it).bottom }
@@ -133,10 +164,11 @@ class TVRemoteController(private val activity: Activity) {
     val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
     val positive = direction == View.FOCUS_RIGHT || direction == View.FOCUS_DOWN
     val a = rect(from); val scroll = scroller(from, horizontal)
+    val rectangles=choices.associateWith { rect(it) }
     val options = choices.filter { target ->
       target !== from && (visible(target) || scroll != null && scroller(target, horizontal) === scroll)
     }.mapNotNull { target ->
-      val b = rect(target)
+      val b = rectangles.getValue(target)
       val primary = if (horizontal) b.centerX() - a.centerX() else b.centerY() - a.centerY()
       if (if (positive) primary <= 2 else primary >= -2) return@mapNotNull null
       val cross = if (horizontal) b.centerY() - a.centerY() else b.centerX() - a.centerX()
@@ -171,10 +203,12 @@ class TVRemoteController(private val activity: Activity) {
     val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)
     val menuKey=event.keyCode==KeyEvent.KEYCODE_MENU
     if (direction == null && !select && !media && !menuKey) return false
+    val profiled=activity.intent.getBooleanExtra("nodecastTvProfile",false)
+    val began=if(profiled)System.nanoTime()else 0L
     val choices = ensureFocus()
     if (choices.isEmpty()) return false
     if(menuKey){if(event.action==KeyEvent.ACTION_UP)menu(choices);return true;}
-    if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) move(direction, choices); return true }
+    if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) { move(direction, choices);if(profiled)android.util.Log.d("NodeCastTVRemote","key_us=${(System.nanoTime()-began)/1000} candidates=${choices.size}") }; return true }
     if (media) {
       if (event.action == KeyEvent.ACTION_UP) {
         val labels = when(event.keyCode) {

@@ -2,7 +2,7 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.6.5",
+    "version": "0.6.6",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -29,7 +29,8 @@
         "foregroundImage": "./assets/android-icon-foreground.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "versionCode": 606
     },
     "web": {
       "favicon": "./assets/favicon.png"

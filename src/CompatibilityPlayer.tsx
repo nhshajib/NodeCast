@@ -1,5 +1,5 @@
 import Pressable, { isTVBuild } from './FocusPressable';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ActivityIndicator, AppState, ScrollView, Text, useWindowDimensions, View } from 'react-native';
 import type { LibVlcPlayerViewRef, MediaTracks, Tracks } from 'expo-libvlc-player';
 import type { PlaybackInfo } from './viewingPreferences';
@@ -17,6 +17,12 @@ import { Button, Icon, colors, u } from './ui';
 function nativeView(): typeof import('expo-libvlc-player').LibVlcPlayerView {
   return require('expo-libvlc-player').LibVlcPlayerView;
 }
+// Updating menus must not update/reparent the native decoder or its texture.
+type SurfaceProps=React.ComponentProps<ReturnType<typeof nativeView>>;
+const StableVlcSurface=memo(function StableVlcSurface(props:SurfaceProps){
+ const NativeView=useMemo(nativeView,[]);return <NativeView {...props}/>;
+});
+const videoStyle={width:'100%',height:'100%'} as const;
 export default function CompatibilityPlayer({ item, onProgress, onClose, onExternal, fullscreen = false, onFullscreenChange, tracks: preferences = {}, onTracks, onInfo, onOptions, displayFit = 'contain', minimized = false, registerStop }: {
   displayFit?: 'contain' | 'cover'; minimized?: boolean; registerStop?: (stop: () => Promise<void>) => void; tracks?: TrackPreferences; onTracks: (value: TrackPreferences) => void; onInfo?: (info: PlaybackInfo) => void; onOptions?: () => void; item: Media; onProgress: (snapshot: PlaybackSnapshot) => void; onClose: () => void; onExternal: () => void; fullscreen?: boolean; onFullscreenChange: (value: boolean) => void;
 }) {
@@ -25,7 +31,6 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
   const orientation = usePlayerOrientation(onFullscreenChange);
   const [controls, setControls] = useState(true);
   const mediaOptions = useMemo(() => compatibilityOptions(item), [item.headers]);
-  const NativeView = useMemo(nativeView, []);
   const urls = useMemo(() => compatibilityURLs(item), [item.url, item.externalURL, item.playbackURLs]);
   const player = useRef<LibVlcPlayerViewRef | null>(null);
   const lastNative = useRef<LibVlcPlayerViewRef | null>(null);
@@ -74,6 +79,7 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
   function clearTimer() { if (timer.current !== null) clearTimeout(timer.current); timer.current = null; }
   function save(force = false) {
     if (!started.current || (!force && Date.now() - lastWrite.current < 10000)) return;
+    if(isTVBuild&&!force&&lastWrite.current>0)return;
     lastWrite.current = Date.now(); persist.current({ position: 0, duration: 0 });
   }
   function armTimeout() { clearTimer(); timer.current = setTimeout(() => { if (foreground.current) controller.current?.request('network'); }, 20000); }
@@ -129,12 +135,17 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
     const timer = setTimeout(() => setControls(false), 4000); return () => clearTimeout(timer);
   }, [fullscreen, controls, status, failed, showTracks]);
   function renderTracks() { return <View nativeID={isTVBuild?'tv-trap:live-tracks':undefined} style={{ marginHorizontal: 20, padding: 18, borderRadius: 20, gap: 12, backgroundColor: '#211A36' }}><Pressable accessibilityRole="button" accessibilityLabel="Close audio and subtitles" onPress={() => setShowTracks(false)} style={{ minHeight: 44, justifyContent: 'center' }}><Text style={{ color: colors.mint }}>Done · Audio & subtitles</Text></Pressable><Text style={{ color: '#C4C0CF', fontSize: 12 }}>Remembered for this profile when the stream reports a matching language or track name.</Text><Text style={{ color: colors.mint }}>Audio</Text>{availableTracks.audio.length ? availableTracks.audio.map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => chooseTrack('audio', track.id, track.name)} style={{ paddingVertical: 10 }}><Text style={{ color: '#fff' }}>{track.name}{tracks.audio === track.id ? ' ✓' : ''}</Text></Pressable>) : <Text style={{ color: '#C4C0CF' }}>No selectable audio tracks reported.</Text>}<Text style={{ color: colors.mint }}>Subtitles</Text>{[{ id: -1, name: 'Off' }, ...availableTracks.subtitle.filter(track => track.id !== -1)].map(track => <Pressable accessibilityRole="button" key={track.id} onPress={() => chooseTrack('subtitles', track.id, track.name)} style={{ paddingVertical: 10 }}><Text style={{ color: '#fff' }}>{track.name}{tracks.subtitle === track.id ? ' ✓' : ''}</Text></Pressable>)}</View>; }
-  return <LivePlayerLayout fullscreen={fullscreen || minimized} video={<NativeView key={generation} ref={instance => { player.current = instance; if (instance) lastNative.current = instance; }} source={source} options={mediaOptions} autoplay contentFit={displayFit} style={{ width: '100%', height: '100%' }} tracks={tracks}
-      onPlaying={onPlaying} onPaused={() => { if (alive.current) { setStatus('paused'); save(true); } }}
-      onEncounteredError={event => onError(event.message)} onTimeChanged={() => save()}
-      onESAdded={event => { if (alive.current) setAvailableTracks(event); }}
-      onDialogDisplay={() => { void player.current?.dismiss().catch(() => {}); onError('Provider requires additional authorization'); }}
-    />} overlay={fullscreen && !minimized && <View pointerEvents="box-none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
+  const callbacks=useRef({onPlaying,onError});callbacks.current={onPlaying,onError};
+  const nativeEvents=useMemo(()=>({
+    onPlaying:()=>callbacks.current.onPlaying(),
+    onPaused:()=>{if(alive.current){setStatus('paused');save(true)}},
+    onEncounteredError:(event:{message:string})=>callbacks.current.onError(event.message),
+    onTimeChanged:()=>save(),
+    onESAdded:(event:MediaTracks)=>{if(alive.current)setAvailableTracks(event)},
+    onDialogDisplay:()=>{void player.current?.dismiss().catch(()=>{});callbacks.current.onError('Provider requires additional authorization')},
+  }),[]);
+  const attachVideo=useCallback((instance:LibVlcPlayerViewRef|null)=>{player.current=instance;if(instance)lastNative.current=instance},[]);
+  return <LivePlayerLayout fullscreen={fullscreen || minimized} video={<StableVlcSurface key={generation} ref={attachVideo} source={source} options={mediaOptions} autoplay contentFit={displayFit} style={videoStyle} tracks={tracks} {...nativeEvents}/>} overlay={fullscreen && !minimized && <View pointerEvents="box-none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
     <Pressable accessibilityRole="button" accessibilityLabel={controls ? 'Hide player controls' : 'Show player controls'} focusable={!isTVBuild} onPress={() => setControls(value => !value)} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} />
     {(controls || failed || status !== 'playing') && <><View style={{ position: 'absolute', top: Math.max(insets.top, 12), left: Math.max(insets.left, 16), right: Math.max(insets.right, 16), flexDirection: 'row', alignItems: 'center', gap: 12 }}><Pressable accessibilityRole="button" accessibilityLabel={isTVBuild?"Back to library":"Exit full screen"} onPress={() => { setControls(true); if(isTVBuild)onClose();else orientation.exit(); }} style={{ minHeight: 44, paddingHorizontal: 14, borderRadius: 22, backgroundColor: '#090124CC', flexDirection: 'row', alignItems: 'center', gap: 6 }}><Icon name="contract-outline" color="#fff" size={20} /><Text style={{ color: '#fff', fontWeight: '600' }}>Exit</Text></Pressable><Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{ minWidth: 44, minHeight: 44, justifyContent: 'center', alignItems: 'center', borderRadius: 22, backgroundColor: '#090124CC' }}><Icon name="ellipsis-horizontal" color="#fff" /></Pressable><Pressable accessibilityRole="button" accessibilityLabel="Audio and subtitles" onPress={() => { setControls(true); setShowTracks(value => !value); }} style={{ minWidth: 44, minHeight: 44, justifyContent: 'center', alignItems: 'center', borderRadius: 22, backgroundColor: '#090124CC' }}><Icon name="options-outline" color="#fff" /></Pressable><Text numberOfLines={1} style={{ flex: 1, color: '#fff', fontWeight: '600', fontSize: 14, textShadowColor: '#000', textShadowRadius: 3 }}>{item.name}</Text>{!isTVBuild&&<Pressable accessibilityRole="button" accessibilityLabel="Rotate screen" onPress={() => { setControls(true); orientation.rotate(width <= height); }} style={{ width: 44, height: 44, borderRadius: 22, backgroundColor: '#090124CC', alignItems: 'center', justifyContent: 'center' }}><Icon name="phone-landscape-outline" color="#fff" /></Pressable>}</View>
     {showTracks && <ScrollView style={{ position: 'absolute', top: Math.max(insets.top, 12) + 56, bottom: Math.max(insets.bottom, 16) + 72, right: Math.max(insets.right, 16), width: 350, maxWidth: '85%' }}>{renderTracks()}</ScrollView>}

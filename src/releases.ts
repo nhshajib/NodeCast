@@ -1,5 +1,12 @@
-export const appVersion = '0.6.5';
+export const appVersion = '0.6.6';
 export const releases = [
+  {version:'0.6.6',date:'October 30, 2026',title:'TV playback and remote stability.',changes:[
+    'TV playback options open beside a stable video surface, preserving the live session when returning from settings.',
+    'Connection details use the TV navigation window so IP refresh, reference settings and Back work with the remote.',
+    'Native focus highlighting avoids React updates on every D-pad move; focus scans and offscreen rendering are bounded.',
+    'Large category lists are virtualized. History updates no longer rebuild the hidden library during fullscreen playback.',
+    'iPhone and Android mobile downloads remain 0.6.4.',
+  ]},
   {version:'0.6.5',date:'October 29, 2026',title:'Made for your remote.',changes:[
     'Android TV uses D-pad directions and Select throughout the library, settings, guide, profiles and player.',
     'Clear focus highlights, disabled-control skipping, automatic scrolling and focus restoration after Back.',

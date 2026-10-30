@@ -10,7 +10,7 @@ export default forwardRef<React.ComponentRef<typeof Pressable>,React.ComponentPr
   return <Pressable {...props} ref={ref} nativeID={props.nativeID||(isTVBuild?`tv-control:${label}`:undefined)}
     accessible={props.accessible??true} accessibilityRole={props.accessibilityRole ?? 'button'}
     focusable={!disabled && props.focusable !== false} disabled={disabled}
-    onFocus={e => { setFocused(true); onFocus?.(e); }} onBlur={e => { setFocused(false); onBlur?.(e); }}
+    onFocus={e => { if(!(isTVBuild&&Platform.OS==='android'))setFocused(true); onFocus?.(e); }} onBlur={e => { if(!(isTVBuild&&Platform.OS==='android'))setFocused(false); onBlur?.(e); }}
     style={state => [isTVBuild&&{minHeight:44},typeof style === 'function' ? style(state) : style,
       isTVBuild && focused && !disabled && { outlineWidth: 3, outlineStyle: 'solid', outlineColor: colors.accent, outlineOffset: -3, opacity: 1 }]} />;
 });

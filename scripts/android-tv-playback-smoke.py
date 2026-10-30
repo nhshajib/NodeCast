@@ -74,6 +74,39 @@ def remote_next(label):
  raise RuntimeError('Next episode is not reachable with the remote')
 
 
+def video_pixels(name):
+ path=OUT/(name+'.png');path.write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+ frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(path),'-vf','crop=iw*0.6:ih*0.5:iw*0.2:ih*0.2,scale=96:54','-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
+ colours={tuple(v//32 for v in frame[i:i+3]) for i in range(0,len(frame),3)}
+ bright=sum(max(frame[i:i+3])>48 for i in range(0,len(frame),3))/(len(frame)/3)
+ assert len(colours)>12 and bright>.5,'Video texture is blank after '+name
+ return frame
+
+def stability(remote,counts):
+ before=counts['ts'];first=video_pixels('emulator-tv-live-before-menu')
+ for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
+  remote.activate('Player options');remote.activate(entry)
+  if entry.startswith('Playback options'):
+   remote.activate('Live format: MPEG-TS');remote.activate('Save playback options')
+  elif entry.startswith('Display'):
+   remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
+  remote.activate('Back to video');find('Pause live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
+ time.sleep(2);assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
+ assert counts['ts']==before,'Player menus restarted the live subscription'
+ remote.activate('Audio and subtitles');remote.activate('Off');remote.activate('Close audio and subtitles');video_pixels('emulator-tv-return-tracks')
+ remote.key(85);find('Play live TV');remote.key(85);find('Pause live TV')
+ remote.key(4);remote.focus('Play Remote Channel 01');adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','reset')
+ adb('logcat','-c')
+ for _ in range(20):remote.key(22);remote.key(21)
+ log=adb('logcat','-d','-s','NodeCastTVRemote:D','*:S');samples=list(map(int,re.findall(r'key_us=(\d+)',log)));sizes=list(map(int,re.findall(r'candidates=(\d+)',log)))
+ assert len(samples)>=30,'Missing native key profile samples'
+ p95=sorted(samples)[int(.95*(len(samples)-1))]/1000
+ assert p95<32,'Native D-pad dispatch exceeds 32 ms at p95'
+ assert max(sizes)<200,'Focus graph unexpectedly includes the full provider catalogue'
+ frames=adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','framestats');OUT.joinpath('emulator-tv-focus-frames.txt').write_text(frames)
+ OUT.joinpath('emulator-tv-stability-result.json').write_text(json.dumps({'passed':['Live frame pixels survive player menu, channel options, display/sleep tools, report and track panels','Frames advance after returning from menus','One live HTTP session across player settings','Media Play/Pause remote keys','3000 channels and 300 categories with bounded native focus graph'], 'nativeKeyP95Ms':p95,'keySamples':len(samples),'maxFocusCandidates':max(sizes),'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator timing; physical Fire TV performance requires confirmation.'},indent=2)+'\n')
+ print('TV stability and native focus profile passed: p95 '+str(p95)+' ms',flush=True)
+
 def audit_settings(remote,out,fresh=False):
  # Every activation below must acquire native focus and use D-pad Select.
  def checked(label,value=True):
@@ -87,14 +120,15 @@ def audit_settings(remote,out,fresh=False):
  remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Show Smoke test');checked('Show Smoke test',False);remote.activate('Show Smoke test');checked('Show Smoke test');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')
  remote.activate('Backup & transfer');remote.activate('Include viewing history and progress');checked('Include viewing history and progress',False);remote.activate('Include viewing history and progress');checked('Include viewing history and progress');remote.activate('Import backup');find('Choose backup file');remote.activate('Export backup');remote.activate('Back')
  remote.activate('Add playlist');remote.activate('M3U link');find('Playlist link');remote.activate('Xtream Codes');remote.activate('Show password');remote.activate('Hide password');remote.activate('Advanced connection settings');remote.focus('User-Agent (optional)');remote.activate('Hide advanced connection settings');remote.activate('Back')
- remote.activate('Version history');remote.activate('Version 0.6.5');remote.activate('Version 0.6.5');remote.activate('Version 0.6.4');remote.activate('Back');remote.activate('Library & storage');find('Clear recents');remote.activate('Back')
- remote.activate('Set home IP reference');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected',False);remote.activate('Not now')
+ remote.activate('Version history');remote.activate('Version 0.6.6');remote.activate('Version 0.6.6');remote.activate('Version 0.6.5');remote.activate('Back');remote.activate('Library & storage');find('Clear recents');remote.activate('Back')
+ remote.activate('VPN & IP details');find('VPN status is unverified');remote.focus('Refresh public IP');remote.activate('Close connection details');remote.activate('VPN & IP details');remote.key(4);remote.activate('Set home IP reference');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected',False);remote.activate('Not now')
  remote.activate('Live TV');remote.fill('Search channels and titles','Example');find('Play Example Live Test');remote.fill('Search channels and titles','');remote.activate('Playback options for Example Live Test');remote.activate('Live format: MPEG-TS');remote.activate('Save playback options');find('Saved. Applies next time you open this channel.',timeout=30,scroll=True);remote.activate('Reset to default');remote.activate('Back')
  out.joinpath('emulator-tv-remote-audit.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
- out.joinpath('emulator-tv-remote-audit-result.json').write_text(json.dumps({'passed':['D-pad-only profile connection and keyboard fields','Library, Favorites and Settings navigation','Appearance radio selection persists','Player and live engine selection','Sort, refresh, search scope and category switches','Backup switch and import/export modes','Version expansion and storage navigation','Home-IP confirmation and skip','Search editing and per-channel options','Back and focus restoration'],'scope':'API 35 Android TV-profile emulator; all actions use D-pad/Select/Back. Keyboard text uses adb input text. No pointer taps or swipes.'},indent=2)+'\n')
+ out.joinpath('emulator-tv-remote-audit-result.json').write_text(json.dumps({'passed':['D-pad-only profile connection and keyboard fields','Library, Favorites and Settings navigation','Appearance radio selection persists','Player and live engine selection','Sort, refresh, search scope and category switches','Backup switch and import/export modes','Version expansion and storage navigation','Home-IP confirmation and skip','Search editing and per-channel options','Back and focus restoration'],'scope':'Android TV-profile emulator; all actions use D-pad/Select/Back. Keyboard text uses adb input text. No pointer taps or swipes.'},indent=2)+'\n')
 
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
+ suite=os.environ.get('NODECAST_TV_SUITE','full')
  counts={'guide':0,'ts':0,'archive':0}
  stamp=lambda value:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(value))
  class Handler(http.server.BaseHTTPRequestHandler):
@@ -115,15 +149,22 @@ def main():
     except (BrokenPipeError,ConnectionResetError):pass
     return
    if self.path.split('?')[0].endswith('.ts'):
-    counts['ts']+=1;body=video.read_bytes(); self.send_response(200);self.send_header('Content-Type','video/mp2t');self.send_header('Content-Length',str(len(body)));self.end_headers()
-    try:self.wfile.write(body)
+    counts['ts']+=1
+    self.send_response(200);self.send_header('Content-Type','video/mp2t');self.end_headers()
+    stream=subprocess.Popen(['ffmpeg','-nostdin','-v','error','-re','-stream_loop','-1','-i',str(video),'-c','copy','-f','mpegts','pipe:1'],stdout=subprocess.PIPE,stderr=subprocess.DEVNULL)
+    try:
+     while True:
+      block=stream.stdout.read(16384)
+      if not block:break
+      self.wfile.write(block);self.wfile.flush()
     except (BrokenPipeError,ConnectionResetError):pass
+    finally:stream.kill();stream.wait();stream.stdout.close()
     return
    if 'get_series_info' in self.path:value={'episodes':{'2':[{'id':1002,'title':'Final Episode','episode_num':1}],'1':[{'id':905,'title':'Episode Two','episode_num':2},{'id':401,'title':'Episode One','episode_num':1}]}}
    elif 'get_series_categories' in self.path:value=[{'category_id':'1','category_name':'Example series'}]
    elif 'get_series' in self.path:value=[{'series_id':77,'name':'Sample Series','category_id':'1'}]
-   elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]+[{'category_id':str(i+2),'category_name':f'Remote News {i+1}'} for i in range(8)]
-   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test','tv_archive':1,'tv_archive_duration':2}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%8)} for i in range(30)]
+   elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]+[{'category_id':str(i+2),'category_name':f'Remote News {i+1}'} for i in range(300 if suite=='stability' else 8)]
+   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test','tv_archive':1,'tv_archive_duration':2}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%(300 if suite=='stability' else 8))} for i in range(3000 if suite=='stability' else 30)]
    elif 'action=' in self.path:value=[]
    else:value={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
    body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
@@ -136,7 +177,6 @@ def main():
   text('Password','example')
   click('Connect playlist',True)
   time.sleep(4);click('Live TV')
-  suite=os.environ.get('NODECAST_TV_SUITE','full')
   if REMOTE and suite=='settings':
    audit_settings(remote,OUT,fresh=True)
    OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'input':'D-pad/Select/Back only; keyboard text; no pointer','activated':remote.visited},indent=2)+'\n')
@@ -144,6 +184,9 @@ def main():
    return
   click('Play Example Live Test')
   find('Pause live TV',timeout=35)
+  if REMOTE and suite=='stability':
+   stability(remote,counts)
+   return
   OUT.joinpath('emulator-tv-live-test.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   OUT.joinpath('emulator-tv-live-test.xml').write_text(ET.tostring(dump(),encoding='unicode'))
   before=counts['ts'];click('Player options');click('Watch while browsing');find('Return to video')

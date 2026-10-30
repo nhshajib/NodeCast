@@ -51,7 +51,7 @@ def focus(label,timeout=100):
    if seen[signature]>2:direction=[19,22,20,21][seen[signature]%4]
   else:
    # Enter content from the persistent sidebar before scrolling the main pane.
-   a=bounds(nodes[i]);direction=22 if a[2]<480 and name(nodes[i]) in ['Live TV','Movies','Series','Favorites','Settings','Connection details in Settings'] else scan
+   a=bounds(nodes[i]);direction=22 if a[2]<480 and name(nodes[i]) in ['Live TV','Movies','Series','Favorites','Settings','Connection details in Settings','Connection details'] else scan
    if seen[signature]>2:scan=19 if scan==20 else 20;direction=scan
   key(direction)
  raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None))
