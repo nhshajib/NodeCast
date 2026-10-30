@@ -16,7 +16,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
    data=([{'category_id':'1','category_name':'Test cinema'}] if action in ['get_vod_categories','get_live_categories'] else [{'stream_id':1,'name':'Overlay Fixture','category_id':'1','container_extension':'mp4'}] if action=='get_vod_streams' else [] if action else {'user_info':{'auth':1,'status':'Active'}})
    body=json.dumps(data).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
   elif parsed.path.startswith('/movie/'):
-   body=(OUT/'fixture.mp4').read_bytes();self.send_response(200);self.send_header('Content-Type','video/mp4');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+   body=(OUT/'fixture.mp4').read_bytes();length=len(body);start=0;end=length-1;partial=self.headers.get('Range')
+   if partial:
+    first,last=partial.removeprefix('bytes=').split('-');start=int(first or '0');end=min(int(last or str(end)),end)
+   self.send_response(206 if partial else 200);self.send_header('Content-Type','video/mp4');self.send_header('Accept-Ranges','bytes');self.send_header('Content-Length',str(end-start+1))
+   if partial:self.send_header('Content-Range',f'bytes {start}-{end}/{length}')
+   self.end_headers()
+   try:self.wfile.write(body[start:end+1])
+   except (BrokenPipeError,ConnectionResetError):pass
   else:super().do_GET()
 server=http.server.ThreadingHTTPServer(('127.0.0.1',8750),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
 with sync_playwright() as p:
@@ -55,8 +62,17 @@ with sync_playwright() as p:
  assert page.get_by_role('button',name='Back to video',exact=True).is_visible(),'Paused settings disappeared'
  assert page.evaluate('window.fixtureVideo===document.querySelector("video") && window.videoLoads===0'),'Menu remounted/reloaded video'
  page.emulate_media(reduced_motion='reduce')
+ tap('Back to video');tap('Play video')
+ bar=page.get_by_label('Seek video',exact=True);box=bar.bounding_box();bar.tap(position={'x':box['width']*.45,'y':box['height']/2})
+ print('Seek check',page.locator('video').evaluate('(v)=>({time:v.currentTime,paused:v.paused,range:v.seekable.length ? [v.seekable.start(0),v.seekable.end(0)] : []})'),bar.get_attribute('aria-valuenow'),flush=True)
+ page.wait_for_function('document.querySelector("video").currentTime > 75')
+ tap('Player options');title=page.get_by_text('Player options',exact=True);box=title.bounding_box();session=page.context.new_cdp_session(page)
+ session.send('Input.dispatchTouchEvent',{'type':'touchStart','touchPoints':[{'x':box['x']+box['width']/2,'y':box['y']+box['height']/2}]})
+ page.wait_for_timeout(8600);assert page.get_by_role('button',name='Back to video',exact=True).is_visible(),'Active touch allowed idle dismissal'
+ session.send('Input.dispatchTouchEvent',{'type':'touchEnd','touchPoints':[]})
+ page.wait_for_timeout(8600);assert page.get_by_role('button',name='Back to video',exact=True).count()==0,'Settings did not dismiss after touch ended'
  assert not errors,errors
- (OUT/'web-result.json').write_text(json.dumps({'passed':['Native-engine web interface: portrait and landscape glass menus','Video time advances behind settings, same HTML video and no loadstart during menu interactions','Fit/Fill, sleep timer on/off, audio/subtitle close','Controls hide after four idle seconds; wake tap does not pause','Settings hide after eight idle seconds','Paused settings remain available','No browser runtime errors'],'scope':'Chromium using shared React player UI and local H.264 fixture; not a physical iPhone/Android decoder test.'},indent=2))
+ (OUT/'web-result.json').write_text(json.dumps({'passed':['Native-engine web interface: portrait and landscape glass menus','Video time advances behind settings, same HTML video and no loadstart during menu interactions','Fit/Fill, sleep timer on/off, audio/subtitle close','Controls hide after four idle seconds; wake tap does not pause','Settings hide after eight idle seconds','Paused settings remain available','Mobile touch seeking reaches selected time','Active touch prevents dismissal until released','No browser runtime errors'],'scope':'Chromium using shared React player UI and local H.264 fixture; not a physical iPhone/Android decoder test.'},indent=2))
  print('PASS: playback overlay web interactions',flush=True)
  browser.close()
 server.shutdown()

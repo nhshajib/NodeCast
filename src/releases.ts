@@ -6,6 +6,7 @@ export const releases = [
     'Settings close after eight idle seconds. Active touches, unsaved channel changes, saving, paused playback and screen readers keep controls available.',
     'Mobile movies and live TV share onscreen controls in portrait and landscape, without switching to a separate native fullscreen player.',
     'TV wake-up consumes the first navigation key, while dedicated media keys still control playback directly.',
+    'Mobile movies retain touch timeline seeking and accessible time adjustment. Next-episode handoffs preserve the current orientation.',
   ]},
   {version:'0.6.6',date:'October 30, 2026',title:'TV playback and remote stability.',changes:[
     'TV playback options open beside a stable video surface, preserving the live session when returning from settings.',

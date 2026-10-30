@@ -5,7 +5,7 @@ All three editions keep playback settings on top of the video in a bounded trans
 - Playing controls hide after **4 seconds** without interaction. Tap the video, or press a TV navigation/Select/Back key, to reveal them. That first TV navigation key only wakes the controls.
 - Open settings dismiss after **8 idle seconds**. Touching/scrolling, unsaved per-channel edits, saving, paused/loading/failed playback and an enabled screen reader prevent unwanted disappearance.
 - Dedicated TV media buttons still pause/play, seek supported movies and stop playback. Back dismisses settings or track selection before leaving the video.
-- Mobile movies use the same custom overlay in portrait and landscape, instead of opening a native fullscreen controller above the React interface. PiP remains available from Player options when the device/stream supports it and no sleep timer is active.
+- Mobile movies use the same custom overlay in portrait and landscape, instead of opening a native fullscreen controller above the React interface. Movies retain a touch seek timeline and accessible thirty-second adjustments, and next-episode handoffs preserve orientation. PiP remains available from Player options when the device/stream supports it and no sleep timer is active.
 - Video views stay mounted. Menu changes do not create another live connection or replace a decoder.
 - Opacity transitions respect Reduce Motion. The panel uses translucency; it does not require a blur package.
 

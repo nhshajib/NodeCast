@@ -6,6 +6,8 @@
     "Controls hide after four idle seconds; wake tap does not pause",
     "Settings hide after eight idle seconds",
     "Paused settings remain available",
+    "Mobile touch seeking reaches selected time",
+    "Active touch prevents dismissal until released",
     "No browser runtime errors"
   ],
   "scope": "Chromium using shared React player UI and local H.264 fixture; not a physical iPhone/Android decoder test."

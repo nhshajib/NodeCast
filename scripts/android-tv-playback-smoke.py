@@ -18,7 +18,7 @@ def find(label, timeout=15, scroll=False):
  end=time.monotonic()+timeout
  while time.monotonic()<end:
   root=dump()
-  if label!='Show player controls' and REMOTE and any(n.get('content-desc')=='Show player controls' for n in root.iter('node')):
+  if label!='Show player controls' and REMOTE and any(n.get('content-desc')=='Show player controls' and n.get('focused')=='true' for n in root.iter('node')):
    remote.key(20);continue
   nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
