@@ -6,7 +6,7 @@
 
 A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-**[Download TV APK · 0.6.5](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.5/NodeCast-tv-0.6.5.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.5) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download TV APK · 0.6.6](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.6/NodeCast-tv-0.6.6.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.6) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,26 +14,28 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.6.5** · October 29, 2026 |
-| File | `NodeCast-tv-0.6.5.apk` · 223.7 MB |
+| Version | **0.6.6** · October 30, 2026 |
+| File | `NodeCast-tv-0.6.6.apk` · 223.7 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
 | Watching | No Expo Go, running PC or weekly signing renewal |
 | Profiles | Local storage; no account or cloud sync |
 
-## New in 0.6.5
+## New in 0.6.6
 
-D-pad and Select control the library, guide, profiles, settings and player. Focus is visible, returns after Back and stays inside active player/PIN panels. Full-size switches toggle with Select; fields open the TV keyboard. Fire TV Menu or long Select opens context options. Switch playlists from the sidebar. The guide puts channel controls beside compact programme timelines, sized for television viewing. New installations start in Dark appearance; saved preferences are kept.
+TV player options open beside a persistent video surface. Returning from channel settings, display/sleep tools, playback information or track selection keeps the live session. Back closes the live track panel before leaving playback.
 
-**Provider-supported catch-up:** after updating, choose **TV guide → Refresh guide** once to load available past schedules. Then choose **Earlier**, select a completed programme and choose **Watch catch-up**. The channel must advertise an Xtream archive, and your provider must supply historical guide data and a valid server time zone. Back returns to the same guide window. Archive links are not saved as ordinary movie history. M3U catch-up templates, recording and multiview are future work.
+Connection/IP details now use the normal TV navigation window, with a compact two-column layout and direct sidebar access. Native focus highlighting avoids React state updates on each move. New panels repair focus before the next remote input; large category, media, guide and episode lists use bounded rendering. Large organization lists offer search and pages.
 
-Clear recents and password-encrypted **Settings → Backup & transfer** remain available. [Transfer details](../verification/transfer/README.md) · [Reference comparison and feature plan](../verification/tv-remote/FEATURE-COMPARISON.md).
+Existing local profiles, saved provider details, guides, favorites, PIN protection, Clear recents and **Backup & transfer** are retained. [TV stability audit](../verification/tv-stability/README.md).
+
+**Provider-supported catch-up:** refresh your TV guide after updating, choose **Earlier**, select a completed programme, then **Watch catch-up**. Historical XMLTV data, an advertised Xtream archive and a valid provider server timezone are required. M3U catch-up templates, multiview and recording remain future work.
 
 <details>
 <summary>Preview the TV guide</summary>
 <br />
-<img src="../verification/tv-remote/guide.png" alt="NodeCast Android TV native emulator preview" width="900" />
+<img src="../verification/tv-stability/guide.png" alt="NodeCast Android TV native emulator preview" width="900" />
 <p>Native Android emulator capture using synthetic channel and programme data.</p>
 </details>
 
@@ -64,13 +66,13 @@ Movies and live TV keep their own playback controls. Audio/subtitle language cho
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.6.5 installs over the existing TV edition and preserves profiles.
+Version 0.6.6 installs over the existing TV edition and preserves profiles.
 
 ## Changelog and verification
 
 [Read the TV changelog](CHANGELOG.md) · [Exact build record](build.json) · [Native verification](../verification/android/README.md)
 
-Release signature, embedded JavaScript/VLC and architecture checks passed. The exact APK passed native D-pad/Select-only playback and settings audits, including catch-up decoding, context keys, search and per-channel choices. [Audit results and screenshots](../verification/tv-remote/README.md). Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40993716335).
+Release signature, embedded JavaScript/VLC and architecture checks passed. The exact APK passed native playback, settings and stability audits on Android 11, including video pixels after menus, initial focus and actual home-IP saving/removal. Physical Hisense/provider confirmation remains necessary; API 35 emulator video was not verified. [Audit results and screenshots](../verification/tv-stability/README.md). Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/41059308561).
 
 ## Build from source
 

@@ -1,4 +1,10 @@
-# Current Android TV 0.6.5 verification
+# Current Android TV 0.6.6 verification
+
+The exact TV APK passed native core, settings and continuous-video stability suites on Android 11/API 30, with no touch taps/swipes. Settings now verifies actual home-IP save/removal. Stability verifies rendered pixels and frame advancement after player panels, one live connection, media keys, initial panel focus and native dispatch timing on a large catalogue. Physical-device performance and provider codecs are unverified; API 35 virtual video rendering is not marked passed.
+
+[Build records](native-0.6.6-builds.json) · [Audit, results and captures](../tv-stability/README.md)
+
+# 0.6.5 verification
 
 The exact TV APK passed two native remote suites on API 35: playback/catch-up and settings/search. All navigation used D-pad, Select and Back, with keyboard text and no pointer input. Native captures confirm that the compact guide shows the programme beside its channel controls. Physical Hisense/Fire TV and real-provider confirmation remains necessary.
 

@@ -2,7 +2,17 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.5 · October 29, 2026 · Current download
+## 0.6.6 · October 30, 2026 · Current download
+
+- Keeps the native live-video host stable through player settings and uses a TV side panel; avoids duplicate decoder initialization for unchanged source/options.
+- Back closes live track settings before exiting playback.
+- Remote-accessible connection/IP details replace the separate mobile modal window.
+- Native focus indicators, initial panel focus repair and bounded view scans reduce navigation work; tile focus no longer updates the whole library.
+- Bounded category, media, guide and episode rendering; searchable pages for large library organization lists.
+- Preserves final progress, immediate watched marks and visible recents without rebuilding hidden lists during fullscreen playback.
+- Dark appearance contrast fixes in the connection summary, selected categories and version badge.
+
+## 0.6.5 · October 29, 2026
 
 - TV-only native D-pad/Select navigation, visible focus, automatic scrolling, disabled-control skipping and focus restoration after Back.
 - Active player, subtitle/audio, programme and PIN panels keep focus inside; covered mini-player controls stay out of the focus path.

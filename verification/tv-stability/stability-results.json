@@ -1,0 +1,14 @@
+{
+  "passed": [
+    "Live frame pixels survive player menu, channel options, display/sleep tools, report and track panels",
+    "Frames advance after returning from menus",
+    "One live HTTP session across player settings",
+    "Media Play/Pause remote keys",
+    "3000 channels and 300 categories with bounded native focus graph"
+  ],
+  "nativeKeyP95Ms": 1.077,
+  "keySamples": 41,
+  "maxFocusCandidates": 103,
+  "api": "30",
+  "scope": "Android emulator timing; physical Fire TV performance requires confirmation."
+}

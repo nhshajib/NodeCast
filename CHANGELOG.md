@@ -2,6 +2,17 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.6 · October 30, 2026 · Android TV
+
+- TV player settings open beside a persistent video surface. Identical VLC source/options updates no longer restart the decoder.
+- Live audio/subtitle panels close with Back before leaving the player.
+- TV connection details use the normal remote-controlled navigation window and a compact two-column layout; the sidebar opens them directly.
+- Native focus highlighting avoids React state updates per D-pad move; new panels repair focus before drawing; focus scans and delayed scroll repair are bounded.
+- Category, media, guide and episode lists render bounded windows. Large organization lists use search/paging.
+- Fullscreen history updates stay out of the hidden library; final progress and manual watched marks update when needed.
+- Fixes Dark appearance contrast in the connection summary, selected categories and version badge.
+- iPhone and Android mobile downloads remain 0.6.4.
+
 ## 0.6.5 · October 29, 2026 · Android TV
 
 - D-pad/Select throughout the TV library, guide, settings, profiles and player, with visible focus, scrolling and restoration after Back.

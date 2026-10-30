@@ -1,4 +1,14 @@
-# Current downloads — TV 0.6.5; iPhone and Android mobile 0.6.4
+# Current downloads — TV 0.6.6; iPhone and Android mobile 0.6.4
+
+TypeScript and **116 automated tests** pass. The exact TV APK passed native core, settings and stability audits on Android 11/API 30. The continuous synthetic live stream retained one HTTP session, remained visible and advanced after all player panels; initial panel focus, track Back and media keys passed. IP details passed Refresh, Save/Cancel and actual reference saving/removal. Search, per-channel options, guide/catch-up, PIN protection and watched-state checks passed.
+
+A 3,000-channel/300-category fixture retained at most 103 native focus candidates; native key handling measured 1.077 ms p95 across 41 samples. This does not establish physical TV frame rates. API 35 emulator video produced a black texture before settings and is not marked passed. Physical Hisense/Fire TV and real-provider codecs remain unverified.
+
+[Exact build provenance](android/native-0.6.6-builds.json) · [Audit, results and screenshots](tv-stability/README.md)
+
+The working iPhone and Android mobile downloads remain unchanged at 0.6.4. The following records are historical verification.
+
+# 0.6.5 baseline verification
 
 TypeScript and **116 automated tests** pass. The exact TV 0.6.5 APK passed separate native remote playback/catch-up and settings/search suites, using D-pad/Select/Back and keyboard text without taps or swipes. Checks cover repeated cold starts, synthetic VLC and native video, Next episode, mini-player continuity, SQLite guide persistence, PIN protection, Clear recents, playlist switching, switches/radios, search, per-channel choices, provider-supported catch-up decoding, guide return, Fire TV Menu and long Select. The compact TV guide was visually reviewed from native captures. Signature, offline bundle and ARM32/64/x86-64 checks passed; the signing certificate matches 0.6.4.
 
