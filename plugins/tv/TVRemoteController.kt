@@ -103,6 +103,31 @@ class TVRemoteController(private val activity: Activity) {
     }
     return null
   }
+  private fun scrollMore(scroll: View, sign: Int, horizontal: Boolean) {
+    if(scroll is HorizontalScrollView)scroll.smoothScrollBy(sign*scroll.width/2,0)
+    if(scroll is ScrollView)scroll.smoothScrollBy(0,sign*scroll.height/2)
+    root.postDelayed({
+      val shown=candidates().filter { inside(it,scroll)&&visible(it) }
+      val target=if(sign>0)shown.minByOrNull { if(horizontal)rect(it).left else rect(it).top }
+        else shown.maxByOrNull { if(horizontal)rect(it).right else rect(it).bottom }
+      target?.let { focus(it) }
+    },220)
+  }
+  private fun contentScroller(from:View,horizontal:Boolean,sign:Int):View? {
+    val views=mutableListOf<View>();val a=rect(from)
+    fun visit(view:View){
+      if(!allowed(view))return
+      val matches=if(horizontal)view is HorizontalScrollView else view is ScrollView
+      if(matches&&visible(view)&&scope(view)==scope(from)){
+        val b=rect(view)
+        val beam=if(horizontal)b.bottom>a.top&&b.top<a.bottom else b.right>a.left&&b.left<a.right
+        val ahead=if(horizontal){if(sign>0)b.right>a.right else b.left<a.left}else{if(sign>0)b.bottom>a.bottom else b.top<a.top}
+        if(beam&&ahead&&(if(horizontal)view.canScrollHorizontally(sign)else view.canScrollVertically(sign)))views.add(view)
+      }
+      if(view is ViewGroup)for(i in 0 until view.childCount)visit(view.getChildAt(i))
+    }
+    visit(root);return views.maxByOrNull { it.width*it.height }
+  }
   private fun move(direction: Int, choices: List<View>): Boolean {
     val from = activity.currentFocus ?: return true
     val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
@@ -123,10 +148,10 @@ class TVRemoteController(private val activity: Activity) {
     val sign = if (positive) 1 else -1
     val canScroll = scroll != null && if (horizontal) scroll.canScrollHorizontally(sign) else scroll.canScrollVertically(sign)
     if (canScroll && (best == null || !best.third)) {
-      if (scroll is HorizontalScrollView) scroll.smoothScrollBy(sign * scroll.width / 2, 0)
-      if (scroll is ScrollView) scroll.smoothScrollBy(0, sign * scroll.height / 2)
+      scrollMore(scroll!!,sign,horizontal)
       return true
     }
+    if(best==null&&scroll==null)contentScroller(from,horizontal,sign)?.let { scrollMore(it,sign,horizontal);return true }
     best?.let { focus(it.first) }
     return true
   }
