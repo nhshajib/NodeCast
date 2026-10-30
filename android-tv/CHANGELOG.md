@@ -2,7 +2,19 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.4 · October 29, 2026 · Current download
+## 0.6.5 · October 29, 2026 · Current download
+
+- TV-only native D-pad/Select navigation, visible focus, automatic scrolling, disabled-control skipping and focus restoration after Back.
+- Active player, subtitle/audio, programme and PIN panels keep focus inside; covered mini-player controls stay out of the focus path.
+- Remote-friendly switches and fields, Fire TV Menu / long Select context options and remote media controls.
+- Compact TV guide rows place channel controls beside programmes, keep the first programme visible and align time ticks.
+- Quick playlist switcher and Dark defaults for new TV installations; existing preferences stay intact.
+- Standard and Leanback launcher entries, without requiring Leanback hardware, for Fire TV compatibility.
+- Provider-supported Xtream catch-up from completed guide programmes, with archive-window validation and server-timezone conversion. Historical guide data is required; M3U archive templates, multiview and recording are not included.
+- iPhone and Android mobile downloads remain 0.6.4.
+- SHA-256 `0dc209a17cda06cc50918ba162bd7cdc439f5e86b8a0713216e399b5de5f9dd4`.
+
+## 0.6.4 · October 29, 2026
 
 - Clear recents without deleting resume progress or watched marks.
 - Password-encrypted export/import of profiles, provider details, favorites, settings and optional history. Import previews changes and preserves existing profiles.

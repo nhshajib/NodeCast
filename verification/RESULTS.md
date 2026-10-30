@@ -1,4 +1,12 @@
-# Current verification — NodeCast 0.6.4
+# Current downloads — TV 0.6.5; iPhone and Android mobile 0.6.4
+
+TypeScript and **116 automated tests** pass. The exact TV 0.6.5 APK passed separate native remote playback/catch-up and settings/search suites, using D-pad/Select/Back and keyboard text without taps or swipes. Checks cover repeated cold starts, synthetic VLC and native video, Next episode, mini-player continuity, SQLite guide persistence, PIN protection, Clear recents, playlist switching, switches/radios, search, per-channel choices, provider-supported catch-up decoding, guide return, Fire TV Menu and long Select. The compact TV guide was visually reviewed from native captures. Signature, offline bundle and ARM32/64/x86-64 checks passed; the signing certificate matches 0.6.4.
+
+[Current build provenance](android/native-0.6.5-builds.json) · [TV audit and screenshots](tv-remote/README.md) · [Feature comparison and plan](tv-remote/FEATURE-COMPARISON.md)
+
+Physical Hisense/Fire TV behavior and real-provider archives still require device confirmation. iPhone and Android mobile binaries remain unchanged at 0.6.4; their verification records below describe that baseline.
+
+# 0.6.4 baseline verification
 
 TypeScript and 110 automated tests pass. Encrypted transfer UI checks passed for mobile and TV, including wrong-password rejection, import preview and keeping existing profiles. Android native checks cover cold starts, SQLite persistence and family protection; mobile additionally saves an encrypted file through DocumentsUI and restores into a fresh emulator app. TV additionally checks VLC, remote Next episode, mini-player continuity and Clear recents. The iPhone Release simulator stayed open before arm64 device compilation and IPA archive verification. Physical iPhone sharing, PiP/AirPlay and real-provider compatibility need device confirmation.
 

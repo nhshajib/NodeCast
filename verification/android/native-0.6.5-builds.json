@@ -1,0 +1,129 @@
+{
+  "editions": {
+    "iphone": {
+      "version": "0.6.4",
+      "edition": "iphone",
+      "file": "NodeCast-0.6.4-unsigned.ipa",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.4/NodeCast-0.6.4-unsigned.ipa",
+      "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.4",
+      "bytes": 35738499,
+      "sha256": "0446c791eef20ef6666f3c0ec88e45e7271fda7dbdc46f350f799ad954f48466",
+      "releaseAssetId": 687443904,
+      "bundleIdentifier": "com.nhshajib.nodecast",
+      "buildNumber": "604",
+      "architectures": [
+        "arm64"
+      ],
+      "sourceCommit": "6232ded65568a11cf36e950608b01761a8e0e96c",
+      "buildRun": 40819882884,
+      "signing": "Unsigned IPA; sign using Impactor and your own Apple account",
+      "freeAppleSigningRenewal": "Normally seven days",
+      "distribution": "Standalone physical-iPhone Release build; simulator startup verified before IPA packaging",
+      "verification": {
+        "devicePlatformArm64EmbeddedJSAndVLC": "passed",
+        "physicalDeviceTested": false,
+        "clearRecentsPureTests": "passed",
+        "encryptedTransferBrowserIntegration": "passed",
+        "archiveIntegrityAndSha256": "passed",
+        "simulatorLaunchStayedOpen": "passed",
+        "physicalShareSheetTested": false
+      },
+      "artifactId": 12874549845,
+      "publishRun": 40822369553
+    },
+    "mobile": {
+      "version": "0.6.4",
+      "versionCode": 604,
+      "edition": "mobile",
+      "package": "com.nhshajib.nodecast",
+      "apk": "NodeCast-mobile-0.6.4.apk",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-mobile-0.6.4.apk",
+      "bytes": 225107847,
+      "sha256": "610f318a0b2d6a93bd204002b5cd8a7a7f2f0b51f4e611b55e23cf636aa2f329",
+      "sourceCommit": "109cb9a8d5c955b9a1f878c2780c3f169604544e",
+      "buildRun": 40822981781,
+      "artifactId": 12874724599,
+      "nativeCheckRun": 40823568099,
+      "architectures": [
+        "armeabi-v7a",
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minAndroidSdk": 24,
+      "signing": "Standard Android test key; personal testing, not store distribution",
+      "verification": {
+        "releaseSignatureAndBundle": "passed",
+        "physicalDeviceTested": false,
+        "clearRecentsPureTests": "passed",
+        "encryptedTransferBrowserIntegration": "passed",
+        "repeatedColdStarts": "passed",
+        "nativeXMLTVSQLitePersistence": "passed",
+        "nativeFamilyPINAndProtectedCategory": "passed",
+        "nativeEncryptedExportFreshDeviceRestore": "passed"
+      },
+      "releaseAssetId": 687476604,
+      "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+      "updateSigningIdentityMatchesPreviousRelease": true,
+      "nativeCheckArtifactId": 12875094152,
+      "nativeCheckSourceCommit": "109cb9a8d5c955b9a1f878c2780c3f169604544e",
+      "release": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.4"
+    },
+    "tv": {
+      "version": "0.6.5",
+      "versionCode": 605,
+      "edition": "tv",
+      "package": "com.nhshajib.nodecast.tv",
+      "apk": "NodeCast-tv-0.6.5.apk",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.5/NodeCast-tv-0.6.5.apk",
+      "bytes": 223737163,
+      "sha256": "0dc209a17cda06cc50918ba162bd7cdc439f5e86b8a0713216e399b5de5f9dd4",
+      "releaseAssetId": 690725135,
+      "sourceCommit": "8ce1c7eb21f3ca7ea7c9aa2da02500d73e7db9d0",
+      "buildRun": 40993716335,
+      "architectures": [
+        "armeabi-v7a",
+        "arm64-v8a",
+        "x86_64"
+      ],
+      "minAndroidSdk": 24,
+      "signing": "Standard Android test key; personal testing, not store distribution",
+      "verification": {
+        "releaseSignatureAndBundle": "passed",
+        "automatedTests": 116,
+        "typecheck": "passed",
+        "physicalDeviceTested": false,
+        "repeatedColdStarts": "passed",
+        "nativeXMLTVSQLitePersistence": "passed",
+        "nativeFamilyPINAndProtectedCategory": "passed",
+        "nativeVLCAndNextEpisode": "passed",
+        "sameLiveSessionMiniPlayer": "passed",
+        "nativeClearRecents": "passed",
+        "nativeRemoteLibraryAndSettings": "passed",
+        "nativeRemoteSearchAndPerChannelOptions": "passed",
+        "nativeCatchupEndpointAndDecoding": "passed",
+        "nativeReturnToGuide": "passed",
+        "nativeFireTVMenuAndLongSelect": "passed",
+        "backupSettingsAndModes": "passed",
+        "scope": "API 35 x86-64 emulator; synthetic streams; D-pad/Select/Back and keyboard text without pointer input. Physical Hisense/Fire TV and real-provider compatibility require confirmation."
+      },
+      "artifactId": 12950946545,
+      "nativeCheckRun": 40994695133,
+      "nativeCheckArtifactId": 12951810018,
+      "nativeCheckSourceCommit": "8ce1c7eb21f3ca7ea7c9aa2da02500d73e7db9d0",
+      "release": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.5",
+      "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+      "updateSigningIdentityMatchesPreviousRelease": true,
+      "nativeSettingsCheckRun": 40994698827,
+      "nativeSettingsCheckArtifactId": 12951595895,
+      "nativeSettingsCheckSourceCommit": "8ce1c7eb21f3ca7ea7c9aa2da02500d73e7db9d0"
+    }
+  },
+  "releaseAssetDigestsMatchBuildRecords": true,
+  "physicalDevicesTested": false,
+  "scope": "The Android source has a later Android-only document-result dependency patch. Shared application UI and backup format match the iPhone source. API 35 emulators and an iPhone Release simulator were used; physical devices remain unverified.",
+  "versions": {
+    "iphone": "0.6.4",
+    "mobile": "0.6.4",
+    "tv": "0.6.5"
+  }
+}

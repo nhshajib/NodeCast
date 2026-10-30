@@ -1,3 +1,9 @@
+# Current Android TV 0.6.5 verification
+
+The exact TV APK passed two native remote suites on API 35: playback/catch-up and settings/search. All navigation used D-pad, Select and Back, with keyboard text and no pointer input. Native captures confirm that the compact guide shows the programme beside its channel controls. Physical Hisense/Fire TV and real-provider confirmation remains necessary.
+
+[Build records](native-0.6.5-builds.json) · [Audit, results and screenshots](../tv-remote/README.md)
+
 # Android native verification
 
 ## 0.6.4 published binaries · October 29, 2026

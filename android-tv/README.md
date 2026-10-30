@@ -6,7 +6,7 @@
 
 A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-**[Download TV APK · 0.6.4](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-tv-0.6.4.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.4) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download TV APK · 0.6.5](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.5/NodeCast-tv-0.6.5.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.5) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,23 +14,27 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.6.4** · October 29, 2026 |
-| File | `NodeCast-tv-0.6.4.apk` · 223.7 MB |
+| Version | **0.6.5** · October 29, 2026 |
+| File | `NodeCast-tv-0.6.5.apk` · 223.7 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
 | Watching | No Expo Go, running PC or weekly signing renewal |
 | Profiles | Local storage; no account or cloud sync |
 
-## New in 0.6.4
+## New in 0.6.5
 
-Clear recents keeps progress and watched marks. **Settings → Backup & transfer** moves profiles, server details, favorites and settings using a password-encrypted file; viewing history is optional. Import keeps existing profiles. [Transfer details](../verification/transfer/README.md).
+D-pad and Select control the library, guide, profiles, settings and player. Focus is visible, returns after Back and stays inside active player/PIN panels. Full-size switches toggle with Select; fields open the TV keyboard. Fire TV Menu or long Select opens context options. Switch playlists from the sidebar. The guide puts channel controls beside compact programme timelines, sized for television viewing. New installations start in Dark appearance; saved preferences are kept.
+
+**Provider-supported catch-up:** after updating, choose **TV guide → Refresh guide** once to load available past schedules. Then choose **Earlier**, select a completed programme and choose **Watch catch-up**. The channel must advertise an Xtream archive, and your provider must supply historical guide data and a valid server time zone. Back returns to the same guide window. Archive links are not saved as ordinary movie history. M3U catch-up templates, recording and multiview are future work.
+
+Clear recents and password-encrypted **Settings → Backup & transfer** remain available. [Transfer details](../verification/transfer/README.md) · [Reference comparison and feature plan](../verification/tv-remote/FEATURE-COMPARISON.md).
 
 <details>
-<summary>Preview the TV player</summary>
+<summary>Preview the TV guide</summary>
 <br />
-<img src="../verification/android/native-tv-next-0.6.0.png" alt="NodeCast Android TV native emulator preview" width="900" />
-<p>Native Android emulator capture with a generated test video.</p>
+<img src="../verification/tv-remote/guide.png" alt="NodeCast Android TV native emulator preview" width="900" />
+<p>Native Android emulator capture using synthetic channel and programme data.</p>
 </details>
 
 ## Install
@@ -40,13 +44,17 @@ Clear recents keeps progress and watched marks. **Settings → Backup & transfer
 3. Open the APK with a TV file manager.
 4. If Android TV asks, allow **Install unknown apps** for that file manager, then choose **Install**.
 5. Open **NodeCast TV** from the TV app launcher. Complete or skip the home-IP setup and add your server or playlist.
-6. Use the on-screen keyboard, or your Google TV phone remote keyboard, to enter long server/playlist links.
+6. Use the on-screen keyboard, or your Fire TV / Google TV phone remote keyboard, to enter long server/playlist links.
 
-Choose this APK for Android TV / Google TV. Samsung Tizen and LG webOS use different app formats.
+Choose this APK for Fire TV / Android TV / Google TV. Samsung Tizen and LG webOS use different app formats.
+
+## Fire TV installation
+
+Enable installation for your file manager under **Settings → My Fire TV → Developer options → Install unknown apps** (some televisions use **Device & Software**). If Developer options is hidden, open **About**, select the device name seven times and return. Transfer and open the APK, then install it over the existing NodeCast TV app. The Hisense 50QD6QF is a Fire TV; its exact Fire OS version and physical remote behavior still need confirmation.
 
 ## Remote and Next episode
 
-Use the D-pad to move between highlighted controls and Select/OK to activate them. **Back** closes the current page/player, clears a search or returns to Live TV before exiting.
+Use the D-pad to move between highlighted controls and Select/OK to activate them. Menu or long Select opens options for the focused channel, active player or library. Play/Pause and seek keys use the active player’s supported actions. **Back** closes the current page/player, clears a search or returns to Live TV before exiting.
 
 For Xtream series, open the series and choose an episode. The fullscreen player's **Next episode** button sits at the bottom right and shows the following title/season. Select it to open that episode automatically from the beginning. It uses the provider's actual ordered episode list, crosses into the next season and releases the previous stream first. The final episode has no Next button. Plain M3U playlists without structured series metadata do not supply that sequence.
 
@@ -56,13 +64,13 @@ Movies and live TV keep their own playback controls. Audio/subtitle language cho
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.6.4 installs over the existing TV edition and preserves profiles.
+Version 0.6.5 installs over the existing TV edition and preserves profiles.
 
 ## Changelog and verification
 
 [Read the TV changelog](CHANGELOG.md) · [Exact build record](build.json) · [Native verification](../verification/android/README.md)
 
-Release signature, embedded JavaScript/VLC and architecture checks passed. The Android TV emulator startup and remote check passed. Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40822981781).
+Release signature, embedded JavaScript/VLC and architecture checks passed. The exact APK passed native D-pad/Select-only playback and settings audits, including catch-up decoding, context keys, search and per-channel choices. [Audit results and screenshots](../verification/tv-remote/README.md). Test your provider and hardware on your own device. Configure a private signing key before store distribution. Physical PiP still needs a device check. [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40993716335).
 
 ## Build from source
 

@@ -1,0 +1,15 @@
+{
+  "passed": [
+    "D-pad-only profile connection and keyboard fields",
+    "Library, Favorites and Settings navigation",
+    "Appearance radio selection persists",
+    "Player and live engine selection",
+    "Sort, refresh, search scope and category switches",
+    "Backup switch and import/export modes",
+    "Version expansion and storage navigation",
+    "Home-IP confirmation and skip",
+    "Search editing and per-channel options",
+    "Back and focus restoration"
+  ],
+  "scope": "API 35 Android TV-profile emulator; all actions use D-pad/Select/Back. Keyboard text uses adb input text. No pointer taps or swipes."
+}

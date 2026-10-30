@@ -1,8 +1,8 @@
 # TiviMate reference and NodeCast TV
 
-Reference: the supplied APK identifies as `ar.tvplayer.tv`, version 5.3.3. Only its manifest and ZIP metadata were inspected; no DEX, implementation code or branding was copied. The feature comparison uses the user's TiviMate feature list and the public [TiviMate website](https://tivimate.com/). The uploaded APK was not executed in this workspace. NodeCast is independently implemented and retains its own interface and palette.
+Reference: the supplied APK identifies as `ar.tvplayer.tv`, version 5.3.3. Only its manifest and ZIP metadata were inspected; no DEX, implementation code or branding was copied. The feature comparison uses the user's TiviMate feature list and the public [TiviMate website](https://tivimate.com/) and [Google Play listing](https://play.google.com/store/apps/details?id=ar.tvplayer.tv), including its published remote-player and catch-up screenshots. The uploaded APK was not executed in this workspace. NodeCast is independently implemented and retains its own interface and palette.
 
-The reference manifest marks Leanback and touch as optional and offers standard and Leanback launcher categories. NodeCast TV now supports both launcher categories and does not require Leanback hardware, improving Fire TV compatibility. NodeCast still requires Android API 24+ and includes ARM32/ARM64 and x86-64. The user’s target is the Hisense 50QD6QF Fire TV; physical-device confirmation remains necessary.
+The reference manifest marks Leanback and touch as optional and offers standard and Leanback launcher categories. NodeCast TV now supports both launcher categories and does not require Leanback hardware, improving Fire TV compatibility. NodeCast still requires Android API 24+ and includes ARM32/ARM64 and x86-64. The user’s target is the [Hisense 50QD6QF Fire TV](https://www.hisense-usa.com/product-page/televisions-50-class-qd6-series-hi-qled-4k-fire-tv-50qd6qf); physical-device confirmation remains necessary.
 
 | Feature | NodeCast TV | Placement |
 | --- | --- | --- |
@@ -33,3 +33,11 @@ Protocol reference: [Archive & Catch-up specification](https://uniplayer.net/doc
 - Focus is kept out of hidden backgrounds and controls covered by the mini-player.
 
 Multiview and recording are deliberately absent from this release's navigation until their resource, provider and storage requirements can be implemented and verified. Catch-up is the user's selected first priority.
+
+## Next phases without a crowded interface
+
+1. **Catch-up (this TV release):** one contextual action in completed programme details; no extra sidebar section. Missing archive support produces an explanation instead of an unusable action.
+2. **Multiview:** begin with two streams, opened from Player options. Check the subscription's simultaneous-connection allowance when reported, device decoder support and available resources. Keep audio on the selected pane, provide one clear exit action and release both sessions on exit. Verify on the Hisense/Fire TV before considering four panes.
+3. **Recording:** first establish provider permission/capability, storage selection and free-space handling. Implement an Android foreground recording service with cancellation, process/standby recovery and visible status; add scheduling only after reliability checks. Put Record in programme details/player options and expose a Recordings section only when recordings exist. Catch-up does not imply local recording support.
+
+These phases reuse the existing guide and player menus. Core library navigation remains unchanged. Provider accounts, video codecs and TV storage limits must be tested before the later phases are advertised as available.

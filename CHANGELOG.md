@@ -2,6 +2,15 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.5 · October 29, 2026 · Android TV
+
+- D-pad/Select throughout the TV library, guide, settings, profiles and player, with visible focus, scrolling and restoration after Back.
+- Isolated active panels, full-size TV switches, system keyboard activation and Fire TV Menu / long Select shortcuts.
+- Compact TV guide rows put channel controls beside programmes, with aligned time labels.
+- Quick playlist switching, Dark defaults for new TV installations and Fire TV-compatible launcher declarations.
+- Provider-supported Xtream catch-up opens completed guide programmes using the provider's archive window and server time zone. Historical XMLTV data is required.
+- iPhone and Android mobile remain 0.6.4. [TV details](android-tv/CHANGELOG.md) · [Reference comparison](verification/tv-remote/FEATURE-COMPARISON.md).
+
 ## 0.6.4 · October 29, 2026
 
 - Clear recents from Home, TV recent channels and Library & storage; progress and watched marks stay.
