@@ -14,7 +14,7 @@ on:
         description: TV remote checks (use core and settings on the same APK for split verification)
         type: choice
         default: full
-        options: [full, core, settings, stability]
+        options: [full, core, settings, stability, input]
       api_level:
         description: Android emulator API (30 approximates Android 11 Fire TV runtime)
         type: choice

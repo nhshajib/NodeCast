@@ -178,6 +178,11 @@ def main():
   text('Password','example')
   click('Connect playlist',True)
   time.sleep(4);click('Live TV')
+  if REMOTE and suite=='input':
+   click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN');find('Find category to protect',timeout=90)
+   OUT.joinpath('emulator-tv-input-result.json').write_text(json.dumps({'passed':['Numeric PIN and confirmation fields remain in the form after keyboard Done','Family PIN saved successfully'],'api':adb('shell','getprop','ro.build.version.sdk')},indent=2)+'\n')
+   print('TV numeric input and PIN save passed.',flush=True)
+   return
   if REMOTE and suite=='settings':
    audit_settings(remote,OUT,fresh=True)
    OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'input':'D-pad/Select/Back only; keyboard text; no pointer','activated':remote.visited},indent=2)+'\n')
