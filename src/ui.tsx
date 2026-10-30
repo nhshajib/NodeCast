@@ -15,8 +15,8 @@ export function Button({ title, onPress, variant = 'primary', busy = false, disa
     <Text style={[u.buttonText, variant !== 'primary' && { color: variant === 'ink' ? '#fff' : variant === 'mint' ? colors.onAccent : colors.text }, variant === 'danger' && { color: colors.danger }]}>{title}</Text>
   </Pressable>;
 }
-export function IconButton({ name, label, onPress, disabled, dark = false }: { name: IconName; label: string; onPress: () => void; disabled?: boolean; dark?: boolean }) {
-  return <Pressable accessibilityRole="button" accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => [u.iconButton, dark && { backgroundColor: '#241D39' }, pressed && { opacity: .6 }]}><Icon name={name} color={dark ? '#fff' : colors.text} /></Pressable>;
+export function IconButton({ name, label, onPress, disabled, dark = false, nativeID }: { nativeID?: string; name: IconName; label: string; onPress: () => void; disabled?: boolean; dark?: boolean }) {
+  return <Pressable nativeID={nativeID} accessibilityRole="button" accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => [u.iconButton, dark && { backgroundColor: '#241D39' }, pressed && { opacity: .6 }]}><Icon name={name} color={dark ? '#fff' : colors.text} /></Pressable>;
 }
 export function Field({ label, hideLabel=false, style, onFocus, onBlur, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean }) {
   const [focused, setFocused] = useState(false);

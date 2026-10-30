@@ -6,7 +6,11 @@ PACKAGE=com.nhshajib.nodecast
 if [ "$TARGET" = tv ]; then PACKAGE="$PACKAGE.tv"; PROFILE_ARGS=(--ez nodecastTvProfile true); fi
 mkdir -p verification/android
 trap 'adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt" || true' EXIT
-adb install "$(find apk -name '*.apk' -print -quit)"
+APK_FILE="$(find apk -name '*.apk' -print -quit)"
+adb install "$APK_FILE"
+sha256sum "$APK_FILE" > "verification/android/emulator-$TARGET-apk.sha256"
+cp "$(find apk -name 'apk-manifest.txt' -print -quit)" "verification/android/emulator-$TARGET-apk-manifest.txt"
+adb shell dumpsys package "$PACKAGE" | grep -E 'versionCode=|versionName=' > "verification/android/emulator-$TARGET-installed-package.txt"
 adb logcat -c
 if [ "$TARGET" = tv ]; then adb shell settings put secure show_ime_with_hard_keyboard 1; fi
 # Exercise repeated cold starts to catch activity/module initialization races.
@@ -38,6 +42,7 @@ else
 fi
 adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt"
 adb shell pidof "$PACKAGE"
+adb shell dumpsys meminfo "$PACKAGE" > "verification/android/emulator-$TARGET-memory.txt"
 if grep -Eq 'FATAL EXCEPTION|ReactNativeJS:.*(Error:|Invariant Violation|TypeError)' "verification/android/emulator-$TARGET-logcat.txt"; then
   echo 'Native or JavaScript crash detected'; exit 1
 fi

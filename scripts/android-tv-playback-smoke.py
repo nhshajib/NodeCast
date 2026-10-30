@@ -1,5 +1,5 @@
 """Exercise TV import + native VLC with a locally generated, credential-free test stream."""
-import http.server, json, re, subprocess, threading, time, os, importlib.util
+import http.server, json, re, subprocess, threading, time, os, importlib.util, base64
 from pathlib import Path
 import xml.etree.ElementTree as ET
 OUT=Path('verification/android')
@@ -132,7 +132,7 @@ def audit_settings(remote,out,fresh=False):
  remote.focus('All');remote.horizontal('Remote News 8',22);remote.horizontal('All',21);remote.activate('Save favorite: Remote Channel 18');remote.activate('Smoke test');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
  remote.activate('Appearance');remote.activate('light appearance');checked('light appearance');remote.activate('dark appearance');checked('dark appearance');remote.activate('Back')
  remote.activate('Playback');remote.activate('Ask each time');checked('Ask each time');remote.activate('NodeCast player');checked('NodeCast player');remote.activate('Live TV options');remote.activate('Engine: Built-in VLC');checked('Engine: Built-in VLC');remote.activate('Engine: Automatic');checked('Engine: Automatic');remote.activate('Back')
- remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Show Smoke test');checked('Show Smoke test',False);remote.activate('Show Smoke test');checked('Show Smoke test');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')
+ remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Categories');remote.activate('Show Smoke test');checked('Show Smoke test',False);remote.activate('Show Smoke test');checked('Show Smoke test');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')
  remote.activate('Backup & transfer');remote.activate('Include viewing history and progress');checked('Include viewing history and progress',False);remote.activate('Include viewing history and progress');checked('Include viewing history and progress');remote.activate('Import backup');find('Choose backup file');remote.activate('Export backup');remote.activate('Back')
  remote.activate('Add playlist');remote.activate('M3U link');find('Playlist link');remote.activate('Xtream Codes');remote.activate('Show password');remote.activate('Hide password');remote.activate('Advanced connection settings');remote.focus('User-Agent (optional)');remote.activate('Hide advanced connection settings');remote.activate('Back')
  remote.activate('Version history');remote.activate('Version 0.6.6');remote.activate('Version 0.6.6');remote.activate('Version 0.6.5');remote.activate('Back');remote.activate('Library & storage');find('Clear recents');remote.activate('Back')
@@ -146,14 +146,42 @@ def audit_settings(remote,out,fresh=False):
  out.joinpath('emulator-tv-remote-audit.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  out.joinpath('emulator-tv-remote-audit-result.json').write_text(json.dumps({'passed':['D-pad-only profile connection and keyboard fields','Library, Favorites and Settings navigation','Appearance radio selection persists','Player and live engine selection','Sort, refresh, search scope and category switches','Backup switch and import/export modes','Version expansion and storage navigation','Home-IP confirmation and skip','Search editing and per-channel options','Back and focus restoration'],'networkReference':network_reference,'scope':'Android TV-profile emulator; all actions use D-pad/Select/Back. Keyboard text uses adb input text. No pointer taps or swipes.'},indent=2)+'\n')
 
+def audit_library(remote,counts):
+ def checked(label,value=True):
+  node=remote.focus(label);assert node.get('checked')==str(value).lower(),label+' did not update'
+ def shot(name):OUT.joinpath(name+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+ initial=dict(counts['api']);find('Grid view');assert counts['logos']==0,'Default list loaded channel images'
+ assert not counts['api'].get('get_vod_streams',0) and not counts['api'].get('get_series',0),'Live TV preloaded unopened libraries'
+ shot('emulator-tv-library-list')
+ remote.activate('Library options');checked('Channel layout: List');remote.activate('Z–A');checked('Z–A');remote.activate('Back');find('Play Remote Channel 3000')
+ remote.activate('Library options');remote.activate('Provider order');remote.activate('Categories');remote.fill('Find category','Smoke test');remote.activate('Show Smoke test');checked('Show Smoke test',False);assert remote.name(remote.focused(remote.tree()))=='Show Smoke test','Category save lost remote focus';remote.activate('Back');remote.focus('All');find('Play Remote Channel 01')
+ assert not any(n.get('content-desc')=='Play Example Live Test' for n in dump().iter('node')),'Hidden category stayed in the library'
+ remote.activate('Save favorite: Remote Channel 01');remote.activate('Save favorite: Remote Channel 02');remote.activate('Library options');remote.activate('Favorites order');remote.activate('Move Remote Channel 02 up');remote.activate('Back');remote.activate('Favorites')
+ first=find('Play Remote Channel 02');second=find('Play Remote Channel 01');assert first[1]<second[1],'Saved favorite order did not apply'
+ assert not counts['api'].get('get_vod_streams',0) and not counts['api'].get('get_series',0),'Live-only favorites loaded unrelated media'
+ remote.activate('Settings');remote.activate('Library organization');remote.activate('Organize Movies');remote.activate('Z–A');checked('Z–A');remote.activate('All media');checked('All media');remote.activate('Categories');find('Show Cinema');remote.activate('Library preferences');remote.activate('Organize Live TV');checked('Provider order');checked('Current category');remote.activate('Back')
+ assert counts['api'].get('get_vod_streams',0)==1 and not counts['api'].get('get_series',0),'Organization did not load only the selected media type'
+ before=dict(counts['api']);adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity','--ez','nodecastTvProfile','true');time.sleep(6)
+ if any(n.get('content-desc')=='Not now' for n in dump().iter('node')):remote.activate('Not now')
+ find('Play Remote Channel 01');assert counts['api']==before,'Restart refetched a fresh cached catalogue'
+ remote.activate('Settings');remote.activate('Library organization');checked('Channel layout: List');checked('Channel logos in list view',False);remote.activate('Categories');remote.fill('Find category','Smoke test');find('Show Smoke test');checked('Show Smoke test',False)
+ shot('emulator-tv-organization-cached-categories');remote.activate('Favorites order');find('Move Remote Channel 02 down');remote.activate('Library preferences');remote.activate('Organize Movies');checked('Z–A');checked('All media');remote.activate('Back');remote.activate('Live TV')
+ remote.activate('Grid view');find('List view');time.sleep(2);assert counts['logos']>0,'Grid did not request channel artwork';remote.activate('List view');find('Grid view');shot('emulator-tv-library-restored-list')
+ OUT.joinpath('emulator-tv-library-result.json').write_text(json.dumps({'passed':['Default text list requests no channel logos','List/Grid preference switches with the remote and persists after restart','Live TV and live-only favorites do not load Movies/Series','Media-specific organization loads only the requested catalogue','Numeric sorting and independent movie/live preferences','Hidden selected category returns to All','Favorites move in actual saved order','Disk cache hydrates categories/favorites after process restart without refetching','Search scope, hidden categories and layouts survive restart'], 'channels':3001,'categories':301,'initialApiCalls':initial,'finalApiCalls':counts['api'],'logoRequestsOnlyAfterGrid':counts['logos'],'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator with D-pad/Select and keyboard text, no touch. Physical Fire TV speed and memory use require device confirmation.'},indent=2)+'\n')
+ print('TV library organization, lazy loading, list/grid and restart persistence passed.',flush=True)
+
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
  suite=os.environ.get('NODECAST_TV_SUITE','full')
- counts={'guide':0,'ts':0,'archive':0}
+ counts={'guide':0,'ts':0,'archive':0,'logos':0,'api':{}}
  stamp=lambda value:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(value))
  class Handler(http.server.BaseHTTPRequestHandler):
   def log_message(self,*args):pass
   def do_GET(self):
+   action=re.search(r'[?&]action=([^&]+)',self.path)
+   if action:counts['api'][action[1]]=counts['api'].get(action[1],0)+1
+   if self.path.startswith('/logo/'):
+    counts['logos']+=1;body=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aBT0AAAAASUVORK5CYII=');self.send_response(200);self.send_header('Content-Type','image/png');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body);return
    if self.path.split('?')[0].endswith('/guide.xml'):
     counts['guide']+=1;now=time.time()
     body=f'<tv><channel id="native-test"><display-name>Native guide channel</display-name></channel><programme channel="native-test" start="{stamp(now-120)}" stop="{stamp(now+3600)}"><title>Native Guide Match</title><desc>Synthetic programme for SQLite verification.</desc></programme><programme channel="native-test" start="{stamp(now-7200)}" stop="{stamp(now-3600)}"><title>Archive Fixture</title><desc>A past synthetic broadcast.</desc></programme></tv>'.encode()
@@ -183,8 +211,10 @@ def main():
    if 'get_series_info' in self.path:value={'episodes':{'2':[{'id':1002,'title':'Final Episode','episode_num':1}],'1':[{'id':905,'title':'Episode Two','episode_num':2},{'id':401,'title':'Episode One','episode_num':1}]}}
    elif 'get_series_categories' in self.path:value=[{'category_id':'1','category_name':'Example series'}]
    elif 'get_series' in self.path:value=[{'series_id':77,'name':'Sample Series','category_id':'1'}]
-   elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]+[{'category_id':str(i+2),'category_name':f'Remote News {i+1}'} for i in range(300 if suite=='stability' else 8)]
-   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test','tv_archive':1,'tv_archive_duration':2}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%(300 if suite=='stability' else 8))} for i in range(3000 if suite=='stability' else 30)]
+   elif 'get_live_categories' in self.path:value=[{'category_id':'1','category_name':'Smoke test'}]+[{'category_id':str(i+2),'category_name':f'Remote News {i+1}'} for i in range(300 if suite in ['stability','library'] else 8)]
+   elif 'get_live_streams' in self.path:value=[{'stream_id':1,'name':'Example Live Test','category_id':'1','epg_channel_id':'native-test','tv_archive':1,'tv_archive_duration':2,'stream_icon':'http://10.0.2.2:9090/logo/1.png'}]+[{'stream_id':i+20,'name':f'Remote Channel {i+1:02d}','category_id':str(2+i%(300 if suite in ['stability','library'] else 8)),'stream_icon':f'http://10.0.2.2:9090/logo/{i+20}.png'} for i in range(3000 if suite in ['stability','library'] else 30)]
+   elif 'get_vod_categories' in self.path:value=[{'category_id':'1','category_name':'Cinema'}]
+   elif 'get_vod_streams' in self.path:value=[{'stream_id':21,'name':'Film 2','category_id':'1','container_extension':'mp4'},{'stream_id':22,'name':'Film 10','category_id':'1','container_extension':'mp4'}]
    elif 'action=' in self.path:value=[]
    else:value={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
    body=json.dumps(value).encode();self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
@@ -197,6 +227,9 @@ def main():
   text('Password','example')
   click('Connect playlist',True)
   time.sleep(4);click('Live TV')
+  if REMOTE and suite=='library':
+   audit_library(remote,counts)
+   return
   if REMOTE and suite=='input':
    click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN');find('Find category to protect',timeout=90)
    OUT.joinpath('emulator-tv-input-result.json').write_text(json.dumps({'passed':['Numeric PIN and confirmation fields remain in the form after keyboard Done','Family PIN saved successfully'],'api':adb('shell','getprop','ro.build.version.sdk')},indent=2)+'\n')

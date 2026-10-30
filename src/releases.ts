@@ -7,6 +7,9 @@ export const releases = [
     'Mobile movies and live TV share onscreen controls in portrait and landscape, without switching to a separate native fullscreen player.',
     'TV wake-up consumes the first navigation key, while dedicated media keys still control playback directly.',
     'Mobile movies retain touch timeline seeking and accessible time adjustment. Next-episode handoffs preserve the current orientation.',
+    'TV: channels default to a compact text list with optional grid and logos; movie and series artwork stays unchanged.',
+    'TV: Library organization separates preferences, categories and favorites, preserves the selected media type, and restores cached categories after restarting.',
+    'TV: unopened media libraries are not preloaded; favorite updates avoid rebuilding the channel search index, and numeric sorting reuses a collator.',
   ]},
   {version:'0.6.6',date:'October 30, 2026',title:'TV playback and remote stability.',changes:[
     'TV playback options open beside a stable video surface, preserving the live session when returning from settings.',

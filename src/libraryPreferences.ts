@@ -1,6 +1,6 @@
 import type { Media, Section } from './provider.ts';
 export type SortOrder = 'provider' | 'az' | 'za';
-export type LibraryPreferences = { sort?: Partial<Record<Section, SortOrder>>; refreshMinutes?: 30 | 60 | 360 | 1440 };
+export type LibraryPreferences = { tvSearchScope?: Partial<Record<Section, 'category' | 'section' | 'all'>>; tvLiveLayout?: 'list' | 'grid'; tvChannelLogos?: boolean; sort?: Partial<Record<Section, SortOrder>>; refreshMinutes?: 30 | 60 | 360 | 1440 };
 export function sortMedia(items: Media[], order: SortOrder = 'provider'): Media[] {
   if (order === 'provider') return items;
   const direction = order === 'az' ? 1 : -1;

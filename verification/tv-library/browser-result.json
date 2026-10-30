@@ -1,0 +1,22 @@
+{
+  "passed": [
+    "3000-channel default text list, bounded mounted rows, no channel image requests",
+    "Live TV does not preload Movies/Series; preferences do not fetch catalogues",
+    "List/Grid toggle and list search skip image downloads",
+    "Hidden selected category returns to All; category visibility persists in session",
+    "Favorites reorder reaches displayed order without losing IDs",
+    "Media-specific sort/search settings preserve Live TV and Movies independently",
+    "Movie categories load lazily and are reused when opening Movies",
+    "No browser runtime errors"
+  ],
+  "mountedPlayRows": 11,
+  "searchToVisibleMs": 81.16,
+  "providerCalls": {
+    "": 1,
+    "get_live_categories": 1,
+    "get_live_streams": 1,
+    "get_vod_categories": 1,
+    "get_vod_streams": 1
+  },
+  "scope": "Chromium shared TV interface with synthetic provider. Native remote performance and durable restart checks are separate."
+}

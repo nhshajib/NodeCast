@@ -17,3 +17,5 @@ import './roadmap.test.mjs';
 import "./backup.test.mjs";
 
 import "./catchup.test.mjs";
+
+import './tv-library.test.mjs';

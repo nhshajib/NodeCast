@@ -92,4 +92,11 @@ jobs:
           if ! gh release view "$TAG" >/dev/null 2>&1; then
             gh release create "$TAG" --target "$GITHUB_SHA" --draft --prerelease --title "NodeCast ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
           fi
-          gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 --clobber
+          for FILE in apks/*/*.apk apks/*/*.sha256; do
+            UPLOADED=0
+            for ATTEMPT in 1 2 3 4; do
+              if gh release upload "$TAG" "$FILE" --clobber; then UPLOADED=1; break; fi
+              sleep "$((ATTEMPT * 5))"
+            done
+            test "$UPLOADED" = 1
+          done
