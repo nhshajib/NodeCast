@@ -90,6 +90,8 @@ def stability(remote,counts):
    remote.activate('Live format: MPEG-TS');remote.activate('Save playback options')
   elif entry.startswith('Display'):
    remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
+  if entry=='Playback information':
+   focused=remote.focused(remote.tree());assert focused is not None and remote.name(focused)=='Back to video','New player panel did not acquire initial focus'
   OUT.joinpath('emulator-tv-panel-'+entry.split()[0]+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   remote.activate('Back to video');find('Pause live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
  time.sleep(2);assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
