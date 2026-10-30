@@ -2,11 +2,25 @@ import { useEffect, useRef, useState } from 'react';
 import { isTVBuild } from './FocusPressable';
 import { Platform } from 'react-native';
 import * as Orientation from 'expo-screen-orientation';
+// A new video can mount before the previous video's asynchronous cleanup finishes.
+let orientationOwner: symbol | null = null;
 export function usePlayerOrientation(onFullscreen: (value: boolean) => void) {
   const alive = useRef(true);
   const [notice, setNotice] = useState('');
   const changes = useRef(Promise.resolve());
-  useEffect(() => { alive.current = true; return () => { alive.current = false; void changes.current.finally(() => Orientation.lockAsync((isTVBuild ? Orientation.OrientationLock.LANDSCAPE : Orientation.OrientationLock.PORTRAIT_UP)).catch(() => {})); }; }, []);
+  useEffect(() => {
+    alive.current = true;
+    const owner = Symbol('player-orientation'); orientationOwner = owner;
+    return () => {
+      alive.current = false;
+      void changes.current.finally(async () => {
+        // Next episode / engine handoff keeps the new player's current orientation.
+        if (orientationOwner !== owner) return;
+        orientationOwner = null;
+        await Orientation.lockAsync(isTVBuild ? Orientation.OrientationLock.LANDSCAPE : Orientation.OrientationLock.PORTRAIT_UP).catch(() => {});
+      });
+    };
+  }, []);
   function orient(landscape: boolean) {
     changes.current = changes.current.then(async () => {
       if (!alive.current) return;
