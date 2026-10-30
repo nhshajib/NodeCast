@@ -49,8 +49,8 @@ class TVRemoteController(private val activity: Activity) {
     // Fabric can mount/reparent native views without an Android global-layout pass.
     // Repair invalid/hidden focus before drawing; reuse the bounded candidate cache.
     root.viewTreeObserver.addOnPreDrawListener {
-      if(root.hasWindowFocus()&&!imeVisible()){
-        val current=activity.currentFocus
+      val current=activity.currentFocus
+      if(root.hasWindowFocus()&&(current !is EditText||!imeVisible())){
         if(current==null||!actionable(current)){
           dirty=true;ensureFocus()
         }else if(android.os.SystemClock.uptimeMillis()-collectedAt>=250){
@@ -121,7 +121,9 @@ class TVRemoteController(private val activity: Activity) {
     view.requestFocus()
   }
   private fun imeVisible(): Boolean {
-    if (android.os.Build.VERSION.SDK_INT >= 30 && root.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == true) return true
+    if (android.os.Build.VERSION.SDK_INT >= 30) {
+      root.rootWindowInsets?.let { return it.isVisible(android.view.WindowInsets.Type.ime()) }
+    }
     val frame = Rect(); root.getWindowVisibleDisplayFrame(frame)
     return root.height - frame.bottom > root.height / 4
   }
