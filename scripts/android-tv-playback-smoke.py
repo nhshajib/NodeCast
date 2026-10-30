@@ -110,7 +110,7 @@ def stability(remote,counts):
  assert counts['ts']==before,'Player menus restarted the live subscription'
  remote.activate('Audio and subtitles');remote.activate('Off');remote.key(4);find('Pause live TV');video_pixels('emulator-tv-return-tracks');remote.activate('Audio and subtitles');remote.activate('Close audio and subtitles');find('Pause live TV')
  remote.key(85);find('Play live TV');remote.key(85);find('Pause live TV')
- remote.key(4);remote.focus('Play Remote Channel 01');adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','reset')
+ remote.activate('Back to library');remote.focus('Play Remote Channel 01');adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','reset')
  adb('logcat','-c')
  for _ in range(20):remote.key(22);remote.key(21)
  log=adb('logcat','-d','-s','NodeCastTVRemote:D','*:S');samples=list(map(int,re.findall(r'key_us=(\d+)',log)));sizes=list(map(int,re.findall(r'candidates=(\d+)',log)))
@@ -217,7 +217,7 @@ def main():
   before=counts['ts'];click('Player options');click('Watch while browsing');find('Return to video')
   OUT.joinpath('emulator-tv-mini-player.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Return to video');find('Pause live TV');assert counts['ts']==before,'Minimizing opened another live stream'
-  adb('shell','input','keyevent','4');find('Play Example Live Test')
+  click('Back to library');find('Play Example Live Test')
   click('Series');click('Open Sample Series');click('Episode One')
   video_ready()
   box=find('Next episode: Season 1 · Episode Two')
@@ -227,7 +227,7 @@ def main():
   remote_next('Next episode: Season 2 · Final Episode');find('Final Episode');video_ready()
   assert not any('Next episode:' in (n.get('content-desc') or '') for n in dump().iter('node'))
   OUT.joinpath('emulator-tv-last-episode.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  adb('shell','input','keyevent','4');find('Play Final Episode')
+  click('Back to library');find('Play Final Episode')
   mark='Mark unwatched' if any('Mark unwatched' in (n.get('content-desc') or n.get('text') or '') for n in dump().iter('node')) else 'Mark watched'
   click(mark);find('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');click('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');find(mark)
   adb('shell','input','keyevent','4');find('Open Sample Series')

@@ -1,0 +1,12 @@
+{
+  "passed": [
+    "Native-engine web interface: portrait and landscape glass menus",
+    "Video time advances behind settings, same HTML video and no loadstart during menu interactions",
+    "Fit/Fill, sleep timer on/off, audio/subtitle close",
+    "Controls hide after four idle seconds; wake tap does not pause",
+    "Settings hide after eight idle seconds",
+    "Paused settings remain available",
+    "No browser runtime errors"
+  ],
+  "scope": "Chromium using shared React player UI and local H.264 fixture; not a physical iPhone/Android decoder test."
+}
