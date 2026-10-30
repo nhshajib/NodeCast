@@ -10,6 +10,11 @@ on:
       build_run:
         description: Successful Android APK workflow run ID
         required: true
+      tv_suite:
+        description: TV remote checks (use core and settings on the same APK for split verification)
+        type: choice
+        default: full
+        options: [full, core, settings]
 permissions:
   contents: read
   actions: read
@@ -35,6 +40,8 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
       - name: Launch offline and exercise remote keys
+        env:
+          NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'full' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
