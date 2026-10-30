@@ -61,6 +61,7 @@ jobs:
           target: google_apis
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           disable-animations: true
+          emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim
           script: bash scripts/android-smoke.sh ${{ matrix.target }}
       - uses: actions/upload-artifact@v4
         if: always()
