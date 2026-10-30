@@ -34,6 +34,7 @@ def focus(label,timeout=100):
  end=time.monotonic()+timeout;seen=collections.Counter();scan=20
  while time.monotonic()<end:
   root=tree();nodes=actions(root);current=focused(root)
+  if label!='Show player controls' and any(name(n)=='Show player controls' for n in nodes):key(20);continue
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
   if current is not None and goals:
    goal=nodes[goals[0]]

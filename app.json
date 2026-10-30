@@ -2,12 +2,12 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.6.6",
+    "version": "0.6.7",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "buildNumber": "604",
+      "buildNumber": "607",
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
@@ -30,7 +30,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "versionCode": 606
+      "versionCode": 607
     },
     "web": {
       "favicon": "./assets/favicon.png"

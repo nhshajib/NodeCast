@@ -1,5 +1,12 @@
-export const appVersion = '0.6.6';
+export const appVersion = '0.6.7';
 export const releases = [
+  {version:'0.6.7',date:'October 30, 2026',title:'Keep watching while you adjust.',changes:[
+    'Playback settings open in a compact translucent overlay on iPhone, Android mobile and TV, with video visible behind it.',
+    'Controls fade out after four seconds of playback inactivity. Tap the video or press a remote navigation key to bring them back.',
+    'Settings close after eight idle seconds. Active touches, unsaved channel changes, saving, paused playback and screen readers keep controls available.',
+    'Mobile movies and live TV share onscreen controls in portrait and landscape, without switching to a separate native fullscreen player.',
+    'TV wake-up consumes the first navigation key, while dedicated media keys still control playback directly.',
+  ]},
   {version:'0.6.6',date:'October 30, 2026',title:'TV playback and remote stability.',changes:[
     'TV playback options open beside a stable video surface, preserving the live session when returning from settings.',
     'Connection details use the TV navigation window so IP refresh, reference settings and Back work with the remote.',

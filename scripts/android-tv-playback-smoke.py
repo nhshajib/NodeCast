@@ -18,6 +18,8 @@ def find(label, timeout=15, scroll=False):
  end=time.monotonic()+timeout
  while time.monotonic()<end:
   root=dump()
+  if label!='Show player controls' and REMOTE and any(n.get('content-desc')=='Show player controls' for n in root.iter('node')):
+   remote.key(20);continue
   nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))
@@ -84,10 +86,20 @@ def video_pixels(name):
 
 def stability(remote,counts):
  before=counts['ts'];first=video_pixels('emulator-tv-live-before-menu')
+ time.sleep(5)
+ assert any(n.get('content-desc')=='Show player controls' for n in dump().iter('node')),'Playback controls did not hide after idle'
+ remote.key(23)
+ find('Pause live TV')
+ assert counts['ts']==before,'Waking controls reopened the live stream'
+ remote.activate('Player options');time.sleep(9)
+ root=dump();assert not any(n.get('content-desc')=='Back to video' for n in root.iter('node')),'Idle settings did not dismiss'
+ assert any(n.get('content-desc')=='Show player controls' for n in root.iter('node')),'Idle settings left controls visible'
+ remote.key(4);find('Pause live TV')
+ video_pixels('emulator-tv-overlay-idle-wake')
  for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
   remote.activate('Player options');remote.activate(entry)
   if entry.startswith('Playback options'):
-   remote.activate('Live format: MPEG-TS');remote.activate('Save playback options')
+   remote.activate('Live format: MPEG-TS');time.sleep(9);find('Save playback options',scroll=True);remote.activate('Save playback options')
   elif entry.startswith('Display'):
    remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
   if entry=='Playback information':
@@ -107,7 +119,7 @@ def stability(remote,counts):
  assert p95<32,'Native D-pad dispatch exceeds 32 ms at p95'
  assert max(sizes)<200,'Focus graph unexpectedly includes the full provider catalogue'
  frames=adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','framestats');OUT.joinpath('emulator-tv-focus-frames.txt').write_text(frames)
- OUT.joinpath('emulator-tv-stability-result.json').write_text(json.dumps({'passed':['Live frame pixels survive player menu, channel options, display/sleep tools, report and track panels','Frames advance after returning from menus','One live HTTP session across player settings','Media Play/Pause remote keys','3000 channels and 300 categories with bounded native focus graph'], 'nativeKeyP95Ms':p95,'keySamples':len(samples),'maxFocusCandidates':max(sizes),'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator timing; physical Fire TV performance requires confirmation.'},indent=2)+'\n')
+ OUT.joinpath('emulator-tv-stability-result.json').write_text(json.dumps({'passed':['Live frame pixels survive player menu, channel options, display/sleep tools, report and track panels','Frames advance after returning from menus','One live HTTP session across player settings','Four-second idle controls, eight-second idle settings and D-pad/OK/Back wake without unintended action','Unsaved channel options remain visible past idle timeout','Media Play/Pause remote keys','3000 channels and 300 categories with bounded native focus graph'], 'nativeKeyP95Ms':p95,'keySamples':len(samples),'maxFocusCandidates':max(sizes),'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator timing; physical Fire TV performance requires confirmation.'},indent=2)+'\n')
  print('TV stability and native focus profile passed: p95 '+str(p95)+' ms',flush=True)
 
 def audit_settings(remote,out,fresh=False):

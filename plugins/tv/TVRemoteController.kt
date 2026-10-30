@@ -13,12 +13,16 @@ import android.widget.EditText
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import com.facebook.react.R
+import com.facebook.react.bridge.ReactContext
+import com.facebook.react.modules.core.DeviceEventManagerModule
+import android.content.ContextWrapper
 
 /** Android TV key navigation for the standard React Native renderer, with no touch synthesis. */
 class TVRemoteController(private val activity: Activity) {
   private val root get() = activity.window.decorView
   private val remembered = mutableMapOf<String, String>()
   private var pressed: View? = null
+  private var wakingKey: Int? = null
   private var scheduled = false
   private var dirty = true
   private var collectedAt=0L
@@ -31,7 +35,7 @@ class TVRemoteController(private val activity: Activity) {
   private fun highlight(next: View?) {
     highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout) }
     highlighted=null;indicator=null
-    if(next==null||!actionable(next))return
+    if(next==null||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
     val dp=next.resources.displayMetrics.density
     fun line(color:String,width:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=12*dp;setStroke((width*dp).toInt().coerceAtLeast(1),Color.parseColor(color)) }
     val ring=LayerDrawable(arrayOf(line("#FFFFFF",3f),line("#887BD8",2f)))
@@ -210,6 +214,18 @@ class TVRemoteController(private val activity: Activity) {
       ?:choices.firstOrNull { it.contentDescription?.toString()=="Library options" }
     target?.performClick()
   }
+  private fun emit(view: View, name: String, key: Int) {
+    var context = view.context
+    while (context !is ReactContext && context is ContextWrapper) context = context.baseContext
+    if (context is ReactContext && context.hasActiveReactInstance()) {
+      context.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java).emit(name, key)
+    }
+  }
+  private fun inPlayer(view: View): Boolean {
+    var node: View? = view
+    while (node != null) { if (nativeId(node)?.startsWith("tv-trap:player:")==true) return true; node=node.parent as? View }
+    return false
+  }
   fun dispatch(event: KeyEvent): Boolean {
     // Native IMEs and native dialogs retain their own key handling.
     if (activity.currentFocus is EditText && imeVisible()) return false
@@ -217,11 +233,23 @@ class TVRemoteController(private val activity: Activity) {
     val select = event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_SELECT)
     val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)
     val menuKey=event.keyCode==KeyEvent.KEYCODE_MENU
-    if (direction == null && !select && !media && !menuKey) return false
+    if (wakingKey == event.keyCode) { if(event.action==KeyEvent.ACTION_UP)wakingKey=null; return true }
+    val wakeKey = event.keyCode == KeyEvent.KEYCODE_BACK
+    if (direction == null && !select && !media && !menuKey && !wakeKey) return false
     val profiled=activity.intent.getBooleanExtra("nodecastTvProfile",false)
     val began=if(profiled)System.nanoTime()else 0L
     val choices = ensureFocus()
     if (choices.isEmpty()) return false
+    val owner = choices.firstOrNull { inPlayer(it) }
+    val wake = choices.firstOrNull { nativeId(it)=="tv-preferred:reveal-controls" }
+    if (owner != null) {
+      if (wake != null && !media && event.action==KeyEvent.ACTION_DOWN) {
+        wakingKey=event.keyCode; wake.performClick(); return true
+      }
+      if (event.action==KeyEvent.ACTION_DOWN) emit(owner,"NodeCastPlaybackActivity",event.keyCode)
+      if (media) { if(event.action==KeyEvent.ACTION_UP)emit(owner,"NodeCastPlaybackMedia",event.keyCode); return true }
+    }
+    if (wakeKey) return false
     if(menuKey){if(event.action==KeyEvent.ACTION_UP)menu(choices);return true;}
     if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) { move(direction, choices);if(profiled)android.util.Log.d("NodeCastTVRemote","key_us=${(System.nanoTime()-began)/1000} candidates=${choices.size}") }; return true }
     if (media) {

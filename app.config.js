@@ -8,7 +8,7 @@ module.exports = () => {
     android: {
       ...base.android,
       package: tv ? 'com.nhshajib.nodecast.tv' : 'com.nhshajib.nodecast',
-      versionCode: 605,
+      versionCode: base.android.versionCode,
       permissions: ['INTERNET', 'ACCESS_NETWORK_STATE'],
       blockedPermissions: ['android.permission.RECORD_AUDIO'],
       ...(tv ? { banner: './assets/tv-banner.png' } : {}),

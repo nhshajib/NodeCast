@@ -4,10 +4,10 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 /** Keep the native surface mounted outside scrolling content, including during rotation. */
 export default function LivePlayerLayout({ fullscreen, video, overlay, children }: {
-  fullscreen: boolean; video: React.ReactNode; overlay?: React.ReactNode; children: React.ReactNode;
+  fullscreen: boolean; video: React.ReactNode; overlay?: React.ReactNode; children?: React.ReactNode;
 }) {
-  return <View collapsable={!isTVBuild} style={styles.root}>
-    <View collapsable={!isTVBuild} key="video-stage" testID="live-video-stage" style={fullscreen ? styles.fullscreen : styles.inline}>{video}</View>
+  return <View collapsable={false} style={styles.root}>
+    <View collapsable={false} key="video-stage" testID="live-video-stage" style={fullscreen ? styles.fullscreen : styles.inline}>{video}</View>
     <ScrollView style={[styles.details, fullscreen && styles.hidden]} contentContainerStyle={styles.content}
       automaticallyAdjustContentInsets={false} contentInsetAdjustmentBehavior="never" automaticallyAdjustsScrollIndicatorInsets={false}>
       {children}
