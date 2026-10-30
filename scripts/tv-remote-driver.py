@@ -66,3 +66,9 @@ def reveal(label,timeout=30):
   if state==last:direction=19 if direction==20 else 20
   last=state;key(direction)
  raise RuntimeError('Remote cannot reveal: '+label)
+def horizontal(label,direction,max_steps=30):
+ for _ in range(max_steps):
+  r=tree();n=focused(r)
+  if n is not None and match(n,label):key(23);visited.append(label);return
+  key(direction)
+ raise RuntimeError('Remote horizontal row cannot reach: '+label)
