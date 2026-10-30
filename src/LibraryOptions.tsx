@@ -1,8 +1,9 @@
+import Switch from './RemoteSwitch';
 import Pressable from './FocusPressable';
 import type { Section } from './provider';
 import type { SortOrder } from './libraryPreferences';
 import React, { useState } from 'react';
-import { ScrollView, Switch, Text, View } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import type { Media } from './provider';
 import { Icon, IconButton, Notice, colors, u } from './ui';
 export default function LibraryOptions({ scope, onScope, groups, hidden, onToggle, favorites, onMove, sort = 'provider', onSort, section, refreshMinutes = 30, onRefreshMinutes }: {

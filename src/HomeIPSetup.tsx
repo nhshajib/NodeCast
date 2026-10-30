@@ -1,5 +1,6 @@
+import Switch from './RemoteSwitch';
 import React, { useEffect, useRef, useState } from 'react';
-import { AppState, ScrollView, Switch, Text, View } from 'react-native';
+import { AppState, ScrollView, Text, View } from 'react-native';
 import { lookupExitIP } from './network';
 import type { ExitIP } from './network';
 import type { Preferences } from './storage';

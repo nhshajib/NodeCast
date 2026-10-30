@@ -1,4 +1,4 @@
-import Pressable from './FocusPressable';
+import Pressable, {isTVBuild} from './FocusPressable';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextInput, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,10 +7,10 @@ import { colors, themedStyles, isDarkTheme } from './theme';
 
 export type IconName = keyof typeof Ionicons.glyphMap;
 export function Icon({ name, size = 22, color = colors.text }: { name: IconName; size?: number; color?: string }) { return <Ionicons accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" name={name} size={size} color={color} />; }
-export function Button({ title, onPress, variant = 'primary', busy = false, disabled = false, icon }: {
-  title: string; onPress: () => void; variant?: 'primary' | 'secondary' | 'danger' | 'mint' | 'ink'; busy?: boolean; disabled?: boolean; icon?: IconName;
+export function Button({ title, onPress, variant = 'primary', busy = false, disabled = false, icon, accessibilityLabel }: {
+  title: string; onPress: () => void; variant?: 'primary' | 'secondary' | 'danger' | 'mint' | 'ink'; busy?: boolean; disabled?: boolean; icon?: IconName; accessibilityLabel?:string;
 }) {
-  return <Pressable accessibilityRole="button" accessibilityLabel={title} accessibilityState={{ disabled: disabled || busy, busy }} disabled={disabled || busy} onPress={onPress} style={({ pressed }) => [u.button, variant === 'secondary' && u.secondaryButton, variant === 'mint' && { backgroundColor: colors.mint }, variant === 'ink' && { backgroundColor: colors.ink }, variant === 'danger' && { backgroundColor: isDarkTheme() ? '#482431' : '#fff0f0' }, (pressed || disabled || busy) && { opacity: .6 }]}>
+  return <Pressable accessibilityRole="button" accessibilityLabel={accessibilityLabel||title} accessibilityState={{ disabled: disabled || busy, busy }} disabled={disabled || busy} onPress={onPress} style={({ pressed }) => [u.button, variant === 'secondary' && u.secondaryButton, variant === 'mint' && { backgroundColor: colors.mint }, variant === 'ink' && { backgroundColor: colors.ink }, variant === 'danger' && { backgroundColor: isDarkTheme() ? '#482431' : '#fff0f0' }, (pressed || disabled || busy) && { opacity: .6 }]}>
     {busy ? <ActivityIndicator color={variant === 'ink' ? '#fff' : variant === 'primary' ? colors.primaryText : variant === 'mint' ? colors.onAccent : colors.text} /> : icon && <Icon name={icon} size={19} color={variant === 'danger' ? colors.danger : variant === 'ink' ? '#fff' : variant === 'primary' ? colors.primaryText : variant === 'mint' ? colors.onAccent : colors.text} />}
     <Text style={[u.buttonText, variant !== 'primary' && { color: variant === 'ink' ? '#fff' : variant === 'mint' ? colors.onAccent : colors.text }, variant === 'danger' && { color: colors.danger }]}>{title}</Text>
   </Pressable>;
@@ -18,9 +18,9 @@ export function Button({ title, onPress, variant = 'primary', busy = false, disa
 export function IconButton({ name, label, onPress, disabled, dark = false }: { name: IconName; label: string; onPress: () => void; disabled?: boolean; dark?: boolean }) {
   return <Pressable accessibilityRole="button" accessibilityLabel={label} disabled={disabled} onPress={onPress} style={({ pressed }) => [u.iconButton, dark && { backgroundColor: '#241D39' }, pressed && { opacity: .6 }]}><Icon name={name} color={dark ? '#fff' : colors.text} /></Pressable>;
 }
-export function Field({ label, style, onFocus, onBlur, ...props }: React.ComponentProps<typeof TextInput> & { label: string }) {
+export function Field({ label, hideLabel=false, style, onFocus, onBlur, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean }) {
   const [focused, setFocused] = useState(false);
-  return <View style={{ gap: 8 }}><Text style={u.fieldLabel}>{label}</Text><TextInput {...props} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} autoCapitalize="none" autoCorrect={false} placeholderTextColor="#827A90" style={[u.input, focused && { borderColor: colors.accent, backgroundColor: colors.panel }, props.editable === false && { opacity: .65 }, style]} /></View>;
+  return <View style={{ gap: hideLabel?0:8 }}>{!hideLabel&&<Text style={u.fieldLabel}>{label}</Text>}<TextInput {...props} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} autoCapitalize="none" autoCorrect={false} placeholderTextColor="#827A90" style={[u.input, focused && { borderColor: colors.accent, borderWidth:isTVBuild?3:1, backgroundColor: colors.panel }, props.editable === false && { opacity: .65 }, style]} /></View>;
 }
 export function Empty({ icon, title, message, children }: { icon: IconName; title: string; message: string; children?: React.ReactNode }) {
   return <View style={u.empty}><View style={u.emptyIcon}><Icon name={icon} size={30} color={colors.accent} /></View><Text style={[u.h2, { textAlign: 'center' }]}>{title}</Text><Text style={[u.body, { textAlign: 'center', maxWidth: 330 }]}>{message}</Text>{children}</View>;

@@ -32,7 +32,7 @@ if [ "$TARGET" = tv ]; then
   adb exec-out screencap -p > "verification/android/emulator-$TARGET-remote.png"
 fi
 if [ "$TARGET" = tv ]; then
-  python3 scripts/android-tv-playback-smoke.py
+  NODECAST_REMOTE_ONLY=1 python3 scripts/android-tv-playback-smoke.py
 else
   python3 scripts/android-mobile-features-smoke.py
 fi

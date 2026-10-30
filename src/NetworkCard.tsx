@@ -1,5 +1,6 @@
+import Pressable from './FocusPressable';
 import React, { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, AppState, Modal, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useScreenFocus } from './NavigationMotion';
 import { compareIP, lookupExitIP } from './network';

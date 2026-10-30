@@ -1,9 +1,14 @@
 """Exercise TV import + native VLC with a locally generated, credential-free test stream."""
-import http.server, json, re, subprocess, threading, time
+import http.server, json, re, subprocess, threading, time, os, importlib.util
 from pathlib import Path
 import xml.etree.ElementTree as ET
 OUT=Path('verification/android')
-def adb(*args): return subprocess.check_output(['adb', *args], text=True).strip()
+REMOTE=os.environ.get('NODECAST_REMOTE_ONLY')=='1'
+if REMOTE:
+ spec=importlib.util.spec_from_file_location('remote_driver',Path(__file__).with_name('tv-remote-driver.py'));remote=importlib.util.module_from_spec(spec);spec.loader.exec_module(remote)
+def adb(*args):
+ if REMOTE and args[:2]==('shell','input') and len(args)>2 and args[2] in ['tap','swipe']:raise RuntimeError('Touch input is forbidden in the TV remote audit')
+ return subprocess.check_output(['adb', *args], text=True).strip()
 def dump():
  adb('shell','uiautomator','dump','/sdcard/nodecast-check.xml')
  return ET.fromstring(adb('shell','cat','/sdcard/nodecast-check.xml'))
@@ -24,7 +29,9 @@ def find(label, timeout=15, scroll=False):
   for n in nodes:
    b=list(map(int,re.findall(r'\d+',n.get('bounds',''))))
    if len(b)==4 and b[2]>b[0] and b[3]>b[1] and b[3]<=height and b[1]>=0 and (b[1]+b[3])/2<nav_top:return b
-  if scroll: adb('shell','input','swipe',str(width//2),str(int(height*.75)),str(width//2),str(int(height*.3)),'350')
+  if scroll:
+   if REMOTE:remote.reveal(label,timeout=max(3,end-time.monotonic()))
+   else:adb('shell','input','swipe',str(width//2),str(int(height*.75)),str(width//2),str(int(height*.3)),'350')
   time.sleep(.5)
  raise RuntimeError(f'UI not found: {label}')
 def video_ready(timeout=45):
@@ -44,12 +51,15 @@ def video_ready(timeout=45):
  raise RuntimeError('Episode neither played nor reached a decoded non-zero duration')
 
 def click(label,scroll=False):
+ if REMOTE:remote.activate(label);return
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
 def text(label,value):
+ if REMOTE:remote.fill(label,value);return
  if label=='Find category to protect':
   for _ in range(3):adb('shell','input','swipe',str(width//2),str(int(height*.3)),str(width//2),str(int(height*.8)),'350')
  click(label,True);adb('shell','input','text',value);adb('shell','input','keyevent','66');time.sleep(.3)
 def remote_next(label):
+ if REMOTE:remote.activate(label);return
  target=find(label)
  for _ in range(12):
   root=dump(); focused=next((n for n in root.iter('node') if n.get('focused')=='true'),None)
@@ -63,6 +73,21 @@ def remote_next(label):
   adb('shell','input','keyevent',key);time.sleep(.2)
  raise RuntimeError('Next episode is not reachable with the remote')
 
+
+def audit_settings(remote,out):
+ # Every activation below must acquire native focus and use D-pad Select.
+ def checked(label,value=True):
+  node=remote.focus(label);assert node.get('checked')==str(value).lower(),label+' did not update'
+ remote.activate('Back');remote.activate('Live TV');remote.activate('All titles');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
+ remote.activate('Appearance');remote.activate('light appearance');checked('light appearance');remote.activate('dark appearance');checked('dark appearance');remote.activate('Back')
+ remote.activate('Playback');remote.activate('Ask each time');checked('Ask each time');remote.activate('NodeCast player');checked('NodeCast player');remote.activate('Live TV options');remote.activate('Engine: Built-in VLC');checked('Engine: Built-in VLC');remote.activate('Engine: Automatic');checked('Engine: Automatic');remote.activate('Back')
+ remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Show Smoke');checked('Show Smoke',False);remote.activate('Show Smoke');checked('Show Smoke');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')
+ remote.activate('Backup & transfer');remote.activate('Include viewing history and progress');checked('Include viewing history and progress',False);remote.activate('Include viewing history and progress');checked('Include viewing history and progress');remote.activate('Import backup');find('Choose backup file');remote.activate('Export backup');remote.activate('Back')
+ remote.activate('Version history');remote.activate('Version 0.6.5');remote.activate('Version 0.6.5');remote.activate('Version 0.6.4');remote.activate('Back');remote.activate('Library & storage');find('Clear recents');remote.activate('Back')
+ remote.activate('Set home IP reference');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected');remote.activate('Home Wi-Fi and VPN disconnected');checked('Home Wi-Fi and VPN disconnected',False);remote.activate('Not now')
+ remote.activate('Live TV');remote.fill('Search channels and titles','Example');find('Play Example Live Test');remote.fill('Search channels and titles','');remote.activate('Playback options for Example Live Test');remote.activate('Live format: MPEG-TS');remote.activate('Save playback options');find('Saved. Applies next time you open this channel.',timeout=30,scroll=True);remote.activate('Reset to default');remote.activate('Back')
+ out.joinpath('emulator-tv-remote-audit.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+ out.joinpath('emulator-tv-remote-audit-result.json').write_text(json.dumps({'passed':['D-pad-only profile connection and keyboard fields','Library, Favorites and Settings navigation','Live playback, player menu and Next episode','Appearance radio selection persists','Player and live engine selection','Sort, refresh, search scope and category switches','Backup switch and import/export modes','Version expansion and storage navigation','Home-IP confirmation and skip','Search editing and per-channel options','PIN challenge and protected-category filtering','Back and focus restoration'],'scope':'API 35 Android TV-profile emulator; all actions use D-pad/Select/Back. Keyboard text uses adb input text. No pointer taps or swipes.'},indent=2)+'\n')
 
 def main():
  video=Path('tests/fixtures/android-live-test.mpegts')
@@ -147,6 +172,9 @@ def main():
   click('Clear recents');assert not any('Play Example Live Test' in (n.get('content-desc') or '') for n in dump().iter('node'))
   click('Settings');click('Backup & transfer',True);find('Take your setup with you.')
   OUT.joinpath('emulator-tv-transfer-settings.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  if REMOTE:
+   audit_settings(remote,OUT)
+   OUT.joinpath('emulator-tv-remote-actions.json').write_text(json.dumps({'input':'D-pad directions, Select, Back and keyboard text; no tap/swipe','activated':remote.visited},indent=2)+'\n')
   OUT.joinpath('emulator-tv-playback-result.json').write_text(json.dumps({'passed':['Local synthetic Xtream connection','Native VLC reports playing H.264 MPEG-TS','Remote Back returns to library','Fullscreen native episode playback','Next follows episode IDs 401 → 905 → 1002','Next button is bottom-right and activated with D-pad/Select','Cross-season next episode','Last episode has no Next button','Mini-player retains the live HTTP session','Native XMLTV import and SQLite search','Family PIN protects a category','Profile, PIN and SQLite guide survive process restart','Clear recents hides watched channels','Backup and transfer settings are available'],'scope':'Android x86-64 emulator with generated test-pattern video; physical devices and real-provider streams remain unverified.'},indent=2)+'\n')
   print('Native TV import, VLC test stream and remote Back passed.')
  except Exception:

@@ -1,0 +1,167 @@
+package __PACKAGE__
+
+import android.app.Activity
+import android.graphics.Rect
+import android.view.KeyEvent
+import android.view.View
+import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.HorizontalScrollView
+import android.widget.ScrollView
+import com.facebook.react.R
+
+/** Android TV key navigation for the standard React Native renderer, with no touch synthesis. */
+class TVRemoteController(private val activity: Activity) {
+  private val root get() = activity.window.decorView
+  private val remembered = mutableMapOf<String, String>()
+  private var pressed: View? = null
+  private var scheduled = false
+  private val arrows = mapOf(KeyEvent.KEYCODE_DPAD_UP to View.FOCUS_UP, KeyEvent.KEYCODE_DPAD_DOWN to View.FOCUS_DOWN,
+    KeyEvent.KEYCODE_DPAD_LEFT to View.FOCUS_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT to View.FOCUS_RIGHT)
+  init {
+    root.viewTreeObserver.addOnGlobalFocusChangeListener { _, next ->
+      if (next != null && allowed(next)) nativeId(next)?.let { remembered[scope(next)] = it; if(remembered.size>300)remembered.remove(remembered.keys.first()) }
+    }
+    root.viewTreeObserver.addOnGlobalLayoutListener {
+      if (!scheduled) {
+        scheduled = true
+        root.post { scheduled = false; ensureFocus() }
+      }
+    }
+  }
+  private fun nativeId(view: View) = view.getTag(R.id.view_tag_native_id) as? String
+  private fun scope(view: View): String {
+    var node: View? = view
+    while (node != null) {
+      val id = nativeId(node)
+      if (id?.startsWith("tv-scope:") == true || id?.startsWith("tv-trap:") == true) return id
+      node = node.parent as? View
+    }
+    return "root"
+  }
+  private fun allowed(view: View): Boolean {
+    if (!view.isAttachedToWindow || !view.isShown || view.width <= 0 || view.height <= 0) return false
+    var node: View? = view
+    while (node != null) {
+      if (node.alpha <= .01f || node.importantForAccessibility == View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) return false
+      node = node.parent as? View
+    }
+    return true
+  }
+  private fun actionable(view: View) = allowed(view) && view.isEnabled && view.isFocusable &&
+    (view is com.facebook.react.views.view.ReactViewGroup && view.isClickable || view is EditText && view.keyListener != null)
+  private fun inside(view: View, parent: View): Boolean {
+    var node: View? = view
+    while (node != null) { if (node === parent) return true; node = node.parent as? View }
+    return false
+  }
+  private fun candidates(): List<View> {
+    val views = mutableListOf<View>(); var trap: View? = null
+    fun visit(view: View) {
+      if (!allowed(view)) return
+      if (nativeId(view)?.startsWith("tv-trap:") == true) trap = view
+      if (actionable(view)) views.add(view)
+      if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
+    }
+    visit(root)
+    val active = trap
+    return if (active == null) views else views.filter { inside(it, active) }
+  }
+  private fun rect(view: View): Rect {
+    val position = IntArray(2); view.getLocationOnScreen(position)
+    return Rect(position[0], position[1], position[0] + view.width, position[1] + view.height)
+  }
+  private fun visible(view: View): Boolean { val r = Rect(); return view.getGlobalVisibleRect(r) && r.width() > 8 && r.height() > 8 }
+  private fun focus(view: View) {
+    view.isFocusableInTouchMode = true
+    view.requestRectangleOnScreen(Rect(0, 0, view.width, view.height), true)
+    view.requestFocus()
+  }
+  private fun imeVisible(): Boolean {
+    if (android.os.Build.VERSION.SDK_INT >= 30 && root.rootWindowInsets?.isVisible(android.view.WindowInsets.Type.ime()) == true) return true
+    val frame = Rect(); root.getWindowVisibleDisplayFrame(frame)
+    return root.height - frame.bottom > root.height / 4
+  }
+  fun onWindowFocus() { root.post { ensureFocus() } }
+  private fun ensureFocus(): List<View> {
+    val choices = candidates()
+    if (!root.hasWindowFocus()) return choices
+    if (choices.any { it === activity.currentFocus }) return choices
+    val shown = choices.filter { visible(it) }
+    val restored = choices.firstOrNull { nativeId(it) == remembered[scope(it)] }
+    val preferred = shown.firstOrNull { nativeId(it)?.startsWith("tv-preferred:") == true }
+    (restored ?: preferred ?: shown.firstOrNull())?.let { focus(it) }
+    return choices
+  }
+  private fun scroller(view: View, horizontal: Boolean): View? {
+    var parent = view.parent as? View
+    while (parent != null) {
+      if (horizontal && parent is HorizontalScrollView || !horizontal && parent is ScrollView) return parent
+      parent = parent.parent as? View
+    }
+    return null
+  }
+  private fun move(direction: Int, choices: List<View>): Boolean {
+    val from = activity.currentFocus ?: return true
+    val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
+    val positive = direction == View.FOCUS_RIGHT || direction == View.FOCUS_DOWN
+    val a = rect(from); val scroll = scroller(from, horizontal)
+    val options = choices.filter { target ->
+      target !== from && (visible(target) || scroll != null && scroller(target, horizontal) === scroll)
+    }.mapNotNull { target ->
+      val b = rect(target)
+      val primary = if (horizontal) b.centerX() - a.centerX() else b.centerY() - a.centerY()
+      if (if (positive) primary <= 2 else primary >= -2) return@mapNotNull null
+      val cross = if (horizontal) b.centerY() - a.centerY() else b.centerX() - a.centerX()
+      val beam = if (horizontal) b.bottom > a.top && b.top < a.bottom else b.right > a.left && b.left < a.right
+      val score = primary.toDouble() * primary + 4.0 * cross * cross + if (beam) 0.0 else 100000.0
+      Triple(target, score, beam)
+    }
+    val best = options.minByOrNull { it.second }
+    val sign = if (positive) 1 else -1
+    val canScroll = scroll != null && if (horizontal) scroll.canScrollHorizontally(sign) else scroll.canScrollVertically(sign)
+    if (canScroll && (best == null || !best.third)) {
+      if (scroll is HorizontalScrollView) scroll.smoothScrollBy(sign * scroll.width / 2, 0)
+      if (scroll is ScrollView) scroll.smoothScrollBy(0, sign * scroll.height / 2)
+      return true
+    }
+    best?.let { focus(it.first) }
+    return true
+  }
+  fun dispatch(event: KeyEvent): Boolean {
+    // Native IMEs and native dialogs retain their own key handling.
+    if (activity.currentFocus is EditText && imeVisible()) return false
+    val direction = arrows[event.keyCode]
+    val select = event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_SELECT)
+    val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)
+    if (direction == null && !select && !media) return false
+    val choices = ensureFocus()
+    if (choices.isEmpty()) return false
+    if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) move(direction, choices); return true }
+    if (media) {
+      if (event.action == KeyEvent.ACTION_UP) {
+        val labels = when(event.keyCode) {
+          KeyEvent.KEYCODE_MEDIA_PLAY -> listOf("Play live TV", "Play video")
+          KeyEvent.KEYCODE_MEDIA_PAUSE -> listOf("Pause live TV", "Pause video")
+          KeyEvent.KEYCODE_MEDIA_FAST_FORWARD -> listOf("Forward 30 seconds")
+          KeyEvent.KEYCODE_MEDIA_REWIND -> listOf("Rewind 10 seconds")
+          KeyEvent.KEYCODE_MEDIA_STOP -> listOf("Back to library")
+          else -> listOf("Pause live TV", "Play live TV", "Pause video", "Play video")
+        }
+        choices.firstOrNull { it.contentDescription?.toString() in labels }?.performClick()
+      }
+      return true
+    }
+    if (event.action == KeyEvent.ACTION_DOWN) { if (event.repeatCount == 0) pressed = activity.currentFocus; return true }
+    if (event.action == KeyEvent.ACTION_UP) {
+      val target = pressed; pressed = null
+      if (target != null && choices.any { it === target }) {
+        target.performClick()
+        if (target is EditText) (activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(target, InputMethodManager.SHOW_IMPLICIT)
+      }
+      return true
+    }
+    return false
+  }
+}

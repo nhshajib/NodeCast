@@ -1,5 +1,12 @@
-export const appVersion = '0.6.4';
+export const appVersion = '0.6.5';
 export const releases = [
+  {version:'0.6.5',date:'October 29, 2026',title:'Made for your remote.',changes:[
+    'Android TV uses D-pad directions and Select throughout the library, settings, guide, profiles and player.',
+    'Clear focus highlights, disabled-control skipping, automatic scrolling and focus restoration after Back.',
+    'Player menus, audio/subtitles and PIN prompts keep focus inside the active panel instead of behind the video.',
+    'TV switches toggle with Select; search and connection fields open the keyboard when selected. TV no longer shows a phone-rotation control.',
+    'The iPhone and Android phone downloads remain version 0.6.4.',
+  ]},
   { version: '0.6.4', date: 'October 29, 2026', title: 'Your setup goes with you.', changes: [
     'Includes the iPhone scene-delegate, file-system linking and playback crash fixes, with a Release simulator launch check before packaging.',
     'Clear recents from Home, TV recent lists or Library & storage without losing resume positions or watched marks.',
