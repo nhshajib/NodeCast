@@ -1,5 +1,5 @@
 """Exercise TV import + native VLC with a locally generated, credential-free test stream."""
-import http.server, json, re, subprocess, threading, time, os, importlib.util, base64, contextlib
+import http.server, json, re, subprocess, threading, time, os, importlib.util, base64
 from pathlib import Path
 import xml.etree.ElementTree as ET
 OUT=Path('verification/android')
@@ -112,19 +112,6 @@ def video_pixels(name):
  assert len(colours)>12 and bright>.5,'Video texture is blank after '+name
  return frame
 
-@contextlib.contextmanager
-def active_live_navigation(remote):
- # A fresh UIAutomator snapshot can wait ten seconds for the live clock to idle,
- # longer than the intentional eight-second menu timeout. Keep real remote
- # activity flowing only while inspecting playing menus. PLAY is idempotent;
- # idle/wake and pause assertions remain outside this context.
- stop=threading.Event()
- def pulse():
-  while not stop.wait(2):remote.key(126)
- worker=threading.Thread(target=pulse,daemon=True);worker.start()
- try:yield
- finally:stop.set();worker.join(timeout=3)
-
 def stability(remote,counts):
  before=counts['ts'];first=video_pixels('emulator-tv-live-before-menu')
  time.sleep(5)
@@ -137,26 +124,27 @@ def stability(remote,counts):
  assert any(n.get('content-desc')=='Show player controls' for n in root.iter('node')),'Idle settings left controls visible'
  remote.key(4);find('Pause live TV')
  video_pixels('emulator-tv-overlay-idle-wake')
+ # Navigate static paused controls: Android's snapshot idle wait may exceed
+ # the intentional playing-menu timeout. Resume inside each open panel to
+ # verify actual moving video, then pause again before the next snapshot.
+ remote.key(127);find('Play live TV')
  for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
-  with active_live_navigation(remote):
-   remote.activate('Player options');remote.activate(entry)
-   if entry.startswith('Playback options'):remote.activate('Live format: MPEG-TS')
+  remote.activate('Player options');remote.activate(entry)
   if entry.startswith('Playback options'):
-   # No activity pulse: dirty edits must survive a real idle interval.
-   time.sleep(9);find('Save playback options',scroll=True)
-  with active_live_navigation(remote):
-   if entry.startswith('Playback options'):remote.activate('Save playback options')
-   elif entry.startswith('Display'):
-    remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
-   if entry=='Playback information':
-    focused=remote.focused(remote.tree());assert focused is not None and remote.name(focused)=='Back to video','New player panel did not acquire initial focus'
-   OUT.joinpath('emulator-tv-panel-'+entry.split()[0]+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-   remote.activate('Back to video');find('Pause live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
- with active_live_navigation(remote):
-  time.sleep(2);assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
-  assert counts['ts']==before,'Player menus restarted the live subscription'
-  remote.activate('Audio and subtitles');remote.activate('Off');remote.key(4);find('Pause live TV');video_pixels('emulator-tv-return-tracks');remote.activate('Audio and subtitles');remote.activate('Close audio and subtitles');find('Pause live TV')
- remote.key(85);find('Play live TV');remote.key(85);find('Pause live TV')
+   remote.activate('Live format: MPEG-TS');time.sleep(9);find('Save playback options',scroll=True);remote.activate('Save playback options')
+  elif entry.startswith('Display'):
+   remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
+  if entry=='Playback information':
+   focused=remote.focused(remote.tree());assert focused is not None and remote.name(focused)=='Back to video','New player panel did not acquire initial focus'
+  frame=video_pixels('emulator-tv-panel-'+entry.split()[0])
+  remote.key(126);time.sleep(2);remote.key(127)
+  assert video_pixels('emulator-tv-moving-panel-'+entry.split()[0])!=frame,'Video did not advance behind '+entry
+  remote.activate('Back to video');find('Play live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
+ remote.key(126);time.sleep(2);remote.key(127)
+ assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
+ assert counts['ts']==before,'Player menus restarted the live subscription'
+ remote.activate('Audio and subtitles');remote.activate('Off');remote.key(4);find('Play live TV');video_pixels('emulator-tv-return-tracks');remote.activate('Audio and subtitles');remote.activate('Close audio and subtitles');find('Play live TV')
+ remote.key(85);find('Pause live TV');remote.key(85);find('Play live TV')
  remote.activate('Back to library');remote.focus('Play Remote Channel 01');adb('shell','dumpsys','gfxinfo','com.nhshajib.nodecast.tv','reset')
  adb('logcat','-c')
  for _ in range(20):remote.key(22);remote.key(21)
