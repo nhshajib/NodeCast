@@ -131,7 +131,7 @@ def stability(remote,counts):
  for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
   remote.activate('Player options');remote.activate(entry)
   if entry.startswith('Playback options'):
-   remote.activate('Live format: MPEG-TS');time.sleep(9);find('Save playback options',scroll=True);remote.activate('Save playback options')
+   remote.activate('Live format: MPEG-TS');remote.key(126);time.sleep(9);remote.key(127);find('Save playback options',scroll=True);remote.activate('Save playback options')
   elif entry.startswith('Display'):
    remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
   if entry=='Playback information':
