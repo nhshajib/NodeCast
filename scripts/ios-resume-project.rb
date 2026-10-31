@@ -8,13 +8,16 @@ raise 'NodeCast app target missing' unless app
 # The simulator needs an application identifier to access SecureStore/Keychain.
 # These settings apply only to simulator SDKs; device builds remain unsigned.
 require 'fileutils'
-require 'plist'
 FileUtils.mkdir_p('build')
-File.write('build/simulator-keychain.entitlements', {
-  'application-identifier' => 'NODECASTQA1.com.nhshajib.nodecast',
-  'keychain-access-groups' => ['NODECASTQA1.com.nhshajib.nodecast'],
-  'com.apple.developer.team-identifier' => 'NODECASTQA1'
-}.to_plist)
+File.write('build/simulator-keychain.entitlements', <<~PLIST)
+  <?xml version="1.0" encoding="UTF-8"?>
+  <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+  <plist version="1.0"><dict>
+    <key>application-identifier</key><string>NODECASTQA1.com.nhshajib.nodecast</string>
+    <key>keychain-access-groups</key><array><string>NODECASTQA1.com.nhshajib.nodecast</string></array>
+    <key>com.apple.developer.team-identifier</key><string>NODECASTQA1</string>
+  </dict></plist>
+PLIST
 app.build_configurations.each do |configuration|
   configuration.build_settings['CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]'] = '$(SRCROOT)/../build/simulator-keychain.entitlements'
   configuration.build_settings['CODE_SIGN_IDENTITY[sdk=iphonesimulator*]'] = '-'
