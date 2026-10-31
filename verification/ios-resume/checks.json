@@ -9,6 +9,7 @@
     "No empty sampled transition frame",
     "Moving indicator aligns with selected tab",
     "Reduce Motion has no navigation displacement",
+    "Accessibility preference handoff cannot hide the current Home screen",
     "Active Home remains opaque with animation frames stalled",
     "Background/foreground settles interrupted motion without remounting or resetting scroll",
     "Completion watchdog settles a stalled settings transition without an app-state event"

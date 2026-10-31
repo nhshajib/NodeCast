@@ -65,6 +65,16 @@ with sync_playwright() as p:
     page.get_by_role('dialog').get_by_role('button',name='Go back',exact=True).click();page.wait_for_timeout(450);tab('Home');clip_end=time.monotonic()-started
     page.screenshot(path=str(out/'02-home.png'))
     long_tasks=page.evaluate('window.navLongTasks')
+    # Accessibility preference resolution used to replay the active Home fade.
+    # With no previous tab beneath it, interrupting that replay produces the
+    # same empty content area with a surviving header and tab bar.
+    page.emulate_media(reduced_motion='reduce');page.wait_for_timeout(40)
+    page.evaluate('() => {window.resumeRAF=window.requestAnimationFrame;window.requestAnimationFrame=()=>0;}')
+    page.emulate_media(reduced_motion='no-preference');page.wait_for_timeout(40)
+    scene=page.get_by_test_id('tab-scene-home')
+    page.screenshot(path=str(out/'06-preference-handoff-visible.png'))
+    assert float(scene.evaluate('(e)=>getComputedStyle(e).opacity'))==1,'Accessibility preference resolution hid active Home'
+    page.evaluate('() => {window.requestAnimationFrame=window.resumeRAF;}');page.wait_for_timeout(400)
     # Stall the animation frame source before entering Home. This models an
     # interrupted native animation/completion; content must already be opaque.
     tab('Settings')
@@ -98,6 +108,6 @@ with sync_playwright() as p:
     assert scene.evaluate('(e)=>getComputedStyle(e).transform') in ['none','matrix(1, 0, 0, 1, 0, 0)']
     page.screenshot(path=str(out/'03-reduced-motion.png'))
     assert not errors,errors
-    (out/'checks.json').write_text(json.dumps({'checks':['Synthetic 30,000-channel provider','Separate Library/Favorites queries','Home and Settings scroll and native subtree retention','Playback Back returns to the same Settings position','Closing content remains during dismissal','24 rapid tab changes settle correctly','No empty sampled transition frame','Moving indicator aligns with selected tab','Reduce Motion has no navigation displacement','Active Home remains opaque with animation frames stalled','Background/foreground settles interrupted motion without remounting or resetting scroll','Completion watchdog settles a stalled settings transition without an app-state event'],'homeScroll':home_offset,'settingsScroll':settings_offset,'maxObservedLongTaskMs':max(long_tasks,default=0),'minimumSampledOpacitySum':min(samples),'errors':errors,'scope':'Chromium UI/layout verification. This does not measure physical iPhone frame rate or UIKit dismissal.'},indent=2)+'\n')
+    (out/'checks.json').write_text(json.dumps({'checks':['Synthetic 30,000-channel provider','Separate Library/Favorites queries','Home and Settings scroll and native subtree retention','Playback Back returns to the same Settings position','Closing content remains during dismissal','24 rapid tab changes settle correctly','No empty sampled transition frame','Moving indicator aligns with selected tab','Reduce Motion has no navigation displacement','Accessibility preference handoff cannot hide the current Home screen','Active Home remains opaque with animation frames stalled','Background/foreground settles interrupted motion without remounting or resetting scroll','Completion watchdog settles a stalled settings transition without an app-state event'],'homeScroll':home_offset,'settingsScroll':settings_offset,'maxObservedLongTaskMs':max(long_tasks,default=0),'minimumSampledOpacitySum':min(samples),'errors':errors,'scope':'Chromium UI/layout verification. This does not measure physical iPhone frame rate or UIKit dismissal.'},indent=2)+'\n')
     browser.close();server.shutdown()
     print('Resume regression and retained-navigation checks passed.')

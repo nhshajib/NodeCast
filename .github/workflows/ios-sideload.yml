@@ -56,6 +56,21 @@ jobs:
       - name: Install native dependencies including VLC
         working-directory: ios
         run: pod install --repo-update
+      - name: Prepare and validate the native resume test target
+        run: |
+          mkdir -p build
+          ruby scripts/ios-resume-project.rb
+          xcodebuild -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -sdk iphonesimulator -showBuildSettings -json CODE_SIGNING_ALLOWED=NO > build/resume-build-settings.json
+          python3 - <<'PYSETTINGS'
+          import json
+          targets = json.load(open('build/resume-build-settings.json'))
+          settings = next(row['buildSettings'] for row in targets if row['target'] == 'NodeCastResumeUITests')
+          assert settings['PRODUCT_NAME'] == 'NodeCastResumeUITests'
+          assert settings['EXECUTABLE_NAME'] == 'NodeCastResumeUITests'
+          assert settings['WRAPPER_NAME'] == 'NodeCastResumeUITests.xctest'
+          assert settings['TEST_TARGET_NAME'] == 'NodeCast'
+          print('UI-test product, executable and app target names match')
+          PYSETTINGS
       - name: Compile Release app for the iPhone simulator
         shell: bash
         run: |

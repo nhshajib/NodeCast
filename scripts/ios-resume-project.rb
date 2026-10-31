@@ -13,6 +13,10 @@ ui.add_dependency(app)
 ui.build_configurations.each do |configuration|
   configuration.build_settings.merge!({
     'PRODUCT_BUNDLE_IDENTIFIER' => 'com.nhshajib.nodecast.resumetests',
+    'PRODUCT_NAME' => 'NodeCastResumeUITests',
+    'PRODUCT_MODULE_NAME' => 'NodeCastResumeUITests',
+    'EXECUTABLE_NAME' => 'NodeCastResumeUITests',
+    'ONLY_ACTIVE_ARCH' => 'YES',
     'GENERATE_INFOPLIST_FILE' => 'YES',
     'SWIFT_VERSION' => '5.0',
     'TEST_TARGET_NAME' => 'NodeCast',

@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
-ruby scripts/ios-resume-project.rb
+if [[ ! -f ios/NodeCast.xcodeproj/xcshareddata/xcschemes/NodeCastResume.xcscheme ]]; then ruby scripts/ios-resume-project.rb; fi
 SIMULATOR_ID="$(python3 - <<'PY'
 import json, subprocess
 raw=json.loads(subprocess.check_output(['xcrun','simctl','list','devices','booted','-j']))

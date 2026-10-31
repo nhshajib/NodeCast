@@ -1,0 +1,8 @@
+{
+  "baselineNavigationSource": "c719b57",
+  "fixedNavigationSource": "dd8c726b6ea7147cfb67322d8a348b10a8134b1f",
+  "scenario": "Resolve the motion accessibility preference while already on Home with animation callbacks withheld; also enter Home with frames withheld.",
+  "baseline": "Failed: Accessibility preference resolution hid active Home",
+  "fixed": "Passed: active Home remains opaque during preference handoff and stalled entrance, recovers on foreground, retains scroll and settles via completion fallback",
+  "scope": "Deterministic Chromium failure injection; not a reproduction of several hours of iOS suspension."
+}
