@@ -1,5 +1,11 @@
-export const appVersion = '0.6.7';
+export const appVersion = '0.6.8';
 export const releases = [
+  {version:'0.6.8',date:'October 31, 2026',title:'Home is ready when you return.',changes:[
+    'iPhone: active screens remain visible even when a navigation animation is interrupted during launch or backgrounding.',
+    'Navigation and settings transitions settle when the app changes state, preserving mounted screens and scroll positions.',
+    'A completion fallback prevents tab transitions from depending only on a native animation callback.',
+    'Android mobile and TV downloads remain version 0.6.7.',
+  ]},
   {version:'0.6.7',date:'October 30, 2026',title:'Keep watching while you adjust.',changes:[
     'Playback settings open in a compact translucent overlay on iPhone, Android mobile and TV, with video visible behind it.',
     'Controls fade out after four seconds of playback inactivity. Tap the video or press a remote navigation key to bring them back.',

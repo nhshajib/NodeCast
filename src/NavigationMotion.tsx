@@ -1,6 +1,6 @@
 import { themedStyles, useThemeChoice, isDarkTheme } from './theme';
 import React, { createContext, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, AppState, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, Icon } from './ui';
 import type { IconName } from './ui';
 const ReducedMotion = createContext(true);
@@ -22,18 +22,35 @@ const FrozenContent = memo(function FrozenContent({ children }: { children: Reac
 export function TabScene({ name, active, previous = false, onSettled, children }: { name: string; active: boolean; previous?: boolean; onSettled?: (name: string) => void; children: React.ReactNode }) {
   const reduced = useReducedMotion();
   const [visited, setVisited] = useState(active);
-  const progress = useRef(new Animated.Value(0)).current;
+  const progress = useRef(new Animated.Value(active ? 1 : 0)).current;
+  const wasActive = useRef(active);
   useLayoutEffect(() => { if (active) setVisited(true); }, [active]);
   useLayoutEffect(() => {
+    const entering = active && !wasActive.current; wasActive.current = active;
+    let animation: Animated.CompositeAnimation | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let live = true;
+    const settle = () => {
+      if (!live) return;
+      if (timer) clearTimeout(timer);
+      animation?.stop(); progress.setValue(active ? 1 : 0);
+      if (active) onSettled?.(name);
+    };
+    const lifecycle = AppState.addEventListener('change', settle);
     progress.stopAnimation();
-    if (reduced || !active) { progress.setValue(active ? 1 : 0); if (active) onSettled?.(name); return; }
-    progress.setValue(0);
-    const animation = Animated.timing(progress, { toValue: 1, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
-    animation.start(({ finished }) => { if (finished) onSettled?.(name); }); return () => animation.stop();
+    // Initial mount/accessibility changes must not hide an already visible tab.
+    if (reduced || !entering || AppState.currentState !== 'active') settle();
+    else {
+      progress.setValue(0);
+      animation = Animated.timing(progress, { toValue: 1, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
+      timer = setTimeout(settle, 380);
+      animation.start(({ finished }) => { if (finished && live) { if (timer) clearTimeout(timer); onSettled?.(name); } });
+    }
+    return () => { live = false; if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
   }, [active, reduced, progress, name, onSettled]);
   const translateY = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [6, 0] }), [progress]);
   if (!visited && !active) return null;
-  return <ScreenFocus.Provider value={active}><Animated.View testID={`tab-scene-${name}`} pointerEvents={active ? 'auto' : 'none'} aria-hidden={!active} accessibilityElementsHidden={!active} importantForAccessibility={active ? 'auto' : 'no-hide-descendants'} style={[n.scene, { zIndex: active ? 2 : previous ? 1 : 0, opacity: active ? progress : previous ? 1 : 0, transform: [{ translateY: reduced || !active ? 0 : translateY }] }]}><FrozenContent active={active}>{children}</FrozenContent></Animated.View></ScreenFocus.Provider>;
+  return <ScreenFocus.Provider value={active}><Animated.View collapsable={false} testID={`tab-scene-${name}`} pointerEvents={active ? 'auto' : 'none'} aria-hidden={!active} accessibilityElementsHidden={!active} importantForAccessibility={active ? 'auto' : 'no-hide-descendants'} style={[n.scene, { zIndex: active ? 2 : previous ? 1 : 0, opacity: active || previous ? 1 : 0, transform: [{ translateY: reduced || !active ? 0 : translateY }] }]}><FrozenContent active={active}>{children}</FrozenContent></Animated.View></ScreenFocus.Provider>;
 }
 export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange }: {
   tabs: { id: T; title: string; icon: IconName; selected: IconName }[]; active: T; bottom: number; onChange: (tab: T) => void;
@@ -43,16 +60,23 @@ export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange 
   const selected = Math.max(0, tabs.findIndex(tab => tab.id === active));
   const position = useRef(new Animated.Value(selected)).current;
   useEffect(() => {
+    let animation: Animated.CompositeAnimation | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const settle = () => { if (timer) clearTimeout(timer); animation?.stop(); position.setValue(selected); };
+    const lifecycle = AppState.addEventListener('change', settle);
     position.stopAnimation();
-    if (reduced) { position.setValue(selected); return; }
-    const animation = Animated.timing(position, { toValue: selected, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
-    animation.start(); return () => animation.stop();
+    if (reduced || AppState.currentState !== 'active') settle();
+    else {
+      animation = Animated.timing(position, { toValue: selected, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
+      timer = setTimeout(settle, 380); animation.start(({ finished }) => { if (finished && timer) clearTimeout(timer); });
+    }
+    return () => { if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
   }, [selected, reduced, position]);
   const itemWidth = Math.max(0, width - 14) / tabs.length;
   const translateX = useMemo(() => Animated.multiply(position, itemWidth), [position, itemWidth]);
   return <View onLayout={event => setWidth(event.nativeEvent.layout.width)} style={[n.bar, { bottom }]}>
     {!!width && <Animated.View pointerEvents="none" testID="tab-indicator" style={[n.indicator, { left: 7 + itemWidth / 2 - 23, transform: [{ translateX: translateX }] }]} />}
-    {tabs.map(tab => <Pressable key={tab.id} accessibilityRole="tab" accessibilityLabel={tab.title} aria-selected={active === tab.id} accessibilityState={{ selected: active === tab.id }} onPress={() => onChange(tab.id)} style={({ pressed }) => [n.tab, pressed && { opacity: .65 }]}><View style={n.icon}><Icon name={active === tab.id ? tab.selected : tab.icon} size={21} color={active === tab.id ? '#090124' : '#C7C3D0'} /></View><Text style={{ color: active === tab.id ? '#fff' : '#C7C3D0', fontSize: 11, fontWeight: active === tab.id ? '700' : '500' }}>{tab.title}</Text></Pressable>)}
+    {tabs.map(tab => <Pressable key={tab.id} testID={`navigation-tab-${tab.id}`} accessibilityRole="tab" accessibilityLabel={tab.title} aria-selected={active === tab.id} accessibilityState={{ selected: active === tab.id }} onPress={() => onChange(tab.id)} style={({ pressed }) => [n.tab, pressed && { opacity: .65 }]}><View style={n.icon}><Icon name={active === tab.id ? tab.selected : tab.icon} size={21} color={active === tab.id ? '#090124' : '#C7C3D0'} /></View><Text style={{ color: active === tab.id ? '#fff' : '#C7C3D0', fontSize: 11, fontWeight: active === tab.id ? '700' : '500' }}>{tab.title}</Text></Pressable>)}
   </View>;
 }
 /** Internal page changes animate once; presenting/dismissing the modal is left to UIKit. */
@@ -62,14 +86,21 @@ export function PageTransition({ pageKey, disabled = false, children }: { pageKe
   const progress = useRef(new Animated.Value(1)).current;
   useLayoutEffect(() => {
     const changed = previous.current !== pageKey; previous.current = pageKey;
+    let animation: Animated.CompositeAnimation | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const settle = () => { if (timer) clearTimeout(timer); animation?.stop(); progress.setValue(1); };
+    const lifecycle = AppState.addEventListener('change', settle);
     progress.stopAnimation();
-    if (!changed || reduced || disabled) { progress.setValue(1); return; }
-    progress.setValue(0);
-    const animation = Animated.timing(progress, { toValue: 1, duration: 190, easing: Easing.out(Easing.cubic), useNativeDriver: true });
-    animation.start(); return () => animation.stop();
+    if (!changed || reduced || disabled || AppState.currentState !== 'active') settle();
+    else {
+      progress.setValue(0);
+      animation = Animated.timing(progress, { toValue: 1, duration: 190, easing: Easing.out(Easing.cubic), useNativeDriver: true });
+      timer = setTimeout(settle, 350); animation.start(({ finished }) => { if (finished && timer) clearTimeout(timer); });
+    }
+    return () => { if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
   }, [pageKey, reduced, disabled, progress]);
   const translateX = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }), [progress]);
-  return <Animated.View style={{ flex: 1, opacity: progress, transform: [{ translateX: disabled || reduced ? 0 : translateX }] }}>{children}</Animated.View>;
+  return <Animated.View style={{ flex: 1, transform: [{ translateX: disabled || reduced ? 0 : translateX }] }}>{children}</Animated.View>;
 }
 export function useRetainedModal<T>(route: T | null) {
   const [retained, setRetained] = useState<T | null>(route);

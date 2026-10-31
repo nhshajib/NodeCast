@@ -72,6 +72,19 @@ jobs:
             build 2>&1 | tee build/xcodebuild-simulator.log
       - name: Launch the simulator app and require it to stay open
         run: bash scripts/ios-simulator-launch.sh
+      - name: Verify Home after tab navigation, suspension and cold relaunch
+        run: bash scripts/ios-resume-check.sh
+      - name: Upload native resume verification
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: NodeCast-iPhone-resume-check
+          path: |
+            build/resume-captures
+            build/resume-summary.json
+            build/resume-ui.log
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Upload simulator console when launch fails
         if: failure()
         uses: actions/upload-artifact@v4

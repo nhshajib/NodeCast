@@ -2,6 +2,13 @@
 
 [← Choose your edition](README.md)
 
+## 0.6.8 · October 31, 2026 · iPhone
+
+- Active tab content no longer depends on a fade animation finishing, preventing an interrupted transition from leaving Home invisible.
+- Navigation settles when the app backgrounds or returns, without remounting screens or resetting scroll positions.
+- A completion fallback settles interrupted tab, indicator and settings-page motion.
+- Android mobile and TV downloads remain 0.6.7.
+
 ## 0.6.7 · October 30, 2026 · All editions
 
 - TV channels now default to a compact text list with Grid view and optional logos. Logos are off in the list to avoid artwork requests; movies and series retain their layout.
