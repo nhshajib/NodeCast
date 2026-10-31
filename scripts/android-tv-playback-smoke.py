@@ -137,17 +137,22 @@ def stability(remote,counts):
  assert any(n.get('content-desc')=='Show player controls' for n in root.iter('node')),'Idle settings left controls visible'
  remote.key(4);find('Pause live TV')
  video_pixels('emulator-tv-overlay-idle-wake')
- with active_live_navigation(remote):
-  for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
+ for entry in ['Playback options for this channel','Display, speed & sleep timer','Playback information']:
+  with active_live_navigation(remote):
    remote.activate('Player options');remote.activate(entry)
-   if entry.startswith('Playback options'):
-    remote.activate('Live format: MPEG-TS');time.sleep(9);find('Save playback options',scroll=True);remote.activate('Save playback options')
+   if entry.startswith('Playback options'):remote.activate('Live format: MPEG-TS')
+  if entry.startswith('Playback options'):
+   # No activity pulse: dirty edits must survive a real idle interval.
+   time.sleep(9);find('Save playback options',scroll=True)
+  with active_live_navigation(remote):
+   if entry.startswith('Playback options'):remote.activate('Save playback options')
    elif entry.startswith('Display'):
     remote.activate('Fill · crop the edges');remote.activate('Fit · show the whole picture');remote.activate('Stop after 15 minutes');remote.activate('Turn sleep timer off')
    if entry=='Playback information':
     focused=remote.focused(remote.tree());assert focused is not None and remote.name(focused)=='Back to video','New player panel did not acquire initial focus'
    OUT.joinpath('emulator-tv-panel-'+entry.split()[0]+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
    remote.activate('Back to video');find('Pause live TV');video_pixels('emulator-tv-return-'+entry.split()[0])
+ with active_live_navigation(remote):
   time.sleep(2);assert video_pixels('emulator-tv-live-after-menus')!=first,'Live frames stopped advancing'
   assert counts['ts']==before,'Player menus restarted the live subscription'
   remote.activate('Audio and subtitles');remote.activate('Off');remote.key(4);find('Pause live TV');video_pixels('emulator-tv-return-tracks');remote.activate('Audio and subtitles');remote.activate('Close audio and subtitles');find('Pause live TV')
