@@ -228,7 +228,7 @@ def main():
    action=re.search(r'[?&]action=([^&]+)',self.path)
    if action:counts['api'][action[1]]=counts['api'].get(action[1],0)+1
    if self.path.startswith('/logo/'):
-    counts['logos']+=1;body=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aBT0AAAAASUVORK5CYII=');self.send_response(200);self.send_header('Content-Type','image/png');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body);return
+    counts['logos']+=1;body=base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAFklEQVR4nGPYueUTSYhhVMOohuGrAQB4f18fS/MuoQAAAABJRU5ErkJggg==');self.send_response(200);self.send_header('Content-Type','image/png');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body);return
    if self.path.split('?')[0].endswith('/guide.xml'):
     counts['guide']+=1;now=time.time()
     body=f'<tv><channel id="native-test"><display-name>Native guide channel</display-name></channel><programme channel="native-test" start="{stamp(now-120)}" stop="{stamp(now+3600)}"><title>Native Guide Match</title><desc>Synthetic programme for SQLite verification.</desc></programme><programme channel="native-test" start="{stamp(now-7200)}" stop="{stamp(now-3600)}"><title>Archive Fixture</title><desc>A past synthetic broadcast.</desc></programme></tv>'.encode()
