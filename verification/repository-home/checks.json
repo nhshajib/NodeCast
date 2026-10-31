@@ -1,0 +1,122 @@
+{
+  "renderer": "GitHub Markdown API output, Chromium and github-markdown-css 5.8.1",
+  "readmeSha256": "81ad1a1b6c272bb58fdc1cf58e8eaba4f8eead1398fcc2a0b42c2148d941bab9",
+  "viewports": [
+    {
+      "preview": "desktop",
+      "width": 1280,
+      "documentWidth": 1280,
+      "missingImages": [],
+      "tables": [
+        {
+          "width": 948,
+          "scroll": 948,
+          "client": 948
+        },
+        {
+          "width": 948,
+          "scroll": 948,
+          "client": 948
+        }
+      ],
+      "hero": "http://127.0.0.1:8764/assets/readme/hero.svg",
+      "downloadButtonHeights": [
+        58.65625,
+        58.65625,
+        58.65625
+      ],
+      "downloads": [
+        "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk"
+      ]
+    },
+    {
+      "preview": "phone",
+      "width": 390,
+      "documentWidth": 390,
+      "missingImages": [],
+      "tables": [
+        {
+          "width": 358,
+          "scroll": 358,
+          "client": 358
+        },
+        {
+          "width": 358,
+          "scroll": 358,
+          "client": 358
+        }
+      ],
+      "hero": "http://127.0.0.1:8764/assets/readme/hero-mobile.svg",
+      "downloadButtonHeights": [
+        58.65625,
+        58.65625,
+        58.65625
+      ],
+      "downloads": [
+        "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk"
+      ]
+    },
+    {
+      "preview": "phone-small",
+      "width": 320,
+      "documentWidth": 320,
+      "missingImages": [],
+      "tables": [
+        {
+          "width": 288,
+          "scroll": 288,
+          "client": 288
+        },
+        {
+          "width": 288,
+          "scroll": 288,
+          "client": 288
+        }
+      ],
+      "hero": "http://127.0.0.1:8764/assets/readme/hero-mobile.svg",
+      "downloadButtonHeights": [
+        46.375,
+        46.375,
+        46.375
+      ],
+      "downloads": [
+        "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk"
+      ]
+    },
+    {
+      "preview": "desktop-dark",
+      "width": 1280,
+      "documentWidth": 1280,
+      "missingImages": [],
+      "tables": [
+        {
+          "width": 948,
+          "scroll": 948,
+          "client": 948
+        },
+        {
+          "width": 948,
+          "scroll": 948,
+          "client": 948
+        }
+      ],
+      "hero": "http://127.0.0.1:8764/assets/readme/hero.svg",
+      "downloadButtonHeights": [
+        58.65625,
+        58.65625,
+        58.65625
+      ],
+      "downloads": [
+        "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+        "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk"
+      ]
+    }
+  ]
+}
