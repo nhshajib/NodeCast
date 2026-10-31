@@ -17,4 +17,4 @@ collect_results() {
 }
 trap collect_results EXIT
 set -o pipefail
-xcodebuild test -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/resume.xcresult CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/resume-ui.log
+xcodebuild test -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/resume.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/resume-ui.log

@@ -60,7 +60,7 @@ jobs:
         run: |
           mkdir -p build
           ruby scripts/ios-resume-project.rb
-          xcodebuild -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -sdk iphonesimulator -showBuildSettings -json CODE_SIGNING_ALLOWED=NO > build/resume-build-settings.json
+          xcodebuild -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -sdk iphonesimulator -showBuildSettings -json CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- > build/resume-build-settings.json
           python3 - <<'PYSETTINGS'
           import json
           targets = json.load(open('build/resume-build-settings.json'))
@@ -83,7 +83,7 @@ jobs:
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath build/DerivedDataSim \
-            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- \
             build 2>&1 | tee build/xcodebuild-simulator.log
       - name: Launch the simulator app and require it to stay open
         run: bash scripts/ios-simulator-launch.sh

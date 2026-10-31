@@ -12,24 +12,32 @@ final class NodeCastResumeUITests: XCTestCase {
     attachment.lifetime = .keepAlways
     add(attachment)
   }
+  private func homeContent() -> XCUIElement {
+    app.staticTexts.matching(NSPredicate(format: "label == %@ OR label == %@", "Your TV, beautifully simple.", "Your TV, together.")).firstMatch
+  }
   private func settleHome() {
+    let home = element("navigation-tab-home")
     let start = app.buttons["Get started"]
-    if start.waitForExistence(timeout: 3) {
+    let storageError = app.staticTexts["Could not read family protection."]
+    let arrived = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+      home.exists || start.exists || storageError.exists
+    }, object: nil)
+    XCTAssertEqual(XCTWaiter.wait(for: [arrived], timeout: 30), .completed, app.debugDescription)
+    XCTAssertFalse(storageError.exists, "Simulator Keychain access failed before Home")
+    if start.exists {
       start.tap()
       let skip = app.buttons["Not now"]
       XCTAssertTrue(skip.waitForExistence(timeout: 20))
       skip.tap()
-      let back = app.buttons["Go back"]
-      if back.waitForExistence(timeout: 5) { back.tap() }
+      XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
+      app.buttons["Go back"].tap()
     }
     let skip = app.buttons["Not now"]
-    if skip.waitForExistence(timeout: 2) { skip.tap() }
-    let home = element("navigation-tab-home")
+    if skip.exists { skip.tap() }
     XCTAssertTrue(home.waitForExistence(timeout: 20), app.debugDescription)
     home.tap()
-    // The header alone is insufficient: the original failure retained it and
-    // the tab bar while the complete content surface stayed transparent.
-    let content = app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@", "Open library", "Add your first playlist")).firstMatch
+    // Inspect content near the top, so small iPhones need no scroll to pass.
+    let content = homeContent()
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
     XCTAssertTrue(content.isHittable, "Home content is present but invisible after returning")
   }
@@ -48,7 +56,7 @@ final class NodeCastResumeUITests: XCTestCase {
       Thread.sleep(forTimeInterval: delay)
       app.activate()
       // Check before touching navigation: recovery must work without a tap.
-      let content = app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@", "Open library", "Add your first playlist")).firstMatch
+      let content = homeContent()
       XCTAssertTrue(content.waitForExistence(timeout: 15))
       XCTAssertTrue(content.isHittable, "Blank Home after background interval \(delay)s")
       capture("home-after-background-\(Int(delay))s")

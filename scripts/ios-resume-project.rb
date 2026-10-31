@@ -5,6 +5,22 @@ project_path = 'ios/NodeCast.xcodeproj'
 project = Xcodeproj::Project.open(project_path)
 app = project.targets.find { |target| target.name == 'NodeCast' }
 raise 'NodeCast app target missing' unless app
+# The simulator needs an application identifier to access SecureStore/Keychain.
+# These settings apply only to simulator SDKs; device builds remain unsigned.
+require 'fileutils'
+require 'plist'
+FileUtils.mkdir_p('build')
+File.write('build/simulator-keychain.entitlements', {
+  'application-identifier' => 'NODECASTQA1.com.nhshajib.nodecast',
+  'keychain-access-groups' => ['NODECASTQA1.com.nhshajib.nodecast'],
+  'com.apple.developer.team-identifier' => 'NODECASTQA1'
+}.to_plist)
+app.build_configurations.each do |configuration|
+  configuration.build_settings['CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]'] = '$(SRCROOT)/../build/simulator-keychain.entitlements'
+  configuration.build_settings['CODE_SIGN_IDENTITY[sdk=iphonesimulator*]'] = '-'
+  configuration.build_settings['CODE_SIGNING_ALLOWED[sdk=iphonesimulator*]'] = 'YES'
+end
+
 ui = project.new_target(:ui_test_bundle, 'NodeCastResumeUITests', :ios, '17.0')
 group = project.main_group.new_group('NodeCastResumeUITests', '../scripts')
 file = group.new_file('NodeCastResumeUITests.swift')
