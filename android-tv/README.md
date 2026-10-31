@@ -6,7 +6,7 @@
 
 A landscape library, visible remote focus and fullscreen episodes with a bottom-right Next episode button.
 
-**[Download TV APK · 0.6.6](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.6/NodeCast-tv-0.6.6.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.6) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download TV APK · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,21 +14,25 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current download |
 | --- | --- |
-| Version | **0.6.6** · October 30, 2026 |
-| File | `NodeCast-tv-0.6.6.apk` · 223.7 MB |
+| Version | **0.6.7** · October 30, 2026 |
+| File | `NodeCast-tv-0.6.7.apk` · 223.8 MB |
 | Compatibility | Android 7+ · ARM32, ARM64 and x86-64 |
 | App ID | `com.nhshajib.nodecast.tv` |
 | Signing | Signed personal-testing APK · standard Android test key |
 | Watching | No Expo Go, running PC or weekly signing renewal |
 | Profiles | Local storage; no account or cloud sync |
 
-## New in 0.6.6
+## New in 0.6.7
 
-TV player options open beside a persistent video surface. Returning from channel settings, display/sleep tools, playback information or track selection keeps the live session. Back closes the live track panel before leaving playback.
+Channels open in a compact **List view**, with Play, channel options and Favorites on each row. Use **Grid view** in the toolbar if you prefer artwork; channel logos are off by default in the list. Movies and series keep their existing artwork layout.
 
-Connection/IP details now use the normal TV navigation window, with a compact two-column layout and direct sidebar access. Native focus highlighting avoids React state updates on each move. New panels repair focus before the next remote input; large category, media, guide and episode lists use bounded rendering. Large organization lists offer search and pages.
+**Library organization** now has separate Library preferences, Categories and Favorites order panels. Choose Live TV, Movies or Series to edit the right settings. Cached categories and favorites restore after a restart. Hiding the selected category returns to All, and saving keeps the current TV control focusable. Favorites and search settings update without rebuilding the entire channel library.
 
-Existing local profiles, saved provider details, guides, favorites, PIN protection, Clear recents and **Backup & transfer** are retained. [TV stability audit](../verification/tv-stability/README.md).
+The app loads media libraries only when needed, uses small rendering batches and reuses numeric sorting. These changes reduce runtime work; the APK still includes VLC and ARM32, ARM64 and x86-64 support. [Library behavior, checks and screenshots](../verification/tv-library/README.md).
+
+Playback options open in a compact translucent panel over the video. Controls hide after four idle seconds and return with a remote navigation key; settings dismiss after eight idle seconds. Unsaved edits, saving, paused playback and screen readers keep controls available. [Playback behavior and verification](../verification/playback-overlay/README.md).
+
+Existing local profiles, saved provider details, guides, favorites, PIN protection, Clear recents and **Backup & transfer** are retained. Install over the existing TV app to keep your setup.
 
 **Provider-supported catch-up:** refresh your TV guide after updating, choose **Earlier**, select a completed programme, then **Watch catch-up**. Historical XMLTV data, an advertised Xtream archive and a valid provider server timezone are required. M3U catch-up templates, multiview and recording remain future work.
 
@@ -66,7 +70,7 @@ Movies and live TV keep their own playback controls. Audio/subtitle language cho
 
 Download the newer APK for this same edition and install it over the existing app. Avoid uninstalling first. Keep a separate copy of your provider details. An update installs new app code; it does not renew or change your IPTV subscription.
 
-Version 0.6.6 installs over the existing TV edition and preserves profiles.
+Version 0.6.7 installs over the existing TV edition and preserves profiles.
 
 ## Changelog and verification
 

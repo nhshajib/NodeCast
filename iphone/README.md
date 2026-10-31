@@ -6,7 +6,7 @@
 
 Your live channels, films and series in a calm, native iOS-style interface. Connect your own playlist, keep profiles on your device and watch with built-in playback.
 
-**[Download IPA · 0.6.4](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.4/NodeCast-0.6.4-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.4) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+**[Download IPA · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
 
 While this repository is private, sign into GitHub with repository access before downloading.
 
@@ -14,8 +14,8 @@ While this repository is private, sign into GitHub with repository access before
 
 | | Current iPhone download |
 | --- | --- |
-| Version | **0.6.4** · October 29, 2026 |
-| File | `NodeCast-0.6.4-unsigned.ipa` · 35.7 MB |
+| Version | **0.6.7** · October 30, 2026 |
+| File | `NodeCast-0.6.7-unsigned.ipa` · 35.8 MB |
 | Device | Physical iPhone · arm64 |
 | Installation | Personal signing with Impactor and your Apple account |
 | Free signing | Normally renew every **7 days** |
@@ -24,7 +24,11 @@ While this repository is private, sign into GitHub with repository access before
 
 This standalone IPA includes the scene-delegate, file-system linking and playback crash fixes. The Release app stayed open in an iPhone simulator before packaging. Physical iPhone sharing, PiP and AirPlay still need device confirmation.
 
-## New in 0.6.4
+## New in 0.6.7
+
+Playback options, display/speed/sleep tools and playback information open in a compact translucent panel over the video. Controls hide after four idle seconds and return on touch or remote navigation; open settings dismiss after eight idle seconds. Unsaved edits, saving, paused playback and screen readers keep controls available. [Behavior and verification](../verification/playback-overlay/README.md).
+
+### Included improvements
 
 Clear recents keeps progress and watched marks. **Settings → Backup & transfer** moves profiles, server details, favorites and settings using a password-encrypted file; viewing history is optional. Import keeps existing profiles. [Transfer details](../verification/transfer/README.md).
 
@@ -54,7 +58,7 @@ The steps below use **[Impactor (claration/impactor)](https://github.com/clarati
 2. Download and open **Impactor for Windows** from its official releases page. Install the required Apple device software/drivers if prompted.
 3. Connect your unlocked iPhone using USB. Tap **Trust This Computer** and enter your phone PIN if asked.
 4. Verify the phone appears in Apple Devices/iTunes and in **Impactor**, then select it in Impactor.
-5. Add or drag `NodeCast-0.6.4-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
+5. Add or drag `NodeCast-0.6.7-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
 6. Follow iOS prompts to trust the developer profile under **Settings → General → VPN & Device Management**. Enable **Developer Mode** under **Settings → Privacy & Security** if iOS requests it.
 7. Open **NodeCast** on the phone and add your Xtream Codes details or full M3U link. Profiles from Expo Go belong to its separate app storage.
 

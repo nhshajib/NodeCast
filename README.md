@@ -21,19 +21,19 @@
 <tr>
 <td width="33%" valign="top" align="center">
 <a href="iphone/README.md"><img src="assets/readme/iphone.svg" alt="Explore NodeCast for iPhone" width="100%" /></a>
-<p><strong>iPhone</strong><br />0.6.4 · IPA</p>
+<p><strong>iPhone</strong><br />0.6.7 · IPA</p>
 <p><a href="iphone/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="iphone/CHANGELOG.md">Changelog</a> · <a href="iphone/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-mobile/README.md"><img src="assets/readme/android-mobile.svg" alt="Explore NodeCast for Android phones and tablets" width="100%" /></a>
-<p><strong>Android</strong><br />0.6.4 · APK</p>
+<p><strong>Android</strong><br />0.6.7 · APK</p>
 <p><a href="android-mobile/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-mobile/CHANGELOG.md">Changelog</a> · <a href="android-mobile/build.json">Build details</a></p>
 </td>
 <td width="33%" valign="top" align="center">
 <a href="android-tv/README.md"><img src="assets/readme/android-tv.svg" alt="Explore NodeCast for Android TV and Google TV" width="100%" /></a>
-<p><strong>Fire TV / Android TV</strong><br />0.6.6 · APK</p>
+<p><strong>Fire TV / Android TV</strong><br />0.6.7 · APK</p>
 <p><a href="android-tv/README.md"><strong>Download &amp; install →</strong></a></p>
 <p><a href="android-tv/CHANGELOG.md">Changelog</a> · <a href="android-tv/build.json">Build details</a></p>
 </td>
@@ -54,23 +54,27 @@ Installed IPA/APK builds run independently of Expo Go and a development PC. iPho
 
 ### New for Fire TV and Android TV
 
-TV 0.6.6 keeps live video stable through settings, makes IP details remote-accessible, and uses native focus highlighting with bounded list rendering. Provider-supported Xtream catch-up lives inside completed guide programme details. [TV download and details →](android-tv/README.md) · [Reference comparison →](verification/tv-remote/FEATURE-COMPARISON.md)
+TV 0.6.7 defaults to a compact channel list, skips logos unless enabled, and loads unopened media libraries only when needed. Library organization separates preferences, categories and favorites, restores saved categories after restarting, and keeps media-specific settings clear. [TV download and details →](android-tv/README.md) · [Checks and screenshots →](verification/tv-library/README.md)
+
+The library changes are TV-only. All three editions get translucent onscreen playback settings and auto-hiding controls. Provider-supported Xtream catch-up remains inside completed guide programme details.
 
 ### Available across all three editions
+
+**Playback settings** open over the video in a compact translucent panel. Controls hide after four idle seconds; settings close after eight. Unsaved edits, paused playback and screen readers keep controls available. [Playback overlay details →](verification/playback-overlay/README.md)
 
 **Clear recents** keeps viewing progress. **Settings → Backup & transfer** moves profiles, server details, favorites and settings with a password-encrypted file. [How transfer works →](verification/transfer/README.md)
 
 Full TV guides, a persistent mini-player, **Light / Dark / Follow device**, and optional local family controls. Sorting and refresh stay in Library options; display, speed and sleep stay in the player menu. [Feature details and limits →](verification/roadmap/README.md)
 
-[See the TV player →](verification/android/native-tv-next-0.6.0.png) · [Read the Android TV guide →](android-tv/README.md)
+[See the TV library →](verification/tv-library/tv-channel-list.png) · [Read the Android TV guide →](android-tv/README.md)
 
 ## Downloads at a glance
 
 | Edition | Version | Download | Renewal |
 | --- | --- | --- | --- |
-| [iPhone](iphone/README.md) | **0.6.4** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.4/NodeCast-0.6.4-unsigned.ipa) | Normally 7 days with free Apple signing |
-| [Android mobile](android-mobile/README.md) | **0.6.4** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.4/NodeCast-mobile-0.6.4.apk) | No weekly renewal |
-| [Fire TV / Android TV](android-tv/README.md) | **0.6.6** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.6/NodeCast-tv-0.6.6.apk) | No weekly renewal |
+| [iPhone](iphone/README.md) | **0.6.7** | [IPA ↓](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) | Normally 7 days with free Apple signing |
+| [Android mobile](android-mobile/README.md) | **0.6.7** | [APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk) | No weekly renewal |
+| [Fire TV / Android TV](android-tv/README.md) | **0.6.7** | [TV APK ↓](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk) | No weekly renewal |
 
 These are personal testing releases. Android uses the standard Android test signing key; the iPhone IPA needs personal signing. Install updates over the existing app with the same signing identity to preserve local profiles. Use **Settings → Backup & transfer** to save a password-encrypted copy of your setup before changing devices.
 

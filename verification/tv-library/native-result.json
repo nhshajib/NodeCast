@@ -1,0 +1,29 @@
+{
+  "passed": [
+    "Default text list requests no channel logos",
+    "List/Grid preference switches with the remote and persists after restart",
+    "Live TV and live-only favorites do not load Movies/Series",
+    "Media-specific organization loads only the requested catalogue",
+    "Numeric sorting and independent movie/live preferences",
+    "Hidden selected category returns to All",
+    "Favorites move in actual saved order",
+    "Disk cache hydrates categories/favorites after process restart without refetching",
+    "Search scope, hidden categories and layouts survive restart"
+  ],
+  "channels": 3001,
+  "categories": 301,
+  "initialApiCalls": {
+    "get_live_categories": 1,
+    "get_live_streams": 1
+  },
+  "finalApiCalls": {
+    "get_live_categories": 2,
+    "get_live_streams": 2,
+    "get_vod_categories": 1,
+    "get_vod_streams": 1
+  },
+  "logoRequestsOnlyAfterGrid": 18,
+  "mountedGridCards": 6,
+  "api": "30",
+  "scope": "Android emulator with D-pad/Select and keyboard text, no touch. Physical Fire TV speed and memory use require device confirmation."
+}

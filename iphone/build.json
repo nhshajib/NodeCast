@@ -1,31 +1,31 @@
 {
-  "version": "0.6.4",
+  "version": "0.6.7",
   "edition": "iphone",
-  "file": "NodeCast-0.6.4-unsigned.ipa",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.4/NodeCast-0.6.4-unsigned.ipa",
-  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.4",
-  "bytes": 35738499,
-  "sha256": "0446c791eef20ef6666f3c0ec88e45e7271fda7dbdc46f350f799ad954f48466",
-  "releaseAssetId": 687443904,
+  "file": "NodeCast-0.6.7-unsigned.ipa",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7",
+  "bytes": 35754931,
+  "sha256": "f6829d2ce28114429c730ae35eb8cf1d27fb2f19237f42f672ed068aa87f5a30",
+  "releaseAssetId": 693757964,
+  "sourceCommit": "1880f12c2b0d942c5f6ff9e300cf801ebc8c61f2",
+  "buildRun": 41142559780,
+  "artifactId": 13019748854,
+  "verification": {
+    "physicalDeviceTested": false,
+    "devicePlatformArm64EmbeddedJSAndVLC": "passed",
+    "archiveIntegrityAndSha256": "passed",
+    "simulatorLaunchStayedOpen": "passed",
+    "physicalShareSheetTested": false,
+    "typecheck": "passed",
+    "automatedTests": 123,
+    "sharedPlaybackBrowserIntegration": "passed"
+  },
   "bundleIdentifier": "com.nhshajib.nodecast",
-  "buildNumber": "604",
+  "buildNumber": "607",
   "architectures": [
     "arm64"
   ],
-  "sourceCommit": "6232ded65568a11cf36e950608b01761a8e0e96c",
-  "buildRun": 40819882884,
   "signing": "Unsigned IPA; sign using Impactor and your own Apple account",
   "freeAppleSigningRenewal": "Normally seven days",
-  "distribution": "Standalone physical-iPhone Release build; simulator startup verified before IPA packaging",
-  "verification": {
-    "devicePlatformArm64EmbeddedJSAndVLC": "passed",
-    "physicalDeviceTested": false,
-    "clearRecentsPureTests": "passed",
-    "encryptedTransferBrowserIntegration": "passed",
-    "archiveIntegrityAndSha256": "passed",
-    "simulatorLaunchStayedOpen": "passed",
-    "physicalShareSheetTested": false
-  },
-  "artifactId": 12874549845,
-  "publishRun": 40822369553
+  "publishRun": 41145274478
 }

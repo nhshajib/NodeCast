@@ -1,3 +1,13 @@
+# 0.6.7 verification
+
+TV gets a text-first channel list and revised library organization; phone library layouts stay unchanged. All editions include compact translucent playback overlays. TypeScript and 125 pure tests pass on the final TV source; iPhone/mobile were compiled from the shared-overlay source with 123 tests. Browser checks cover 3,000-channel bounded rendering/lazy requests and playing-video menu continuity, touch seeking, orientation, idle dismissal and wake.
+
+All three standalone Release binaries compiled and passed archive/package/version checks. The iPhone Release simulator stayed open before arm64 IPA packaging. Exact Android binaries passed the native suites recorded in the per-edition build records: mobile includes encrypted export and fresh-device restore; TV includes remote library organization/restart persistence, core playback/guide/catch-up/PIN/history and continuous-video settings/idle behavior. Tested APK SHA-256 values match the release assets.
+
+[Exact build provenance](android/native-0.6.7-builds.json) · [TV library checks and screenshots](tv-library/README.md) · [Playback overlay checks](playback-overlay/README.md)
+
+Physical Hisense/Fire TV speed, iPhone/Android hardware playback, real-provider codecs, PiP/AirPlay and physical file-picker behavior remain unverified. Emulator key-dispatch timing is not a physical-TV frame-rate benchmark. APK size still includes VLC and three processor architectures. The records below describe historical versions.
+
 # Current downloads — TV 0.6.6; iPhone and Android mobile 0.6.4
 
 TypeScript and **116 automated tests** pass. The exact TV APK passed native core, settings and stability audits on Android 11/API 30. The continuous synthetic live stream retained one HTTP session, remained visible and advanced after all player panels; initial panel focus, track Back and media keys passed. IP details passed Refresh, Save/Cancel and actual reference saving/removal. Search, per-channel options, guide/catch-up, PIN protection and watched-state checks passed.

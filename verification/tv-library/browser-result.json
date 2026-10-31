@@ -10,7 +10,8 @@
     "No browser runtime errors"
   ],
   "mountedPlayRows": 11,
-  "searchToVisibleMs": 81.16,
+  "mountedGridCards": 18,
+  "searchToVisibleMs": 70.13,
   "providerCalls": {
     "": 1,
     "get_live_categories": 1,

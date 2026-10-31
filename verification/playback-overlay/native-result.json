@@ -1,0 +1,16 @@
+{
+  "passed": [
+    "Live frame pixels survive player menu, channel options, display/sleep tools, report and track panels",
+    "Frames advance after returning from menus",
+    "One live HTTP session across player settings",
+    "Four-second idle controls, eight-second idle settings and D-pad/OK/Back wake without unintended action",
+    "Unsaved channel options remain visible past idle timeout",
+    "Media Play/Pause remote keys",
+    "3000 channels and 300 categories with bounded native focus graph"
+  ],
+  "nativeKeyP95Ms": 1.019,
+  "keySamples": 41,
+  "maxFocusCandidates": 56,
+  "api": "30",
+  "scope": "Android emulator timing; physical Fire TV performance requires confirmation."
+}

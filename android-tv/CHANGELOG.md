@@ -2,7 +2,19 @@
 
 [← TV download & installation](README.md) · [All editions](../CHANGELOG.md)
 
-## 0.6.6 · October 30, 2026 · Current download
+## 0.6.7 · October 30, 2026 · All editions
+
+- TV channels now default to a compact text list with Grid view and optional logos. Logos are off in the list to avoid artwork requests; movies and series retain their layout.
+- TV Library organization separates preferences, categories and favorites; correct media-specific sort/search settings persist, fresh disk caches restore categories after restarting, and favorite/category writes use the latest profile.
+- TV only loads catalogues that are needed, reuses numeric sorting, and avoids rebuilding the whole channel search index for a favorite toggle.
+- Compact translucent playback settings stay over the video on iPhone, Android mobile and TV. Long panels scroll; short menus fit their contents.
+- Playing controls fade out after four idle seconds. Tap the video or press a TV navigation/Select/Back key to reveal them without triggering an unintended action.
+- Settings dismiss after eight idle seconds. Active touches, unsaved channel changes, saving, paused/loading/failed playback and screen readers keep controls available.
+- Mobile portrait and landscape playback use the same custom overlay. Native fullscreen no longer covers the settings interface.
+- TV media keys control playback directly. Video stays mounted and menus retain the existing live connection.
+- Opacity transitions respect Reduce Motion. Local profiles and existing settings are retained.
+
+## 0.6.6 · October 30, 2026
 
 - Keeps the native live-video host stable through player settings and uses a TV side panel; avoids duplicate decoder initialization for unchanged source/options.
 - Back closes live track settings before exiting playback.

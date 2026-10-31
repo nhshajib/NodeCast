@@ -1,0 +1,12 @@
+{
+  "passed": [
+    "Synthetic Xtream connection",
+    "Native XMLTV import and SQLite persistence across process restart",
+    "Dark appearance",
+    "Six-digit family PIN native crypto",
+    "PIN prompt inside Settings sheet",
+    "Wrong PIN rejected, correct PIN restores access",
+    "Protected category hidden and state survives process restart"
+  ],
+  "scope": "Android API 35 x86-64 emulator. Physical iPhone/PiP/AirPlay are not verified."
+}
