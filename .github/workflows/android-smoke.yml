@@ -1,10 +1,6 @@
 name: Test Android APK startup and TV remote
 run-name: Check ${{ inputs.target }} ${{ inputs.tv_suite }} - APK ${{ inputs.build_run }} - API ${{ inputs.api_level }}
 on:
-  workflow_run:
-    workflows: ['Build Android phone and TV APKs']
-    types: [completed]
-    branches: ['design/leaf-0.7.0']
   workflow_dispatch:
     inputs:
       target:
@@ -30,7 +26,6 @@ permissions:
   actions: read
 jobs:
   smoke:
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -39,13 +34,11 @@ jobs:
         target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/download-artifact@v4
         with:
           name: NodeCast-Android-${{ matrix.target }}
           path: apk
-          run-id: ${{ inputs.build_run || github.event.workflow_run.id }}
+          run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
       - name: Install video test tools
         if: matrix.target == 'tv'

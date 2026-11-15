@@ -1,7 +1,5 @@
 name: Build Android phone and TV APKs
 on:
-  push:
-    branches: ['design/leaf-0.7.0']
   workflow_dispatch:
     inputs:
       target:
@@ -15,7 +13,7 @@ jobs:
   build:
     concurrency:
       group: nodecast-android-${{ matrix.target }}
-      cancel-in-progress: ${{ github.event_name == 'push' }}
+      cancel-in-progress: false
     name: Android ${{ matrix.target }} release APK
     runs-on: ubuntu-latest
     timeout-minutes: 60
