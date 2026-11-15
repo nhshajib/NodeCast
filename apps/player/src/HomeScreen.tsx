@@ -65,5 +65,5 @@ const h = themedStyles(() => ({
   channelList: { borderRadius: 16, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.panel, overflow: 'hidden' },
   channel: { flexDirection: 'row', alignItems: 'center', gap: 10, padding: 12, minHeight: 72 },
   channelLogo: { width: 40, height: 40, borderRadius: 10, backgroundColor: colors.pale, alignItems: 'center', justifyContent: 'center' },
-  live: { backgroundColor: '#E5342B', paddingHorizontal: 5, paddingVertical: 3, borderRadius: 4, alignSelf: 'flex-start' }, liveText: { color: '#FFFFFF', fontSize: 9, fontWeight: '800' },
+  live: { backgroundColor: '#DF322A', paddingHorizontal: 5, paddingVertical: 3, borderRadius: 4, alignSelf: 'flex-start' }, liveText: { color: '#FFFFFF', fontSize: 9, fontWeight: '800' },
 }));
