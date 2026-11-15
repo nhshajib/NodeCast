@@ -8,7 +8,7 @@ final class GlowTVResumeUITests: XCTestCase {
   }
   private func capture(_ name: String) {
     let attachment = XCTAttachment(screenshot: app.screenshot())
-    attachment.name = name
+    attachment.name = app.frame.width >= 700 ? name.replacingOccurrences(of: "ios-", with: "ipad-") : name
     attachment.lifetime = .keepAlways
     add(attachment)
   }
