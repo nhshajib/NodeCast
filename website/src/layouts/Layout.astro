@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import { origin, disclaimer, faqs } from '../data/site';
-import release from '../data/release.json';
+import release from '../data/release';
 const { title, description, path = '/', faq = false, software = false, hero = false } = Astro.props;
 const canonical = new URL(path, origin).href;
 const crumbs = path.split('/').filter(Boolean);

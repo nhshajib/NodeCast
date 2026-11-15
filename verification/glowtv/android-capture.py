@@ -57,7 +57,7 @@ try:
  if frame:assert sum(frame[i+1]>100 and frame[i]<100 and frame[i+2]<170 for i in range(0,len(frame),3))>len(frame)/12,'Native TV decoder did not render the original green test band'
  click('Back to library')
  if not TV:home()
- click('Movies');find('Open Tidewater',timeout=30);capture('movies')
+ click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30);capture('movies')
  if not TV:home()
  click('Series');click('Open Tidewater Stories');find('Start series',timeout=30);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
@@ -69,5 +69,7 @@ try:
  result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
  (OUT/f'emulator-design-{TARGET}-result.json').write_text(json.dumps(result,indent=2)+'\n')
 except Exception:
+ (OUT/f'emulator-design-{TARGET}-traceback.txt').write_text(__import__('traceback').format_exc())
+ (OUT/f'emulator-design-{TARGET}-logcat.txt').write_text(adb('logcat','-d'))
  capture('failure');(OUT/f'emulator-design-{TARGET}-failure.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));raise
 finally:server.shutdown()

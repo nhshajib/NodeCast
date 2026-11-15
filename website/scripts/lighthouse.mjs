@@ -19,6 +19,6 @@ async function run(mode){
   if(result.lhr.runtimeError)throw new Error(JSON.stringify(result.lhr.runtimeError));
   const lhr=result.lhr;const row={route,mode,scores:Object.fromEntries(Object.entries(lhr.categories).map(([key,value])=>[key,Math.round(value.score*100)])),lcp:lhr.audits['largest-contentful-paint'].numericValue,cls:lhr.audits['cumulative-layout-shift'].numericValue,tbt:lhr.audits['total-blocking-time'].numericValue,bytes:lhr.audits['total-byte-weight'].numericValue,failedAudits:Object.values(lhr.audits).filter(a=>a.score!==null&&a.score<1&&a.details).map(a=>({id:a.id,title:a.title,score:a.score,displayValue:a.displayValue}))};
   results.push(row);await fs.writeFile(`${output}/${mode}-${route==='/'?'home':route.replaceAll('/','-').replace('.html','')}.json`,result.report);await fs.writeFile(`${output}/scores-${mode}.json`,JSON.stringify(results,null,2)+'\n');console.log(JSON.stringify(row));
- }}finally{await chrome.kill();}
+ }}finally{chrome.kill();}
 }
 try{await run(process.env.LH_MODE||'mobile');}finally{server.close();}
