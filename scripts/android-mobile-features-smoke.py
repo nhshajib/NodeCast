@@ -28,7 +28,7 @@ try:
  # First-run setup opens the provider form directly; later sessions use Add playlist.
  if not any(n.get('class')=='android.widget.EditText' and n.get('content-desc')=='Profile name' for n in dump().iter('node')):click('Add playlist')
  for label,value in [('Profile name','PhoneTest'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:text(label,value)
- click('Connect playlist',True);find('Home');click('Live');find('Open Phone Test Channel')
+ click('Connect playlist',True);find('Home');OUT.joinpath('emulator-mobile-home.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));click('Live');find('Open Phone Test Channel')
  click('Open TV guide');click('Add full TV guide');text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Phone Guide Match',timeout=45)
  OUT.joinpath('emulator-mobile-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  back();settings('Appearance');click('dark appearance');back();settings('Family controls')

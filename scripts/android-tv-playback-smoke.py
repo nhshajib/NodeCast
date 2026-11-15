@@ -263,7 +263,7 @@ def main():
   text('Username','example')
   text('Password','example')
   click('Connect playlist',True)
-  time.sleep(4);click('Live TV')
+  time.sleep(4);OUT.joinpath('emulator-tv-home.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));click('Live TV')
   if REMOTE and suite=='library':
    audit_library(remote,counts)
    return

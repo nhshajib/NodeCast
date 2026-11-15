@@ -15,7 +15,7 @@ jobs:
   build:
     concurrency:
       group: nodecast-android-${{ matrix.target }}
-      cancel-in-progress: false
+      cancel-in-progress: ${{ github.event_name == 'push' }}
     name: Android ${{ matrix.target }} release APK
     runs-on: ubuntu-latest
     timeout-minutes: 60

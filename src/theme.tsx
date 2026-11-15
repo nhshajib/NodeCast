@@ -5,7 +5,7 @@ export type ThemeChoice = 'light' | 'dark' | 'system';
 export const androidDesign = Platform.OS === 'android' || process.env.EXPO_PUBLIC_DESIGN_PLATFORM === 'android';
 export const tvDesign = process.env.EXPO_PUBLIC_APP_VARIANT === 'tv' || Platform.isTV;
 export const defaultTheme: ThemeChoice = androidDesign || tvDesign ? 'dark' : 'light';
-const light = { bg: '#F7F6F1', panel: '#FFFFFF', surface: '#EEEEE7', text: '#111613', secondary: '#646B67', accent: '#1EC677', link: '#0B7A47', mint: '#DDF4E7', pale: '#EEEEE7', line: '#E6E3DA', danger: '#B42320', amber: '#775315', ink: '#0D4029', onAccent: '#0D4029', primary: '#1EC677', primaryText: '#0D4029', selected: '#DDF4E7', selectedText: '#0D4029', live: '#E5342B', featured: '#0D4029' };
+const light = { bg: '#F7F6F1', panel: '#FFFFFF', surface: '#EEEEE7', text: '#111613', secondary: '#646B67', accent: '#1EC677', link: '#0B7A47', mint: '#DDF4E7', pale: '#EEEEE7', line: '#E6E3DA', danger: '#B42320', amber: '#775315', ink: '#0D4029', onAccent: '#0D4029', primary: '#1EC677', primaryText: '#0D4029', selected: '#DDF4E7', selectedText: '#0D4029', live: '#DD3027', featured: '#0D4029' };
 const dark = { ...light, bg: tvDesign ? '#0A0E0C' : '#0F1412', panel: '#1B2420', surface: '#18201C', text: '#E8EEEA', secondary: '#A3ADA7', link: '#C9F5DD', mint: '#1F4A36', pale: '#18201C', line: '#3D4B43', danger: '#FFB4AC', amber: '#F0D28E', onAccent: '#C9F5DD', selected: '#1F4A36', selectedText: '#C9F5DD' };
 export const colors: typeof light = { ...(defaultTheme === 'dark' ? dark : light) };
 let darkMode = defaultTheme === 'dark';
