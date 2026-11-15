@@ -87,6 +87,8 @@ jobs:
             build 2>&1 | tee build/xcodebuild-simulator.log
       - name: Launch the simulator app and require it to stay open
         run: bash scripts/ios-simulator-launch.sh
+      - name: Start local UI fixture service
+        run: python3 scripts/ios-design-fixture.py > build/design-fixture.log 2>&1 &
       - name: Verify Home after tab navigation, suspension and cold relaunch
         run: bash scripts/ios-resume-check.sh
       - name: Upload native resume verification

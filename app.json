@@ -2,12 +2,12 @@
   "expo": {
     "name": "NodeCast",
     "slug": "nodecast-iphone",
-    "version": "0.6.8",
+    "version": "0.7.0",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "buildNumber": "608",
+      "buildNumber": "700",
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
@@ -25,12 +25,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#090124",
+        "backgroundColor": "#0D4029",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "versionCode": 608
+      "versionCode": 700
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -54,7 +54,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#090124",
+          "backgroundColor": "#0D4029",
           "image": "./assets/brand/nodecast-mark.png",
           "imageWidth": 200,
           "resizeMode": "contain"
@@ -68,7 +68,7 @@
       ],
       "./plugins/withIosSceneDelegate.js"
     ],
-    "backgroundColor": "#090124",
+    "backgroundColor": "#0D4029",
     "scheme": "nodecast",
     "extra": {
       "eas": {

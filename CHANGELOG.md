@@ -1,5 +1,16 @@
 # What's new in NodeCast
 
+## 0.7.0 — Unreleased design preview
+
+- Leaf-green palette and bundled Inter typography across the phone and TV interfaces.
+- iPhone: warm light surfaces, five-tab navigation, timeline guide with program sheet, full-width portrait player.
+- Android: dark default, pill navigation, checked chips, floating labels and M3U / Xtream / File playlist sheet.
+- TV: slim rail, featured Home, retained connection card, compact guide and single green remote focus.
+- Existing animation timings and player lifecycle effects are preserved. The same configured slide is added around TV pages.
+- Provider, catalog, guide, catch-up, backup models and playback-policy modules remain unchanged.
+- Native compilation and download updates are deferred at the user’s request. Current public releases remain 0.6.7.
+
+
 [← Choose your edition](README.md)
 
 ## 0.6.8 · October 31, 2026 · iPhone

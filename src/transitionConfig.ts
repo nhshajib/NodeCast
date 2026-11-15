@@ -7,7 +7,7 @@ export type TransitionType = 'slide' | 'none';
 export const slideTransition = Object.freeze({ duration: 210, distance: 24, settleAfter: 380 });
 
 export const defaultTransitions: Readonly<Record<string, TransitionType>> = Object.freeze({
-  home: 'none', watch: 'none', saved: 'none', you: 'none',
+  home: 'none', watch: 'none', saved: 'none', you: 'none', search: 'none', 'guide-tab': 'none',
   player: 'none', '': 'none',
   details: 'slide', series: 'slide', provider: 'slide', profiles: 'slide',
   players: 'slide', delete: 'slide', external: 'slide', appearance: 'slide',

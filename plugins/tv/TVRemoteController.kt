@@ -33,13 +33,13 @@ class TVRemoteController(private val activity: Activity) {
     indicator?.setBounds(0,0,view.width,view.height)
   }
   private fun highlight(next: View?) {
-    highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout) }
+    highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout);old.scaleX=1f;old.scaleY=1f }
     highlighted=null;indicator=null
     if(next==null||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
     val dp=next.resources.displayMetrics.density
     fun line(color:String,width:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=12*dp;setStroke((width*dp).toInt().coerceAtLeast(1),Color.parseColor(color)) }
-    val ring=LayerDrawable(arrayOf(line("#FFFFFF",3f),line("#887BD8",2f)))
-    val inset=(3*dp).toInt();ring.setLayerInset(1,inset,inset,inset,inset)
+    val ring=LayerDrawable(arrayOf(line("#1EC677",3f)))
+    next.scaleX=1.02f;next.scaleY=1.02f
     ring.setBounds(0,0,next.width,next.height);next.overlay.add(ring)
     next.addOnLayoutChangeListener(indicatorLayout);highlighted=next;indicator=ring
   }

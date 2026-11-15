@@ -1,0 +1,233 @@
+{
+  "nativeCompilation": "deferred by user; active iOS run cancelled; no final native artifacts published",
+  "publicDownloads": "unchanged at 0.6.7",
+  "sourceTypecheck": "passed",
+  "existingRegressionTests": 130,
+  "sourceSafety": "existing animation calls, player lifecycle effects and core model/policy modules unchanged",
+  "browserAudit": {
+    "ios": {
+      "errors": [],
+      "checkedDestinations": [
+        "Appearance",
+        "Family controls",
+        "Default player",
+        "Library organization",
+        "Backup & transfer",
+        "Library & storage",
+        "Home IP & connection",
+        "Version history"
+      ],
+      "geometries": [
+        {
+          "theme": "light",
+          "width": 320,
+          "height": 568,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 393,
+          "height": 852,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 430,
+          "height": 932,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 768,
+          "height": 1024,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 320,
+          "height": 568,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 393,
+          "height": 852,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 430,
+          "height": 932,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 768,
+          "height": 1024,
+          "overflow": false
+        }
+      ],
+      "screenshots": "home, guide, player, series",
+      "scope": "React Native Web platform preview; not a native-device test"
+    },
+    "android": {
+      "errors": [],
+      "checkedDestinations": [
+        "Appearance",
+        "Family controls",
+        "Default player",
+        "Library organization",
+        "Backup & transfer",
+        "Library & storage",
+        "Home IP & connection",
+        "Version history"
+      ],
+      "geometries": [
+        {
+          "theme": "light",
+          "width": 320,
+          "height": 568,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 393,
+          "height": 852,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 430,
+          "height": 932,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 768,
+          "height": 1024,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 320,
+          "height": 568,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 393,
+          "height": 852,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 430,
+          "height": 932,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 768,
+          "height": 1024,
+          "overflow": false
+        }
+      ],
+      "screenshots": "home, guide, player, series",
+      "scope": "React Native Web platform preview; not a native-device test"
+    },
+    "tv": {
+      "errors": [],
+      "checkedDestinations": [
+        "Appearance",
+        "Family controls",
+        "Playback",
+        "Library organization",
+        "Backup & transfer",
+        "Library & storage",
+        "Set home IP reference",
+        "Version history"
+      ],
+      "geometries": [
+        {
+          "theme": "light",
+          "width": 960,
+          "height": 540,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 1280,
+          "height": 720,
+          "overflow": false
+        },
+        {
+          "theme": "light",
+          "width": 1920,
+          "height": 1080,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 960,
+          "height": 540,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 1280,
+          "height": 720,
+          "overflow": false
+        },
+        {
+          "theme": "dark",
+          "width": 1920,
+          "height": 1080,
+          "overflow": false
+        }
+      ],
+      "screenshots": "home, guide",
+      "scope": "React Native Web platform preview; not a native-device test"
+    }
+  },
+  "sourceMethods": {
+    "passed": [
+      "M3U link import",
+      "File tab and file chooser import",
+      "M3U HTTP 404 recovery through Xtream"
+    ],
+    "errors": [],
+    "scope": "Synthetic browser provider, dummy credentials only"
+  },
+  "websiteAudit": [
+    {
+      "width": 320,
+      "images": 13,
+      "errors": [],
+      "overflow": false,
+      "clippedHeadings": []
+    },
+    {
+      "width": 393,
+      "images": 13,
+      "errors": [],
+      "overflow": false,
+      "clippedHeadings": []
+    },
+    {
+      "width": 768,
+      "images": 13,
+      "errors": [],
+      "overflow": false,
+      "clippedHeadings": []
+    },
+    {
+      "width": 1440,
+      "images": 13,
+      "errors": [],
+      "overflow": false,
+      "clippedHeadings": []
+    }
+  ],
+  "scope": "browser platform previews and source checks; physical-device performance and final native validation are deferred",
+  "pagesDeployment": "Static site validated; hosting requires repository administrator to enable Pages with GitHub Actions. Automatic activation rejected: Resource not accessible by integration."
+}

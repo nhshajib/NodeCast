@@ -1,5 +1,6 @@
+import { Text } from '../src/Typography';
 import React, { useEffect, useRef, useState } from 'react';
-import { AppState, Text, View } from 'react-native';
+import { AppState, View } from 'react-native';
 import { compareIP, lookupExitIP } from '../src/network';
 import type { ExitIP } from '../src/network';
 import type { Preferences } from '../src/storage';
@@ -28,5 +29,5 @@ export default function TVConnection({ baseline, onPress }: { baseline: Preferen
     return () => { alive = false; request.current?.abort(); clearInterval(interval); clearInterval(clock); sub.remove(); };
   }, []);
   const state = compareIP(result, baseline?.ip || null, pending || failed || !!result && now - Date.parse(result.checkedAt) > 60000);
-  return <Pressable accessibilityRole="button" accessibilityLabel="Connection details" onPress={onPress} style={{ padding: 12, borderRadius: 16, backgroundColor: state === 'same' ? '#FAE7C8' : colors.pale, gap: 5 }}><View><Text style={{ color: state==='same'?colors.ink:colors.text, fontSize: 13, fontWeight: '700' }}>{state === 'same' ? 'Using home IP' : state === 'changed' ? 'Different from home' : 'VPN unverified'}</Text></View><Text numberOfLines={1} style={{ color: state==='same'?'#65523E':colors.secondary, fontSize: 12 }}>{pending ? 'Checking public IP…' : failed ? 'IP check unavailable' : result?.ip || 'IP unavailable'}</Text>{!pending && !failed && result && <Text numberOfLines={1} style={{ color: state==='same'?'#65523E':colors.secondary, fontSize: 11 }}>{[result.city, result.country].filter(Boolean).join(', ') || 'Location unavailable'}</Text>}</Pressable>;
+  return <Pressable accessibilityRole="button" accessibilityLabel="Connection details" onPress={onPress} style={{ padding: 12, borderRadius: 16, backgroundColor: state === 'same' ? '#EEEEE7' : colors.pale, gap: 5 }}><View><Text style={{ color: state==='same'?colors.ink:colors.text, fontSize: 13, fontWeight: '700' }}>{state === 'same' ? 'Using home IP' : state === 'changed' ? 'Different from home' : 'VPN unverified'}</Text></View><Text numberOfLines={1} style={{ color: state==='same'?'#65523E':colors.secondary, fontSize: 12 }}>{pending ? 'Checking public IP…' : failed ? 'IP check unavailable' : result?.ip || 'IP unavailable'}</Text>{!pending && !failed && result && <Text numberOfLines={1} style={{ color: state==='same'?'#65523E':colors.secondary, fontSize: 11 }}>{[result.city, result.country].filter(Boolean).join(', ') || 'Location unavailable'}</Text>}</Pressable>;
 }

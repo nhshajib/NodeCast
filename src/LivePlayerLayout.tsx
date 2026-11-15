@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: '#000', overflow: 'hidden' },
   inline: { width: '100%', aspectRatio: 16 / 9, backgroundColor: '#000', overflow: 'hidden' },
   fullscreen: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: '#000', overflow: 'hidden' },
-  details: { flex: 1, backgroundColor: '#090124' },
+  details: { flex: 1, backgroundColor: '#0D4029' },
   hidden: { display: 'none' },
   content: { flexGrow: 1, justifyContent: 'center', gap: 18, paddingVertical: 24 },
 });

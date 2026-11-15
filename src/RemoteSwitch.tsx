@@ -1,5 +1,6 @@
+import { Text } from './Typography';
 import React from 'react';
-import { Switch, Text, View } from 'react-native';
+import { Switch, View } from 'react-native';
 import Pressable,{isTVBuild} from './FocusPressable';
 import {colors} from './theme';
 /** On TV Select toggles a full-size, labelled control; no tiny touch-only switch target. */

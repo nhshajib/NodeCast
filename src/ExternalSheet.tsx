@@ -1,5 +1,6 @@
+import { Text } from './Typography';
 import React, { useState } from 'react';
-import { Linking, Platform, Text, View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 import type { Media } from './provider';
 import type { ExternalPlayer } from './players';
 import { androidVLCIntent, externalPlayerURL } from './players';
