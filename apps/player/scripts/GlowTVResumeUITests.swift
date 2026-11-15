@@ -39,7 +39,8 @@ final class GlowTVResumeUITests: XCTestCase {
     // Inspect content near the top, so small iPhones need no scroll to pass.
     let content = homeContent()
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
-    XCTAssertTrue(content.isHittable, "Home content is present but invisible after returning")
+    let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in content.exists && content.isHittable }, object: nil)
+    XCTAssertEqual(XCTWaiter.wait(for: [visible], timeout: 15), .completed, "Home content is present but invisible after returning: \(app.debugDescription)")
   }
   func testColdStartsAndBackgroundResumeKeepHomeVisible() {
     continueAfterFailure = false

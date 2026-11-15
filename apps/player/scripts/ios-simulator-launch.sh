@@ -41,7 +41,9 @@ for runtime, devices in data.get("devices", {}).items():
             candidates.append((runtime, device["name"], device["udid"]))
 if not candidates:
     sys.exit("No available iPhone simulator runtime.")
-runtime, name, udid = sorted(candidates)[-1]
+# Prefer the 6.9-inch display for store-size captures, then the newest runtime.
+preferred = [row for row in candidates if 'Pro Max' in row[1]]
+runtime, name, udid = sorted(preferred or candidates)[-1]
 print(udid)
 print(f"Using {name} ({runtime})", file=sys.stderr)
 PY

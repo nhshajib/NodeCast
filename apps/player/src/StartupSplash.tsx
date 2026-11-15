@@ -22,6 +22,16 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
   const reveal = useRef(new Animated.Value(0)).current;
   const halo = useRef(new Animated.Value(0)).current;
   const exit = useRef(new Animated.Value(1)).current;
+  // Bundled artwork and the accessibility query must not hold the native launch
+  // screen forever if iOS omits a cold-start callback. Normal animation timings
+  // below are unchanged; the conservative fallback always respects Reduce Motion.
+  useEffect(() => {
+    const barrier = setTimeout(() => {
+      setImageReady(true);
+      setReduceMotion(current => current === null ? true : current);
+    }, 2000);
+    return () => clearTimeout(barrier);
+  }, []);
   useEffect(() => {
     alive.current = true;
     void AccessibilityInfo.isReduceMotionEnabled().then(value => { if (alive.current) setReduceMotion(value); }).catch(() => { if (alive.current) setReduceMotion(true); });
@@ -53,14 +63,16 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
       ]),
       Animated.delay(250),
     ]);
+    const completion = setTimeout(() => { if (!cancelled) setIntroDone(true); }, reduceMotion ? 900 : 2000);
     animation.start(({ finished: complete }) => { if (complete && !cancelled) setIntroDone(true); });
-    return () => { cancelled = true; animation.stop(); };
+    return () => { cancelled = true; clearTimeout(completion); animation.stop(); };
   }, [laidOut, reduceMotion, lift, reveal, halo]);
   useEffect(() => {
     if (!ready || !introDone || finished.current) return;
     const animation = Animated.timing(exit, { toValue: 0, duration: reduceMotion ? 100 : 260, easing: Easing.inOut(Easing.cubic), useNativeDriver: true });
+    const completion = setTimeout(() => { if (alive.current && !finished.current) { finished.current = true; finish.current(); } }, 600);
     animation.start(({ finished: complete }) => { if (complete && alive.current && !finished.current) { finished.current = true; finish.current(); } });
-    return () => animation.stop();
+    return () => { clearTimeout(completion); animation.stop(); };
   }, [ready, introDone, reduceMotion, exit]);
   const rise = lift.interpolate({ inputRange: [0, 1], outputRange: [0, -68] });
   return <Animated.View testID="startup-splash" onLayout={() => setLayoutReady(true)} accessibilityViewIsModal style={[s.root, { opacity: exit }]}>
