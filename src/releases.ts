@@ -1,6 +1,8 @@
 export const appVersion = '0.6.8';
 export const releases = [
   {version:'0.6.8',date:'October 31, 2026',title:'Home is ready when you return.',changes:[
+    'Mobile and web: detail/settings pages use a configurable slide; root tabs switch immediately while preserving their content.',
+    'Per-screen transitions respect Reduce Motion and settle safely after backgrounding; player surfaces remain unchanged.',
     'iPhone: active screens remain visible even when a navigation animation is interrupted during launch or backgrounding.',
     'Navigation and settings transitions settle when the app changes state, preserving mounted screens and scroll positions.',
     'A completion fallback prevents tab transitions from depending only on a native animation callback.',

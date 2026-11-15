@@ -1,8 +1,16 @@
 import { themedStyles, useThemeChoice, isDarkTheme } from './theme';
-import React, { createContext, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, AppState, Animated, Easing, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { createContext, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { AccessibilityInfo, AppState, Animated, Easing, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
 import { colors, Icon } from './ui';
 import type { IconName } from './ui';
+import { getTransition, slideTransition, subscribeTransitions } from './transitionConfig';
+
+/** Stable primitive snapshot: configuration changes render once; animation frames do not. */
+export function useScreenTransition(screenName: string) {
+  return useSyncExternalStore(subscribeTransitions, () => getTransition(screenName), () => getTransition(screenName));
+}
+// Mobile runs transforms on the native UI thread; web uses Animated's browser implementation.
+const nativeAnimation = Platform.OS !== 'web';
 const ReducedMotion = createContext(true);
 const ScreenFocus = createContext(true);
 export const useScreenFocus = () => useContext(ScreenFocus);
@@ -21,6 +29,7 @@ export function NavigationMotionProvider({ children }: { children: React.ReactNo
 const FrozenContent = memo(function FrozenContent({ children }: { children: React.ReactNode; active: boolean }) { return <>{children}</>; }, (_, next) => !next.active);
 export function TabScene({ name, active, previous = false, onSettled, children }: { name: string; active: boolean; previous?: boolean; onSettled?: (name: string) => void; children: React.ReactNode }) {
   const reduced = useReducedMotion();
+  const transition = useScreenTransition(name);
   const [visited, setVisited] = useState(active);
   const progress = useRef(new Animated.Value(active ? 1 : 0)).current;
   const wasActive = useRef(active);
@@ -39,18 +48,18 @@ export function TabScene({ name, active, previous = false, onSettled, children }
     const lifecycle = AppState.addEventListener('change', settle);
     progress.stopAnimation();
     // Initial mount/accessibility changes must not hide an already visible tab.
-    if (reduced || !entering || AppState.currentState !== 'active') settle();
+    if (transition === 'none' || reduced || !entering || AppState.currentState !== 'active') settle();
     else {
       progress.setValue(0);
-      animation = Animated.timing(progress, { toValue: 1, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
-      timer = setTimeout(settle, 380);
+      animation = Animated.timing(progress, { toValue: 1, duration: slideTransition.duration, easing: Easing.out(Easing.cubic), useNativeDriver: nativeAnimation });
+      timer = setTimeout(settle, slideTransition.settleAfter);
       animation.start(({ finished }) => { if (finished && live) { if (timer) clearTimeout(timer); onSettled?.(name); } });
     }
     return () => { live = false; if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
-  }, [active, reduced, progress, name, onSettled]);
-  const translateY = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [6, 0] }), [progress]);
+  }, [active, reduced, transition, progress, name, onSettled]);
+  const translateX = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [slideTransition.distance, 0] }), [progress]);
   if (!visited && !active) return null;
-  return <ScreenFocus.Provider value={active}><Animated.View collapsable={false} testID={`tab-scene-${name}`} pointerEvents={active ? 'auto' : 'none'} aria-hidden={!active} accessibilityElementsHidden={!active} importantForAccessibility={active ? 'auto' : 'no-hide-descendants'} style={[n.scene, { zIndex: active ? 2 : previous ? 1 : 0, opacity: active || previous ? 1 : 0, transform: [{ translateY: reduced || !active ? 0 : translateY }] }]}><FrozenContent active={active}>{children}</FrozenContent></Animated.View></ScreenFocus.Provider>;
+  return <ScreenFocus.Provider value={active}><Animated.View collapsable={false} testID={`tab-scene-${name}`} pointerEvents={active ? 'auto' : 'none'} aria-hidden={!active} accessibilityElementsHidden={!active} importantForAccessibility={active ? 'auto' : 'no-hide-descendants'} style={[n.scene, { zIndex: active ? 2 : previous ? 1 : 0, opacity: active || previous ? 1 : 0, transform: [{ translateX: transition === 'none' || reduced || !active ? 0 : translateX }] }]}><FrozenContent active={active}>{children}</FrozenContent></Animated.View></ScreenFocus.Provider>;
 }
 export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange }: {
   tabs: { id: T; title: string; icon: IconName; selected: IconName }[]; active: T; bottom: number; onChange: (tab: T) => void;
@@ -67,7 +76,7 @@ export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange 
     position.stopAnimation();
     if (reduced || AppState.currentState !== 'active') settle();
     else {
-      animation = Animated.timing(position, { toValue: selected, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: true });
+      animation = Animated.timing(position, { toValue: selected, duration: 220, easing: Easing.out(Easing.cubic), useNativeDriver: nativeAnimation });
       timer = setTimeout(settle, 380); animation.start(({ finished }) => { if (finished && timer) clearTimeout(timer); });
     }
     return () => { if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
@@ -82,25 +91,28 @@ export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange 
 /** Internal page changes animate once; presenting/dismissing the modal is left to UIKit. */
 export function PageTransition({ pageKey, disabled = false, children }: { pageKey: string; disabled?: boolean; children: React.ReactNode }) {
   const reduced = useReducedMotion();
+  const transition = useScreenTransition(pageKey);
   const previous = useRef(pageKey);
   const progress = useRef(new Animated.Value(1)).current;
   useLayoutEffect(() => {
-    const changed = previous.current !== pageKey; previous.current = pageKey;
+    // Native Modal owns first presentation; only slide between already open pages.
+    const changed = !!previous.current && !!pageKey && previous.current !== pageKey;
+    previous.current = pageKey;
     let animation: Animated.CompositeAnimation | undefined;
     let timer: ReturnType<typeof setTimeout> | undefined;
     const settle = () => { if (timer) clearTimeout(timer); animation?.stop(); progress.setValue(1); };
     const lifecycle = AppState.addEventListener('change', settle);
     progress.stopAnimation();
-    if (!changed || reduced || disabled || AppState.currentState !== 'active') settle();
+    if (!changed || transition === 'none' || reduced || disabled || AppState.currentState !== 'active') settle();
     else {
       progress.setValue(0);
-      animation = Animated.timing(progress, { toValue: 1, duration: 190, easing: Easing.out(Easing.cubic), useNativeDriver: true });
-      timer = setTimeout(settle, 350); animation.start(({ finished }) => { if (finished && timer) clearTimeout(timer); });
+      animation = Animated.timing(progress, { toValue: 1, duration: slideTransition.duration, easing: Easing.out(Easing.cubic), useNativeDriver: nativeAnimation });
+      timer = setTimeout(settle, slideTransition.settleAfter); animation.start(({ finished }) => { if (finished && timer) clearTimeout(timer); });
     }
     return () => { if (timer) clearTimeout(timer); lifecycle.remove(); animation?.stop(); };
-  }, [pageKey, reduced, disabled, progress]);
-  const translateX = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [12, 0] }), [progress]);
-  return <Animated.View style={{ flex: 1, transform: [{ translateX: disabled || reduced ? 0 : translateX }] }}>{children}</Animated.View>;
+  }, [pageKey, reduced, transition, disabled, progress]);
+  const translateX = useMemo(() => progress.interpolate({ inputRange: [0, 1], outputRange: [slideTransition.distance, 0] }), [progress]);
+  return <Animated.View style={{ flex: 1, transform: [{ translateX: transition === 'none' || disabled || reduced ? 0 : translateX }] }}>{children}</Animated.View>;
 }
 export function useRetainedModal<T>(route: T | null) {
   const [retained, setRetained] = useState<T | null>(route);
