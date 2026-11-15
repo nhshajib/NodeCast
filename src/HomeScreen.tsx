@@ -1,6 +1,7 @@
 import { Text } from './Typography';
 import React from 'react';
-import { Image, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, View } from 'react-native';
+import Pressable from './FocusPressable';
 import { androidDesign, themedStyles, useThemeChoice } from './theme';
 import type { Media, Section } from './provider';
 import { progressPercent, timeLabel } from './activity';
@@ -13,6 +14,7 @@ type Props = {
   onAdd: () => void; onDemo: () => void; onProfiles: () => void; onBrowse: (section: Section) => void;
   continueWatching: ViewingEntry[]; recentChannels: Media[]; onResume: (entry: ViewingEntry) => void; onRemove: (id: string) => void; onClearRecents: () => void;
   onSearch: () => void; onCategory: (group: string) => void; favoriteIds: string[]; onFavorite: (item: Media) => void; onSaved: () => void; onPlay: (item: Media) => void; onPlayers: () => void; network: React.ReactNode;
+  scrollRef?: React.ComponentProps<typeof ScrollView>['ref'];
 };
 export function MediaImage({ item, style }: { item: Media; style?: React.ComponentProps<typeof View>['style'] }) {
   return <View style={[h.image, style]}>{item.artwork || item.logo ? <Image source={item.artwork || { uri: item.logo }} resizeMode="cover" style={StyleSheet.absoluteFill} /> : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 }}><Icon name={item.kind === 'live' ? 'tv-outline' : 'film-outline'} size={30} color="#A3ADA7" /><Text numberOfLines={1} style={{ color: '#E8EEEA', fontSize: 12 }}>{item.group}</Text></View>}</View>;
@@ -24,7 +26,7 @@ export default function HomeScreen(p: Props) {
   const resume = p.continueWatching[0];
   const featured: Media | undefined = resume?.item || p.recentChannels[0] || p.liveChannels[0] || p.preview[0];
   const live = p.liveChannels.slice(0, 4);
-  return <ScrollView testID="home-content" showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { paddingTop: 8, gap: 20 }]}>
+  return <ScrollView ref={p.scrollRef} testID="home-content" showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { paddingTop: 8, gap: 20 }]}>
     {!androidDesign && <View style={u.between}><View style={{ gap: 3, flex: 1 }}><Text style={u.small}>{greeting}{p.demo ? ' · Demo' : ''}</Text><Text style={u.h1}>{androidDesign ? 'For you' : 'Watch'}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Switch active playlist" onPress={p.onProfiles} style={h.avatar}><Icon name="person-outline" color={colors.text} size={20} /></Pressable></View>}
     {!androidDesign && <Pressable accessibilityRole="button" accessibilityLabel="Search channels, movies and series" onPress={p.onSearch} style={h.search}><Icon name="search-outline" size={19} color={colors.secondary} /><Text style={u.small}>Channels, movies, series</Text></Pressable>}
     {androidDesign && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>{(['For you', 'Live TV', 'Movies', 'Series'] as const).map((title, i) => <Pressable key={title} accessibilityRole="button" accessibilityState={{ selected: i === 0 }} onPress={() => i > 0 && p.onBrowse((['live', 'movies', 'series'] as Section[])[i - 1])} style={[h.chip, i === 0 && { backgroundColor: colors.selected }]}><Text style={{ color: i === 0 ? colors.selectedText : colors.text, fontWeight: '600', fontSize: 13 }}>{i === 0 ? '✓  ' : ''}{title}</Text></Pressable>)}</ScrollView>}

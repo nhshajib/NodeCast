@@ -90,7 +90,7 @@ function PlaybackOverlay({ panel, onClose, surface, children, television }: { pa
   const landscape = width > height;
   return <View style={{flex:1}} onTouchStart={() => chrome.hold('touch', true)} onTouchEnd={() => chrome.hold('touch', false)} onTouchCancel={() => chrome.hold('touch', false)}>
     <View collapsable={false} style={{flex:1}} pointerEvents={panel?'none':'auto'} accessibilityElementsHidden={!!panel} importantForAccessibility={panel?'no-hide-descendants':'auto'}>{surface}</View>
-    {!!panel && <Pressable accessible={false} focusable={false} onPress={() => { onClose(); chrome.show(); }} style={{position:'absolute',top:0,bottom:0,left:0,right:0}} />}
+    {!!panel && <Pressable noFeedback accessible={false} focusable={false} onPress={() => { onClose(); chrome.show(); }} style={{position:'absolute',top:0,bottom:0,left:0,right:0}} />}
     {!!panel && <View nativeID={`tv-trap:player-panel:${panel}`} accessibilityViewIsModal style={[glass.panel, {position:'absolute', top:Math.max(insets.top, 12), right:Math.max(insets.right, 12), width:television ? '42%' : landscape ? Math.min(360, width * .48) : Math.min(360, width - 24), maxHeight:landscape ? height - Math.max(insets.top,12) - Math.max(insets.bottom,12) : height * .64}]}>
       <View style={{padding:12, borderBottomWidth:1, borderBottomColor:'#FFFFFF20'}}><Button nativeID="tv-preferred:close-player-settings" title="Back to video" onPress={() => { onClose(); chrome.show(); }} /></View>
       {children}
