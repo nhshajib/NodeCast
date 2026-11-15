@@ -91,14 +91,14 @@ export function TabsNavigator() {
   if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line }, tabBarLabelStyle: { fontFamily: 'Inter-600', fontSize: 11 } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
-      return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;
+      return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarButtonTestID: `navigation-tab-${name}`, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;
     })}
   </Tabs>;
   return <NativeTabs backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
     labelStyle={{ default: { color: colors.secondary }, selected: { color: colors.link } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
-      return <NativeTabs.Trigger key={name} name={name} hidden={!spec} disableAutomaticContentInsets listeners={{ tabPress: () => tabPressed(name) }}>
+      return <NativeTabs.Trigger key={name} name={name} hidden={!spec} testID={`navigation-tab-${name}`} disableAutomaticContentInsets listeners={{ tabPress: () => tabPressed(name) }}>
         {spec && <NativeTabs.Trigger.Label>{spec.title}</NativeTabs.Trigger.Label>}
         {spec && <NativeTabs.Trigger.Icon sf={spec.sf as never} md={spec.md as never} />}
       </NativeTabs.Trigger>;

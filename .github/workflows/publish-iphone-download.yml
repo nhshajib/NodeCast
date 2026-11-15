@@ -11,6 +11,10 @@ on:
       expected_sha256:
         description: IPA SHA-256 reported by the successful packaging step
         required: true
+      make_public:
+        description: Publish the release after the verified upload (otherwise it stays a draft)
+        type: boolean
+        default: false
 permissions:
   contents: write
   actions: read
@@ -47,6 +51,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          MAKE_PUBLIC: ${{ inputs.make_public }}
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -69,5 +75,12 @@ jobs:
           PY
           VERSION=$(node -p "require('./package.json').version")
           TAG="ios-v${VERSION}"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$SOURCE_SHA" --draft --prerelease --title "NodeCast ${VERSION} — iPhone" --notes "Unsigned iPhone IPA for personal signing with your own Apple account. Install steps: iphone/README.md. Checksum: SHA256SUMS.txt."
+          fi
           test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
           gh release upload "$TAG" "existing-ipa/NodeCast-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber
+          if [ "$MAKE_PUBLIC" = true ]; then
+            # Published only after provenance, archive and checksum checks above have passed.
+            gh release edit "$TAG" --draft=false
+          fi

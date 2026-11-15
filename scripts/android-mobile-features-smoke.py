@@ -21,7 +21,8 @@ class Handler(http.server.BaseHTTPRequestHandler):
    body=json.dumps(value).encode();kind='application/json'
   self.send_response(200);self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
 server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
-def back():click('Go back')
+def back():
+ subprocess.run(['adb','shell','input','keyevent','4'],check=True);time.sleep(1.5)  # system Back pops the native stack
 def settings(name):click('Settings');click(name,True)
 try:
  click('Get started');click('Not now',True)

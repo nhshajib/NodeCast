@@ -30,7 +30,8 @@ final class NodeCastResumeUITests: XCTestCase {
       XCTAssertTrue(skip.waitForExistence(timeout: 20))
       skip.tap()
       XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
-      app.buttons["Go back"].tap()
+      // The playlist form is a native form sheet; its Done button closes it.
+      app.buttons["Close"].tap()
     }
     let skip = app.buttons["Not now"]
     if skip.exists { skip.tap() }

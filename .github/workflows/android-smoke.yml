@@ -21,6 +21,10 @@ on:
         type: choice
         default: '35'
         options: ['30', '35']
+      make_public:
+        description: Publish the android-v<version> release once these emulator checks pass
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -71,3 +75,25 @@ jobs:
           path: verification/android/emulator-*
           if-no-files-found: ignore
           retention-days: 30
+  publish:
+    name: Publish Android release after emulator checks
+    needs: smoke
+    if: ${{ inputs.make_public && inputs.target == 'both' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Confirm both APKs and checksums are attached, then publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="android-v${VERSION}"
+          ASSETS=$(gh release view "$TAG" --json assets --jq '.assets[].name')
+          for NAME in "NodeCast-mobile-${VERSION}.apk" "NodeCast-mobile-${VERSION}.apk.sha256" "NodeCast-tv-${VERSION}.apk" "NodeCast-tv-${VERSION}.apk.sha256"; do
+            grep -qx "$NAME" <<<"$ASSETS" || { echo "Missing $NAME on $TAG"; exit 1; }
+          done
+          gh release edit "$TAG" --draft=false
