@@ -16,6 +16,9 @@ permissions:
   actions: read
 jobs:
   publish:
+    defaults:
+      run:
+        working-directory: apps/player
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -39,8 +42,8 @@ jobs:
           PY
       - uses: actions/download-artifact@v4
         with:
-          name: NodeCast-iPhone-IPA
-          path: existing-ipa
+          name: GlowTV-iPhone-IPA
+          path: apps/player/existing-ipa
           run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
       - name: Verify archived IPA and upload to existing draft
@@ -54,13 +57,13 @@ jobs:
           from pathlib import Path
           version = json.loads(Path('package.json').read_text())['version']
           assert re.fullmatch(r'[0-9]+\.[0-9]+\.[0-9]+', version)
-          ipa = next(Path('existing-ipa').rglob(f'NodeCast-{version}-unsigned.ipa'))
+          ipa = next(Path('existing-ipa').rglob(f'GlowTV-{version}-unsigned.ipa'))
           digest = hashlib.sha256(ipa.read_bytes()).hexdigest()
           assert digest == os.environ['EXPECTED_SHA256']
           with zipfile.ZipFile(ipa) as archive:
               assert archive.testzip() is None
-              assert 'Payload/NodeCast.app/main.jsbundle' in archive.namelist()
-              info = plistlib.loads(archive.read('Payload/NodeCast.app/Info.plist'))
+              assert 'Payload/GlowTV.app/main.jsbundle' in archive.namelist()
+              info = plistlib.loads(archive.read('Payload/GlowTV.app/Info.plist'))
               assert info['CFBundleShortVersionString'] == version
               assert info['CFBundleIdentifier'] == 'com.nhshajib.nodecast'
               assert info['DTPlatformName'] == 'iphoneos'
@@ -70,4 +73,4 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           TAG="ios-v${VERSION}"
           test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
-          gh release upload "$TAG" "existing-ipa/NodeCast-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber
+          gh release upload "$TAG" "existing-ipa/GlowTV-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber

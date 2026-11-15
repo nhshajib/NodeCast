@@ -1,0 +1,469 @@
+[
+  {
+    "path": "download",
+    "title": "Download GlowTV for iPhone, Android and TV",
+    "h1": "Your screen. Your GlowTV.",
+    "description": "Find the right GlowTV IPTV player for your iPhone, Android phone or television. Check release availability, requirements and installation help here.",
+    "intro": "Choose the player made for your device. Bring your own playlist; GlowTV does not include content.",
+    "cards": [
+      [
+        "iphone",
+        "iPhone and iPad",
+        "A calm, native iOS experience."
+      ],
+      [
+        "android",
+        "Android",
+        "A focused dark interface for your phone."
+      ],
+      [
+        "tv",
+        "Android TV and Fire TV",
+        "A dedicated interface for your remote."
+      ]
+    ],
+    "kind": "download-index"
+  },
+  {
+    "path": "download/iphone",
+    "title": "GlowTV for iPhone and iPad: IPTV Player",
+    "h1": "A little more at home on iPhone.",
+    "description": "Explore GlowTV for iPhone and iPad: your playlists, favorites, movies and XMLTV guide in one player. Read availability and installation details here.",
+    "intro": "Your playlists, in a calm iOS interface. Use the built-in player or choose a compatible external player.",
+    "kind": "platform",
+    "platform": "ios"
+  },
+  {
+    "path": "download/android",
+    "title": "GlowTV for Android: IPTV Player APK",
+    "h1": "Your library, in its best light.",
+    "description": "Download the GlowTV IPTV player APK for Android when the release is available. Check requirements, screenshots and safe installation guidance here.",
+    "intro": "A dark interface that gives your content room to breathe. Connect your M3U playlist or Xtream account and keep your favorites close.",
+    "kind": "platform",
+    "platform": "android"
+  },
+  {
+    "path": "download/tv",
+    "title": "GlowTV for TV: Android TV, Fire TV, Apple TV",
+    "h1": "The sofa is calling.",
+    "description": "Explore GlowTV for Android TV and Fire TV, with a remote-first guide and clear focus. Check APK availability and the current Apple TV status here.",
+    "intro": "A dedicated layout for Android TV, Google TV and Fire TV. Every core action is designed for a remote.",
+    "kind": "platform",
+    "platform": "tv"
+  },
+  {
+    "path": "install",
+    "title": "How to Install GlowTV on Any Device",
+    "h1": "A few steps from your sofa.",
+    "description": "Install GlowTV on your phone or television with practical device guides. Find Android APK steps, Fire TV setup and honest store availability notes.",
+    "intro": "Choose your device for installation instructions. Store routes stay clearly marked until the app listings are published.",
+    "kind": "install-index",
+    "cards": [
+      [
+        "iphone",
+        "iPhone and iPad",
+        "App Store availability and personal-signing notes."
+      ],
+      [
+        "android",
+        "Android phone",
+        "Install an APK from a trusted release."
+      ],
+      [
+        "android-tv",
+        "Android TV and Google TV",
+        "Store-first guidance with a sideloading fallback."
+      ],
+      [
+        "fire-tv",
+        "Fire TV and Firestick",
+        "Downloader setup and APK installation."
+      ],
+      [
+        "apple-tv",
+        "Apple TV",
+        "Current availability and future App Store steps."
+      ]
+    ]
+  },
+  {
+    "path": "install/iphone",
+    "title": "Install GlowTV on iPhone and iPad",
+    "h1": "Settle in on iPhone.",
+    "description": "Follow the GlowTV iPhone and iPad installation guide. Check App Store availability, learn the expected steps and understand personal IPA signing.",
+    "intro": "The GlowTV App Store listing is not published yet. The steps below apply once its verified store link is available.",
+    "kind": "guide",
+    "notice": "[APP_STORE_URL] \u2014 awaiting a published listing. Existing personal IPA installation needs signing; a seven-day free certificate must be refreshed. An unsigned IPA cannot be installed by tapping it.",
+    "steps": [
+      {
+        "title": "Open the verified listing",
+        "text": "Open the App Store link from the GlowTV iPhone download page when available.",
+        "result": "You see GlowTV with its green TV icon."
+      },
+      {
+        "title": "Install the app",
+        "text": "Tap Get and confirm with Face ID, Touch ID or your Apple account.",
+        "result": "The GlowTV icon appears on your Home Screen."
+      },
+      {
+        "title": "Open GlowTV",
+        "text": "Tap the icon and choose Get started.",
+        "result": "You reach playlist setup without needing a GlowTV account."
+      }
+    ]
+  },
+  {
+    "path": "install/android",
+    "title": "Install the GlowTV APK on Android",
+    "h1": "Make room for a better player.",
+    "description": "Install the GlowTV APK on your Android phone using the official release. Learn source permissions, file installation and how to verify the download.",
+    "intro": "Download only from glowtv.app or the project\u2019s GitHub Releases. Keep your existing app installed when updating to preserve local profiles.",
+    "kind": "guide",
+    "steps": [
+      {
+        "title": "Download the official APK",
+        "text": "Open the Android download page and choose Download APK once the release is published. Compare its SHA-256 with the release metadata if you verify files.",
+        "result": "GlowTV.apk appears in Downloads."
+      },
+      {
+        "title": "Allow this installation source",
+        "text": "If prompted, open Settings for your browser or file manager and turn on Allow from this source. Do not disable device-wide security scanning.",
+        "result": "Android permits this app to open the APK installer."
+      },
+      {
+        "title": "Open the downloaded file",
+        "text": "Open GlowTV.apk in Downloads.",
+        "result": "Android shows the GlowTV installation confirmation."
+      },
+      {
+        "title": "Install GlowTV",
+        "text": "Tap Install and wait for completion.",
+        "result": "You can choose Open. Turn off the source permission afterwards if you no longer need it."
+      }
+    ]
+  },
+  {
+    "path": "install/android-tv",
+    "title": "Install GlowTV on Android TV and Google TV",
+    "h1": "Made for the remote.",
+    "description": "Set up GlowTV on Android TV or Google TV with a store-first installation guide. Find the sideloading fallback and learn where official APKs belong.",
+    "intro": "Use the Play Store when GlowTV has a published TV listing. Until then, a verified TV APK is the fallback once a release is available.",
+    "kind": "guide",
+    "notice": "[PLAY_STORE_URL] \u2014 TV store listing pending. Choose the TV APK rather than the phone APK.",
+    "steps": [
+      {
+        "title": "Check the TV download page",
+        "text": "Open GlowTV\u2019s TV download page on your phone or computer and check release availability.",
+        "result": "You know whether a verified store link or TV APK is available."
+      },
+      {
+        "title": "Use the Play Store when available",
+        "text": "Open the verified Play Store listing on your television. Choose Install.",
+        "result": "GlowTV appears in your TV\u2019s Apps list."
+      },
+      {
+        "title": "Use the official APK as a fallback",
+        "text": "Transfer GlowTV-TV.apk from the official GitHub Release using your trusted file-transfer app. Open it with a TV file manager.",
+        "result": "The TV asks whether this file manager may install unknown apps."
+      },
+      {
+        "title": "Allow the source and install",
+        "text": "Allow installs for that file manager only, then confirm Install. Return the permission to off after installation if you do not need it.",
+        "result": "GlowTV launches with a remote-friendly interface."
+      }
+    ]
+  },
+  {
+    "path": "install/fire-tv",
+    "title": "Install GlowTV on Fire TV and Firestick",
+    "h1": "A brighter evening on Fire TV.",
+    "description": "Install GlowTV on Fire TV or Firestick with Downloader and the official TV APK. Learn source permissions, release availability and remote setup.",
+    "intro": "Use the Android TV / Fire TV edition. The phone APK is not designed for your remote.",
+    "kind": "guide",
+    "notice": "[AMAZON_URL] and [DOWNLOADER_CODE] \u2014 pending publication. No Downloader code has been assigned. You can enter the official TV download page URL instead once its APK is available.",
+    "steps": [
+      {
+        "title": "Install Downloader",
+        "text": "Open the Amazon Appstore on your Fire TV and install Downloader by AFTVnews.",
+        "result": "Downloader appears in your apps."
+      },
+      {
+        "title": "Enable developer options if needed",
+        "text": "Open Settings \u2192 My Fire TV \u2192 About. If Developer Options is hidden, select your device name seven times, then return to My Fire TV.",
+        "result": "Developer Options becomes available. Menu names vary by Fire OS version."
+      },
+      {
+        "title": "Allow Downloader to install apps",
+        "text": "Open Developer Options \u2192 Install unknown apps and enable Downloader. On older Fire OS, use Apps from Unknown Sources.",
+        "result": "Downloader can open the Android package installer."
+      },
+      {
+        "title": "Open the official TV download",
+        "text": "Enter https://glowtv.app/download/tv/ in Downloader. Use its verified TV APK button when a release is available, or the published Downloader code when assigned.",
+        "result": "GlowTV-TV.apk downloads from the official GitHub Release."
+      },
+      {
+        "title": "Install and open GlowTV",
+        "text": "Confirm Install, then Open. You may delete the downloaded installer file afterwards.",
+        "result": "You can navigate the app with the D-pad and Select button."
+      }
+    ]
+  },
+  {
+    "path": "install/apple-tv",
+    "title": "Install GlowTV on Apple TV",
+    "h1": "Apple TV is a future chapter.",
+    "description": "Check the current GlowTV Apple TV status and learn how installation will work through the App Store. Do not install an iPhone IPA on your Apple TV.",
+    "intro": "There is no tvOS build in the current project. The supplied Apple TV artwork is prepared for future work; the iPhone IPA is not compatible.",
+    "kind": "guide",
+    "notice": "[APP_STORE_URL] \u2014 Apple TV availability pending. These are future App Store instructions, not an available download.",
+    "steps": [
+      {
+        "title": "Check Apple TV availability",
+        "text": "Read the TV download page before looking for a store listing.",
+        "result": "You see the current supported-platform status."
+      },
+      {
+        "title": "Open the verified listing when released",
+        "text": "On Apple TV, open the App Store and use the official GlowTV listing once it is published.",
+        "result": "You can verify the name and green TV icon."
+      },
+      {
+        "title": "Install the tvOS app when available",
+        "text": "Choose Get and confirm with your Apple account.",
+        "result": "GlowTV appears on the Apple TV Home Screen after a future release."
+      }
+    ]
+  },
+  {
+    "path": "support",
+    "title": "GlowTV Support and Help Center",
+    "h1": "Let\u2019s get you watching.",
+    "description": "Get help with GlowTV playlists, EPG schedules, buffering, sound and playback. Search practical guides or report a problem with your device details.",
+    "intro": "Start with the guide that fits what you see. Never include passwords, full playlist links or provider tokens in a public bug report.",
+    "kind": "support"
+  },
+  {
+    "path": "support/faq",
+    "title": "GlowTV FAQ",
+    "h1": "Good questions. Clear answers.",
+    "description": "Find clear answers about GlowTV playlists, pricing, privacy, catch-up, TV guides and casting. Learn what the player supports before you connect.",
+    "intro": "GlowTV is a free player for the content you bring. Here is what to expect before you add your first playlist.",
+    "kind": "faq"
+  },
+  {
+    "path": "guides/add-m3u-playlist",
+    "title": "How to Add an M3U Playlist in GlowTV",
+    "h1": "Your playlist starts here.",
+    "description": "Add an M3U or M3U8 playlist link to GlowTV, or import a local file. Learn which URL to use and what to check when your provider returns an error.",
+    "intro": "Use the channel playlist supplied by your provider. A single-video HLS manifest is not a channel list.",
+    "kind": "guide",
+    "steps": [
+      {
+        "title": "Open Add playlist",
+        "text": "Choose the plus button or Add playlist from your profiles.",
+        "result": "The playlist setup panel opens."
+      },
+      {
+        "title": "Choose M3U link or File",
+        "text": "For a link, select M3U link. For a local playlist, select File and use the system file picker.",
+        "result": "The correct fields or chosen filename appear."
+      },
+      {
+        "title": "Enter the playlist details",
+        "text": "Give the profile a name. Paste the complete provider URL without changing its query parameters. Keep credentials private.",
+        "result": "Your details are ready to connect."
+      },
+      {
+        "title": "Connect your playlist",
+        "text": "Choose Connect playlist. A 404 means the provider did not find the URL; ask for its exact channel-list address rather than guessing endpoints.",
+        "result": "Valid channels appear in the library. Refreshing cannot restore an expired provider subscription."
+      }
+    ]
+  },
+  {
+    "path": "guides/xtream-codes-login",
+    "title": "How to Log In with Xtream Codes in GlowTV",
+    "h1": "One login. Your own library.",
+    "description": "Connect GlowTV to your Xtream Codes provider with a server address, username and password. Learn safe setup and how to troubleshoot login errors.",
+    "intro": "Use the details from your content provider. This is a provider login, not a GlowTV account.",
+    "kind": "guide",
+    "steps": [
+      {
+        "title": "Choose Xtream",
+        "text": "Open Add playlist and select Xtream.",
+        "result": "You see server address, username and password fields."
+      },
+      {
+        "title": "Name the profile",
+        "text": "Enter a memorable playlist name, such as Home provider.",
+        "result": "You can distinguish this profile from other playlists."
+      },
+      {
+        "title": "Enter provider details",
+        "text": "Copy the full server address including http:// or https:// and any port, then enter your username and password exactly.",
+        "result": "The form is ready without spaces accidentally added to credentials."
+      },
+      {
+        "title": "Connect the server",
+        "text": "Choose Connect playlist and wait for the provider response. If rejected, check subscription status and concurrent-connection limits with your provider.",
+        "result": "Your available live channels, movies and series load into the app."
+      }
+    ]
+  },
+  {
+    "path": "guides/tv-guide-epg",
+    "title": "How to Load the TV Guide (EPG) in GlowTV",
+    "h1": "Know what\u2019s on. And what\u2019s next.",
+    "description": "Load an XMLTV TV guide in GlowTV and match schedules to your playlist. Check channel IDs, refresh settings and provider-supported catch-up details.",
+    "intro": "Programme schedules come from your provider\u2019s XMLTV feed. The player cannot invent missing listings.",
+    "kind": "guide",
+    "steps": [
+      {
+        "title": "Open Guide",
+        "text": "Select Guide in the app or TV rail.",
+        "result": "Your saved guide or guide setup appears."
+      },
+      {
+        "title": "Add your XMLTV source",
+        "text": "Choose Add full TV guide or guide settings and paste the provider\u2019s XMLTV URL.",
+        "result": "The feed is associated with the active profile."
+      },
+      {
+        "title": "Save and refresh",
+        "text": "Choose Save and refresh guide. Allow time for a large feed to download and parse.",
+        "result": "Matching channel IDs show programme titles and times."
+      },
+      {
+        "title": "Check missing schedules",
+        "text": "Confirm that the playlist channel IDs match the XMLTV IDs. Check the provider timezone and feed freshness.",
+        "result": "Provider-supported, completed programmes inside an archive window can offer catch-up."
+      }
+    ]
+  },
+  {
+    "path": "guides/fix-buffering",
+    "title": "How to Fix Buffering in GlowTV",
+    "h1": "A calmer path back to play.",
+    "description": "Troubleshoot IPTV buffering in GlowTV by checking your network, provider limits, live format and playback engine without sharing private credentials.",
+    "intro": "Try one change at a time. A player cannot fix an overloaded provider or an unavailable stream.",
+    "kind": "guide",
+    "steps": [
+      {
+        "title": "Check a second channel",
+        "text": "Play another channel and then a movie from the same provider.",
+        "result": "You learn whether the problem affects one stream, live TV or all content."
+      },
+      {
+        "title": "Check your connection",
+        "text": "Compare Wi-Fi with Ethernet on TV where available. Pause large downloads and check whether your provider permits your current connection.",
+        "result": "A stable connection reduces avoidable interruptions."
+      },
+      {
+        "title": "Check provider limits",
+        "text": "Close other IPTV players using the same subscription and confirm the provider\u2019s simultaneous-stream limit.",
+        "result": "The subscription has a free connection available."
+      },
+      {
+        "title": "Try another live format or engine",
+        "text": "Open the on-screen playback settings. Try an available HLS / MPEG-TS format or built-in engine; change only one choice at a time.",
+        "result": "You can identify a format or engine compatibility issue."
+      },
+      {
+        "title": "Report a useful problem",
+        "text": "Include app version, device model, OS version, playback engine and whether other channels work. Remove all URLs, credentials and tokens.",
+        "result": "Support can reproduce the symptom without receiving your account details."
+      }
+    ]
+  },
+  {
+    "path": "changelog",
+    "title": "What's New in GlowTV",
+    "h1": "A little brighter with every update.",
+    "description": "Read the latest GlowTV development changes, including the new name, platform design and website. Check published release information before updating.",
+    "intro": "This design and rebrand is in development. Existing published binaries keep their original release names until a verified GlowTV build is published.",
+    "kind": "changelog"
+  },
+  {
+    "path": "privacy",
+    "title": "GlowTV Privacy",
+    "h1": "Your profiles stay yours.",
+    "description": "Learn how GlowTV stores provider profiles, settings and encrypted backups on your device, and how network checks contact external service providers.",
+    "intro": "No GlowTV account is required. This policy describes the current app and this static website.",
+    "kind": "article",
+    "sections": [
+      [
+        "Local profiles",
+        "The app stores provider details on your device. Sensitive profile data uses platform secure storage where available. Playback contacts the server you configure; that provider can see your connection and requests."
+      ],
+      [
+        "Network and public IP checks",
+        "Public IP and location checks contact an external IP service. They reveal your public address to that service. A home-IP comparison does not verify that a VPN is connected or that traffic is encrypted."
+      ],
+      [
+        "Backup and transfer",
+        "Exported backups can include server credentials and your family PIN. They are encrypted with a password you choose. Keep the file and password private; GlowTV cannot recover a forgotten backup password."
+      ],
+      [
+        "Website and analytics",
+        "This website has no analytics enabled by default and no advertising trackers. GitHub Pages and your network provider may process technical connection logs. An analytics service must be documented here before it is enabled."
+      ],
+      [
+        "Deletion and contact",
+        "Remove a profile in the app to remove it from this device. Remove your exported backup files separately. Ask privacy questions at support@glowtv.app."
+      ]
+    ]
+  },
+  {
+    "path": "terms",
+    "title": "GlowTV Terms",
+    "h1": "A player for the content you bring.",
+    "description": "Read the terms for using GlowTV, a free open-source media player. Understand your responsibility for playlists, provider access and permitted content.",
+    "intro": "By using GlowTV, you agree to use it only with content and services you are entitled to access.",
+    "kind": "article",
+    "sections": [
+      [
+        "What GlowTV provides",
+        "GlowTV is a media player. It does not provide, sell, host or link to channels, media subscriptions or provider accounts. Optional support does not include content."
+      ],
+      [
+        "Your provider and rights",
+        "You are responsible for your playlists, credentials and rights to access the content. Provider subscriptions, availability and billing are separate from GlowTV."
+      ],
+      [
+        "Availability and warranty",
+        "The app is provided under GPL-3.0-only without warranty to the extent permitted by law. Stream compatibility and provider features vary. Read the license in the source repository."
+      ],
+      [
+        "Support",
+        "For app issues, include your device, OS and app version. Never post provider passwords or complete playlist URLs in public issues. Contact support@glowtv.app."
+      ]
+    ]
+  },
+  {
+    "path": "legal",
+    "title": "GlowTV Legal and Copyright",
+    "h1": "Clear about what we do.",
+    "description": "Read GlowTV\u2019s content disclaimer, open-source license and copyright information. See how demo artwork and third-party website photography are credited.",
+    "intro": "GlowTV is independent software. A player does not grant rights to the content you open with it.",
+    "kind": "article",
+    "sections": [
+      [
+        "Content disclaimer",
+        "GlowTV does not sell, host, provide or endorse unauthorized channels or media. Use only playlists and content you are legally entitled to access."
+      ],
+      [
+        "Open-source attribution",
+        "GlowTV builds on the open-source Nodecast project. Original copyright and GPL-3.0-only notices remain in LICENSE, NOTICE and THIRD_PARTY_NOTICES.md in the source repository. Historical names and internal identifiers remain where needed for attribution and update compatibility."
+      ],
+      [
+        "Demo content and photography",
+        "Current app screenshots use original abstract demo scenes, invented channel names and generated artwork. Website photographs are licensed from Pexels; source URLs and license details are recorded in website/CREDITS.md."
+      ],
+      [
+        "Copyright enquiries",
+        "Send specific copyright enquiries to support@glowtv.app. Include the material and its location. Do not send account credentials."
+      ]
+    ]
+  }
+]

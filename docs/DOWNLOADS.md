@@ -6,9 +6,9 @@ Choose the file for your device:
 
 | Device | Download and installation guide | File |
 | --- | --- | --- |
-| iPhone | [iPhone edition](../iphone/README.md) | `.ipa` — requires personal Apple signing |
-| Android phone or tablet | [Android mobile edition](../android-mobile/README.md) | Mobile `.apk` |
-| Android TV or Google TV | [Android TV edition](../android-tv/README.md) | TV `.apk` |
+| iPhone | [iPhone edition](../apps/player/iphone/README.md) | `.ipa` — requires personal Apple signing |
+| Android phone or tablet | [Android mobile edition](../apps/player/android-mobile/README.md) | Mobile `.apk` |
+| Android TV or Google TV | [Android TV edition](../apps/player/android-tv/README.md) | TV `.apk` |
 
 ## Login page, 404 or inaccessible download
 

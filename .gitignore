@@ -13,3 +13,7 @@ __pycache__/
 
 # Native projects are generated separately for phone and TV builds.
 /android/
+/apps/player/android/
+/apps/player/ios/
+website/.astro/
+website/audit-results/

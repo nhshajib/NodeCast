@@ -1,0 +1,80 @@
+{
+  "expo": {
+    "name": "GlowTV",
+    "slug": "nodecast-iphone",
+    "version": "0.7.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "buildNumber": "700",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.nhshajib.nodecast",
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        },
+        "NSLocalNetworkUsageDescription": "Connect to your IPTV server on your home network.",
+        "LSApplicationQueriesSchemes": [
+          "vlc-x-callback",
+          "infuse"
+        ],
+        "UIStatusBarStyle": "UIStatusBarStyleLightContent"
+      },
+      "requireFullScreen": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0D4029",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundImage": "./assets/android-icon-background.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "versionCode": 700
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-secure-store",
+      [
+        "expo-video",
+        {
+          "supportsPictureInPicture": true,
+          "supportsBackgroundPlayback": false
+        }
+      ],
+      "expo-dev-client",
+      [
+        "expo-libvlc-player",
+        {
+          "localNetworkPermission": "Connect to your IPTV server on your home network."
+        }
+      ],
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0D4029",
+          "image": "./assets/brand/glowtv-mark.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ],
+      [
+        "expo-screen-orientation",
+        {
+          "initialOrientation": "PORTRAIT_UP"
+        }
+      ],
+      "./plugins/withIosSceneDelegate.js"
+    ],
+    "backgroundColor": "#0D4029",
+    "scheme": "nodecast",
+    "extra": {
+      "eas": {
+        "projectId": "49ee7c99-08db-4b89-ad01-022961dcfd6c"
+      }
+    }
+  }
+}

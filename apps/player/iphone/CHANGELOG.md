@@ -1,0 +1,96 @@
+# iPhone version history
+
+[← iPhone download & installation](README.md) · [All editions](../../../CHANGELOG.md)
+
+## 0.6.7 · October 30, 2026 · All editions
+
+- Compact translucent playback settings stay over the video on iPhone, Android mobile and TV. Long panels scroll; short menus fit their contents.
+- Playing controls fade out after four idle seconds. Tap the video or press a TV navigation/Select/Back key to reveal them without triggering an unintended action.
+- Settings dismiss after eight idle seconds. Active touches, unsaved channel changes, saving, paused/loading/failed playback and screen readers keep controls available.
+- Mobile portrait and landscape playback use the same custom overlay, including a touch seek timeline. Next-episode handoffs preserve orientation. Native fullscreen no longer covers the settings interface.
+- TV media keys control playback directly. Video stays mounted and menus retain the existing live connection.
+- Opacity transitions respect Reduce Motion. Local profiles and existing settings are retained.
+
+## 0.6.4 · October 29, 2026
+
+- Clear recents without deleting resume progress or watched marks.
+- Password-encrypted export/import of profiles, provider details, favorites, settings and optional history. Import previews changes and preserves existing profiles.
+- Family protection transfers to a fresh device; interrupted imports recover before startup.
+- iPhone launch fixes retained; Release simulator startup passed before packaging.
+- SHA-256 `0446c791eef20ef6666f3c0ec88e45e7271fda7dbdc46f350f799ad954f48466`.
+
+## 0.6.3 · October 28, 2026
+
+- Fixed the crash at opening. The file-system library required a function the rest of the app does not provide, so the process closed before the first screen.
+- That library is now built with the same modules, and iOS is given the scene delegate class that is actually registered.
+- A Release iPhone simulator launch stayed open. SHA-256 `cad83b2aa80366ca49bd5c475f65b8d7e08c49046e555f44fbd6902643dbdfdd`. Install over the existing app with the same Apple account to keep local profiles.
+
+## 0.6.2 · October 28, 2026
+
+- Fixed a launch crash caused by evaluating file, document, and crypto native modules before the first screen.
+- Movie playback no longer turns on Picture in Picture until you ask for it, and the audio session is prepared first.
+- Live TV uses the VLC release that survives an early player stop. A rejected stream URL is reported instead of force-crashing.
+- Theme styles are ordinary objects, so the iOS layout bridge is not given a Proxy.
+- SHA-256 `91a5fc763c056f39b427b1d89ad8b5535903bc7b55694972813c97121d9940c6`. Install over the existing app with the same Apple account to keep local profiles.
+
+## 0.6.1 · October 28, 2026
+
+- Rebuilt the unsigned iPhone IPA from the current source and replaced the 0.6.0 download.
+- Install over the existing app with the same Apple account to keep local profiles.
+- PiP and AirPlay still need confirmation on a physical iPhone.
+
+## 0.6.0 · October 28, 2026
+
+- Full XMLTV/gzip guides with local schedules, mapping, programme search and synchronized TV timelines.
+- Light, Dark and Follow device appearance.
+- Six-digit local family PIN with protected categories, background relocking and reset-based recovery.
+- Persistent mini-player, Fit/Fill, VOD speed and in-app sleep timer.
+- Capability-gated native PiP; iPhone native playback also offers AirPlay. Physical-device confirmation is still needed.
+- Local M3U import, advanced provider headers, sorting, refresh policy and separate cache/history controls.
+- Fixed mobile PIN prompt layering and a TV second-playlist connection race; compact TV guide controls keep programmes visible.
+
+[Feature details and limits](../../../verification/roadmap/README.md). Chromecast, multiview, QR/portal pairing, cloud sync, DVR and downloads remain future work.
+
+
+## 0.5.0 · October 28, 2026
+
+- Verified physical-iPhone arm64 build, embedded JavaScript/VLC, archive integrity and SHA-256; physical-phone playback remains to be tested.
+- Explicit search scopes and category retention, with profile-specific browsing context.
+- Per-channel player, engine and live-format choices; redacted player information.
+- Seasons, watched marks and Continue series; Next episode on mobile and TV.
+- Remembered VLC track choices and clearer unavailable-language feedback.
+- Local profiles remain account-free. Install over the existing app with the same signing identity.
+
+
+## 0.3.0 · October 26, 2026
+
+- Short tab transitions with a sliding lavender indicator and immediate press feedback.
+- Visited tabs stay mounted, preserving Home / Settings scroll positions.
+- Library and Favorites keep independent search and category selections.
+- Cached library indexes reduce repeat work during navigation.
+- Settings retain content through dismissal; Reduce Motion removes navigation movement.
+- Inactive Home stops IP-check timers/listeners and refreshes when revisited.
+
+[Download 0.3.0 IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.3.0/NodeCast-0.3.0-unsigned.ipa) · [Build record](build.json)
+
+## 0.2.9 · October 26, 2026
+
+- Animated NodeCast intro with brand mark, signal rings and cream wordmark.
+- Launch handoff waits for the intro's first frame and local profiles, without waiting for provider/IP services.
+- Reduced-motion introduction and delayed setup prompts.
+
+## 0.2.8 · October 26, 2026
+
+- Live video moved outside scrolling content to prevent fullscreen offsets and clipped edges.
+- Controls overlay the fullscreen picture, with the same native player kept mounted through rotation.
+
+## 0.2.7 · October 26, 2026
+
+- Fullscreen landscape live playback, native launch artwork and app icon.
+- Optional home-IP setup with explicit VPN-off confirmation.
+- Clearer M3U HTTP 404 guidance, playlist parsing and request-header support.
+- Optional Buy me a coffee support; the app remains free.
+
+## Earlier foundations
+
+Local profiles, search/favorites, viewing progress, playback settings, embedded VLC and personal-sideloading builds. See the in-app **Settings → Version history** and [archived source milestones](../../../docs/CHANGELOG-ARCHIVE.md) for the longer source history.

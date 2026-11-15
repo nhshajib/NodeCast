@@ -1,3 +1,13 @@
+# GlowTV changes
+
+## GlowTV rebrand — in development
+
+- New GlowTV name, supplied launcher assets and tagline. Existing IDs, signing, profiles, backups and animations are retained.
+- Shared app moved to `apps/player/`; independent Astro website in `website/`.
+- Original demo scenes replace the bundled public samples.
+- Platform guides, support, structured data and accessible screenshot galleries.
+- Store listings, native store captures and custom-domain activation remain release gates.
+
 # What's new in NodeCast
 
 ## 0.7.0 — Unreleased design preview
@@ -50,7 +60,7 @@
 - Compact TV guide rows put channel controls beside programmes, with aligned time labels.
 - Quick playlist switching, Dark defaults for new TV installations and Fire TV-compatible launcher declarations.
 - Provider-supported Xtream catch-up opens completed guide programmes using the provider's archive window and server time zone. Historical XMLTV data is required.
-- iPhone and Android mobile remain 0.6.4. [TV details](android-tv/CHANGELOG.md) · [Reference comparison](verification/tv-remote/FEATURE-COMPARISON.md).
+- iPhone and Android mobile remain 0.6.4. [TV details](apps/player/android-tv/CHANGELOG.md) · [Reference comparison](verification/tv-remote/FEATURE-COMPARISON.md).
 
 ## 0.6.4 · October 29, 2026
 
@@ -106,9 +116,9 @@
 
 | Edition | Current download | Version history |
 | --- | --- | --- |
-| iPhone | [0.6.3 · IPA](iphone/README.md) | [iPhone changelog](iphone/CHANGELOG.md) |
-| Android mobile | [0.6.0 · APK](android-mobile/README.md) | [Mobile changelog](android-mobile/CHANGELOG.md) |
-| Android TV | [0.6.1 · TV APK](android-tv/README.md) | [TV changelog](android-tv/CHANGELOG.md) |
+| iPhone | [0.6.3 · IPA](apps/player/iphone/README.md) | [iPhone changelog](apps/player/iphone/CHANGELOG.md) |
+| Android mobile | [0.6.0 · APK](apps/player/android-mobile/README.md) | [Mobile changelog](apps/player/android-mobile/CHANGELOG.md) |
+| Android TV | [0.6.1 · TV APK](apps/player/android-tv/README.md) | [TV changelog](apps/player/android-tv/CHANGELOG.md) |
 
 ## October 27, 2026 · Android 0.4.0
 

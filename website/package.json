@@ -1,0 +1,23 @@
+{
+  "name": "glowtv-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "node scripts/release-metadata.mjs && astro build",
+    "preview": "astro preview --host 0.0.0.0",
+    "audit": "node scripts/audit.mjs"
+  },
+  "dependencies": {
+    "astro": "^6.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.0",
+    "lighthouse": "^13.0.0",
+    "playwright": "^1.56.0",
+    "html-validate": "^10.0.0",
+    "@fontsource/inter": "^5.2.0",
+    "@fontsource/ibm-plex-mono": "^5.2.0"
+  }
+}

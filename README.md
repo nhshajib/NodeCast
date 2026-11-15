@@ -1,48 +1,55 @@
-<p align="center"><a href="https://nhshajib.github.io/NodeCast/"><img src="site/mark.svg" width="56" alt="NodeCast" /></a></p>
-<h1 align="center">Your playlists. Every screen.</h1>
-<p align="center">A free, open-source IPTV player for iPhone, Android phones, Fire TV and Android TV.<br>Bring your own M3U link, Xtream Codes server or playlist file.</p>
-<p align="center"><a href="https://nhshajib.github.io/NodeCast/"><strong>Explore the website →</strong></a> &nbsp; · &nbsp; <a href="#downloads">Downloads</a> &nbsp; · &nbsp; <a href="#a-look-inside">Screenshots</a> &nbsp; · &nbsp; <a href="CHANGELOG.md">Changelog</a> &nbsp; · &nbsp; <a href="https://buymeacoffee.com/hexorbd">Support</a></p>
+<p align="center"><img src="brand/logo/glowtv-logo-light-bg.svg" alt="GlowTV" width="260" /></p>
 
-## A look inside
+# GlowTV
 
-The upcoming **0.7.0 design** brings warm iPhone surfaces, dark Android screens and a TV interface built for the remote. Native compilation is deferred while further work continues. **Current public downloads remain 0.6.7 and use the previous design.**
+**Your TV, beautifully lit.** A free, open-source IPTV player for iPhone, iPad, Android, Android TV and Fire TV. Bring your own legally obtained M3U playlist, file or Xtream Codes account. GlowTV does not sell, host or provide channels, subscriptions or content.
 
-<table><tr><td width="25%"><img src="site/screenshots/ios-home.png" alt="Upcoming iPhone Home design" /></td><td width="25%"><img src="site/screenshots/android-home.png" alt="Upcoming Android Home design" /></td><td width="50%"><img src="site/screenshots/tv-home.png" alt="Upcoming Android TV Home design" /><br><img src="site/screenshots/tv-guide.png" alt="Upcoming TV guide design" /></td></tr></table>
+[Website](https://glowtv.app/) · [Download availability](https://glowtv.app/download/) · [Installation guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Changelog](CHANGELOG.md)
 
-[View every screen on the website →](https://nhshajib.github.io/NodeCast/#screens) · [Design audit and capture provenance →](verification/leaf-design/README.md)
+The GlowTV rebrand is in development. Store listings and new branded binaries are pending; previous project releases remain in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases) under their original names. The website's custom domain needs GitHub Pages and DNS setup; see [hosting instructions](website/HOSTING.md).
 
-## Downloads
+| Your device | Download and setup | Project |
+| --- | --- | --- |
+| iPhone / iPad | [iOS availability](https://glowtv.app/download/iphone/) · [Install](https://glowtv.app/install/iphone/) | [iPhone documentation](apps/player/iphone/) |
+| Android phone | [Android availability](https://glowtv.app/download/android/) · [Install APK](https://glowtv.app/install/android/) | [Phone documentation](apps/player/android-mobile/) |
+| Android TV / Fire TV | [TV availability](https://glowtv.app/download/tv/) · [Fire TV setup](https://glowtv.app/install/fire-tv/) | [TV documentation](apps/player/android-tv/) |
 
-| Product | Current public download | Install | Version history |
-| --- | --- | --- | --- |
-| iPhone | [Download unsigned IPA](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) | [Windows / Impactor](iphone/README.md#install-on-windows) | [iPhone changelog](iphone/CHANGELOG.md) |
-| Android phone / tablet | [Download phone APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk) | [Android instructions](android-mobile/README.md#install) | [Android changelog](android-mobile/CHANGELOG.md) |
-| Fire TV / Android TV | [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk) | [TV instructions](android-tv/README.md#install) | [TV changelog](android-tv/CHANGELOG.md) |
+Apple TV is not supported yet. Apple TV brand assets are prepared for a future tvOS project.
 
-Installed apps run independently of Expo Go and your computer. Free Apple signing normally needs renewal every seven days. Android installations do not require weekly signing. Keep the same signing identity when updating to retain local app data.
+## Features
 
-## Made for your everyday watching
+Live TV and XMLTV guide, provider-supported catch-up, movies, series and next episode, favorites, search, multiple profiles, viewing progress, encrypted backup and transfer, family controls, external players, on-screen playback settings and a dedicated remote-first TV layout. Compatible native iOS playback supports AirPlay and picture-in-picture; Chromecast is not implemented.
 
-- **Your sources:** multiple profiles, M3U links and files, Xtream Codes, per-provider advanced headers, refresh and cached libraries.
-- **Your library:** live TV, movies, seasons and episodes, favorites, search, category organization, recents and resume progress.
-- **Your guide:** XMLTV import, local schedules, channel mapping, now/next and catch-up when supported by your provider.
-- **Your player:** native and VLC playback engines, external players, audio/subtitle selection, display fit, speed, sleep timer and next episode. Capabilities depend on engine and stream.
-- **Your device:** local secure profiles, encrypted backup/import, family controls, home-IP comparison and connection details. An IP comparison does not prove VPN status.
-- **Your TV:** a dedicated landscape application with D-pad navigation and remote-accessible playback controls.
+## Projects
 
-NodeCast includes no channels or subscriptions. It is a media player for content you supply. There is no player subscription or sign-up requirement. [Optional support is appreciated.](https://buymeacoffee.com/hexorbd)
+- [apps/player/](apps/player/) — one shared React Native + Expo project with phone and dedicated TV shells.
+- [website/](website/) — independent Astro static site; no dependency on the app project.
+- [brand/](brand/) — original supplied GlowTV logos, launcher icons and brand board.
+- [design/](design/) — supplied app mockups and website reference.
+- [store-assets/](store-assets/) — screenshot candidates, icons and capture provenance.
 
-## Develop
+## Run locally
 
-```bash
+Use Node.js 24 LTS. From the repository root:
+
+```sh
+cd apps/player
 npm ci
 npm run typecheck
 npm test
-npm start
+npm run start:dev
 ```
 
-[Windows start guide](START-HERE-WINDOWS.md) · [Development builds](docs/DEVELOPMENT.md) · [Native builds](docs/NATIVE-BUILDS.md) · [Transition configuration](docs/TRANSITIONS.md) · [Playback compatibility](docs/LIVE-TV-COMPATIBILITY.md)
+On Windows PowerShell, use `npm.cmd` and `npx.cmd` if script execution is restricted. Expo Go can preview supported features; built-in VLC needs a custom native build. Existing bundle IDs, signing configuration, backup formats and persisted storage keys are retained for update compatibility.
 
-## License and attribution
+For the website, open another terminal:
 
-GPL-3.0-only. NodeCast is based on [technomancer702/nodecast-tv](https://github.com/technomancer702/nodecast-tv). See [LICENSE](LICENSE), [NOTICE](NOTICE) and [third-party notices](THIRD_PARTY_NOTICES.md). Inter is distributed under the SIL Open Font License. Screenshots use test playlists and public Blender sample content; no IPTV service is supplied or endorsed.
+```sh
+cd website
+npm ci
+npm run dev
+```
+
+[Build and hosting](website/HOSTING.md) · [Audit scope](verification/glowtv/README.md) · [Original project attribution](NOTICE) · [GPL-3.0-only license](LICENSE)
+
+Optional support: [buymeacoffee.com/hexorbd](https://buymeacoffee.com/hexorbd). Support never unlocks content or app features.

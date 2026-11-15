@@ -63,4 +63,4 @@ expo-libvlc-player 58.0.0 by David Cornejo is MIT licensed. Source/license: http
 
 ## Inter
 
-Inter is distributed under the SIL Open Font License 1.1. The full license and copyright notice are in [assets/fonts/Inter-OFL.txt](assets/fonts/Inter-OFL.txt). Static weights are instantiated from the official Google Fonts Inter variable font. Source: https://github.com/google/fonts/tree/main/ofl/inter.
+Inter is distributed under the SIL Open Font License 1.1. The full license and copyright notice are in [assets/fonts/Inter-OFL.txt](apps/player/assets/fonts/Inter-OFL.txt). Static weights are instantiated from the official Google Fonts Inter variable font. Source: https://github.com/google/fonts/tree/main/ofl/inter.

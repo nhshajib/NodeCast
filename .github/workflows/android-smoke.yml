@@ -36,8 +36,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
-          name: NodeCast-Android-${{ matrix.target }}
-          path: apk
+          name: GlowTV-Android-${{ matrix.target }}
+          path: apps/player/apk
           run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
       - name: Install video test tools
@@ -63,11 +63,11 @@ jobs:
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           disable-animations: true
           emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim
-          script: bash scripts/android-smoke.sh ${{ matrix.target }}
+          script: cd apps/player && bash scripts/android-smoke.sh ${{ matrix.target }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: NodeCast-Android-${{ matrix.target }}-emulator-check
-          path: verification/android/emulator-*
+          name: GlowTV-Android-${{ matrix.target }}-emulator-check
+          path: apps/player/verification/android/emulator-*
           if-no-files-found: ignore
           retention-days: 30

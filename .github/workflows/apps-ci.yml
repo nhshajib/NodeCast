@@ -1,0 +1,42 @@
+name: Navigation validation
+
+on:
+  push:
+    branches: [main]
+    paths: ['apps/**']
+  pull_request:
+    paths: ['apps/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: navigation-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    defaults:
+      run:
+        working-directory: apps/player
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: '1'
+      EXPO_NO_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/player/package-lock.json
+      - name: Install locked dependencies
+        run: npm ci
+      - name: TypeScript
+        run: npm run typecheck
+      - name: Regression tests
+        run: npm test
+      - name: Bundle web
+        run: npx expo export --platform web --output-dir /tmp/nodecast-web

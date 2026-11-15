@@ -1,6 +1,9 @@
 name: Build iPhone IPA for personal signing
 
 on:
+  push:
+    branches: [glowtv-audit]
+    paths: ['apps/**']
   workflow_dispatch:
 
 permissions:
@@ -12,6 +15,9 @@ concurrency:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: apps/player
     name: Unsigned iPhone Release IPA
     runs-on: macos-26
     timeout-minutes: 60
@@ -27,6 +33,7 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+          cache-dependency-path: apps/player/package-lock.json
       - name: Install dependencies
         run: npm ci
       - name: Check source
@@ -43,8 +50,8 @@ jobs:
         run: |
           python3 - <<'PY'
           import pathlib
-          source = pathlib.Path('ios/NodeCast/SceneDelegate.swift').read_text()
-          plist = pathlib.Path('ios/NodeCast/Info.plist').read_text()
+          source = pathlib.Path('ios/GlowTV/SceneDelegate.swift').read_text()
+          plist = pathlib.Path('ios/GlowTV/Info.plist').read_text()
           if '@objc(SceneDelegate)' not in source:
               raise SystemExit('SceneDelegate.swift no longer registers the Objective-C class SceneDelegate.')
           if '$(PRODUCT_MODULE_NAME).SceneDelegate' in plist:
@@ -54,21 +61,21 @@ jobs:
           print('scene delegate plist matches @objc(SceneDelegate)')
           PY
       - name: Install native dependencies including VLC
-        working-directory: ios
+        working-directory: apps/player/ios
         run: pod install --repo-update
       - name: Prepare and validate the native resume test target
         run: |
           mkdir -p build
           ruby scripts/ios-resume-project.rb
-          xcodebuild -workspace ios/NodeCast.xcworkspace -scheme NodeCastResume -configuration Release -sdk iphonesimulator -showBuildSettings -json CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- > build/resume-build-settings.json
+          xcodebuild -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -sdk iphonesimulator -showBuildSettings -json CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- > build/resume-build-settings.json
           python3 - <<'PYSETTINGS'
           import json
           targets = json.load(open('build/resume-build-settings.json'))
-          settings = next(row['buildSettings'] for row in targets if row['target'] == 'NodeCastResumeUITests')
-          assert settings['PRODUCT_NAME'] == 'NodeCastResumeUITests'
-          assert settings['EXECUTABLE_NAME'] == 'NodeCastResumeUITests'
-          assert settings['WRAPPER_NAME'] == 'NodeCastResumeUITests.xctest'
-          assert settings['TEST_TARGET_NAME'] == 'NodeCast'
+          settings = next(row['buildSettings'] for row in targets if row['target'] == 'GlowTVResumeUITests')
+          assert settings['PRODUCT_NAME'] == 'GlowTVResumeUITests'
+          assert settings['EXECUTABLE_NAME'] == 'GlowTVResumeUITests'
+          assert settings['WRAPPER_NAME'] == 'GlowTVResumeUITests.xctest'
+          assert settings['TEST_TARGET_NAME'] == 'GlowTV'
           print('UI-test product, executable and app target names match')
           PYSETTINGS
       - name: Compile Release app for the iPhone simulator
@@ -77,8 +84,8 @@ jobs:
           set -o pipefail
           mkdir -p build
           xcodebuild \
-            -workspace ios/NodeCast.xcworkspace \
-            -scheme NodeCast \
+            -workspace ios/GlowTV.xcworkspace \
+            -scheme GlowTV \
             -configuration Release \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
@@ -95,22 +102,22 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: NodeCast-iPhone-resume-check
+          name: GlowTV-iPhone-resume-check
           path: |
-            build/resume-captures
-            build/resume-summary.json
-            build/resume-ui.log
+            apps/player/build/resume-captures
+            apps/player/build/resume-summary.json
+            apps/player/build/resume-ui.log
           if-no-files-found: ignore
           retention-days: 30
       - name: Upload simulator console when launch fails
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: NodeCast-simulator-launch
+          name: GlowTV-simulator-launch
           path: |
-            build/simulator-console.txt
-            build/simulator-system.log
-            build/xcodebuild-simulator.log
+            apps/player/build/simulator-console.txt
+            apps/player/build/simulator-system.log
+            apps/player/build/xcodebuild-simulator.log
           if-no-files-found: ignore
           retention-days: 7
       - name: Compile standalone Release app for iPhone
@@ -119,8 +126,8 @@ jobs:
           set -o pipefail
           mkdir -p build
           xcodebuild \
-            -workspace ios/NodeCast.xcworkspace \
-            -scheme NodeCast \
+            -workspace ios/GlowTV.xcworkspace \
+            -scheme GlowTV \
             -configuration Release \
             -sdk iphoneos \
             -destination 'generic/platform=iOS' \
@@ -130,12 +137,12 @@ jobs:
             CODE_SIGN_IDENTITY='' \
             build 2>&1 | tee build/xcodebuild.log
       - name: Validate and package IPA
-        run: python3 scripts/package-unsigned-ipa.py build/DerivedData/Build/Products/Release-iphoneos/NodeCast.app build/artifacts
+        run: python3 scripts/package-unsigned-ipa.py build/DerivedData/Build/Products/Release-iphoneos/GlowTV.app build/artifacts
       - name: Upload IPA and checksum
         uses: actions/upload-artifact@v4
         with:
-          name: NodeCast-iPhone-IPA
-          path: build/artifacts/*
+          name: GlowTV-iPhone-IPA
+          path: apps/player/build/artifacts/*
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
@@ -143,7 +150,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: NodeCast-iOS-build-log
-          path: build/xcodebuild.log
+          name: GlowTV-iOS-build-log
+          path: apps/player/build/xcodebuild.log
           if-no-files-found: ignore
           retention-days: 3
