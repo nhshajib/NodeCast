@@ -1,4 +1,5 @@
 import XCTest
+import UIKit
 
 final class GlowTVResumeUITests: XCTestCase {
   private let app = XCUIApplication(bundleIdentifier: "com.nhshajib.nodecast")
@@ -11,6 +12,31 @@ final class GlowTVResumeUITests: XCTestCase {
     attachment.name = app.frame.width >= 700 ? name.replacingOccurrences(of: "ios-", with: "ipad-") : name
     attachment.lifetime = .keepAlways
     add(attachment)
+  }
+  // A playing-state event can precede the simulator's first decoded frame.
+  // The original fixture has a leaf-green video band, absent from player chrome.
+  private func waitForOriginalVideoFrame() {
+    let deadline = Date().addingTimeInterval(30)
+    while Date() < deadline {
+      if let image = app.screenshot().image.cgImage {
+        var pixels = [UInt8](repeating: 0, count: 80 * 80 * 4)
+        let matched = pixels.withUnsafeMutableBytes { raw -> Int in
+          guard let context = CGContext(data: raw.baseAddress, width: 80, height: 80,
+            bitsPerComponent: 8, bytesPerRow: 320, space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGBitmapInfo.byteOrder32Big.rawValue | CGImageAlphaInfo.premultipliedLast.rawValue) else { return 0 }
+          context.draw(image, in: CGRect(x: 0, y: 0, width: 80, height: 80))
+          let bytes = raw.bindMemory(to: UInt8.self)
+          var count = 0
+          for i in stride(from: 0, to: bytes.count, by: 4) {
+            if bytes[i] < 50 && bytes[i+1] > 150 && bytes[i+1] < 230 && bytes[i+2] > 70 && bytes[i+2] < 160 { count += 1 }
+          }
+          return count
+        }
+        if matched > 160 { return }
+      }
+      Thread.sleep(forTimeInterval: 1)
+    }
+    XCTFail("The native player did not expose the original decoded video band. Keep this capture out of marketing.")
   }
   private func homeContent() -> XCUIElement {
     // iOS exposes nested StaticText nodes for styled headings; their hit-test
@@ -112,6 +138,7 @@ final class GlowTVResumeUITests: XCTestCase {
     app.buttons["Watch live"].tap()
     let pause = app.buttons["Pause live TV"]
     XCTAssertTrue(pause.waitForExistence(timeout: 30), app.debugDescription)
+    waitForOriginalVideoFrame()
     capture("ios-player")
     app.buttons["Back to library"].firstMatch.tap()
     element("navigation-tab-movies").tap()

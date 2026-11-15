@@ -3,14 +3,20 @@ name: Build iPhone IPA for personal signing
 on:
   push:
     branches: [glowtv-audit]
-    paths: ['apps/**', '!apps/**/*.md']
+    paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh']
   workflow_dispatch:
+    inputs:
+      mode:
+        description: Full release audit or isolated iPad frame capture
+        type: choice
+        default: full
+        options: [full, ipad-capture]
 
 permissions:
   contents: read
 
 concurrency:
-  group: nodecast-ios-sideload
+  group: nodecast-ios-sideload-${{ inputs.mode || 'full' }}
   cancel-in-progress: false
 
 jobs:
@@ -93,14 +99,17 @@ jobs:
             CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- \
             build 2>&1 | tee build/xcodebuild-simulator.log
       - name: Launch the simulator app and require it to stay open
+        if: inputs.mode != 'ipad-capture'
         run: bash scripts/ios-simulator-launch.sh
       - name: Start local UI fixture service
         run: python3 scripts/ios-design-fixture.py > build/design-fixture.log 2>&1 &
       - name: Verify Home after tab navigation, suspension and cold relaunch
+        if: inputs.mode != 'ipad-capture'
         run: bash scripts/ios-resume-check.sh
       - name: Capture and verify supported iPad screens
         env:
           GLOWTV_CAPTURE_DEVICE: ipad
+          GLOWTV_ONLY_DESIGN: ${{ inputs.mode == 'ipad-capture' && '1' || '0' }}
         run: bash scripts/ios-resume-check.sh
       - name: Upload native resume verification
         if: always()
@@ -128,6 +137,7 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
       - name: Compile standalone Release app for iPhone
+        if: inputs.mode != 'ipad-capture'
         shell: bash
         run: |
           set -o pipefail
@@ -144,8 +154,10 @@ jobs:
             CODE_SIGN_IDENTITY='' \
             build 2>&1 | tee build/xcodebuild.log
       - name: Validate and package IPA
+        if: inputs.mode != 'ipad-capture'
         run: python3 scripts/package-unsigned-ipa.py build/DerivedData/Build/Products/Release-iphoneos/GlowTV.app build/artifacts
       - name: Upload IPA and checksum
+        if: inputs.mode != 'ipad-capture'
         uses: actions/upload-artifact@v4
         with:
           name: GlowTV-iPhone-IPA

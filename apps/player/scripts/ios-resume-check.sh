@@ -4,6 +4,8 @@ if [[ ! -f ios/GlowTV.xcodeproj/xcshareddata/xcschemes/GlowTVResume.xcscheme ]];
 CAPTURE=resume
 if [[ "${GLOWTV_CAPTURE_DEVICE:-iphone}" = ipad ]]; then
   CAPTURE=resume-ipad
+  # The completed iPhone simulator otherwise competes for scarce CI RAM/GPU.
+  xcrun simctl shutdown all || true
   SIMULATOR_ID="$(python3 - <<'PYDEVICE'
 import json, subprocess
 raw=json.loads(subprocess.check_output(["xcrun","simctl","list","devices","available","-j"]))
@@ -32,5 +34,7 @@ collect_results() {
   exit "$result"
 }
 trap collect_results EXIT
+TEST_ARGS=()
+if [[ "${GLOWTV_ONLY_DESIGN:-0}" = 1 ]]; then TEST_ARGS=(-only-testing:GlowTVResumeUITests/GlowTVResumeUITests/testDesignHomeGuideAndPlayer); fi
 set -o pipefail
-xcodebuild test -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
+xcodebuild test "${TEST_ARGS[@]}" -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
