@@ -1,0 +1,24 @@
+"""Local synthetic IPTV service for simulator UI verification; never bundled with the app."""
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+import json, time
+from urllib.parse import urlparse, parse_qs
+ROOT = Path(__file__).resolve().parents[1]
+class Handler(BaseHTTPRequestHandler):
+    def log_message(self, *_): pass
+    def do_GET(self):
+        path = urlparse(self.path).path
+        action = parse_qs(urlparse(self.path).query).get('action', [''])[0]
+        if path.endswith(('.mp4', '.m3u8', '.ts')):
+            body = (ROOT/'tests/fixtures/android-episode-test.mp4').read_bytes(); kind = 'video/mp4'
+        elif path.endswith('guide.xml'):
+            now = time.time(); stamp = lambda value: time.strftime('%Y%m%d%H%M%S +0000', time.gmtime(value))
+            body = ('<tv><channel id="demo"><display-name>Discover the world</display-name></channel>' + ''.join(f'<programme channel="demo" start="{stamp(now-1200+i*2400)}" stop="{stamp(now+1200+i*2400)}"><title>{title}</title><desc>A public sample schedule for NodeCast UI verification.</desc></programme>' for i,title in enumerate(['Discover the world','The great outdoors','Cinema preview'])) + '</tv>').encode(); kind = 'application/xml'
+        else:
+            data = {'user_info': {'auth':1,'status':'Active'}, 'server_info': {'timezone':'UTC'}}
+            if action == 'get_live_categories': data = [{'category_id':'1','category_name':'Documentary'}]
+            elif action == 'get_live_streams': data = [{'stream_id':1,'name':'Discover the world','category_id':'1','epg_channel_id':'demo','direct_source':'http://127.0.0.1:9090/live.mp4','tv_archive':1,'tv_archive_duration':7}]
+            elif action: data = []
+            body = json.dumps(data).encode(); kind = 'application/json'
+        self.send_response(200); self.send_header('Content-Type',kind); self.send_header('Content-Length',str(len(body))); self.end_headers(); self.wfile.write(body)
+ThreadingHTTPServer(('127.0.0.1',9090),Handler).serve_forever()

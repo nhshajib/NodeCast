@@ -1,0 +1,185 @@
+{
+  "ios": {
+    "errors": [],
+    "checkedDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "geometries": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 393,
+        "height": 852,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 430,
+        "height": 932,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 768,
+        "height": 1024,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 393,
+        "height": 852,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 430,
+        "height": 932,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 768,
+        "height": 1024,
+        "overflow": false
+      }
+    ],
+    "screenshots": "home, guide, player, series",
+    "scope": "React Native Web platform preview; not a native-device test"
+  },
+  "android": {
+    "errors": [],
+    "checkedDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "geometries": [
+      {
+        "theme": "light",
+        "width": 320,
+        "height": 568,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 393,
+        "height": 852,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 430,
+        "height": 932,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 768,
+        "height": 1024,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "height": 568,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 393,
+        "height": 852,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 430,
+        "height": 932,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 768,
+        "height": 1024,
+        "overflow": false
+      }
+    ],
+    "screenshots": "home, guide, player, series",
+    "scope": "React Native Web platform preview; not a native-device test"
+  },
+  "tv": {
+    "errors": [],
+    "checkedDestinations": [
+      "Appearance",
+      "Family controls",
+      "Playback",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Set home IP reference",
+      "Version history"
+    ],
+    "geometries": [
+      {
+        "theme": "light",
+        "width": 960,
+        "height": 540,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 1280,
+        "height": 720,
+        "overflow": false
+      },
+      {
+        "theme": "light",
+        "width": 1920,
+        "height": 1080,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 960,
+        "height": 540,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 1280,
+        "height": 720,
+        "overflow": false
+      },
+      {
+        "theme": "dark",
+        "width": 1920,
+        "height": 1080,
+        "overflow": false
+      }
+    ],
+    "screenshots": "home, guide",
+    "scope": "React Native Web platform preview; not a native-device test"
+  }
+}

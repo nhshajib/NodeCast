@@ -39,12 +39,12 @@ export function saveVault(vault: Vault): Promise<void> {
   return write;
 }
 export type Preferences = { onboarded: boolean; player: PlayerChoice; baseline: { ip: string; savedAt: string } | null; theme?: 'light' | 'dark' | 'system'; homeIPSetup?: 'saved' | 'skipped' };
-const defaults: Preferences = { onboarded: false, player: 'internal', baseline: null };
+const defaults: Preferences = { onboarded: false, player: 'internal', baseline: null, theme: Platform.OS === 'android' || process.env.EXPO_PUBLIC_APP_VARIANT === 'tv' || process.env.EXPO_PUBLIC_DESIGN_PLATFORM === 'android' ? 'dark' : 'light' };
 async function loadPreferencesRaw(): Promise<Preferences> {
   const raw = await AsyncStorage.getItem('nodecast.preferences.v2');
   if (!raw) return { ...defaults };
   const value = JSON.parse(raw);
-  return { theme: ['light','dark','system'].includes(value.theme) ? value.theme : undefined, onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
+  return { theme: ['light','dark','system'].includes(value.theme) ? value.theme : defaults.theme, onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
     baseline: value.baseline && isIP(value.baseline.ip) && typeof value.baseline.savedAt === 'string' ? value.baseline : null,
     homeIPSetup: value.homeIPSetup === 'saved' || value.homeIPSetup === 'skipped' ? value.homeIPSetup : undefined };
 }

@@ -46,7 +46,7 @@ export const u = themedStyles(() => ({
   button: { minHeight: 52, paddingVertical: 15, paddingHorizontal: 22, backgroundColor: colors.primary, borderRadius: 999, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: 9 },
   buttonText: { fontSize: 15, color: colors.primaryText, fontWeight: '600', textAlign: 'center', flexShrink: 1 }, secondaryButton: { backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line },
   iconButton: { width: 44, height: 44, borderRadius: 24, backgroundColor: colors.panel, alignItems: 'center', justifyContent: 'center' },
-  input: { backgroundColor: colors.panel, borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 16, color: colors.text, fontSize: 16, minHeight: 54 },
+  input: { outlineWidth: 0, backgroundColor: colors.panel, borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 16, color: colors.text, fontSize: 16, minHeight: 54 },
   fieldLabel: { fontSize: 13, fontWeight: '600', color: colors.text }, link: { color: colors.link, fontSize: 13, fontWeight: '700' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 28, gap: 16 }, emptyIcon: { width: 72, height: 72, borderRadius: 24, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.pale },
   notice: { backgroundColor: colors.pale, borderRadius: 16, padding: 16 }, divider: { height: 1, backgroundColor: colors.line },

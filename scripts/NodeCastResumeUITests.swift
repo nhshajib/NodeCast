@@ -69,4 +69,43 @@ final class NodeCastResumeUITests: XCTestCase {
       capture("home-relaunch-\(attempt)")
     }
   }
+  // The local fixture service contains public test data only. No IPTV account is required.
+  func testDesignHomeGuideAndPlayer() {
+    continueAfterFailure = false
+    app.launch()
+    settleHome()
+    app.buttons["Add playlist"].tap()
+    func fill(_ label: String, _ value: String, secure: Bool = false) {
+      let field = secure ? app.secureTextFields[label] : app.textFields[label]
+      XCTAssertTrue(field.waitForExistence(timeout: 15), app.debugDescription)
+      if !field.isHittable { app.scrollViews.firstMatch.swipeUp() }
+      field.tap(); field.typeText(value)
+    }
+    fill("Profile name", "Demo playlist")
+    fill("Server address", "http://127.0.0.1:9090")
+    fill("Username", "example")
+    fill("Password", "example", secure: true)
+    app.swipeUp()
+    let connect = app.buttons["Connect playlist"]
+    XCTAssertTrue(connect.waitForExistence(timeout: 15))
+    if !connect.isHittable { app.swipeUp() }
+    connect.tap()
+    XCTAssertTrue(app.staticTexts["Discover the world"].firstMatch.waitForExistence(timeout: 30))
+    capture("ios-home")
+    element("navigation-tab-guide").tap()
+    app.buttons["Add full TV guide"].tap()
+    fill("XMLTV URL", "http://127.0.0.1:9090/guide.xml", secure: true)
+    let save = app.buttons["Save and refresh guide"]
+    if !save.isHittable { app.swipeUp() }
+    save.tap()
+    let program = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Discover the world,")).firstMatch
+    XCTAssertTrue(program.waitForExistence(timeout: 30), app.debugDescription)
+    program.tap()
+    capture("ios-guide")
+    app.buttons["Watch live"].tap()
+    let pause = app.buttons["Pause live TV"]
+    XCTAssertTrue(pause.waitForExistence(timeout: 30), app.debugDescription)
+    capture("ios-player")
+  }
+
 }

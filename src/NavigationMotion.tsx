@@ -85,7 +85,7 @@ export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange 
   const itemWidth = Math.max(0, width - 14) / tabs.length;
   const translateX = useMemo(() => Animated.multiply(position, itemWidth), [position, itemWidth]);
   return <View onLayout={event => setWidth(event.nativeEvent.layout.width)} style={[n.bar, { bottom }]}>
-    {!!width && <Animated.View pointerEvents="none" testID="tab-indicator" style={[n.indicator, { left: 7 + itemWidth / 2 - 23, transform: [{ translateX: translateX }] }]} />}
+    {!!width && tabs.some(tab=>tab.id===active) && <Animated.View pointerEvents="none" testID="tab-indicator" style={[n.indicator, { left: 7 + itemWidth / 2 - 23, transform: [{ translateX: translateX }] }]} />}
     {tabs.map(tab => <Pressable key={tab.id} testID={`navigation-tab-${tab.id}`} accessibilityRole="tab" accessibilityLabel={tab.title} aria-selected={active === tab.id} accessibilityState={{ selected: active === tab.id }} onPress={() => onChange(tab.id)} style={({ pressed }) => [n.tab, pressed && { opacity: .65 }]}><View style={n.icon}><Icon name={active === tab.id ? tab.selected : tab.icon} size={21} color={active === tab.id ? colors.link : colors.secondary} /></View><Text style={{ color: active === tab.id ? colors.link : colors.secondary, fontSize: 11, fontWeight: active === tab.id ? '700' : '500' }}>{tab.title}</Text></Pressable>)}
   </View>;
 }

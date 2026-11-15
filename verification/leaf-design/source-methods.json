@@ -1,0 +1,9 @@
+{
+  "passed": [
+    "M3U link import",
+    "File tab and file chooser import",
+    "M3U HTTP 404 recovery through Xtream"
+  ],
+  "errors": [],
+  "scope": "Synthetic browser provider, dummy credentials only"
+}
