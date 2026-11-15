@@ -20,7 +20,7 @@ jobs:
         working-directory: apps/player
     name: Unsigned iPhone Release IPA
     runs-on: macos-26
-    timeout-minutes: 60
+    timeout-minutes: 120
     env:
       CI: '1'
       EXPO_NO_TELEMETRY: '1'

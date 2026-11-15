@@ -101,8 +101,11 @@ final class GlowTVResumeUITests: XCTestCase {
     fill("XMLTV URL", "http://127.0.0.1:9090/guide.xml", secure: true)
     let save = app.buttons["Save and refresh guide"]
     if !save.isHittable { app.swipeUp() }
+    // The first tap can dismiss the secure URL keyboard in a native ScrollView.
     save.tap()
-    let program = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Evening studio,")).firstMatch
+    Thread.sleep(forTimeInterval: 1)
+    if save.exists && save.isEnabled { save.tap() }
+    let program = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@ AND NOT label CONTAINS %@", "Evening studio,", "No matching guide ID")).firstMatch
     XCTAssertTrue(program.waitForExistence(timeout: 30), app.debugDescription)
     program.tap()
     capture("ios-guide")
