@@ -4,6 +4,7 @@ module.exports = () => {
   return {
     ...base,
     name: base.name,
+    ...(tv ? { icon: './assets/launchers/tv/tv-launcher-icon-512.png' } : {}),
     orientation: tv ? 'landscape' : base.orientation,
     android: {
       ...base.android,

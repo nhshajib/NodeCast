@@ -1,5 +1,18 @@
 const { withAndroidManifest, withDangerousMod } = require('expo/config-plugins');
 module.exports = (config, { tv = false } = {}) => {
+  // Install the supplied legacy resources rather than recompressing the iOS icon.
+  config = withDangerousMod(config, ['android', async mod => {
+    const fs = require('fs/promises');
+    const path = require('path');
+    if (tv) return mod; // TV resources are generated from its dedicated 512px launcher icon.
+    for (const [density, size] of [['mdpi',48],['hdpi',72],['xhdpi',96],['xxhdpi',144],['xxxhdpi',192]]) {
+      const directory = path.join(mod.modRequest.platformProjectRoot, `app/src/main/res/mipmap-${density}`);
+      await fs.mkdir(directory, { recursive: true });
+      for (const extension of ['webp','png']) await fs.rm(path.join(directory, `ic_launcher.${extension}`), { force: true });
+      await fs.copyFile(path.join(mod.modRequest.projectRoot, `assets/launchers/android/legacy-${density}-${size}.png`), path.join(directory, 'ic_launcher.png'));
+    }
+    return mod;
+  }]);
   if (tv) config = withDangerousMod(config, ['android', async mod => {
     const fs = require('fs/promises');
     const path = require('path');

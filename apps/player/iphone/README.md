@@ -1,79 +1,13 @@
-[← All editions](../../../README.md) · [Android mobile](../android-mobile/README.md) · [Android TV](../android-tv/README.md)
+# GlowTV for iPhone and iPad
 
-<img src="../assets/readme/iphone.svg" alt="NodeCast for iPhone" width="400" />
+**Your TV, beautifully lit.**
 
-# NodeCast for iPhone
+[Download availability](https://glowtv.app/download/iphone/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)
 
-Your live channels, films and series in a calm, native iOS-style interface. Connect your own playlist, keep profiles on your device and watch with built-in playback.
+The iPhone app uses the native player for compatible streams and built-in VLC for supported live playback. AirPlay and picture-in-picture depend on the native engine and stream. Store availability is pending. Existing personally signed IPA installations need a valid signing certificate; free signing usually expires after seven days. Refresh with your signing tool before expiry. An unsigned IPA is not an App Store release and cannot be installed simply by opening the file. Keep your current app installed to retain profiles when updating.
 
-**[Download IPA · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa)** · [Release page](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7) · [Changelog](CHANGELOG.md) · [Build details & checksum](build.json)
+GlowTV is a player only. Add your own legally obtained M3U link, playlist file or Xtream account. No channels, subscriptions or content are provided.
 
-While this repository is private, sign into GitHub with repository access before downloading.
+The GlowTV rebrand is in development. Earlier releases remain under their original names in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases). New branded binaries are available only after their native build checks pass and the release is published.
 
-## Version at a glance
-
-| | Current iPhone download |
-| --- | --- |
-| Version | **0.6.7** · October 30, 2026 |
-| File | `NodeCast-0.6.7-unsigned.ipa` · 35.8 MB |
-| Device | Physical iPhone · arm64 |
-| Installation | Personal signing with Impactor and your Apple account |
-| Free signing | Normally renew every **7 days** |
-| Watching | No running PC or Expo Go required |
-| Profiles | Local device storage; no NodeCast account or cloud sync |
-
-This standalone IPA includes the scene-delegate, file-system linking and playback crash fixes. The Release app stayed open in an iPhone simulator before packaging. Physical iPhone sharing, PiP and AirPlay still need device confirmation.
-
-## New in 0.6.7
-
-Playback options, display/speed/sleep tools and playback information open in a compact translucent panel over the video. Controls hide after four idle seconds and return on touch or remote navigation; open settings dismiss after eight idle seconds. Unsaved edits, saving, paused playback and screen readers keep controls available. [Behavior and verification](../../../verification/playback-overlay/README.md).
-
-### Included improvements
-
-Clear recents keeps progress and watched marks. **Settings → Backup & transfer** moves profiles, server details, favorites and settings using a password-encrypted file; viewing history is optional. Import keeps existing profiles. [Transfer details](../../../verification/transfer/README.md).
-
-## What you'll find inside
-
-- Xtream Codes and M3U connections, named local profiles and separate favorites.
-- Live TV through embedded VLC; native movie/episode playback and saved viewing progress.
-- Search, categories, optional now/next guide data and library organization.
-- Public IP, approximate location and an optional home-IP reference.
-- VLC / Infuse handoff, remembered player preferences and available language choices.
-- Animated intro, landscape/fullscreen playback, retained tab positions and Reduce Motion support.
-
-<details>
-<summary>Preview the interface</summary>
-<br />
-<img src="../verification/everyday/mobile-series.png" alt="NodeCast phone interface preview with synthetic sample data" width="300" />
-<p>Browser interface capture from the iPhone navigation verification.</p>
-</details>
-
-## Install on Windows
-
-**Already installed NodeCast?** Load this IPA into Impactor. Keep the same Apple account and app identifier, and install over the existing app to retain profiles.
-
-The steps below use **[Impactor (claration/impactor)](https://github.com/claration/impactor/releases)**, the installer used successfully for this setup.
-
-1. Download the **IPA** above to your Windows PC. A direct release download is already an IPA; an Actions artifact ZIP needs extraction first.
-2. Download and open **Impactor for Windows** from its official releases page. Install the required Apple device software/drivers if prompted.
-3. Connect your unlocked iPhone using USB. Tap **Trust This Computer** and enter your phone PIN if asked.
-4. Verify the phone appears in Apple Devices/iTunes and in **Impactor**, then select it in Impactor.
-5. Add or drag `NodeCast-0.6.7-unsigned.ipa` into Impactor. Sign in with your own Apple account when prompted and start the installation. Enter credentials and verification codes only in Impactor.
-6. Follow iOS prompts to trust the developer profile under **Settings → General → VPN & Device Management**. Enable **Developer Mode** under **Settings → Privacy & Security** if iOS requests it.
-7. Open **NodeCast** on the phone and add your Xtream Codes details or full M3U link. Profiles from Expo Go belong to its separate app storage.
-
-The IPA is unsigned and needs signing before it can be installed. [More Windows installation details →](../../../docs/SIDELOAD-WINDOWS.md)
-
-## Renew or update
-
-With free Apple personal signing, reconnect your phone in Impactor and refresh/re-sign before the seven-day signing period expires. Keep the same Apple account, installer/app identifier and existing installation. You can turn the PC off while watching.
-
-If you miss renewal, the app normally stops opening until it is signed again. Re-sign over the existing app; avoid deleting it. Impactor's optional auto-refresh needs the PC and Impactor available periodically, with the phone connected through USB or supported Wi-Fi pairing. It renews signing. New NodeCast releases are separate downloads.
-
-## Changelog and verification
-
-[Read iPhone version history](CHANGELOG.md) · [Exact build record](build.json) · [Build run](https://github.com/nhshajib/NodeCast/actions/runs/40819882884) · [Source for this IPA](https://github.com/nhshajib/NodeCast/tree/6232ded65568a11cf36e950608b01761a8e0e96c)
-
-CI checked the device architecture, embedded JavaScript, native VLC linkage, archive integrity and SHA-256. Video compatibility depends on the device and provider. The IP comparison does not verify VPN status.
-
-[Download help](../../../docs/DOWNLOADS.md) · [All editions](../../../README.md) · [Support NodeCast](https://buymeacoffee.com/hexorbd)
+Profiles, favorites, EPG, catch-up where supported, playback settings, encrypted backups and family controls use the shared [app project](../). Existing identifiers and signing configuration are retained for update compatibility. [Screenshot provenance](../../../store-assets/README.md).
