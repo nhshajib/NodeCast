@@ -107,6 +107,25 @@ final class GlowTVResumeUITests: XCTestCase {
     let pause = app.buttons["Pause live TV"]
     XCTAssertTrue(pause.waitForExistence(timeout: 30), app.debugDescription)
     capture("ios-player")
+    app.buttons["Back to library"].firstMatch.tap()
+    element("navigation-tab-movies").tap()
+    XCTAssertTrue(app.buttons["Open Tidewater"].waitForExistence(timeout: 30))
+    capture("ios-movies")
+    element("navigation-tab-series").tap()
+    let series = app.buttons["Open Tidewater Stories"]
+    XCTAssertTrue(series.waitForExistence(timeout: 30))
+    series.tap()
+    XCTAssertTrue(app.buttons["Start series"].waitForExistence(timeout: 30))
+    capture("ios-series")
+    app.buttons["Go back"].tap()
+    element("navigation-tab-search").tap()
+    capture("ios-search")
+    app.buttons["Settings"].tap()
+    XCTAssertTrue(app.buttons["Version history"].waitForExistence(timeout: 15))
+    capture("ios-settings")
+    app.buttons["Add playlist"].tap()
+    XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 15))
+    capture("ios-playlists")
   }
 
 }
