@@ -1,5 +1,6 @@
+import { Text } from './Typography';
 import React, { useEffect, useState } from 'react';
-import { Alert, ScrollView, Text } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import type { Profile } from './vault';
 import { cacheSize, clearCatalog } from './libraryStore';
 import { Button, Notice, u } from './ui';

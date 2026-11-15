@@ -1,5 +1,13 @@
-export const appVersion = '0.6.8';
+export const appVersion = '0.7.0';
 export const releases = [
+  {version:'0.7.0',date:'November 15, 2026',title:'Made for every screen.',changes:[
+    'A leaf-green design system with Inter typography, warm iPhone surfaces and dark Android and TV defaults.',
+    'iPhone: five-tab navigation, a timeline guide and a compact program-details sheet; existing settings and favorites remain in the header.',
+    'Android: pill navigation, selected filter chips, outlined fields and an Add playlist sheet with M3U, Xtream and File tabs.',
+    'TV: an icon rail, a featured live-channel Home page, Continue watching and green remote focus rings.',
+    'The configured native slide now also wraps TV page changes. Playback surfaces remain outside page transitions.',
+    'Existing playlist formats, guide sources, catch-up, playback engines, family controls and backups are preserved.',
+  ]},
   {version:'0.6.8',date:'October 31, 2026',title:'Home is ready when you return.',changes:[
     'Mobile and web: detail/settings pages use a configurable slide; root tabs switch immediately while preserving their content.',
     'Per-screen transitions respect Reduce Motion and settle safely after backgrounding; player surfaces remain unchanged.',

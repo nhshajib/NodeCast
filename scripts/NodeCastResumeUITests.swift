@@ -13,7 +13,7 @@ final class NodeCastResumeUITests: XCTestCase {
     add(attachment)
   }
   private func homeContent() -> XCUIElement {
-    app.staticTexts.matching(NSPredicate(format: "label == %@ OR label == %@", "Your TV, beautifully simple.", "Your TV, together.")).firstMatch
+    app.staticTexts["Watch"]
   }
   private func settleHome() {
     let home = element("navigation-tab-home")
@@ -46,7 +46,7 @@ final class NodeCastResumeUITests: XCTestCase {
     app.launch()
     settleHome()
     capture("01-home-cold-start")
-    for tab in ["you", "watch", "saved", "you", "watch", "saved"] {
+    for tab in ["guide", "movies", "series", "search", "guide", "movies"] {
       element("navigation-tab-\(tab)").tap()
       element("navigation-tab-home").tap()
       settleHome()

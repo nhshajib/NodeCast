@@ -44,7 +44,7 @@ async function loadPreferencesRaw(): Promise<Preferences> {
   const raw = await AsyncStorage.getItem('nodecast.preferences.v2');
   if (!raw) return { ...defaults };
   const value = JSON.parse(raw);
-  return { theme: ['light','dark','system'].includes(value.theme) ? value.theme : 'light', onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
+  return { theme: ['light','dark','system'].includes(value.theme) ? value.theme : undefined, onboarded: value.onboarded === true, player: ['internal', 'ask', 'vlc', 'infuse'].includes(value.player) ? value.player : 'internal',
     baseline: value.baseline && isIP(value.baseline.ip) && typeof value.baseline.savedAt === 'string' ? value.baseline : null,
     homeIPSetup: value.homeIPSetup === 'saved' || value.homeIPSetup === 'skipped' ? value.homeIPSetup : undefined };
 }

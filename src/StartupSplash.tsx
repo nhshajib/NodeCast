@@ -1,5 +1,6 @@
+import { Text } from './Typography';
 import React, { useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, Animated, Easing, Image, StatusBar, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Animated, Easing, Image, StatusBar, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import * as NativeSplash from 'expo-splash-screen';
 
@@ -80,15 +81,15 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
   </Animated.View>;
 }
 const s = StyleSheet.create({
-  root: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: '#090124' },
+  root: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: '#0D4029' },
   center: { flex: 1 },
   mark: { position: 'absolute', width: 200, height: 200, top: '50%', left: '50%', marginLeft: -100, marginTop: -100 },
   image: { width: 200, height: 200, borderRadius: 100 },
-  halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: '#B9B4F2' },
-  orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: '#FAE7C8' },
+  halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: '#1EC677' },
+  orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: '#EEEEE7' },
   copy: { position: 'absolute', top: '50%', marginTop: 50, left: 20, right: 20, alignItems: 'center', gap: 17 },
-  wordmark: { fontFamily: 'CrimsonText', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: '#FAE7C8' },
-  rule: { width: 28, height: 1, backgroundColor: '#B9B4F2', opacity: .7 },
+  wordmark: { fontFamily: 'Inter-800', fontWeight: '800', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: '#EEEEE7' },
+  rule: { width: 28, height: 1, backgroundColor: '#1EC677', opacity: .7 },
   tagline: { fontSize: 14, lineHeight: 21, letterSpacing: .5, color: '#C9C5DB' },
   signature: { position: 'absolute', left: 20, right: 20, textAlign: 'center', color: '#9790B1', fontSize: 9, lineHeight: 16, letterSpacing: 2.4 },
 });

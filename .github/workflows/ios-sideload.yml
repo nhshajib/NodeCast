@@ -1,6 +1,8 @@
 name: Build iPhone IPA for personal signing
 
 on:
+  push:
+    branches: ['design/leaf-0.7.0']
   workflow_dispatch:
 
 permissions:
@@ -110,7 +112,7 @@ jobs:
             build/simulator-system.log
             build/xcodebuild-simulator.log
           if-no-files-found: ignore
-          retention-days: 7
+          retention-days: 30
       - name: Compile standalone Release app for iPhone
         shell: bash
         run: |
@@ -135,7 +137,7 @@ jobs:
           name: NodeCast-iPhone-IPA
           path: build/artifacts/*
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 30
           compression-level: 0
       - name: Upload native build log on failure
         if: failure()
@@ -145,3 +147,26 @@ jobs:
           path: build/xcodebuild.log
           if-no-files-found: ignore
           retention-days: 3
+
+  stage-download:
+    name: Stage iPhone download
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: NodeCast-iPhone-IPA
+          path: ipa
+      - name: Stage IPA and checksum for review
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="ios-v${VERSION}"
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$GITHUB_SHA" --draft --prerelease --title "NodeCast ${VERSION} — iPhone testing" --notes "Unsigned iPhone IPA. Sign with your Apple ID using Impactor. See iphone/README.md for installation and seven-day renewal instructions."
+          fi
+          gh release upload "$TAG" ipa/* --clobber

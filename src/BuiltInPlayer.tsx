@@ -1,10 +1,11 @@
+import { Text } from './Typography';
 import {isPictureInPictureSupported,VideoAirPlayButton} from 'expo-video';
 import { AppState } from 'react-native';
 import { useSleepTimer } from './PlayerToolsContext';
 import { sleepExpired, speeds, sleepMinutes } from './playerTools';
 import type { DisplayFit } from './playerTools';
 import React, { useEffect, useRef, useState } from 'react';
-import { BackHandler, Platform, ScrollView, Text, TextInput, View, useWindowDimensions } from 'react-native';
+import { BackHandler, Platform, ScrollView, TextInput, View, useWindowDimensions } from 'react-native';
 import Player from './Player';
 import Pressable, {isTVBuild} from './FocusPressable';
 import CompatibilityPlayer from './CompatibilityPlayer';
@@ -14,12 +15,14 @@ import type { ChannelPlayback, PlaybackInfo } from './viewingPreferences';
 import { hasCompatibilityPlayer } from './nativePlayback';
 import { chooseEngine } from './playbackPolicy';
 import type { LiveEngine } from './playbackPolicy';
-import { colors, u } from './ui';
+import { Button as ActionButton, Icon, colors, u } from './ui';
 import { GlassButton as Button, glass } from './PlaybackGlass';
 import { PlaybackChromeProvider, usePlaybackChrome } from './PlaybackChrome';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 type Props = React.ComponentProps<typeof Player> & { liveEngine?: LiveEngine; channelOptions?: ChannelPlayback; onSaveOptions?: (value?: ChannelPlayback) => Promise<void>; savedFit?: DisplayFit; onFit?: (fit: DisplayFit) => void; onMinimize?: () => void; minimized?: boolean; onRegisterStop?: (stop: () => Promise<void>) => void };
 export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onSaveOptions, savedFit = 'contain', onFit, onMinimize, minimized = false, onRegisterStop, ...props }: Props) {
+  const viewport = useWindowDimensions();
+  const portraitDetails = !props.television && !minimized && !props.fullscreen && viewport.height > viewport.width;
   const [override, setOverride] = useState<LiveEngine | null>(null);
   const [panel, setPanel] = useState<'menu' | 'options' | 'info' | 'tools' | null>(null);
   const [fit, setFit] = useState<DisplayFit>(savedFit);
@@ -48,10 +51,10 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
   useEffect(() => { if (!panel) return; const listener = BackHandler.addEventListener('hardwareBackPress', () => { setPanel(null); return true; }); return () => listener.remove(); }, [panel]);
   let surface: React.ReactNode;
   if (engine === 'vlc') surface = <CompatibilityPlayer item={props.item} tracks={props.tracks} onTracks={props.onTracks} onInfo={setInfo} displayFit={fit} minimized={minimized} registerStop={registerStop} onOptions={() => setPanel('menu')} onProgress={props.onProgress} onClose={props.onClose} onExternal={props.onExternal} fullscreen={props.fullscreen} onFullscreenChange={props.onFullscreenChange || (() => {})} />;
-  else if (engine === 'unavailable') surface = <View style={[u.center, { padding: 24, backgroundColor: '#090124' }]}><Text style={[u.h2, { color: '#fff' }]}>This build needs the VLC engine</Text><Text style={[u.body, { color: '#C4C0CF' }]}>Install a NodeCast standalone build, or choose an external player.</Text><Button title="Choose an external player" onPress={props.onExternal} /><Button title="Back to library" onPress={props.onClose} /></View>;
+  else if (engine === 'unavailable') surface = <View style={[u.center, { padding: 24, backgroundColor: '#0D4029' }]}><Text style={[u.h2, { color: '#fff' }]}>This build needs the VLC engine</Text><Text style={[u.body, { color: '#A3ADA7' }]}>Install a NodeCast standalone build, or choose an external player.</Text><Button title="Choose an external player" onPress={props.onExternal} /><Button title="Back to library" onPress={props.onClose} /></View>;
   else surface = <Player {...props} registerPip={registerPip} minimized={minimized} displayFit={fit} playbackRate={rate} registerStop={registerStop} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
   return <PlaybackChromeProvider panelOpen={!!panel} onIdle={() => setPanel(null)} playing={info.state === 'playing'} minimized={minimized}>
-    <PlaybackOverlay panel={panel} onClose={() => setPanel(null)} television={!!props.television} surface={surface}>
+    <PlaybackOverlay panel={panel} onClose={() => setPanel(null)} television={!!props.television} surface={<View style={{flex:1,backgroundColor:colors.bg}}><View style={portraitDetails?{height:Math.max(240,viewport.width*9/16)}:{flex:1}}>{surface}</View>{portraitDetails&&<ScrollView contentContainerStyle={{padding:20,gap:16,paddingBottom:32}}><View style={{gap:8}}><Text style={u.eyebrow}>{props.item.kind==='live'?'LIVE CHANNEL':props.item.group}</Text><Text style={u.h1}>{props.item.name}</Text><Text style={u.body}>{props.item.group}</Text>{!!props.item.description&&<Text style={u.body}>{props.item.description}</Text>}</View><View style={{flexDirection:'row',flexWrap:'wrap',gap:8}}>{([{title:'Player options',icon:'options-outline',panel:'menu'},{title:'Display & speed',icon:'expand-outline',panel:'tools'},{title:'Sleep timer',icon:'time-outline',panel:'tools'},{title:'Playback information',icon:'information-circle-outline',panel:'info'}] as const).map(tool=><Pressable key={tool.title} accessibilityRole="button" accessibilityLabel={tool.title} onPress={()=>setPanel(tool.panel)} style={{width:'48%',flexGrow:1,minHeight:64,borderWidth:1,borderColor:colors.line,borderRadius:12,padding:12,flexDirection:'row',alignItems:'center',gap:10,backgroundColor:colors.panel}}><Icon name={tool.icon} color={colors.link} size={20}/><Text style={[u.small,{flex:1,color:colors.text}]}>{tool.title}</Text></Pressable>)}</View>{engine==='native'&&Platform.OS==='ios'&&<View style={u.between}><Text style={u.label}>AirPlay</Text><VideoAirPlayButton tint={colors.link} style={{width:48,height:48}}/></View>}{engine==='native'&&Platform.OS!=='web'&&sleep.deadline===null&&isPictureInPictureSupported()&&<ActionButton title="Picture in Picture" variant="secondary" onPress={()=>{void pip.current?.().catch(()=>setCapabilityError('Picture in Picture is unavailable for this video or device.'))}}/>}{props.nextEpisode&&<ActionButton title={`Next episode · ${props.nextEpisode!.item.name}`} onPress={props.nextEpisode!.onPress}/>}<ActionButton title="Back to library" variant="secondary" onPress={props.onClose}/></ScrollView>}</View>}>
       {panel === 'options' && onSaveOptions ? <ChannelOptions value={channelOptions} onSave={onSaveOptions} /> : panel === 'tools' ? <ScrollView style={{flexGrow:0,flexShrink:1}} contentContainerStyle={glass.content}>
         <Text style={glass.title}>Make yourself comfortable</Text><Text style={glass.label}>Display</Text>
         {(['contain','cover'] as const).map(value => <Button key={value} title={`${fit===value?'✓ ':''}${value==='contain'?'Fit · show the whole picture':'Fill · crop the edges'}`} onPress={() => { setFit(value); onFit?.(value); }} />)}
@@ -65,7 +68,7 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
       </ScrollView> : <ScrollView style={{flexGrow:0,flexShrink:1}} contentContainerStyle={glass.content}>
         <Text style={glass.title}>Player options</Text>
         {engine==='native' && !props.television && Platform.OS!=='web' && sleep.deadline===null && isPictureInPictureSupported() && <Button title="Picture in Picture" onPress={() => { void pip.current?.().then(() => setPanel(null)).catch(() => setCapabilityError('Picture in Picture is unavailable for this video or device.')); }} />}
-        {engine==='native' && Platform.OS==='ios' && <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}><Text style={glass.text}>AirPlay</Text><VideoAirPlayButton tint="#B9B4F2" style={{width:48,height:48}} /></View>}
+        {engine==='native' && Platform.OS==='ios' && <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between'}}><Text style={glass.text}>AirPlay</Text><VideoAirPlayButton tint="#1EC677" style={{width:48,height:48}} /></View>}
         {!!capabilityError && <Text style={glass.text}>{capabilityError}</Text>}
         <Button title="Display, speed & sleep timer" onPress={() => setPanel('tools')} />
         {onMinimize && <Button title="Watch while browsing" onPress={() => { setPanel(null); onMinimize(); }} />}

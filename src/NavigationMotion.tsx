@@ -1,6 +1,7 @@
+import { Text } from './Typography';
 import { themedStyles, useThemeChoice, isDarkTheme } from './theme';
 import React, { createContext, memo, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { AccessibilityInfo, AppState, Animated, Easing, Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, AppState, Animated, Easing, Platform, Pressable, StyleSheet, View } from 'react-native';
 import { colors, Icon } from './ui';
 import type { IconName } from './ui';
 import { getTransition, slideTransition, subscribeTransitions } from './transitionConfig';
@@ -85,7 +86,7 @@ export function MovingTabBar<T extends string>({ tabs, active, bottom, onChange 
   const translateX = useMemo(() => Animated.multiply(position, itemWidth), [position, itemWidth]);
   return <View onLayout={event => setWidth(event.nativeEvent.layout.width)} style={[n.bar, { bottom }]}>
     {!!width && <Animated.View pointerEvents="none" testID="tab-indicator" style={[n.indicator, { left: 7 + itemWidth / 2 - 23, transform: [{ translateX: translateX }] }]} />}
-    {tabs.map(tab => <Pressable key={tab.id} testID={`navigation-tab-${tab.id}`} accessibilityRole="tab" accessibilityLabel={tab.title} aria-selected={active === tab.id} accessibilityState={{ selected: active === tab.id }} onPress={() => onChange(tab.id)} style={({ pressed }) => [n.tab, pressed && { opacity: .65 }]}><View style={n.icon}><Icon name={active === tab.id ? tab.selected : tab.icon} size={21} color={active === tab.id ? '#090124' : '#C7C3D0'} /></View><Text style={{ color: active === tab.id ? '#fff' : '#C7C3D0', fontSize: 11, fontWeight: active === tab.id ? '700' : '500' }}>{tab.title}</Text></Pressable>)}
+    {tabs.map(tab => <Pressable key={tab.id} testID={`navigation-tab-${tab.id}`} accessibilityRole="tab" accessibilityLabel={tab.title} aria-selected={active === tab.id} accessibilityState={{ selected: active === tab.id }} onPress={() => onChange(tab.id)} style={({ pressed }) => [n.tab, pressed && { opacity: .65 }]}><View style={n.icon}><Icon name={active === tab.id ? tab.selected : tab.icon} size={21} color={active === tab.id ? colors.link : colors.secondary} /></View><Text style={{ color: active === tab.id ? colors.link : colors.secondary, fontSize: 11, fontWeight: active === tab.id ? '700' : '500' }}>{tab.title}</Text></Pressable>)}
   </View>;
 }
 /** Internal page changes animate once; presenting/dismissing the modal is left to UIKit. */
@@ -127,8 +128,8 @@ export function useRetainedModal<T>(route: T | null) {
 }
 const n = themedStyles(() => ({
   scene: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: colors.bg },
-  bar: { position: 'absolute', left: 20, right: 20, flexDirection: 'row', backgroundColor: '#111', borderRadius: 30, paddingVertical: 9, paddingHorizontal: 7, shadowColor: '#090124', shadowOpacity: .13, shadowRadius: 18, shadowOffset: { width: 0, height: 7 } },
-  indicator: { position: 'absolute', top: 9, width: 46, height: 29, borderRadius: 19, backgroundColor: '#B9B4F2' },
+  bar: { position: 'absolute', left: 0, right: 0, flexDirection: 'row', backgroundColor: colors.bg, borderTopWidth: 1, borderTopColor: colors.line, paddingVertical: 9, paddingHorizontal: 7 },
+  indicator: { position: 'absolute', top: 9, width: 46, height: 29, borderRadius: 999, backgroundColor: colors.selected },
   tab: { flex: 1, alignItems: 'center', gap: 4, minHeight: 48, justifyContent: 'center' },
   icon: { width: 46, height: 29, alignItems: 'center', justifyContent: 'center' },
 }));

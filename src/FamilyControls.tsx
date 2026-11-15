@@ -1,6 +1,7 @@
+import { Text } from './Typography';
 import {loadCategoryGroups} from './provider';
 import React,{createContext,useContext,useEffect,useRef,useState} from 'react';
-import {AppState,Alert,BackHandler,Modal,ScrollView,Text,View} from 'react-native';
+import { AppState, Alert, BackHandler, Modal, ScrollView, View } from 'react-native';
 import {pbkdf2Async} from '@noble/hashes/pbkdf2.js';
 import {sha256} from '@noble/hashes/sha2.js';
 import {bytesToHex,hexToBytes} from '@noble/hashes/utils.js';

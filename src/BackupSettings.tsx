@@ -1,6 +1,7 @@
+import { Text } from './Typography';
 import Switch from './RemoteSwitch';
 import React,{useEffect,useRef,useState} from 'react';
-import {AppState,ScrollView,Text,View} from 'react-native';
+import { AppState, ScrollView, View } from 'react-native';
 import {Button,Field,Notice,u} from './ui';
 import {useFamily} from './FamilyControls';
 import {encryptBackup,decryptBackup,validBackupPassword} from './backupModel';
