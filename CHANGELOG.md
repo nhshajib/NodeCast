@@ -6,7 +6,13 @@
 - iPhone: warm light surfaces, five-tab navigation, timeline guide with program sheet, full-width portrait player.
 - Android: dark default, pill navigation, checked chips, floating labels and M3U / Xtream / File playlist sheet.
 - TV: slim rail, featured Home, retained connection card, compact guide and single green remote focus.
-- Existing animation timings and player lifecycle effects are preserved. The same configured slide is added around TV pages.
+- **Feels native (iPhone and Android phone):** system navigation through Expo Router. Pages use a native stack with edge swipe-back on iOS and predictive back on Android. The tab bar is native, and re-tapping a tab scrolls to the top. Short tasks (playlist form, player choice, remove confirmation, channel playback, programme details) open in native sheets you can drag.
+- Every control shows a pressed state when your finger lands and is at least 44 points. Switch rows toggle from the whole row. Haptics fire only when something changes: a favourite, a switch, a seek, a saved playlist or a removed profile.
+- Library lists no longer rebuild on every keystroke, category chips are virtualised, and guide rows no longer filter every programme per row.
+- Fixed a seek bar issue that could seek twice at the end of a drag.
+- TV: reselecting the active rail item returns the channel list to the top, the channel list keeps more rows ready while scrolling, and Select shows a brief pressed scale.
+- Rules for future screens are in `CLAUDE.md`, and the audit is in `docs/NATIVE-AUDIT.md`.
+- Existing player lifecycle effects are preserved. The same configured slide is added around TV pages.
 - Provider, catalog, guide, catch-up, backup models and playback-policy modules remain unchanged.
 - Native compilation and download updates are deferred at the user’s request. Current public releases remain 0.6.7.
 
