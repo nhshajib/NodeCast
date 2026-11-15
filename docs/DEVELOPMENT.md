@@ -1,5 +1,8 @@
 # Build and contribute
 
+The shared app now lives in `apps/player/`. Run every app command below from that directory (`cd apps/player` from the repository root). The independent website lives in `website/`.
+
+
 [← NodeCast home](../README.md) · [Published downloads](DOWNLOADS.md)
 
 The project shares provider, storage and playback code across editions. Mobile uses the root `App.tsx`; Android TV has its own entry in `android-tv/TVApp.tsx`. The product pages describe downloadable binaries; this page covers source development.

@@ -1,0 +1,224 @@
+[
+  {
+    "route": "/404.html",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/head-snippet.html",
+    "errors": 0,
+    "warnings": 0,
+    "types": []
+  },
+  {
+    "route": "/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "SoftwareApplication",
+      "WebSite",
+      "FAQPage"
+    ]
+  },
+  {
+    "route": "/download/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "SoftwareApplication",
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/install/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/changelog/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/support/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/terms/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/legal/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/guides/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/privacy/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/download/android/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "SoftwareApplication",
+      "BreadcrumbList",
+      "WebSite",
+      "FAQPage"
+    ]
+  },
+  {
+    "route": "/download/iphone/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "SoftwareApplication",
+      "BreadcrumbList",
+      "WebSite",
+      "FAQPage"
+    ]
+  },
+  {
+    "route": "/download/tv/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "SoftwareApplication",
+      "BreadcrumbList",
+      "WebSite",
+      "FAQPage"
+    ]
+  },
+  {
+    "route": "/install/fire-tv/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/install/android-tv/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/install/apple-tv/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/install/android/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/install/iphone/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/support/faq/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite",
+      "FAQPage"
+    ]
+  },
+  {
+    "route": "/guides/add-m3u-playlist/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/guides/tv-guide-epg/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/guides/xtream-codes-login/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  },
+  {
+    "route": "/guides/fix-buffering/",
+    "errors": 0,
+    "warnings": 0,
+    "types": [
+      "BreadcrumbList",
+      "WebSite"
+    ]
+  }
+]

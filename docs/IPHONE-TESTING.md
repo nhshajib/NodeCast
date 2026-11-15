@@ -1,5 +1,8 @@
 # Testing NodeCast on a real iPhone
 
+The shared app now lives in `apps/player/`. Run every app command below from that directory (`cd apps/player` from the repository root). The independent website lives in `website/`.
+
+
 This is an Expo Go test session, not an installed standalone app. Keep the development server running. Install the latest Expo Go from the iPhone App Store; it must support this project’s Expo SDK 58.
 
 ## Run on your PC

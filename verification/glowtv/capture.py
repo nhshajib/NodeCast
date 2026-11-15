@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright,expect
 from pathlib import Path
-import json,time,sys
+import json,time,sys,threading,http.server,functools
 root=Path(__file__).resolve().parents[2];out=root/'verification/glowtv';app=root/'apps/player'
 video=Path(__import__('os').environ.get('NODECAST_SCREENSHOT_CLIP',str(app/'assets/demo/glow-study.mp4'))).read_bytes();art=(app/'assets/demo/Evening.png').read_bytes();now=time.time();stamp=lambda t:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(t))
 xml='<tv>'+''.join(f'<channel id="ch{i}"><display-name>{n}</display-name></channel>'+''.join(f'<programme channel="ch{i}" start="{stamp(now-1200+j*2400)}" stop="{stamp(now+1200+j*2400)}"><title>{t}</title><desc>Original demo schedule for GlowTV interface verification.</desc></programme>' for j,t in enumerate(['Evening studio','Wild North','Quiet studio'])) for i,n in enumerate(['Evening studio','Wild North','Quiet studio'],1))+'</tv>'
@@ -21,9 +21,18 @@ def provider(r):
  else:v={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
  r.fulfill(json=v)
 def button(page,name):return page.get_by_role('button',name=name,exact=True).first
+# Each capture run serves its own exports; no stale background server is used.
+class QuietHandler(http.server.SimpleHTTPRequestHandler):
+ def log_message(self,*_):pass
+ports={}
+for platform in ['ios','android','tv']:
+ directory=Path('/tmp/glowtv-'+platform)
+ if not (directory/'index.html').exists():raise RuntimeError(f'Export {platform} to {directory} before capturing')
+ server=http.server.ThreadingHTTPServer(('127.0.0.1',0),functools.partial(QuietHandler,directory=str(directory)))
+ threading.Thread(target=server.serve_forever,daemon=True).start();ports[platform]=server.server_address[1]
 with sync_playwright() as p:
  b=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox','--autoplay-policy=no-user-gesture-required']);results={}
- for name,port,w,h in [('ios',8251,440,956),('ipad',8251,1032,1376),('android',8252,360,780),('tv',8253,960,540)]:
+ for name,port,w,h in [('ios',ports['ios'],440,956),('ipad',ports['ios'],1032,1376),('android',ports['android'],360,780),('tv',ports['tv'],960,540)]:
   c=b.new_context(viewport={'width':w,'height':h},device_scale_factor=2 if name in ('tv','ipad') else 3,reduced_motion='reduce');c.add_init_script("localStorage.setItem('nodecast.preferences.v2',JSON.stringify({onboarded:true,player:'internal',baseline:null,homeIPSetup:'skipped',theme:'"+('light' if name in ('ios','ipad') else 'dark')+"'}))")
   page=c.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)));page.route('https://provider.example/**',provider);page.route('https://ipwho.is/**',lambda r:r.abort());page.goto(f'http://127.0.0.1:{port}');button(page,'Add your playlist' if name=='tv' else 'Add playlist').wait_for(timeout=30000);page.wait_for_timeout(2500);page.get_by_test_id('startup-splash').wait_for(state='detached',timeout=30000)
   button(page,'Add your playlist' if name=='tv' else 'Add playlist').click()

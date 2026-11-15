@@ -1,0 +1,126 @@
+{
+  "brandSourceFilesUnchanged": 60,
+  "bundleIdentifier": "com.nhshajib.nodecast",
+  "androidIds": [
+    "com.nhshajib.nodecast",
+    "com.nhshajib.nodecast.tv"
+  ],
+  "scheme": "nodecast",
+  "signing": "Existing configuration retained",
+  "icons": {
+    "icons/android/legacy-xhdpi-96.png": [
+      96,
+      96
+    ],
+    "icons/android/legacy-mdpi-48.png": [
+      48,
+      48
+    ],
+    "icons/android/legacy-xxhdpi-144.png": [
+      144,
+      144
+    ],
+    "icons/android/adaptive-background-432.png": [
+      432,
+      432
+    ],
+    "icons/android/legacy-hdpi-72.png": [
+      72,
+      72
+    ],
+    "icons/android/adaptive-monochrome-432.png": [
+      432,
+      432
+    ],
+    "icons/android/adaptive-foreground-432.png": [
+      432,
+      432
+    ],
+    "icons/android/play-store-512.png": [
+      512,
+      512
+    ],
+    "icons/android/legacy-xxxhdpi-192.png": [
+      192,
+      192
+    ],
+    "icons/ios/AppIcon-80.png": [
+      80,
+      80
+    ],
+    "icons/ios/AppIcon-29.png": [
+      29,
+      29
+    ],
+    "icons/ios/AppIcon-120.png": [
+      120,
+      120
+    ],
+    "icons/ios/AppIcon-87.png": [
+      87,
+      87
+    ],
+    "icons/ios/AppIcon-167.png": [
+      167,
+      167
+    ],
+    "icons/ios/AppIcon-152.png": [
+      152,
+      152
+    ],
+    "icons/ios/AppIcon-60.png": [
+      60,
+      60
+    ],
+    "icons/ios/AppIcon-58.png": [
+      58,
+      58
+    ],
+    "icons/ios/AppIcon-20.png": [
+      20,
+      20
+    ],
+    "icons/ios/AppIcon-180.png": [
+      180,
+      180
+    ],
+    "icons/ios/AppIcon-1024.png": [
+      1024,
+      1024
+    ],
+    "icons/ios/AppIcon-76.png": [
+      76,
+      76
+    ],
+    "icons/ios/AppIcon-40.png": [
+      40,
+      40
+    ],
+    "icons/tv/apple-tv-app-store-1280x768.png": [
+      1280,
+      768
+    ],
+    "icons/tv/tv-launcher-icon-512.png": [
+      512,
+      512
+    ],
+    "icons/tv/fire-tv-banner-1280x720.png": [
+      1280,
+      720
+    ],
+    "icons/tv/apple-tv-icon-800x480.png": [
+      800,
+      480
+    ],
+    "icons/tv/apple-tv-icon-400x240.png": [
+      400,
+      240
+    ],
+    "icons/tv/android-tv-banner-320x180.png": [
+      320,
+      180
+    ]
+  },
+  "motion": "Existing animation calls and playback lifecycle effects match the baseline; launch callback fallbacks were added after native cold-start verification exposed an indefinite splash.",
+  "coreLogic": "Provider, vault, catalog, XMLTV, catch-up, playback policy and backup algorithms unchanged apart from public display-name text."
+}

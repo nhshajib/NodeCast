@@ -15,7 +15,7 @@ on:
         description: TV remote checks (use core and settings on the same APK for split verification)
         type: choice
         default: full
-        options: [full, core, settings, stability, library, input]
+        options: [full, core, settings, stability, library, input, design]
       api_level:
         description: Android emulator API (30 approximates Android 11 Fire TV runtime)
         type: choice
@@ -41,7 +41,6 @@ jobs:
           run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
       - name: Install video test tools
-        if: matrix.target == 'tv'
         run: |
           if ! command -v ffmpeg >/dev/null; then
             sudo apt-get update -qq
@@ -63,7 +62,7 @@ jobs:
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           disable-animations: true
           emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim
-          script: cd apps/player && bash scripts/android-smoke.sh ${{ matrix.target }}
+          script: cd apps/player && if [ "${{ inputs.tv_suite }}" = design ]; then python3 ../../verification/glowtv/android-capture.py ${{ matrix.target }}; else bash scripts/android-smoke.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

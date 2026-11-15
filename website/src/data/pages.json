@@ -465,5 +465,35 @@
         "Send specific copyright enquiries to support@glowtv.app. Include the material and its location. Do not send account credentials."
       ]
     ]
+  },
+  {
+    "path": "guides",
+    "title": "GlowTV Guides: Playlists, TV Guide and Playback",
+    "h1": "A helpful place to start.",
+    "description": "Find practical GlowTV guides for adding an M3U playlist, using Xtream Codes, loading an XMLTV TV guide and fixing playback interruptions on your device.",
+    "intro": "Bring your playlist, connect your guide and make yourself comfortable. These practical steps cover the most useful setup tasks.",
+    "kind": "guide-index",
+    "cards": [
+      [
+        "add-m3u-playlist",
+        "Add an M3U playlist",
+        "Connect a link or import a file."
+      ],
+      [
+        "xtream-codes-login",
+        "Use Xtream Codes",
+        "Connect your provider account."
+      ],
+      [
+        "tv-guide-epg",
+        "Load the TV guide",
+        "Add schedules with XMLTV."
+      ],
+      [
+        "fix-buffering",
+        "Fix buffering",
+        "Check your network and playback setup."
+      ]
+    ]
   }
 ]

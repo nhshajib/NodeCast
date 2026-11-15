@@ -3,7 +3,7 @@ name: Build iPhone IPA for personal signing
 on:
   push:
     branches: [glowtv-audit]
-    paths: ['apps/**']
+    paths: ['apps/**', '!apps/**/*.md']
   workflow_dispatch:
 
 permissions:

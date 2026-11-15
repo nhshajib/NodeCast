@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
-    "build": "node scripts/release-metadata.mjs && astro build",
+    "build": "node scripts/sync-brand.mjs && node scripts/release-metadata.mjs && astro build",
     "preview": "astro preview --host 0.0.0.0",
     "audit": "node scripts/audit.mjs"
   },

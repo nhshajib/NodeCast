@@ -1,0 +1,128 @@
+{
+  "ios": {
+    "home": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "guide": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "player": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "movies": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "series": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "playlists": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "search": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    },
+    "settings": {
+      "width": 720,
+      "height": 1564,
+      "native": false
+    }
+  },
+  "android": {
+    "home": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "guide": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "player": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "movies": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "series": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "playlists": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "search": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    },
+    "settings": {
+      "width": 720,
+      "height": 1560,
+      "native": false
+    }
+  },
+  "tv": {
+    "home": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "guide": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "player": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "movies": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "series": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "playlists": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "search": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    },
+    "settings": {
+      "width": 960,
+      "height": 540,
+      "native": false
+    }
+  }
+}

@@ -1,0 +1,481 @@
+{
+  "time": "2026-11-15T15:37:44.143Z",
+  "origin": "local production Astro output",
+  "pages": [
+    {
+      "route": "/",
+      "title": "GlowTV: IPTV Player for iPhone, Android & TV",
+      "descriptionLength": 144,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "SoftwareApplication",
+        "FAQPage"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/download/",
+      "title": "Download GlowTV for iPhone, Android and TV",
+      "descriptionLength": 148,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "SoftwareApplication"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/download/iphone/",
+      "title": "GlowTV for iPhone and iPad: IPTV Player",
+      "descriptionLength": 149,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "SoftwareApplication",
+        "FAQPage"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/download/android/",
+      "title": "GlowTV for Android: IPTV Player APK",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "SoftwareApplication",
+        "FAQPage"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/download/tv/",
+      "title": "GlowTV for TV: Android TV, Fire TV, Apple TV",
+      "descriptionLength": 146,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "SoftwareApplication",
+        "FAQPage"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/",
+      "title": "How to Install GlowTV on Any Device",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/iphone/",
+      "title": "Install GlowTV on iPhone and iPad",
+      "descriptionLength": 145,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/android/",
+      "title": "Install the GlowTV APK on Android",
+      "descriptionLength": 148,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/android-tv/",
+      "title": "Install GlowTV on Android TV and Google TV",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/fire-tv/",
+      "title": "Install GlowTV on Fire TV and Firestick",
+      "descriptionLength": 144,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/install/apple-tv/",
+      "title": "Install GlowTV on Apple TV",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/support/",
+      "title": "GlowTV Support and Help Center",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/support/faq/",
+      "title": "GlowTV FAQ",
+      "descriptionLength": 144,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList",
+        "FAQPage"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/guides/add-m3u-playlist/",
+      "title": "How to Add an M3U Playlist in GlowTV",
+      "descriptionLength": 145,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/guides/xtream-codes-login/",
+      "title": "How to Log In with Xtream Codes in GlowTV",
+      "descriptionLength": 145,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/guides/tv-guide-epg/",
+      "title": "How to Load the TV Guide (EPG) in GlowTV",
+      "descriptionLength": 147,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/guides/fix-buffering/",
+      "title": "How to Fix Buffering in GlowTV",
+      "descriptionLength": 149,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/changelog/",
+      "title": "What's New in GlowTV",
+      "descriptionLength": 149,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/privacy/",
+      "title": "GlowTV Privacy",
+      "descriptionLength": 148,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/terms/",
+      "title": "GlowTV Terms",
+      "descriptionLength": 150,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/legal/",
+      "title": "GlowTV Legal and Copyright",
+      "descriptionLength": 151,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/guides/",
+      "title": "GlowTV Guides: Playlists, TV Guide and Playback",
+      "descriptionLength": 152,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    },
+    {
+      "route": "/404.html",
+      "title": "Page Not Found | GlowTV",
+      "descriptionLength": 153,
+      "geometries": [
+        360,
+        768,
+        1280,
+        1920
+      ],
+      "axeViolations": [],
+      "htmlErrors": [],
+      "schemas": [
+        "Organization",
+        "WebSite",
+        "BreadcrumbList"
+      ],
+      "runtimeErrors": [],
+      "failedRequests": []
+    }
+  ],
+  "errors": [],
+  "externalLinks": [
+    "https://github.com/nhshajib/NodeCast",
+    "https://github.com/nhshajib/NodeCast/issues/new?template=problem.yml",
+    "https://github.com/nhshajib/NodeCast/releases"
+  ]
+}
