@@ -13,7 +13,10 @@ final class GlowTVResumeUITests: XCTestCase {
     add(attachment)
   }
   private func homeContent() -> XCUIElement {
-    app.staticTexts["Watch"]
+    // iOS exposes nested StaticText nodes for styled headings; their hit-test
+    // result is not a visibility test. A real action inside Home verifies both
+    // visible content and interaction, rather than only the persistent tab bar.
+    app.buttons["Search channels, movies and series"]
   }
   private func settleHome() {
     let home = element("navigation-tab-home")
