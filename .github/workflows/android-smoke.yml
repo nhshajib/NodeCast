@@ -1,6 +1,10 @@
 name: Test Android APK startup and TV remote
-run-name: Check ${{ inputs.target }} ${{ inputs.tv_suite }} - APK ${{ inputs.build_run }} - API ${{ inputs.api_level }}
+run-name: Check ${{ inputs.target || 'both' }} ${{ inputs.tv_suite || 'core' }} - APK ${{ inputs.build_run || github.event.workflow_run.id }} - API ${{ inputs.api_level || '35' }}
 on:
+  # A version-tag build is checked on the emulator and, if every check passes, published.
+  workflow_run:
+    workflows: ['Build Android phone and TV APKs']
+    types: [completed]
   workflow_dispatch:
     inputs:
       target:
@@ -30,6 +34,7 @@ permissions:
   actions: read
 jobs:
   smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.path == '.github/workflows/android-apk.yml' && startsWith(github.event.workflow_run.head_branch, 'v')) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -38,11 +43,13 @@ jobs:
         target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/download-artifact@v4
         with:
           name: NodeCast-Android-${{ matrix.target }}
           path: apk
-          run-id: ${{ inputs.build_run }}
+          run-id: ${{ inputs.build_run || github.event.workflow_run.id }}
           github-token: ${{ github.token }}
       - name: Install video test tools
         if: matrix.target == 'tv'
@@ -58,7 +65,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - name: Launch offline and exercise remote keys
         env:
-          NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'full' }}
+          NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'core' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ inputs.api_level || '35' }}
@@ -78,12 +85,14 @@ jobs:
   publish:
     name: Publish Android release after emulator checks
     needs: smoke
-    if: ${{ inputs.make_public && inputs.target == 'both' }}
+    if: ${{ needs.smoke.result == 'success' && (github.event_name == 'workflow_run' || (inputs.make_public && inputs.target == 'both')) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Confirm both APKs and checksums are attached, then publish
         env:
           GH_TOKEN: ${{ github.token }}

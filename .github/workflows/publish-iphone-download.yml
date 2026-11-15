@@ -15,21 +15,39 @@ on:
         description: Publish the release after the verified upload (otherwise it stays a draft)
         type: boolean
         default: false
+  # A version-tag build is verified and published automatically when it succeeds.
+  workflow_run:
+    workflows: ['Build iPhone IPA for personal signing']
+    types: [completed]
 permissions:
   contents: write
   actions: read
 jobs:
   publish:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.path == '.github/workflows/ios-sideload.yml' && startsWith(github.event.workflow_run.head_branch, 'v')) }}
     runs-on: ubuntu-latest
+    env:
+      BUILD_RUN: ${{ inputs.build_run || github.event.workflow_run.id }}
+      SOURCE_SHA: ${{ inputs.source_sha || github.event.workflow_run.head_sha }}
+      MAKE_PUBLIC: ${{ github.event_name == 'workflow_run' || inputs.make_public }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.source_sha }}
+          ref: ${{ env.SOURCE_SHA }}
+      - name: Read the IPA SHA-256 from the build's packaging log
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_SHA256: ${{ inputs.expected_sha256 }}
+        run: |
+          set -euo pipefail
+          if [ -n "$INPUT_SHA256" ]; then echo "EXPECTED_SHA256=$INPUT_SHA256" >> "$GITHUB_ENV"; exit 0; fi
+          JOB=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN/jobs" --jq '.jobs[] | select(.name == "Unsigned iPhone Release IPA") | .id')
+          DIGEST=$(gh api "repos/$GITHUB_REPOSITORY/actions/jobs/$JOB/logs" | grep -o '"sha256": "[0-9a-f]\{64\}"' | tail -1 | grep -o '[0-9a-f]\{64\}')
+          test -n "$DIGEST"
+          echo "EXPECTED_SHA256=$DIGEST" >> "$GITHUB_ENV"
       - name: Verify build provenance
         env:
           GH_TOKEN: ${{ github.token }}
-          BUILD_RUN: ${{ inputs.build_run }}
-          SOURCE_SHA: ${{ inputs.source_sha }}
         run: |
           set -euo pipefail
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN" > /tmp/build-run.json
@@ -45,14 +63,11 @@ jobs:
         with:
           name: NodeCast-iPhone-IPA
           path: existing-ipa
-          run-id: ${{ inputs.build_run }}
+          run-id: ${{ env.BUILD_RUN }}
           github-token: ${{ github.token }}
       - name: Verify archived IPA and upload to existing draft
         env:
           GH_TOKEN: ${{ github.token }}
-          EXPECTED_SHA256: ${{ inputs.expected_sha256 }}
-          SOURCE_SHA: ${{ inputs.source_sha }}
-          MAKE_PUBLIC: ${{ inputs.make_public }}
         run: |
           set -euo pipefail
           python3 - <<'PY'

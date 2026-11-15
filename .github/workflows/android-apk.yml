@@ -7,6 +7,8 @@ on:
         type: choice
         default: both
         options: [both, mobile, tv]
+  push:
+    tags: ['v[0-9]*']
 permissions:
   contents: read
 jobs:
