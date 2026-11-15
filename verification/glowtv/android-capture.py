@@ -65,9 +65,9 @@ try:
  if frame:assert sum(frame[i+1]>100 and frame[i]<100 and frame[i+2]<170 for i in range(0,len(frame),3))>len(frame)/12,'Native TV decoder did not render the original green test band'
  click('Back to library')
  if not TV:home()
- click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30);capture('movies')
+ click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
  if not TV:home()
- click('Series');click('Open Tidewater Stories');find('Start series',timeout=30);capture('series');back()
+ click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
  else:home();click('Search')
  capture('search');click('Settings');capture('settings')
