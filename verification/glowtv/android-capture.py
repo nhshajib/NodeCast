@@ -6,16 +6,21 @@ TARGET=sys.argv[1];TV=TARGET=='tv';ROOT=Path(__file__).resolve().parents[2];APP=
 if TV:os.environ['NODECAST_REMOTE_ONLY']='1'
 spec=importlib.util.spec_from_file_location('helpers',APP/'scripts/android-tv-playback-smoke.py');h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
 adb,fill,find=h.adb,h.text,h.find
+native_tab_taps=[]
 def click(label,scroll=False):
- if not TV and label=='Guide':
-  # The legacy helper excludes bottom-bar controls it does not recognize.
-  # Guide is a real tab in the new five-tab bar, so inspect its exact bounds.
-  nodes=[n for n in h.dump().iter('node')if n.get('content-desc')==label and n.get('clickable')=='true']
+ native_keys={'Home':'home','Live':'live','Guide':'guide','Library':'library','Settings':'settings'}
+ if not TV and label in native_keys:
+  # Native Material widgets use a real down/up gesture. ADB's zero-duration
+  # input tap is not equivalent to a finger press through the native dispatcher.
+  nodes=[n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-'+native_keys[label]]
   candidates=[(n,list(map(int,__import__('re').findall(r'\d+',n.get('bounds','')))))for n in nodes]
   node,bounds=next((n,b)for n,b in candidates if len(b)==4 and b[2]>b[0]and b[3]>b[1]and b[1]>h.height*.65 and b[3]<=h.height)
-  (OUT/'emulator-mobile-guide-target.json').write_text(json.dumps({'candidates':[dict(n.attrib)for n in nodes],'selected':dict(node.attrib),'tap':[(bounds[0]+bounds[2])//2,(bounds[1]+bounds[3])//2]},indent=2)+'\n')
-  adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2));time.sleep(.5)
+  x,y=str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2)
+  native_tab_taps.append({'label':label,'candidates':[dict(n.attrib)for n in nodes],'selected':dict(node.attrib),'tap':[int(x),int(y)],'durationMilliseconds':100})
+  (OUT/'emulator-mobile-native-tab-taps.json').write_text(json.dumps(native_tab_taps,indent=2)+'\n')
+  adb('shell','input','swipe',x,y,x,y,'100');time.sleep(.5)
  else:h.click(label,scroll)
+
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
 class Handler(http.server.BaseHTTPRequestHandler):
