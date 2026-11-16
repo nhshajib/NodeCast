@@ -38,7 +38,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
   self.send_response(200);self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
 server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
 def capture(screen):
- time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+ time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));print(f'Native {TARGET}: captured {screen}',flush=True)
 def home():click('Home')
 def back():
  if TV:click('Back')
@@ -74,7 +74,9 @@ try:
  click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
  else:home();click('Search')
- capture('search');click('Settings');capture('settings')
+ capture('search')
+ if not TV:back() # Android Search is a pushed page; return to its native tabs first.
+ click('Settings');capture('settings')
  checked=[]
  for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Set home IP reference'if TV else'Home IP & connection','Version history']:
   click(label,True);back();checked.append(label)
