@@ -34,7 +34,20 @@ collect_results() {
   exit "$result"
 }
 trap collect_results EXIT
-TEST_ARGS=()
-if [[ "${GLOWTV_ONLY_DESIGN:-0}" = 1 ]]; then TEST_ARGS=(-only-testing:GlowTVResumeUITests/GlowTVResumeUITests/testDesignHomeGuideAndPlayer); fi
+# macOS ships Bash 3.2: use positional arguments so nounset never expands
+# an empty array and silently leaves only the tee side of the pipeline.
+set --
+if [[ "${GLOWTV_ONLY_DESIGN:-0}" = 1 ]]; then set -- -only-testing:GlowTVResumeUITests/GlowTVResumeUITests/testDesignHomeGuideAndPlayer; fi
 set -o pipefail
-xcodebuild test "${TEST_ARGS[@]}" -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
+xcodebuild test "$@" -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
+
+# A successful shell step is not evidence unless Xcode actually ran tests.
+[[ -d "build/${CAPTURE}.xcresult" ]] || { echo "Missing native UI-test result bundle" >&2; exit 1; }
+xcrun xcresulttool get test-results summary --path "build/${CAPTURE}.xcresult" > "build/${CAPTURE}-summary.json"
+python3 - "build/${CAPTURE}-summary.json" <<'PYVERIFY'
+import json,sys
+summary=json.load(open(sys.argv[1]))
+assert summary.get("passedTests",0)>0, "No native UI tests passed: "+str(summary)
+assert summary.get("failedTests",0)==0, "Native UI tests failed: "+str(summary)
+print("Verified native test results:",summary["passedTests"],"passed")
+PYVERIFY
