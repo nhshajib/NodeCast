@@ -10,8 +10,10 @@ def click(label,scroll=False):
  if not TV and label=='Guide':
   # The legacy helper excludes bottom-bar controls it does not recognize.
   # Guide is a real tab in the new five-tab bar, so inspect its exact bounds.
-  node=next(n for n in h.dump().iter('node') if n.get('content-desc')==label and n.get('clickable')=='true')
-  bounds=list(map(int,__import__('re').findall(r'\d+',node.get('bounds',''))))
+  nodes=[n for n in h.dump().iter('node')if n.get('content-desc')==label and n.get('clickable')=='true']
+  candidates=[(n,list(map(int,__import__('re').findall(r'\d+',n.get('bounds','')))))for n in nodes]
+  node,bounds=next((n,b)for n,b in candidates if len(b)==4 and b[2]>b[0]and b[3]>b[1]and b[1]>h.height*.65 and b[3]<=h.height)
+  (OUT/'emulator-mobile-guide-target.json').write_text(json.dumps({'candidates':[dict(n.attrib)for n in nodes],'selected':dict(node.attrib),'tap':[(bounds[0]+bounds[2])//2,(bounds[1]+bounds[3])//2]},indent=2)+'\n')
   adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2));time.sleep(.5)
  else:h.click(label,scroll)
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
