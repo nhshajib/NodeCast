@@ -104,7 +104,15 @@ except Exception:
     node=next(n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-guide')
     box=list(map(int,__import__('re').findall(r'\d+',node.get('bounds',''))))
     adb('shell','input','tap',str((box[0]+box[2])//2),str(box[3]-25 if bottom else(box[1]+box[3])//2))
-   tab_state('original-failure');tap_guide(True);tab_state('guide-second-tap')
+   tab_state('original-failure');tap_guide();tab_state('guide-second-center-tap')
+   def tap_tab(name,bottom=False):
+    node=next(n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-'+name)
+    box=list(map(int,__import__('re').findall(r'\d+',node.get('bounds',''))))
+    adb('shell','input','tap',str((box[0]+box[2])//2),str(box[3]-25 if bottom else(box[1]+box[3])//2))
+   for name in ['home','guide','home','guide']:
+    tap_tab(name);tab_state(name+'-center-cycle-'+str(len(diagnostics)))
+   for name in ['home','guide']:
+    tap_tab(name,True);tab_state(name+'-bottom-cycle')
    for key in ['window_animation_scale','transition_animation_scale','animator_duration_scale']:adb('shell','settings','put','global',key,'1')
    tap_guide();tab_state('guide-animations-enabled')
    # Restart retains the synthetic saved profile and isolates a stale sheet/window.

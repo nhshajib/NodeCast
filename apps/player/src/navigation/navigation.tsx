@@ -46,7 +46,7 @@ export function RootNavigator() {
         <Stack.Screen name="page/[type]" options={{ title: '' }} />
         <Stack.Screen name="sheet/[type]" options={({ route }) => {
           const type = (route.params as { type?: Page['type'] } | undefined)?.type;
-          return { presentation: 'formSheet', headerShown: false, sheetGrabberVisible: true, sheetCornerRadius: 20, sheetAllowedDetents: (type && sheetDetents[type]) || [0.6, 1] };
+          return { presentation: 'formSheet', headerShown: Platform.OS === 'ios', sheetGrabberVisible: true, sheetCornerRadius: 20, sheetAllowedDetents: (type && sheetDetents[type]) || [0.6, 1] };
         }} />
       </Stack>
     </View>
@@ -189,16 +189,22 @@ export function SheetScreen() {
   useThemeChoice();
   const { c, entry, busy } = usePage();
   const page = entry?.page;
+  const close = <Pressable accessibilityRole="button" accessibilityLabel="Close" disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>;
+  const content = !entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />);
   return <FamilyChallengeHost active>
-    <Stack.Screen options={{ gestureEnabled: !busy }} />
-    <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      {/* iOS form sheets resize the first scroll view around one native header. */}
-      <View collapsable={Platform.OS !== 'ios'} style={[u.between, { paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 18 : 12, paddingBottom: 4 }]}>
+    <Stack.Screen options={{ gestureEnabled: !busy, ...(Platform.OS === 'ios' ? {
+      title: page ? c.pageTitle(page) : '', headerBackVisible: false, headerRight: () => close,
+    } : {}) }} />
+    {/* UIKit owns the sheet header and its hit testing. Keep scrolling content
+        separate so the native sheet never coerces it over the Done control. */}
+    {Platform.OS === 'ios' ? content : <View style={{ flex: 1, backgroundColor: colors.bg }}>
+      <View style={[u.between, { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 }]}>
         <Text accessibilityRole="header" numberOfLines={2} style={[u.h2, { flex: 1 }]}>{page ? c.pageTitle(page) : ''}</Text>
-        <Pressable accessibilityRole="button" accessibilityLabel="Close" disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>
+        {close}
       </View>
-      {!entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />)}
-    </View>
+      {content}
+    </View>}
   </FamilyChallengeHost>;
 }
+
 export { isSheet };
