@@ -20,7 +20,7 @@ def open_backup():
   click('Unlock backup & transfer');text('Family PIN','123456');click('Unlock');find('Take your setup with you.',timeout=90)
 def shot(name):OUT.joinpath(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 try:
- click('Go back');click('Live');click('Add Phone Test Channel to favorites');open_backup()
+ subprocess.run(['adb','shell','input','keyevent','4'],check=True);time.sleep(1.5);click('Live');click('Add Phone Test Channel to favorites');open_backup()
  text('Backup password','transfer-test-password-123');text('Confirm backup password','transfer-test-password-123');click('Create encrypted backup',True)
  system_click('Save',timeout=120)
  if any('Unlock backup & transfer' in (n.get('content-desc') or '') for n in dump().iter('node')):

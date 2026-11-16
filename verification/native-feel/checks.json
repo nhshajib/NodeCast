@@ -1,0 +1,64 @@
+{
+ "generated": "2026-11-15",
+ "method": "Chromium (Playwright) against web exports of the phone build, 393x852 touch viewport. Native-only behaviour is listed separately.",
+ "iphone_design": {
+  "tabRetapScrollsToTop": {
+   "scrolledTo": 600,
+   "afterRetap": 0,
+   "pass": true
+  },
+  "pressFeedbackBeforeRelease": {
+   "before": "1",
+   "during": "0.6",
+   "pass": true
+  },
+  "under44": [],
+  "pageErrors": []
+ },
+ "android_design": {
+  "tabRetapScrollsToTop": {
+   "scrolledTo": 600,
+   "afterRetap": 0,
+   "pass": true
+  },
+  "pressFeedbackBeforeRelease": {
+   "before": "1",
+   "during": "0.6",
+   "pass": true
+  },
+  "under44": [],
+  "pageErrors": []
+ },
+ "navigation_walk": {
+  "iphone_design": [
+   "/home",
+   "/movies",
+   "/page/details (push)",
+   "back \u2192 /movies",
+   "/search",
+   "/page/settings",
+   "/page/profiles",
+   "/sheet/provider (form sheet)",
+   "close \u2192 /page/profiles",
+   "back \u00d72 \u2192 /home",
+   "/guide",
+   "player opened over tabs"
+  ],
+  "android_design": [
+   "/home",
+   "/live",
+   "/library",
+   "/settings",
+   "/page/browse search (push)"
+  ],
+  "tv": "TV web export starts with no page errors; home-IP switch keeps the focusable TV pill"
+ },
+ "not_verifiable_here": [
+  "iOS edge swipe-back following the finger",
+  "formSheet detent drag",
+  "native tab re-tap on iOS (UIKit)",
+  "Android predictive back",
+  "haptics",
+  "release-build scroll smoothness on a device"
+ ]
+}

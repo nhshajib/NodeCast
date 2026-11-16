@@ -1,8 +1,8 @@
-import { registerRootComponent } from 'expo';
-
-const App = process.env.EXPO_PUBLIC_APP_VARIANT === 'tv' ? require('./android-tv/TVApp').default : require('./android-mobile/App').default;
-
-// registerRootComponent calls AppRegistry.registerComponent('main', () => App);
-// It also ensures that whether you load the app in Expo Go or in a native build,
-// the environment is set up appropriately
-registerRootComponent(App);
+// Phone editions (iPhone, Android phone, web) use Expo Router: native stack, native tabs and
+// native sheets from `app/`. The TV edition keeps its own D-pad navigator.
+if (process.env.EXPO_PUBLIC_APP_VARIANT === 'tv') {
+  const { registerRootComponent } = require('expo');
+  registerRootComponent(require('./android-tv/TVApp').default);
+} else {
+  require('expo-router/entry');
+}

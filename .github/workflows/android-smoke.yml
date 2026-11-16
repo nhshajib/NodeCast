@@ -1,6 +1,10 @@
 name: Test Android APK startup and TV remote
-run-name: Check ${{ inputs.target }} ${{ inputs.tv_suite }} - APK ${{ inputs.build_run }} - API ${{ inputs.api_level }}
+run-name: Check ${{ inputs.target || 'both' }} ${{ inputs.tv_suite || 'core' }} - APK ${{ inputs.build_run || github.event.workflow_run.id }} - API ${{ inputs.api_level || '35' }}
 on:
+  # A version-tag build is checked on the emulator and, if every check passes, published.
+  workflow_run:
+    workflows: ['Build Android phone and TV APKs']
+    types: [completed]
   workflow_dispatch:
     inputs:
       target:
@@ -21,11 +25,16 @@ on:
         type: choice
         default: '35'
         options: ['30', '35']
+      make_public:
+        description: Publish the android-v<version> release once these emulator checks pass
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
 jobs:
   smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.path == '.github/workflows/apps-release.yml' && (startsWith(github.event.workflow_run.head_branch, 'v') || startsWith(github.event.workflow_run.head_branch, 'glowtv-v'))) }}
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -34,11 +43,13 @@ jobs:
         target: ${{ fromJSON(inputs.target == 'mobile' && '["mobile"]' || inputs.target == 'tv' && '["tv"]' || '["mobile","tv"]') }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - uses: actions/download-artifact@v4
         with:
           name: GlowTV-Android-${{ matrix.target }}
           path: apps/player/apk
-          run-id: ${{ inputs.build_run }}
+          run-id: ${{ inputs.build_run || github.event.workflow_run.id }}
           github-token: ${{ github.token }}
       - name: Install video test tools
         run: |
@@ -53,7 +64,7 @@ jobs:
           sudo udevadm trigger --name-match=kvm
       - name: Launch offline and exercise remote keys
         env:
-          NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'full' }}
+          NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'core' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ inputs.api_level || '35' }}
@@ -70,3 +81,30 @@ jobs:
           path: apps/player/verification/android/emulator-*
           if-no-files-found: ignore
           retention-days: 30
+  publish:
+    name: Publish Android release after emulator checks
+    defaults:
+      run:
+        working-directory: apps/player
+    needs: smoke
+    if: ${{ needs.smoke.result == 'success' && (github.event_name == 'workflow_run' || (inputs.make_public && inputs.target == 'both')) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Confirm both APKs and checksums are attached, then publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="glowtv-v${VERSION}"
+          ASSETS=$(gh release view "$TAG" --json assets --jq '.assets[].name')
+          for NAME in "GlowTV.apk" "GlowTV.apk.sha256" "GlowTV-TV.apk" "GlowTV-TV.apk.sha256" "release-metadata.json"; do
+            grep -qx "$NAME" <<<"$ASSETS" || { echo "Missing $NAME on $TAG"; exit 1; }
+          done
+          gh release edit "$TAG" --draft=false

@@ -30,13 +30,14 @@
         "monochromeImage": "./assets/android-icon-monochrome.png",
         "backgroundImage": "./assets/android-icon-background.png"
       },
-      "predictiveBackGestureEnabled": false,
+      "predictiveBackGestureEnabled": true,
       "versionCode": 700
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+      "expo-router",
       "expo-secure-store",
       [
         "expo-video",

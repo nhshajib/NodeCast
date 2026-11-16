@@ -1,7 +1,7 @@
 name: Build Android phone and TV APKs
 on:
   push:
-    tags: ['glowtv-v*']
+    tags: ['glowtv-v*', 'v[0-9]*']
     branches: ['glowtv-audit']
     paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh']
   workflow_dispatch:

@@ -38,6 +38,12 @@ final class GlowTVResumeUITests: XCTestCase {
     }
     XCTFail("The native player did not expose the original decoded video band. Keep this capture out of marketing.")
   }
+  private func goBackOnNativePage() {
+    for button in app.navigationBars.buttons.allElementsBoundByIndex where button.isHittable {
+      button.tap(); return
+    }
+    XCTFail("Expected the visible system Back button on the current native page")
+  }
   private func homeContent() -> XCUIElement {
     // iOS exposes nested StaticText nodes for styled headings; their hit-test
     // result is not a visibility test. A real action inside Home verifies both
@@ -59,7 +65,8 @@ final class GlowTVResumeUITests: XCTestCase {
       XCTAssertTrue(skip.waitForExistence(timeout: 20))
       skip.tap()
       XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
-      app.buttons["Go back"].tap()
+      // The playlist form is a native form sheet; its Done button closes it.
+      app.buttons["Close"].tap()
     }
     let skip = app.buttons["Not now"]
     if skip.exists { skip.tap() }
@@ -150,12 +157,13 @@ final class GlowTVResumeUITests: XCTestCase {
     series.tap()
     XCTAssertTrue(app.buttons["Start series"].waitForExistence(timeout: 30))
     capture("ios-series")
-    app.buttons["Go back"].tap()
+    goBackOnNativePage()
     element("navigation-tab-search").tap()
     capture("ios-search")
     app.buttons["Settings"].tap()
     XCTAssertTrue(app.buttons["Version history"].waitForExistence(timeout: 15))
     capture("ios-settings")
+    goBackOnNativePage()
     app.buttons["Add playlist"].tap()
     XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 15))
     capture("ios-playlists")

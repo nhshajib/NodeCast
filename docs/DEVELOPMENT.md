@@ -5,7 +5,7 @@ The shared app now lives in `apps/player/`. Run every app command below from tha
 
 [← NodeCast home](../README.md) · [Published downloads](DOWNLOADS.md)
 
-The project shares provider, storage and playback code across editions. Mobile uses the root `App.tsx`; Android TV has its own entry in `android-tv/TVApp.tsx`. The product pages describe downloadable binaries; this page covers source development.
+The project shares provider, storage and playback code across editions. iPhone, Android phone and the web preview use Expo Router (`app/` routes, with screens and state in `src/navigation/`): a native stack, native tabs and native form sheets. Android TV has its own entry in `android-tv/TVApp.tsx`. See [CLAUDE.md](../CLAUDE.md) for the interaction rules. The product pages describe downloadable binaries; this page covers source development.
 
 ## Start on your Windows PC (also works on macOS/Linux)
 

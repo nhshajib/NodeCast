@@ -1,64 +1,32 @@
 # Navigation transitions
 
-NodeCast uses one transition style: **Slide**. A 24-point, 210 ms ease-out slide
-suggests moving into detail or settings without large motion. Root tabs switch
-immediately; the selected-tab indicator moves independently. This keeps browsing
-quick and avoids making peer tabs feel like nested pages.
+## Phones (iPhone, Android phone, web preview)
 
-## Configure a route
+Since 0.7.0 the phone editions use the system's own navigation through Expo Router:
 
-Edit `src/transitionConfig.ts` for permanent application defaults.
-For a runtime override, call this outside render (for example, during startup):
+- **Pages** (details, series, settings pages, profiles, guide) are pushed on a native stack (`app/page/[type].tsx`). iOS gives the edge swipe-back that follows your finger. Android gives the system back gesture, with predictive back enabled in `app.json`.
+- **Tabs** are `NativeTabs` (`app/(tabs)/_layout.tsx`): a `UITabBarController` on iOS and Material bottom navigation on Android. Tabs switch immediately, and re-tapping the active tab scrolls its list to the top.
+- **Short tasks** (playlist form, player choice, remove confirmation, channel playback, programme details) are native form sheets (`app/sheet/[type].tsx`) with `sheetAllowedDetents`. Drag them between detents or down to dismiss.
+- **Reduce Motion** sets the stack's `animation` to `none` (`useHeaderOptions` in `src/navigation/navigation.tsx`).
+
+The browser preview has no native tab bar, so it uses Expo Router's JavaScript bottom tabs with the same routes.
+
+There is no hand-built transition on phones any more. `TabScene`, `MovingTabBar` and the single full-screen `Modal` were removed. The rules are in [CLAUDE.md](../CLAUDE.md), and the audit that led here is in [NATIVE-AUDIT.md](NATIVE-AUDIT.md).
+
+## Android TV
+
+The TV shell keeps its D-pad navigator and `PageTransition`: a 24-point, 210 ms ease-out slide between overlay pages. Configure it in `src/transitionConfig.ts`:
 
 ```ts
 import { setTransition, resetTransition } from './src/transitionConfig';
 
-setTransition('details', 'slide'); // Movie grid → existing movie details page.
-setTransition('series', 'slide');  // Series grid → episode list.
-setTransition('players', 'none');  // Optional: instant playback-preferences page.
-setTransition('home', 'none');     // Root tabs stay immediate.
-resetTransition('players');       // Restore the configured application default.
+setTransition('guide', 'none'); // Instant TV guide overlay.
+resetTransition('guide');       // Restore the default.
 ```
 
-Supported values are `slide` and `none`. New route names default to slide.
-The names match the app's existing tab IDs and sheet types; no new navigation
-container, product-demo route, or user-facing animation setting is needed.
+Supported values are `slide` and `none`, and new route names default to `slide`. `PageTransition` subscribes with `useSyncExternalStore`, settles immediately when the app backgrounds, and respects Reduce Motion. Reselecting the active rail item scrolls its channel list to the top.
 
-`TabScene` and `PageTransition` subscribe to configuration with
-`useSyncExternalStore`. `App.tsx` also reads the sheet configuration so
-`none` disables its native Modal presentation. UIKit/Android Modal owns opening
-and closing the full-screen sheet; its platform slide is vertical.
-The short horizontal slide runs only between pages in an already open sheet,
-avoiding a second animation on initial presentation. This is not an interactive
-swipe-back stack; existing Back and Close controls retain their behavior.
-
-## Accessibility and lifecycle
-
-- Reduce Motion disables page movement and the animated tab indicator.
-- Initial render is visible immediately. Active content opacity never animates.
-- Background/foreground changes settle transforms immediately. A timeout also
-  settles interrupted animations if their completion callback is lost.
-- Switching tabs preserves their mounted content, scroll state and caches.
-- Player pages bypass content transitions to preserve their playback surface.
-- Changing a configuration value settles any in-flight transition without
-  replaying the current page's entrance.
-
-## Performance and platforms
-
-Mobile transforms use React Native Animated with `useNativeDriver`, keeping
-frames on the native UI thread. No React state is updated per animation frame.
-Web uses the existing React Native Web Animated implementation with the same
-timing and transform; its frames run in the browser, not a native driver.
-60 fps depends on device load and must be measured on real devices.
-
-The Android TV shell has separate remote navigation and is unchanged here.
-These settings control the shared iOS, Android mobile and web application.
-
-## Dependencies and validation
-
-No packages to install. This deliberately keeps the existing animation and
-navigation stack; React Navigation, Expo Router, Reanimated, MaskedView and
-shared-element packages are not required for the approved single-style scope.
+## Validation
 
 ```powershell
 npm.cmd ci
@@ -67,9 +35,4 @@ npm.cmd test
 npx.cmd expo export --platform web
 ```
 
-Configuration tests run through `tests/run.mjs`. GitHub's Navigation validation
-workflow runs the same source checks and a web bundle on changes. Device QA must
-still cover: repeated tab switches; opening/closing details and settings;
-switching pages while motion is running; Reduce Motion; foreground recovery;
-and uninterrupted video playback. Source validation is not a frame-rate or
-real-device UI test.
+The GitHub "Navigation validation" workflow runs the same checks. Edge swipe-back, sheet detent dragging, native tab re-tap on iOS and haptics only run in native builds. Do the six feel tests from `docs/NATIVE-AUDIT.md` on a real iPhone and Android phone.
