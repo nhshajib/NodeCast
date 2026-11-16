@@ -99,7 +99,7 @@ export function TabsNavigator() {
     labelStyle={{ default: { color: colors.secondary }, selected: { color: colors.link } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
-      return <NativeTabs.Trigger key={name} name={name} hidden={!spec} testID={`navigation-tab-${name}`} disableAutomaticContentInsets listeners={{ tabPress: () => tabPressed(name) }}>
+      return <NativeTabs.Trigger key={name} name={name} hidden={!spec} testID={`navigation-tab-${name}`} disableAutomaticContentInsets={Platform.OS !== 'android'} listeners={{ tabPress: () => tabPressed(name) }}>
         {spec && <NativeTabs.Trigger.Label>{spec.title}</NativeTabs.Trigger.Label>}
         {spec && <NativeTabs.Trigger.Icon sf={spec.sf as never} md={spec.md as never} />}
       </NativeTabs.Trigger>;

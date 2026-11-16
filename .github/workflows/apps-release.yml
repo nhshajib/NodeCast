@@ -2,8 +2,6 @@ name: Build Android phone and TV APKs
 on:
   push:
     tags: ['glowtv-v*', 'v[0-9]*']
-    branches: ['glowtv-audit']
-    paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh', '!apps/player/scripts/ios-design-fixture.py']
   workflow_dispatch:
     inputs:
       target:
@@ -11,6 +9,10 @@ on:
         type: choice
         default: both
         options: [both, mobile, tv]
+      create_draft:
+        description: Attach verified APKs to a draft GitHub Release
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
@@ -80,7 +82,7 @@ jobs:
           retention-days: 30
           compression-level: 0
   publish:
-    if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/')
+    if: inputs.create_draft || startsWith(github.ref, 'refs/tags/')
     defaults:
       run:
         working-directory: apps/player

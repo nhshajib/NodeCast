@@ -3,8 +3,6 @@ name: Build iPhone IPA for personal signing
 on:
   push:
     tags: ['glowtv-v*', 'v[0-9]*']
-    branches: [glowtv-audit]
-    paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh']
   workflow_dispatch:
     inputs:
       mode:
