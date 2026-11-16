@@ -6,7 +6,7 @@
 - Shared app moved to `apps/player/`; independent Astro website in `website/`.
 - Original demo scenes replace the bundled public samples.
 - Platform guides, support, structured data and accessible screenshot galleries.
-- Store listings, native store captures and custom-domain activation remain release gates.
+- Store publication, physical-device review and custom-domain activation remain release gates.
 
 # What's new in NodeCast
 
@@ -24,7 +24,7 @@
 - Rules for future screens are in `CLAUDE.md`, and the audit is in `docs/NATIVE-AUDIT.md`.
 - Existing player lifecycle effects are preserved. The same configured slide is added around TV pages.
 - Provider, catalog, guide, catch-up, backup models and playback-policy modules remain unchanged.
-- Native compilation and download updates are deferred at the user’s request. Current public releases remain 0.6.7.
+- Native audit builds validate the rebrand; a new public installer release is still pending. Current public releases remain 0.6.7.
 
 
 [← Choose your edition](README.md)

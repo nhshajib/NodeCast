@@ -41,10 +41,10 @@ expected={'ios':(1320,2868),'ipad':(2064,2752),'android':(1080,1920),'tv':(1920,
 for screen,file in files.items():
  assert file.is_file(),file
  with Image.open(file)as image:assert image.size==expected,(file,image.size,expected)
-# The original video has a large green band and a cream marker; player chrome
+# The original video has a large green band; player chrome
 # alone must never qualify a black native video surface for the website.
 with Image.open(files['player'])as image:
- image=image.convert('RGB');image.thumbnail((160,320));pixels=list(image.getdata())
+ image=image.convert('RGB');image.thumbnail((160,320));pixels=list(image.get_flattened_data())
  green=sum(r<50 and 150<g<230 and 70<b<160 for r,g,b in pixels)/len(pixels)
  assert green>.01,f'No original decoded green scene in {platform} player capture ({green:.4f})'
 out.mkdir(parents=True,exist_ok=True)
