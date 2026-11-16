@@ -14,6 +14,10 @@ The app remains one shared project under `apps/player/`. The Astro website is in
 
 ## Native verification
 
+**Current merged-navigation status:** the rebuilt TV APK passed the full remote-only audit in [43813323481](https://github.com/nhshajib/NodeCast/actions/runs/43813323481), and its eight screenshots have been refreshed. Native phone validation is still in progress. Android's first tab action after playlist import and iOS sheet header layout failed the new tests; focused fixes are compiling in [43823584044](https://github.com/nhshajib/NodeCast/actions/runs/43823584044) and [43822412868](https://github.com/nhshajib/NodeCast/actions/runs/43822412868). No merged phone pass or current phone screenshot refresh is claimed yet. Main has not been updated.
+
+The phone/native records below are historical passes from before the newer native-navigation merge. They remain useful provenance, but do not establish that the merged phone app is ready. Native screenshot imports require an actual passing result bundle and all eight images; empty or failed artifacts are rejected.
+
 - Android phone and TV release APK compilation, bundled JavaScript, native VLC architectures, installed package IDs and APK signature validation pass in [build 43735861623](https://github.com/nhshajib/NodeCast/actions/runs/43735861623).
 - TV: **native emulator audit passed** using D-pad, Select, Back and keyboard text only; no touch input is allowed by the harness. It imports a synthetic provider and XMLTV guide, renders actual live video pixels, visits all eight capture screens and opens eight settings destinations. [Run](https://github.com/nhshajib/NodeCast/actions/runs/43735933260), [result](native/tv-audit.json).
 - Android phone: the complete native eight-screen and eight-settings audit passed in [run 43738370813](https://github.com/nhshajib/NodeCast/actions/runs/43738370813). [Result](native/android-audit.json), [decoded-frame inspection](native/android-frame-audit.json).
