@@ -1,0 +1,27 @@
+[
+  {
+    "file": "Inter-800.ttf",
+    "postScriptName": "GlowTVInter-ExtraBold",
+    "glyphsAndMetricsUnchanged": true
+  },
+  {
+    "file": "CrimsonText-Regular.ttf",
+    "postScriptName": "CrimsonText-Regular",
+    "glyphsAndMetricsUnchanged": true
+  },
+  {
+    "file": "Inter-700.ttf",
+    "postScriptName": "GlowTVInter-Bold",
+    "glyphsAndMetricsUnchanged": true
+  },
+  {
+    "file": "Inter-400.ttf",
+    "postScriptName": "GlowTVInter-Regular",
+    "glyphsAndMetricsUnchanged": true
+  },
+  {
+    "file": "Inter-600.ttf",
+    "postScriptName": "GlowTVInter-SemiBold",
+    "glyphsAndMetricsUnchanged": true
+  }
+]

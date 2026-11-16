@@ -3,21 +3,21 @@
     "route": "/",
     "mode": "mobile",
     "scores": {
-      "performance": 99,
+      "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1889.76345,
+    "lcp": 1586.4,
     "cls": 0,
-    "tbt": 82,
-    "bytes": 196602,
+    "tbt": 3,
+    "bytes": 205324,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 155\u00a0KiB"
+        "displayValue": "Est savings of 164\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -29,7 +29,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 35\u00a0KiB"
+        "displayValue": "Est savings of 44\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -42,15 +42,15 @@
     "route": "/download/",
     "mode": "mobile",
     "scores": {
-      "performance": 99,
+      "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 759.33515,
+    "lcp": 811.2289,
     "cls": 0,
-    "tbt": 143.99999999999994,
-    "bytes": 74771,
+    "tbt": 0,
+    "bytes": 74833,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -81,21 +81,21 @@
     "route": "/download/iphone/",
     "mode": "mobile",
     "scores": {
-      "performance": 99,
+      "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1740.7627499999999,
-    "cls": 0,
-    "tbt": 98,
-    "bytes": 381429,
+    "lcp": 1658.9491500000001,
+    "cls": 0.0010162553190977,
+    "tbt": 23,
+    "bytes": 347147,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 339\u00a0KiB"
+        "displayValue": "Est savings of 305\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -107,7 +107,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 191\u00a0KiB"
+        "displayValue": "Est savings of 158\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -125,16 +125,16 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 895.10665,
+    "lcp": 756.70845,
     "cls": 0,
-    "tbt": 11,
-    "bytes": 381380,
+    "tbt": 0,
+    "bytes": 329940,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 339\u00a0KiB"
+        "displayValue": "Est savings of 288\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -146,7 +146,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 189\u00a0KiB"
+        "displayValue": "Est savings of 147\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -164,28 +164,22 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 762.852,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 184819,
+    "lcp": 755.91125,
+    "cls": 0.004094760448762713,
+    "tbt": 62.5,
+    "bytes": 169976,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 146\u00a0KiB"
+        "displayValue": "Est savings of 132\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 22\u00a0KiB"
-      },
-      {
-        "id": "image-delivery-insight",
-        "title": "Improve image delivery",
-        "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -203,10 +197,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 794.29605,
+    "lcp": 792.6913,
     "cls": 0,
     "tbt": 0,
-    "bytes": 74641,
+    "bytes": 74703,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -224,7 +218,7 @@
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
+        "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -242,10 +236,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 776.96615,
+    "lcp": 810.23665,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 78119,
+    "tbt": 7,
+    "bytes": 78181,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -281,10 +275,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 895.05225,
+    "lcp": 795.90985,
     "cls": 0,
-    "tbt": 66,
-    "bytes": 79315,
+    "tbt": 0,
+    "bytes": 79377,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -320,10 +314,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 804.2935,
+    "lcp": 756.01775,
     "cls": 0.01829852973710113,
     "tbt": 0,
-    "bytes": 79562,
+    "bytes": 79624,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -359,10 +353,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 804.9371,
+    "lcp": 758.03655,
     "cls": 0.0002755110891242467,
-    "tbt": 0,
-    "bytes": 80111,
+    "tbt": 3,
+    "bytes": 80173,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -398,10 +392,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 754.50155,
+    "lcp": 794.92335,
     "cls": 0,
-    "tbt": 25,
-    "bytes": 78201,
+    "tbt": 19,
+    "bytes": 78263,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -432,15 +426,15 @@
     "route": "/support/",
     "mode": "mobile",
     "scores": {
-      "performance": 99,
+      "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 755.68795,
+    "lcp": 755.6245,
     "cls": 0.001173942989400958,
-    "tbt": 102.5,
-    "bytes": 80226,
+    "tbt": 0,
+    "bytes": 80288,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -476,10 +470,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 754.0053,
+    "lcp": 804.5848,
     "cls": 0,
     "tbt": 0,
-    "bytes": 78256,
+    "bytes": 78318,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -515,10 +509,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1434.6118000000001,
+    "lcp": 1430.9037000000003,
     "cls": 0,
-    "tbt": 45.999999999999886,
-    "bytes": 79341,
+    "tbt": 0,
+    "bytes": 79403,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -559,10 +553,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1430.759,
+    "lcp": 1433.2307,
     "cls": 0,
-    "tbt": 9,
-    "bytes": 79300,
+    "tbt": 0,
+    "bytes": 79362,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -603,10 +597,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1435.3136999999997,
+    "lcp": 1430.7514,
     "cls": 0,
-    "tbt": 82.99999999999989,
-    "bytes": 79220,
+    "tbt": 42,
+    "bytes": 79282,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -647,10 +641,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1428.0549,
+    "lcp": 1428.8343,
     "cls": 0,
     "tbt": 0,
-    "bytes": 79926,
+    "bytes": 79988,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -691,10 +685,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 768.25005,
+    "lcp": 793.6905,
     "cls": 0,
-    "tbt": 64,
-    "bytes": 74597,
+    "tbt": 0,
+    "bytes": 74659,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -730,10 +724,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 788.4441,
+    "lcp": 787.8178,
     "cls": 0.0003805612485260673,
     "tbt": 0,
-    "bytes": 75110,
+    "bytes": 75180,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -769,10 +763,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 791.74815,
+    "lcp": 758.4441,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 74725,
+    "tbt": 5,
+    "bytes": 74787,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -808,10 +802,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 797.7112,
+    "lcp": 755.23625,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 74884,
+    "tbt": 10,
+    "bytes": 74946,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -847,10 +841,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 755.37255,
+    "lcp": 793.3263,
     "cls": 0,
     "tbt": 0,
-    "bytes": 74531,
+    "bytes": 74593,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -886,10 +880,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 755.7511,
+    "lcp": 752.6146,
     "cls": 0,
     "tbt": 0,
-    "bytes": 73390,
+    "bytes": 73463,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -925,16 +919,16 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 436.55039999999997,
+    "lcp": 353.352,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 324244,
+    "tbt": 42,
+    "bytes": 323881,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 280\u00a0KiB"
+        "score": 0.5,
+        "displayValue": "Est savings of 279\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -945,7 +939,7 @@
       {
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
-        "score": 0,
+        "score": 0.5,
         "displayValue": "Est savings of 91\u00a0KiB"
       },
       {
@@ -964,10 +958,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.8484,
+    "lcp": 225.49915,
     "cls": 9.97912900531042e-05,
     "tbt": 0,
-    "bytes": 74771,
+    "bytes": 74833,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1003,10 +997,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 219.8225,
+    "lcp": 225.617,
     "cls": 0.0001086378101960166,
     "tbt": 0,
-    "bytes": 179563,
+    "bytes": 169643,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1018,13 +1012,18 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 142\u00a0KiB"
+        "displayValue": "Est savings of 132\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 22\u00a0KiB"
+      },
+      {
+        "id": "forced-reflow-insight",
+        "title": "Forced reflow",
+        "score": 0
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1042,10 +1041,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 228.63515,
+    "lcp": 271.50710000000004,
     "cls": 0,
     "tbt": 0,
-    "bytes": 186851,
+    "bytes": 168625,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1057,7 +1056,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 149\u00a0KiB"
+        "displayValue": "Est savings of 131\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1081,28 +1080,22 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 207.7952,
-    "cls": 0,
+    "lcp": 226.6581,
+    "cls": 0.0004167147926196724,
     "tbt": 0,
-    "bytes": 171759,
+    "bytes": 155006,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 134\u00a0KiB"
+        "displayValue": "Est savings of 117\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 22\u00a0KiB"
-      },
-      {
-        "id": "image-delivery-insight",
-        "title": "Improve image delivery",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1120,10 +1113,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.12045,
+    "lcp": 222.65505,
     "cls": 7.508674609761943e-05,
     "tbt": 0,
-    "bytes": 74641,
+    "bytes": 74703,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1141,7 +1134,7 @@
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
+        "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1159,10 +1152,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 217.66565,
+    "lcp": 242.4357,
     "cls": 0.0001629763014376901,
     "tbt": 0,
-    "bytes": 78119,
+    "bytes": 78181,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1183,6 +1176,11 @@
         "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
+        "id": "forced-reflow-insight",
+        "title": "Forced reflow",
+        "score": 0
+      },
+      {
         "id": "network-dependency-tree-insight",
         "title": "Network dependency tree",
         "score": 0
@@ -1198,10 +1196,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.3431,
+    "lcp": 255.2946,
     "cls": 0,
     "tbt": 0,
-    "bytes": 79315,
+    "bytes": 79377,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1237,10 +1235,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 234.33,
+    "lcp": 296.38239999999996,
     "cls": 0.0001574399514950085,
-    "tbt": 0,
-    "bytes": 79562,
+    "tbt": 0.5,
+    "bytes": 79624,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1276,10 +1274,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 220.46285,
+    "lcp": 312.06215,
     "cls": 0.0001463215506077599,
-    "tbt": 0,
-    "bytes": 80111,
+    "tbt": 27.99999999999997,
+    "bytes": 80173,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1315,10 +1313,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 217.41125,
+    "lcp": 219.91035,
     "cls": 0.0001294121799101828,
     "tbt": 0,
-    "bytes": 78201,
+    "bytes": 78263,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1354,16 +1352,16 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 224.58935,
+    "lcp": 243.4288,
     "cls": 0.0006875173663807165,
     "tbt": 0,
-    "bytes": 80226,
+    "bytes": 80288,
     "failedAudits": [
       {
         "id": "unused-css-rules",
         "title": "Reduce unused CSS",
         "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
+        "displayValue": "Est savings of 12\u00a0KiB"
       },
       {
         "id": "cache-insight",
@@ -1376,6 +1374,11 @@
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 18\u00a0KiB"
+      },
+      {
+        "id": "forced-reflow-insight",
+        "title": "Forced reflow",
+        "score": 0
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1393,10 +1396,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 215.7489,
+    "lcp": 219.563,
     "cls": 8.283633027446268e-05,
     "tbt": 0,
-    "bytes": 78256,
+    "bytes": 78318,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1432,10 +1435,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 215.6203,
+    "lcp": 239.15725,
     "cls": 0.0001536337109094149,
     "tbt": 0,
-    "bytes": 79341,
+    "bytes": 79403,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1471,10 +1474,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.4737,
+    "lcp": 237.9359,
     "cls": 9.100375218282907e-05,
     "tbt": 0,
-    "bytes": 79300,
+    "bytes": 79362,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1510,10 +1513,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.6332,
-    "cls": 0.0001147486870195426,
+    "lcp": 227.36425,
+    "cls": 0,
     "tbt": 0,
-    "bytes": 79220,
+    "bytes": 79282,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1549,10 +1552,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 216.4409,
+    "lcp": 217.4563,
     "cls": 0,
     "tbt": 0,
-    "bytes": 79926,
+    "bytes": 79988,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1588,10 +1591,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 218.8002,
+    "lcp": 221.8715,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 74597,
+    "tbt": 4.999999999999986,
+    "bytes": 74659,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1627,10 +1630,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 214.61225,
-    "cls": 0.0001380627266956228,
+    "lcp": 211.8364,
+    "cls": 0,
     "tbt": 0,
-    "bytes": 75110,
+    "bytes": 75180,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1666,10 +1669,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 215.74035,
+    "lcp": 217.0432,
     "cls": 0.000107619330725429,
     "tbt": 0,
-    "bytes": 74725,
+    "bytes": 74787,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1705,10 +1708,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 222.9085,
+    "lcp": 248.36325,
     "cls": 0,
     "tbt": 0,
-    "bytes": 74884,
+    "bytes": 74946,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1744,10 +1747,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 234.0229,
+    "lcp": 218.73835,
     "cls": 0,
     "tbt": 0,
-    "bytes": 74531,
+    "bytes": 74593,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1768,11 +1771,6 @@
         "displayValue": "Est savings of 14\u00a0KiB"
       },
       {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
-      },
-      {
         "id": "network-dependency-tree-insight",
         "title": "Network dependency tree",
         "score": 0
@@ -1788,10 +1786,10 @@
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 218.4266,
+    "lcp": 228.03715,
     "cls": 3.769026912629832e-05,
     "tbt": 0,
-    "bytes": 73390,
+    "bytes": 73463,
     "failedAudits": [
       {
         "id": "unused-css-rules",

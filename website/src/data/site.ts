@@ -20,5 +20,5 @@ export const features = [
  ['No account needed', 'Profiles stay on your device. Encrypted export and import help you bring your settings to a new one.'],
 ];
 export const screens = ['home','guide','player','movies','series','playlists','search','settings'];
-export const screenLabel: Record<string,string> = {home:'Home and continue watching',guide:'TV guide and programme details',player:'Live player and controls',movies:'Movie library',series:'Series details and episodes',playlists:'Add a playlist',search:'Search your library',settings:'Settings and profiles'};
+export const screenLabel: Record<string,string> = {home:'Home and your playlist',guide:'TV guide and programme details',player:'Live player and controls',movies:'Movie library',series:'Series details and episodes',playlists:'Add a playlist',search:'Search your library',settings:'Settings and profiles'};
 export const platformLabel: Record<string,string> = {ios:'iPhone',android:'Android',tv:'Android TV and Fire TV'};

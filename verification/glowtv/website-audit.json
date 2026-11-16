@@ -1,5 +1,5 @@
 {
-  "time": "2026-11-15T15:37:44.143Z",
+  "time": "2026-11-15T17:42:17.165Z",
   "origin": "local production Astro output",
   "pages": [
     {
@@ -473,6 +473,12 @@
     }
   ],
   "errors": [],
+  "interactions": [
+    "FAQ keyboard toggle",
+    "gallery arrow-key scrolling",
+    "reduced motion",
+    "iPhone, Android and Fire TV download detection"
+  ],
   "externalLinks": [
     "https://github.com/nhshajib/NodeCast",
     "https://github.com/nhshajib/NodeCast/issues/new?template=problem.yml",

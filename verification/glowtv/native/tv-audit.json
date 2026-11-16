@@ -1,0 +1,27 @@
+{
+  "platform": "tv",
+  "native": true,
+  "input": "D-pad, Select, Back and keyboard text only",
+  "screens": [
+    "home",
+    "guide",
+    "player",
+    "movies",
+    "series",
+    "playlists",
+    "search",
+    "settings"
+  ],
+  "settingsDestinations": [
+    "Appearance",
+    "Family controls",
+    "Playback",
+    "Library organization",
+    "Backup & transfer",
+    "Library & storage",
+    "Set home IP reference",
+    "Version history"
+  ],
+  "actualVideoPixels": true,
+  "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks."
+}

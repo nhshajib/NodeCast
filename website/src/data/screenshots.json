@@ -3,126 +3,126 @@
     "home": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "guide": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "player": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "movies": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "series": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "playlists": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "search": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     },
     "settings": {
       "width": 720,
       "height": 1564,
-      "native": false
+      "native": true
     }
   },
   "android": {
     "home": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "guide": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "player": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "movies": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "series": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "playlists": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "search": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     },
     "settings": {
       "width": 720,
-      "height": 1560,
-      "native": false
+      "height": 1280,
+      "native": true
     }
   },
   "tv": {
     "home": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "guide": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "player": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "movies": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "series": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "playlists": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "search": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     },
     "settings": {
       "width": 960,
       "height": 540,
-      "native": false
+      "native": true
     }
   }
 }

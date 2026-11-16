@@ -10,5 +10,5 @@
 /* A dark outer keyline gives the green focus ring contrast on every pastel. */
 a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #1EC677;outline-offset:3px;box-shadow:0 0 0 7px #0D4029}
 
-/* Native captures already include the real status bar and device island. */
-.phone-native{padding-top:0}.phone-native::before,.phone-native .island{display:none}
+/* Native captures include the real status bar; the island belongs to the frame. */
+.phone-native{padding-top:0}.phone-native::before{display:none}

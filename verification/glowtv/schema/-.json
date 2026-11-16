@@ -1,0 +1,760 @@
+{
+  "isRendered": false,
+  "tripleGroups": [
+    {
+      "ownerSet": {},
+      "nodes": [
+        {
+          "types": [
+            {
+              "pred": "itemtype",
+              "value": "SoftwareApplication",
+              "errors": [],
+              "begin": 2750,
+              "end": 2771
+            }
+          ],
+          "typeGroup": "SoftwareApplication",
+          "errors": [],
+          "properties": [
+            {
+              "pred": "name",
+              "value": "GlowTV",
+              "errors": [],
+              "begin": 2779,
+              "end": 2787
+            },
+            {
+              "pred": "applicationCategory",
+              "value": "MultimediaApplication",
+              "errors": [],
+              "begin": 2810,
+              "end": 2833
+            },
+            {
+              "pred": "operatingSystem",
+              "value": "iOS, Android, Android TV, Fire OS",
+              "errors": [],
+              "begin": 2852,
+              "end": 2887
+            },
+            {
+              "pred": "url",
+              "value": "https://glowtv.app/",
+              "errors": [],
+              "begin": 2894,
+              "end": 2915
+            },
+            {
+              "pred": "downloadUrl",
+              "value": "https://glowtv.app/download/",
+              "errors": [],
+              "begin": 2930,
+              "end": 2960
+            },
+            {
+              "pred": "screenshot",
+              "value": "https://glowtv.app/screenshots/ios-home.webp",
+              "errors": [],
+              "begin": 2974,
+              "end": 3020
+            }
+          ],
+          "nodeProperties": [
+            {
+              "pred": "offers",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Offer",
+                    "errors": [],
+                    "begin": 3039,
+                    "end": 3046
+                  }
+                ],
+                "typeGroup": "Offer",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "price",
+                    "value": "0",
+                    "errors": [],
+                    "begin": 3055,
+                    "end": 3058
+                  },
+                  {
+                    "pred": "priceCurrency",
+                    "value": "USD",
+                    "errors": [],
+                    "begin": 3075,
+                    "end": 3080
+                  }
+                ],
+                "nodeProperties": [],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 3030,
+              "end": 3081
+            }
+          ],
+          "numErrors": 0,
+          "numWarnings": 0
+        }
+      ],
+      "numNodesWithError": 0,
+      "numNodesWithWarning": 0,
+      "numErrors": 0,
+      "numWarnings": 0,
+      "type": "SoftwareApplication"
+    },
+    {
+      "ownerSet": {},
+      "nodes": [
+        {
+          "types": [
+            {
+              "pred": "itemtype",
+              "value": "WebSite",
+              "errors": [],
+              "begin": 2539,
+              "end": 2548
+            }
+          ],
+          "typeGroup": "WebSite",
+          "errors": [],
+          "properties": [
+            {
+              "pred": "name",
+              "value": "GlowTV",
+              "errors": [],
+              "begin": 2556,
+              "end": 2564
+            },
+            {
+              "pred": "url",
+              "value": "https://glowtv.app/",
+              "errors": [],
+              "begin": 2571,
+              "end": 2591
+            },
+            {
+              "pred": "inLanguage",
+              "value": "en",
+              "errors": [],
+              "begin": 2605,
+              "end": 2609
+            }
+          ],
+          "nodeProperties": [
+            {
+              "pred": "publisher",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Organization",
+                    "errors": [],
+                    "begin": 2285,
+                    "end": 2299
+                  }
+                ],
+                "typeGroup": "Organization",
+                "idProperty": {
+                  "pred": "urn:spore:url",
+                  "value": "https://glowtv.app/#organization",
+                  "errors": [],
+                  "begin": 2306,
+                  "end": 2340
+                },
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "GlowTV",
+                    "errors": [],
+                    "begin": 2348,
+                    "end": 2356
+                  },
+                  {
+                    "pred": "url",
+                    "value": "https://glowtv.app/",
+                    "errors": [],
+                    "begin": 2363,
+                    "end": 2383
+                  },
+                  {
+                    "pred": "logo",
+                    "value": "https://glowtv.app/icon-512.png",
+                    "errors": [],
+                    "begin": 2391,
+                    "end": 2424
+                  },
+                  {
+                    "pred": "email",
+                    "value": "support@glowtv.app",
+                    "errors": [],
+                    "begin": 2433,
+                    "end": 2453
+                  }
+                ],
+                "nodeProperties": [],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 2622,
+              "end": 2664
+            }
+          ],
+          "numErrors": 0,
+          "numWarnings": 0
+        }
+      ],
+      "numNodesWithError": 0,
+      "numNodesWithWarning": 0,
+      "numErrors": 0,
+      "numWarnings": 0,
+      "type": "WebSite"
+    },
+    {
+      "ownerSet": {},
+      "nodes": [
+        {
+          "types": [
+            {
+              "pred": "itemtype",
+              "value": "FAQPage",
+              "errors": [],
+              "begin": 3167,
+              "end": 3176
+            }
+          ],
+          "typeGroup": "FAQPage",
+          "errors": [],
+          "properties": [],
+          "nodeProperties": [
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 3200,
+                    "end": 3210
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Does GlowTV include TV channels?",
+                    "errors": [],
+                    "begin": 3218,
+                    "end": 3252
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 3279,
+                          "end": 3287
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "No. GlowTV is a player only. You add a playlist or server account from a provider you are entitled to use. No channels or subscriptions are included.",
+                          "errors": [],
+                          "begin": 3295,
+                          "end": 3446
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 3270,
+                    "end": 3447
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 3191,
+              "end": 3448
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 3458,
+                    "end": 3468
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Is GlowTV free?",
+                    "errors": [],
+                    "begin": 3476,
+                    "end": 3493
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 3520,
+                          "end": 3528
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "Yes. The player is free. Optional support helps its development and does not unlock channels or features. Your content provider may charge separately.",
+                          "errors": [],
+                          "begin": 3536,
+                          "end": 3688
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 3511,
+                    "end": 3689
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 3449,
+              "end": 3690
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 3700,
+                    "end": 3710
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Which playlists can I add?",
+                    "errors": [],
+                    "begin": 3718,
+                    "end": 3746
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 3773,
+                          "end": 3781
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "You can connect with an M3U or M3U8 playlist URL, import an M3U file, or sign in to your provider with Xtream Codes. A stream manifest is not a channel playlist.",
+                          "errors": [],
+                          "begin": 3789,
+                          "end": 3952
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 3764,
+                    "end": 3953
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 3691,
+              "end": 3954
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 3964,
+                    "end": 3974
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Do I need a GlowTV account?",
+                    "errors": [],
+                    "begin": 3982,
+                    "end": 4011
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 4038,
+                          "end": 4046
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "No. Your provider profiles and settings stay on your device. You can transfer them with an encrypted backup protected by a password you choose.",
+                          "errors": [],
+                          "begin": 4054,
+                          "end": 4199
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 4029,
+                    "end": 4200
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 3955,
+              "end": 4201
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 4211,
+                    "end": 4221
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "How do I load the TV guide?",
+                    "errors": [],
+                    "begin": 4229,
+                    "end": 4258
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 4285,
+                          "end": 4293
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "Add your provider\u2019s XMLTV URL in the Guide. Programme information depends on your provider and matching channel IDs. Empty schedules do not mean the player is broken.",
+                          "errors": [],
+                          "begin": 4301,
+                          "end": 4471
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 4276,
+                    "end": 4472
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 4202,
+              "end": 4473
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 4483,
+                    "end": 4493
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Can I watch past programmes?",
+                    "errors": [],
+                    "begin": 4501,
+                    "end": 4531
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 4558,
+                          "end": 4566
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "Catch-up is available for completed programmes when your Xtream provider explicitly supports it and the programme is inside its archive window.",
+                          "errors": [],
+                          "begin": 4574,
+                          "end": 4719
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 4549,
+                    "end": 4720
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 4474,
+              "end": 4721
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 4731,
+                    "end": 4741
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Does a different public IP prove my VPN is connected?",
+                    "errors": [],
+                    "begin": 4749,
+                    "end": 4804
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 4831,
+                          "end": 4839
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "No. GlowTV can compare your public IP with a home reference. A changed address is not proof of a VPN or a secure connection.",
+                          "errors": [],
+                          "begin": 4847,
+                          "end": 4973
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 4822,
+                    "end": 4974
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 4722,
+              "end": 4975
+            },
+            {
+              "pred": "mainEntity",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Question",
+                    "errors": [],
+                    "begin": 4985,
+                    "end": 4995
+                  }
+                ],
+                "typeGroup": "Question",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "Can I cast to another screen?",
+                    "errors": [],
+                    "begin": 5003,
+                    "end": 5034
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "acceptedAnswer",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Answer",
+                          "errors": [],
+                          "begin": 5061,
+                          "end": 5069
+                        }
+                      ],
+                      "typeGroup": "Answer",
+                      "errors": [],
+                      "properties": [
+                        {
+                          "pred": "text",
+                          "value": "Compatible native playback on iOS supports AirPlay and picture-in-picture. Availability depends on the stream and playback engine. Chromecast is not currently supported.",
+                          "errors": [],
+                          "begin": 5077,
+                          "end": 5248
+                        }
+                      ],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 5052,
+                    "end": 5249
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 4976,
+              "end": 5250
+            }
+          ],
+          "numErrors": 0,
+          "numWarnings": 0
+        }
+      ],
+      "numNodesWithError": 0,
+      "numNodesWithWarning": 0,
+      "numErrors": 0,
+      "numWarnings": 0,
+      "type": "FAQPage"
+    }
+  ],
+  "numObjects": 3,
+  "html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>GlowTV: IPTV Player for iPhone, Android &amp; TV</title><meta name=\"description\" content=\"Watch your M3U and Xtream Codes playlists with a clean TV guide on iPhone, Android, Fire TV and Apple TV. Free download, no content sold or hosted.\"><link rel=\"canonical\" href=\"https://glowtv.app/\"><meta name=\"google-site-verification\" content=\"[GSC_TOKEN]\"><link rel=\"icon\" href=\"/favicon.ico\" sizes=\"48x48\"><link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\"><link rel=\"manifest\" href=\"/site.webmanifest\"><meta name=\"theme-color\" content=\"#0D4029\"><link rel=\"preload\" href=\"/fonts/Inter-800.woff2\" as=\"font\" type=\"font/woff2\" crossorigin><meta property=\"og:type\" content=\"website\"><meta property=\"og:site_name\" content=\"GlowTV\"><meta property=\"og:title\" content=\"GlowTV: IPTV Player for iPhone, Android &amp; TV\"><meta property=\"og:description\" content=\"Watch your M3U and Xtream Codes playlists with a clean TV guide on iPhone, Android, Fire TV and Apple TV. Free download, no content sold or hosted.\"><meta property=\"og:url\" content=\"https://glowtv.app/\"><meta property=\"og:image\" content=\"https://glowtv.app/og-image-1200x630.png\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"GlowTV: IPTV Player for iPhone, Android &amp; TV\"><meta name=\"twitter:description\" content=\"Watch your M3U and Xtream Codes playlists with a clean TV guide on iPhone, Android, Fire TV and Apple TV. Free download, no content sold or hosted.\"><meta name=\"twitter:image\" content=\"https://glowtv.app/og-image-1200x630.png\"><link rel=\"alternate\" type=\"application/rss+xml\" title=\"GlowTV updates\" href=\"/changelog/rss.xml\"><link rel=\"preload\" as=\"image\" href=\"/screenshots/ios-home.webp\" imagesrcset=\"/screenshots/ios-home-small.webp 360w, /screenshots/ios-home-medium.webp 480w, /screenshots/ios-home.webp 720w\" imagesizes=\"(max-width: 600px) 218px, (max-width: 900px) 292px, 340px\" fetchpriority=\"high\"><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Organization\",\"@id\":\"https://glowtv.app/#organization\",\"name\":\"GlowTV\",\"url\":\"https://glowtv.app\",\"logo\":\"https://glowtv.app/icon-512.png\",\"email\":\"support@glowtv.app\"}</script><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"GlowTV\",\"url\":\"https://glowtv.app\",\"inLanguage\":\"en\",\"publisher\":{\"@id\":\"https://glowtv.app/#organization\"}}</script><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"SoftwareApplication\",\"name\":\"GlowTV\",\"applicationCategory\":\"MultimediaApplication\",\"operatingSystem\":\"iOS, Android, Android TV, Fire OS\",\"url\":\"https://glowtv.app/\",\"downloadUrl\":\"https://glowtv.app/download/\",\"screenshot\":\"https://glowtv.app/screenshots/ios-home.webp\",\"offers\":{\"@type\":\"Offer\",\"price\":\"0\",\"priceCurrency\":\"USD\"}}</script><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"FAQPage\",\"mainEntity\":[{\"@type\":\"Question\",\"name\":\"Does GlowTV include TV channels?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"No. GlowTV is a player only. You add a playlist or server account from a provider you are entitled to use. No channels or subscriptions are included.\"}},{\"@type\":\"Question\",\"name\":\"Is GlowTV free?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Yes. The player is free. Optional support helps its development and does not unlock channels or features. Your content provider may charge separately.\"}},{\"@type\":\"Question\",\"name\":\"Which playlists can I add?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"You can connect with an M3U or M3U8 playlist URL, import an M3U file, or sign in to your provider with Xtream Codes. A stream manifest is not a channel playlist.\"}},{\"@type\":\"Question\",\"name\":\"Do I need a GlowTV account?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"No. Your provider profiles and settings stay on your device. You can transfer them with an encrypted backup protected by a password you choose.\"}},{\"@type\":\"Question\",\"name\":\"How do I load the TV guide?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Add your provider\u2019s XMLTV URL in the Guide. Programme information depends on your provider and matching channel IDs. Empty schedules do not mean the player is broken.\"}},{\"@type\":\"Question\",\"name\":\"Can I watch past programmes?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Catch-up is available for completed programmes when your Xtream provider explicitly supports it and the programme is inside its archive window.\"}},{\"@type\":\"Question\",\"name\":\"Does a different public IP prove my VPN is connected?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"No. GlowTV can compare your public IP with a home reference. A changed address is not proof of a VPN or a secure connection.\"}},{\"@type\":\"Question\",\"name\":\"Can I cast to another screen?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"Compatible native playback on iOS supports AirPlay and picture-in-picture. Availability depends on the stream and playback engine. Chromecast is not currently supported.\"}}]}</script><!-- Analytics disabled. Configure [ANALYTICS_DOMAIN] and [ANALYTICS_SCRIPT_URL] after choosing a privacy-friendly service. --><style>@font-face{font-family:Inter;src:url(/fonts/Inter-400.woff2) format(\"woff2\");font-weight:400;font-display:swap}@font-face{font-family:Inter;src:url(/fonts/Inter-600.woff2) format(\"woff2\");font-weight:600;font-display:swap}@font-face{font-family:Inter;src:url(/fonts/Inter-800.woff2) format(\"woff2\");font-weight:800;font-display:swap}@font-face{font-family:Mono;src:url(/fonts/Mono-400.woff2) format(\"woff2\");font-weight:400;font-display:swap}:root{--canvas:#e6e4f0;--ink:#111613;--muted:#454b47;--green:#1ec677;--mint:#d4efe3;--peach:#f6e2d3;--lilac:#d6cce6;--line:#11161330;--pill:#1c1f1e;--white:#f7f6f1;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--canvas);font-synthesis:none;scroll-behavior:smooth;scroll-padding-top:24px}*{box-sizing:border-box}body{margin:0}img{max-width:100%;height:auto;display:block}a{color:inherit;text-underline-offset:4px}a:hover{text-decoration-thickness:2px}button,input{font:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #0b7a47;outline-offset:5px}h1,h2,h3,p{margin:0}h1,h2,h3{font-weight:800;letter-spacing:-.055em;line-height:1.04;text-wrap:balance}h1{font-size:clamp(42px,5.65vw,88px)}h2{font-size:clamp(32px,3.8vw,58px)}h3{font-size:24px;letter-spacing:-.035em;line-height:1.15}p{line-height:1.65;color:var(--muted)}.small{font-size:12px}.eyebrow,.hero-sub,.platform-links,.feature-number,.breadcrumbs,.release-label{font-family:Mono,monospace;text-transform:uppercase;letter-spacing:.09em;font-weight:400}.eyebrow{font-size:12px;line-height:1.6;margin-bottom:18px;color:var(--ink)}.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 4%;max-width:1920px;margin:auto;min-height:90px}.brand{display:block;flex-shrink:0}.brand img{object-fit:contain}.nav nav{display:flex;gap:28px}.nav nav a{font-family:Mono,monospace;text-transform:uppercase;font-size:12px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}.button{background:var(--pill);color:#fff;border:1px solid var(--pill);border-radius:999px;min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:20px;padding:16px 30px;text-transform:uppercase;font-size:13px;font-weight:600;text-decoration:none;line-height:1.25;text-align:center}.button:hover{background:#333b35}.nav-download{min-height:44px;padding:12px 24px}.button.secondary{color:var(--ink);background:transparent}.skip{position:fixed;z-index:99;top:10px;left:10px;background:var(--white);padding:16px;border-radius:8px;transform:translateY(-180%)}.skip:focus{transform:none}.panel{border-radius:32px;margin:0 20px;background-color:#cfcae8;background-image:radial-gradient(#383b6920 .8px,transparent .8px);background-size:9px 9px;overflow:hidden}.mint{background-color:var(--mint);background-image:radial-gradient(#0d402915 .8px,transparent .8px)}.peach{background-color:var(--peach);background-image:radial-gradient(#69492c18 .8px,transparent .8px)}.hero{padding-top:60px;text-align:center;isolation:isolate;background-image:radial-gradient(#383b6920 .8px,transparent .8px),linear-gradient(120deg,#c9c8ea,#d6cce6);background-size:9px 9px,100% 100%}.hero-copy{position:relative;z-index:4;margin:auto;max-width:920px;padding:0 24px}.hero-copy .eyebrow{margin-bottom:20px}.new{background:#fff8;border-radius:999px;padding:7px 12px;margin-right:10px}.hero h1{margin-bottom:24px}.hero-sub{font-size:clamp(13px,1.4vw,20px);max-width:700px;margin:0 auto 24px;line-height:1.6;color:var(--ink)}.platform-links{font-size:10px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px}.platform-links a{display:flex;align-items:center;min-height:32px}.hero-stage{position:relative;height:650px;max-width:1460px;margin:48px auto 0}.phone{position:relative;z-index:3;width:358px;margin:auto;border:9px solid #121713;border-radius:54px 54px 0 0;background:#f7f6f1;box-shadow:0 0 0 2px #767a7499,0 20px 60px #24223a30;overflow:hidden;min-height:780px}.phone img{width:100%;height:auto}.island{position:absolute;z-index:2;top:12px;left:35%;width:30%;height:23px;border-radius:30px;background:#0a0e0c}.photo-card{position:absolute;z-index:1;width:230px;height:290px;border:11px solid #ffffffe0;border-radius:24px;box-shadow:0 20px 38px #25203924;overflow:hidden;background:#efedf6;animation:float 8s ease-in-out infinite alternate}.photo-card img{width:100%;height:100%;object-fit:cover}.photo-0{left:6%;top:-80px;--tilt:-11deg;transform:rotate(var(--tilt))}.photo-1{left:3%;top:275px;--tilt:9deg;transform:rotate(var(--tilt));animation-delay:-3s}.photo-2{left:22%;top:365px;--tilt:-17deg;transform:rotate(var(--tilt));animation-delay:-5s}.photo-3{right:5%;top:-55px;--tilt:13deg;transform:rotate(var(--tilt));animation-delay:-1s}.photo-4{right:2%;top:300px;--tilt:-7deg;transform:rotate(var(--tilt));animation-delay:-6s}.photo-5{right:22%;top:370px;--tilt:17deg;transform:rotate(var(--tilt));animation-delay:-4s}@keyframes float{0%{transform:translateY(0) rotate(var(--tilt))}to{transform:translateY(-8px) rotate(var(--tilt))}}.section{padding:88px max(32px,6vw);max-width:1600px;margin:0 auto}.section.panel{max-width:none;margin:0 20px;padding:80px max(32px,7vw)}.section>h2{max-width:800px;margin-bottom:44px}.compatibility{text-align:center;padding-top:48px;padding-bottom:48px}.compatibility>div{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:16px;font-weight:600;font-size:18px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:50px 48px;margin-top:48px}.feature-grid article{border-top:1px solid var(--line);padding-top:24px}.feature-number{display:block;color:#285c45;font-size:13px;margin-bottom:28px}.feature-grid h3{margin-bottom:14px}.feature-grid p{max-width:330px;font-size:15px}.three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.step{border-top:1px solid var(--line);padding-top:24px}.step h3{margin-bottom:14px}.step p:not(.eyebrow){margin-bottom:20px;max-width:330px}.step a,.text-link{font-weight:600;min-height:44px;display:inline-flex;align-items:center}.platform-card{text-decoration:none;display:block;min-width:0}.platform-card h3{display:flex;justify-content:space-between;gap:10px;margin:28px 0 12px}.mini-device{height:320px;background:#b6cbc3;overflow:hidden;border-radius:20px;padding:30px 24px 0;display:flex;justify-content:center}.mini-device img{width:170px;object-fit:cover;object-position:top;border:6px solid #111613;border-radius:24px 24px 0 0;align-self:flex-start}.mini-device.wide{background:#c1b3db;align-items:center;padding:16px}.mini-device.wide img{width:100%;border-radius:12px;object-fit:contain;align-self:center}.gallery-section{overflow:hidden}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:36px}.section-heading p{font-size:13px;max-width:240px}.gallery{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 8px 24px;scrollbar-color:#697d70 transparent;overscroll-behavior-x:contain}.gallery figure{margin:0;flex:0 0 250px;scroll-snap-align:start;min-width:0}.gallery img{width:100%;aspect-ratio:720/1560;object-fit:cover;border:8px solid #fff;border-radius:24px;background:#f7f6f1}.gallery figcaption{font-size:12px;line-height:1.5;margin-top:14px;font-family:Mono,monospace}.tv-gallery figure{flex-basis:600px;max-width:85vw}.tv-gallery img{aspect-ratio:16/9;border-radius:16px}.faq{max-width:1000px}.faq details{border-top:1px solid var(--line);padding:12px 0}.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:52px;font-weight:600;font-size:17px}.faq summary::-webkit-details-marker{display:none}.faq summary span{font-weight:400;font-size:25px}.faq details p{padding:6px 48px 18px 0;font-size:15px}.faq .text-link{margin-top:24px}.final{text-align:center;padding:64px 24px}.final h2{margin-bottom:28px}footer{max-width:1500px;padding:60px max(32px,5vw);margin:auto}footer nav{display:flex;gap:14px 28px;flex-wrap:wrap;margin:28px 0}footer nav a{font-size:13px;display:inline-flex;min-height:44px;align-items:center}.disclaimer{font-size:13px;max-width:820px;margin-bottom:20px}.breadcrumbs{display:flex;gap:10px;flex-wrap:wrap;padding:20px max(32px,5vw);font-size:10px;text-transform:capitalize}.breadcrumbs a,.breadcrumbs span{min-height:24px;display:inline-flex;align-items:center}.page-hero{padding:64px max(28px,6vw);text-align:center}.page-hero h1{max-width:950px;margin:0 auto 24px;font-size:clamp(40px,5.5vw,76px)}.page-hero .intro{max-width:700px;margin:0 auto 28px;font-size:18px}.page-hero .button{margin:8px}.content{max-width:1000px;margin:auto;padding:60px 32px}.content h2{font-size:32px;margin:36px 0 18px}.content h3{font-size:23px;margin:28px 0 14px}.content p{margin-bottom:18px}.content ul,.content ol{padding-left:24px;line-height:1.8;color:var(--muted)}.content li{margin-bottom:10px}.notice{border:1px solid #11161330;padding:20px 24px;border-radius:16px;background:#f7f6f180;margin:24px 0;font-size:14px;line-height:1.65;overflow-wrap:anywhere}.availability{display:inline-flex;border:1px solid #11161330;border-radius:999px;padding:10px 16px;margin:8px;font:11px/1.5 Mono,monospace;min-height:44px;align-items:center}.release-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.release-grid div{background:#f7f6f188;padding:16px;border-radius:12px;min-width:0}.release-label{display:block;font-size:10px;margin-bottom:8px}.release-grid code{overflow-wrap:anywhere;font-size:11px}.guide-step{display:grid;grid-template-columns:80px 1fr;gap:20px;padding:28px 0;border-top:1px solid var(--line)}.guide-step .number{font:12px/1.5 Mono,monospace;padding:12px;background:#d4efe3;border-radius:10px;height:max-content;text-align:center}.guide-step h2{margin:0 0 14px;font-size:26px}.guide-step p{margin:0 0 12px}.step-result{border-left:3px solid #0b7a47;padding-left:15px;font-size:14px}.step-illustration{border-radius:14px;background:#d4efe3;width:100%;max-width:360px;max-height:180px;object-fit:contain;margin-top:18px}.search-label{display:block;font-weight:600;margin-bottom:12px}.support-search{padding:16px 18px;background:#f7f6f1;border:1px solid #727b73;border-radius:12px;width:100%;min-height:52px;font-size:16px}.search-results{padding:0!important;list-style:none}.search-results a{display:block;padding:16px 0;border-bottom:1px solid var(--line);font-weight:600;min-height:44px}.route-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:30px 0}.route-card{display:block;border:1px solid var(--line);border-radius:16px;padding:24px;text-decoration:none;background:#f7f6f166}.route-card h2,.route-card h3{font-size:23px;margin:0 0 12px}.route-card p{margin:0;font-size:14px}.download-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:24px;max-width:900px;margin:50px auto 0;height:380px;overflow:hidden}.download-shot{width:190px;border:9px solid #fff;border-radius:24px;overflow:hidden;align-self:flex-start;transform:rotate(-8deg);box-shadow:0 12px 25px #0002}.download-shot.center{transform:none;width:220px;border-color:#111613;z-index:2}.download-shot:last-child{transform:rotate(9deg)}.download-stage.tv .download-shot{width:32%;border-radius:14px}.download-stage.tv{height:auto;padding:30px 10px}.download-stage.tv img{aspect-ratio:16/9;object-fit:cover}.platform-notes{max-width:700px;margin:24px auto 0}.platform-notes p{font-size:13px}.download-options{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}[hidden]{display:none!important}@media(min-width:1600px){.hero-stage{height:740px}.phone{width:390px}.photo-card{width:260px;height:320px}.hero{padding-top:80px}}@media(max-width:900px){.nav nav{gap:16px}.nav nav a{font-size:10px}.nav{gap:16px}.brand img{width:128px}.nav-download{padding:12px 18px;font-size:11px}.hero{padding-top:44px}.hero-stage{height:560px}.phone{width:310px}.photo-card{width:170px;height:220px;border-width:9px}.photo-0{left:0;top:30px}.photo-1{left:-2%;top:310px}.photo-2{display:none}.photo-3{right:0;top:40px}.photo-4{right:-2%;top:330px}.photo-5{display:none}.section,.section.panel{padding:60px 32px}.feature-grid{grid-template-columns:repeat(2,1fr);gap:35px}.three-up{gap:18px}.mini-device{height:270px;padding:22px 15px 0}.mini-device img{width:140px}.platform-card h3{font-size:21px}.compatibility>div{gap:18px;font-size:15px}.hero-copy{max-width:680px}.photo-card{animation:none}}@media(max-width:600px){.nav{padding:14px 20px;min-height:78px}.nav nav{display:none}.nav-download{padding:12px 18px}.panel,.section.panel{margin:0 12px;border-radius:24px}.hero{padding-top:34px}.hero-copy{padding:0 18px}.hero .eyebrow{font-size:9px;letter-spacing:.04em;margin-bottom:22px}.new{margin-right:4px}.hero h1{font-size:45px;letter-spacing:-.055em;line-height:1.02;margin-bottom:20px}.hero-sub{font-size:11px;letter-spacing:.06em;max-width:285px;margin-bottom:22px}.hero-copy .button{min-height:48px;padding:15px 28px}.platform-links{gap:8px;font-size:9px;margin-top:14px}.hero-stage{margin-top:30px;height:450px}.phone{width:230px;border-width:6px;border-radius:36px 36px 0 0;min-height:500px}.island{height:16px;top:8px}.photo-card{width:108px;height:145px;border-width:6px;border-radius:16px;box-shadow:0 10px 22px #25203922}.photo-0{left:-33px;top:45px}.photo-3{right:-34px;top:65px}.photo-1{left:-30px;top:275px}.photo-4{right:-32px;top:300px}.section,.section.panel{padding:48px 24px}.section>h2{margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:.08em}.compatibility{padding:38px 24px}.compatibility>div{gap:14px 20px;font-size:13px}.feature-grid{grid-template-columns:1fr;gap:30px;margin-top:30px}.feature-number{margin-bottom:14px}.feature-grid p{max-width:none}.three-up{grid-template-columns:1fr;gap:30px}.step p:not(.eyebrow){max-width:none}.platforms{gap:40px}.mini-device{height:260px}.mini-device img{width:180px}.mini-device.wide{height:220px}.section-heading{display:block}.section-heading>p{margin-top:16px}.gallery{gap:18px}.gallery figure{flex-basis:220px}.tv-gallery figure{flex-basis:85vw}.faq summary{font-size:15px;gap:12px}.faq details p{padding-right:8px;font-size:14px}.final{padding:48px 20px}.final h2{font-size:36px}footer{padding:40px 24px}footer nav{gap:6px 22px}.breadcrumbs{padding:12px 24px;font-size:9px}.page-hero{padding:40px 22px}.page-hero h1{font-size:40px}.page-hero .intro{font-size:16px}.content{padding:40px 24px}.content h2{font-size:28px}.route-cards,.release-grid{grid-template-columns:1fr}.download-stage{height:300px;gap:10px;margin-top:35px}.download-shot{width:100px;border-width:5px;border-radius:14px}.download-shot.center{width:155px}.download-stage.tv{gap:6px}.download-stage.tv .download-shot{border-width:4px}.guide-step{grid-template-columns:1fr;gap:14px}.guide-step .number{width:max-content}.nav-download span{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}.phone{padding-top:36px}.phone:before{content:\"9:41\";position:absolute;top:12px;left:20px;font:600 11px Inter,system-ui,sans-serif;color:#111613}.button span[aria-hidden=true]{display:inline-block;width:10px;height:10px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;font-size:0;position:relative}.button span[aria-hidden=true]:after{content:\"\";position:absolute;width:13px;height:1.5px;background:currentColor;transform:rotate(-45deg);top:4px;left:-3px}@media(max-width:600px){.phone{padding-top:29px}.phone:before{top:10px;left:14px;font-size:9px}}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #1EC677;outline-offset:3px;box-shadow:0 0 0 7px #0d4029}\n</style></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><header class=\"nav\"><a class=\"brand\" href=\"/\" aria-label=\"GlowTV home\"><img src=\"/logo.svg\" alt=\"GlowTV\" width=\"156\" height=\"48\"></a><nav aria-label=\"Main navigation\"><a href=\"/#features\">Features</a><a href=\"/download/\">Download</a><a href=\"/install/\">Install</a><a href=\"/support/\">Support</a></nav><a class=\"button nav-download\" href=\"/download/\">Download <span aria-hidden=\"true\">\u2197</span></a></header><main id=\"main\"><section class=\"hero panel\"><div class=\"hero-copy\"><p class=\"eyebrow\"><span class=\"new\">Meet GlowTV</span> Your TV, beautifully lit.</p><h1>TV the way it should be</h1><p class=\"hero-sub\">The beautiful IPTV player for iPhone, Android and TV</p><a class=\"button\" href=\"/download/\" data-platform-download>Download <span aria-hidden=\"true\">\u2197</span></a><div class=\"platform-links\"><a href=\"/download/iphone/\">iPhone &amp; iPad</a><span>\u00b7</span><a href=\"/download/android/\">Android</a><span>\u00b7</span><a href=\"/download/tv/\">TV</a></div></div><div class=\"hero-stage\"><div class=\"photo-card photo-0\"><picture><source srcset=\"/photos/television.webp\" type=\"image/webp\"><img src=\"/photos/television.jpg\" alt=\"A retro television with an empty screen\" width=\"480\" height=\"600\" loading=\"eager\" decoding=\"async\"></picture></div><div class=\"photo-card photo-1\"><picture><source srcset=\"/photos/popcorn.webp\" type=\"image/webp\"><img src=\"/photos/popcorn.jpg\" alt=\"Popcorn ready for a cozy TV night\" width=\"480\" height=\"600\" loading=\"eager\" decoding=\"async\"></picture></div><div class=\"photo-card photo-2\"><picture><source srcset=\"/photos/headphones.webp\" type=\"image/webp\"><img src=\"/photos/headphones.jpg\" alt=\"Soft white headphones\" width=\"480\" height=\"600\" loading=\"eager\" decoding=\"async\"></picture></div><div class=\"photo-card photo-3\"><picture><source srcset=\"/photos/sofa.webp\" type=\"image/webp\"><img src=\"/photos/sofa.jpg\" alt=\"A calm living room with a sofa\" width=\"480\" height=\"600\" loading=\"lazy\" decoding=\"async\"></picture></div><div class=\"photo-card photo-4\"><picture><source srcset=\"/photos/popcorn.webp\" type=\"image/webp\"><img src=\"/photos/popcorn.jpg\" alt=\"A bowl of popcorn for movie night\" width=\"480\" height=\"600\" loading=\"lazy\" decoding=\"async\"></picture></div><div class=\"photo-card photo-5\"><picture><source srcset=\"/photos/headphones.webp\" type=\"image/webp\"><img src=\"/photos/headphones.jpg\" alt=\"Headphones for quiet listening\" width=\"480\" height=\"600\" loading=\"lazy\" decoding=\"async\"></picture></div><div class=\"phone\"><span class=\"island\" aria-hidden=\"true\"></span><picture><source srcset=\"/screenshots/ios-home-small.webp 360w, /screenshots/ios-home-medium.webp 480w, /screenshots/ios-home.webp 720w\" sizes=\"(max-width: 600px) 218px, (max-width: 900px) 292px, 340px\" type=\"image/webp\"><img src=\"/screenshots/ios-home.png\" alt=\"GlowTV iPhone home screen with an original demo playlist and live channels\" width=\"720\" height=\"1560\" fetchpriority=\"high\"></picture></div></div></section><section class=\"compatibility section\" aria-label=\"Supported formats and playback features\"><p class=\"eyebrow\">Bring your playlist. Feel at home.</p><div><span>M3U / M3U8</span><span>Xtream Codes</span><span>XMLTV guide</span><span>AirPlay*</span><span>Picture-in-picture*</span></div><p class=\"small\">*Compatible native playback on iOS. Stream and engine support varies.</p></section><section class=\"section panel mint\" id=\"features\"><p class=\"eyebrow\">Less looking. More watching.</p><h2>Everything in its place.</h2><div class=\"feature-grid\"><article><span class=\"feature-number\">01</span><h3>A guide that makes sense</h3><p>Browse live channels beside their XMLTV schedules. See what is on now and plan what to watch next.</p></article><article><span class=\"feature-number\">02</span><h3>Movies and series, together</h3><p>Keep provider movies, seasons and episodes in one library, with progress and a next-episode action.</p></article><article><span class=\"feature-number\">03</span><h3>Catch up when you can</h3><p>Open completed programmes when your provider includes an eligible catch-up archive.</p></article><article><span class=\"feature-number\">04</span><h3>Your favorites, close by</h3><p>Save the channels and titles you return to. Pick up your recent viewing without searching again.</p></article><article><span class=\"feature-number\">05</span><h3>Room for every playlist</h3><p>Keep separate M3U, file and Xtream profiles, then switch between them without entering details again.</p></article><article><span class=\"feature-number\">06</span><h3>Made for the remote</h3><p>A dedicated TV layout, readable rows and clear D-pad focus help you watch comfortably from the sofa.</p></article><article><span class=\"feature-number\">07</span><h3>No account needed</h3><p>Profiles stay on your device. Encrypted export and import help you bring your settings to a new one.</p></article></div></section><section class=\"section\"><p class=\"eyebrow\">An easy evening starts here</p><h2>Three steps. Then play.</h2><div class=\"three-up\"><article class=\"step\"><p class=\"eyebrow\">Step 01</p><h3>Download</h3><p>Choose the version made for your phone or television.</p><a href=\"/download/\">Learn how <span aria-hidden=\"true\">\u2197</span></a></article><article class=\"step\"><p class=\"eyebrow\">Step 02</p><h3>Add your playlist</h3><p>Connect an M3U link, import a file or use your Xtream provider details.</p><a href=\"/guides/add-m3u-playlist/\">Learn how <span aria-hidden=\"true\">\u2197</span></a></article><article class=\"step\"><p class=\"eyebrow\">Step 03</p><h3>Start watching</h3><p>Find your channel in the guide, save a favorite and settle in.</p><a href=\"/guides/tv-guide-epg/\">Learn how <span aria-hidden=\"true\">\u2197</span></a></article></div></section><section class=\"section panel peach\"><p class=\"eyebrow\">One player. Your favorite screen.</p><h2>Make yourself comfortable.</h2><div class=\"three-up platforms\"><a class=\"platform-card\" href=\"/download/iphone/\"><div class=\"mini-device\"><img src=\"/screenshots/ios-home.webp\" alt=\"GlowTV home on iPhone &amp; iPad\" width=\"720\" height=\"1560\" loading=\"lazy\"></div><h3>iPhone &amp; iPad <span aria-hidden=\"true\">\u2197</span></h3><p>Light, calm and right at home on iOS.</p></a><a class=\"platform-card\" href=\"/download/android/\"><div class=\"mini-device\"><img src=\"/screenshots/android-home.webp\" alt=\"GlowTV home on Android\" width=\"720\" height=\"1560\" loading=\"lazy\"></div><h3>Android <span aria-hidden=\"true\">\u2197</span></h3><p>A dark canvas that lets your library shine.</p></a><a class=\"platform-card\" href=\"/download/tv/\"><div class=\"mini-device wide\"><img src=\"/screenshots/tv-home.webp\" alt=\"GlowTV home on The big screen\" width=\"1920\" height=\"1080\" loading=\"lazy\"></div><h3>The big screen <span aria-hidden=\"true\">\u2197</span></h3><p>Built for Android TV, Google TV and Fire TV.</p></a></div></section><section class=\"section gallery-section\" aria-labelledby=\"screenshots\"><div class=\"section-heading\"><div><p class=\"eyebrow\">Made for iPhone</p><h2 id=\"screenshots\">A little look around</h2></div><p>Swipe, scroll or use the arrow keys.</p></div><div class=\"gallery\" tabindex=\"0\" role=\"region\" aria-label=\"iPhone screenshot gallery\"><figure><a href=\"/screenshots/ios-home.png\" aria-label=\"Open full screenshot: Home and continue watching on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-home-small.webp 360w, /screenshots/ios-home.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-home.png\" alt=\"GlowTV home and continue watching on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Home and continue watching</figcaption></figure><figure><a href=\"/screenshots/ios-guide.png\" aria-label=\"Open full screenshot: TV guide and programme details on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-guide-small.webp 360w, /screenshots/ios-guide.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-guide.png\" alt=\"GlowTV tv guide and programme details on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>TV guide and programme details</figcaption></figure><figure><a href=\"/screenshots/ios-player.png\" aria-label=\"Open full screenshot: Live player and controls on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-player-small.webp 360w, /screenshots/ios-player.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-player.png\" alt=\"GlowTV live player and controls on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Live player and controls</figcaption></figure><figure><a href=\"/screenshots/ios-movies.png\" aria-label=\"Open full screenshot: Movie library on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-movies-small.webp 360w, /screenshots/ios-movies.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-movies.png\" alt=\"GlowTV movie library on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Movie library</figcaption></figure><figure><a href=\"/screenshots/ios-series.png\" aria-label=\"Open full screenshot: Series details and episodes on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-series-small.webp 360w, /screenshots/ios-series.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-series.png\" alt=\"GlowTV series details and episodes on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Series details and episodes</figcaption></figure><figure><a href=\"/screenshots/ios-playlists.png\" aria-label=\"Open full screenshot: Add a playlist on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-playlists-small.webp 360w, /screenshots/ios-playlists.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-playlists.png\" alt=\"GlowTV add a playlist on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Add a playlist</figcaption></figure><figure><a href=\"/screenshots/ios-search.png\" aria-label=\"Open full screenshot: Search your library on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-search-small.webp 360w, /screenshots/ios-search.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-search.png\" alt=\"GlowTV search your library on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Search your library</figcaption></figure><figure><a href=\"/screenshots/ios-settings.png\" aria-label=\"Open full screenshot: Settings and profiles on iPhone\"><picture><source type=\"image/webp\" srcset=\"/screenshots/ios-settings-small.webp 360w, /screenshots/ios-settings.webp 720w\" sizes=\"(max-width: 600px) 72vw, 260px\"><img src=\"/screenshots/ios-settings.png\" alt=\"GlowTV settings and profiles on iPhone, using original demo content\" width=\"720\" height=\"1560\" loading=\"lazy\" decoding=\"async\"></picture></a><figcaption>Settings and profiles</figcaption></figure></div></section><section class=\"section faq\"><p class=\"eyebrow\">A few useful answers</p><h2>Before you settle in.</h2><details><summary>Does GlowTV include TV channels?<span aria-hidden=\"true\">+</span></summary><p>No. GlowTV is a player only. You add a playlist or server account from a provider you are entitled to use. No channels or subscriptions are included.</p></details><details><summary>Is GlowTV free?<span aria-hidden=\"true\">+</span></summary><p>Yes. The player is free. Optional support helps its development and does not unlock channels or features. Your content provider may charge separately.</p></details><details><summary>Which playlists can I add?<span aria-hidden=\"true\">+</span></summary><p>You can connect with an M3U or M3U8 playlist URL, import an M3U file, or sign in to your provider with Xtream Codes. A stream manifest is not a channel playlist.</p></details><details><summary>Do I need a GlowTV account?<span aria-hidden=\"true\">+</span></summary><p>No. Your provider profiles and settings stay on your device. You can transfer them with an encrypted backup protected by a password you choose.</p></details><details><summary>How do I load the TV guide?<span aria-hidden=\"true\">+</span></summary><p>Add your provider\u2019s XMLTV URL in the Guide. Programme information depends on your provider and matching channel IDs. Empty schedules do not mean the player is broken.</p></details><details><summary>Can I watch past programmes?<span aria-hidden=\"true\">+</span></summary><p>Catch-up is available for completed programmes when your Xtream provider explicitly supports it and the programme is inside its archive window.</p></details><details><summary>Does a different public IP prove my VPN is connected?<span aria-hidden=\"true\">+</span></summary><p>No. GlowTV can compare your public IP with a home reference. A changed address is not proof of a VPN or a secure connection.</p></details><details><summary>Can I cast to another screen?<span aria-hidden=\"true\">+</span></summary><p>Compatible native playback on iOS supports AirPlay and picture-in-picture. Availability depends on the stream and playback engine. Chromecast is not currently supported.</p></details><a class=\"text-link\" href=\"/support/\">More help in the support center \u2197</a></section></main><section class=\"final panel mint\"><p class=\"eyebrow\">Your playlist. A better place to play.</p><h2>Your TV, beautifully lit.</h2><a class=\"button\" href=\"/download/\">Find your version <span aria-hidden=\"true\">\u2197</span></a></section><footer><a class=\"brand\" href=\"/\" aria-label=\"GlowTV home\"><img src=\"/logo.svg\" alt=\"GlowTV\" width=\"156\" height=\"48\" loading=\"lazy\"></a><nav aria-label=\"Footer\"><a href=\"/download/\">Download</a><a href=\"/install/\">Install</a><a href=\"/support/\">Support</a><a href=\"/changelog/\">Changelog</a><a href=\"/privacy/\">Privacy</a><a href=\"/terms/\">Terms</a><a href=\"/legal/\">Legal and copyright</a><a href=\"https://github.com/nhshajib/NodeCast\">Source code</a></nav><p class=\"disclaimer\">GlowTV is a media player only. It does not sell, host or provide channels, subscriptions or content. Add your own legally obtained playlists.</p><p class=\"small\">\u00a9 2026 GlowTV. Open source under GPL-3.0-only.</p></footer><script type=\"module\">const o=navigator.userAgent;for(const d of document.querySelectorAll(\"[data-platform-download]\"))d.href=/TV|AFT|BRAVIA|SHIELD/i.test(o)?\"/download/tv/\":/Android/i.test(o)?\"/download/android/\":/iPhone|iPad|iPod/i.test(o)?\"/download/iphone/\":\"/download/\";</script></body></html>",
+  "errors": [],
+  "totalNumErrors": 0,
+  "totalNumWarnings": 0
+}

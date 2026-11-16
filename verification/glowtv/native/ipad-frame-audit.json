@@ -1,0 +1,9 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43742367334",
+  "source": "32af4edc5d416a386bc0677dd5cc3c0f77d97c6a",
+  "result": "Passed",
+  "passedTests": 1,
+  "failedTests": 0,
+  "decodedFrameAssertion": true,
+  "scope": "Isolated iPad simulator; waits for original decoded video pixels before capturing. App player engine unchanged."
+}

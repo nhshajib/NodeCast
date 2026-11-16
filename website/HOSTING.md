@@ -23,6 +23,8 @@ Use DNS-only while GitHub verifies the domain. `www` DNS points to GitHub; GitHu
 Verify all four with an HTTPS client after propagation:
 `https://glowtv.app/`, `https://www.glowtv.app/` (redirect to apex), `https://glowtv.app/sitemap.xml`, `https://glowtv.app/robots.txt`.
 
+The `support@glowtv.app` mailto also requires a working mailbox. Keep existing MX and email-verification records when adding the web records above.
+
 ## Pending values
 
 - `[APP_STORE_URL]`: verified iOS listing; a separate tvOS listing is required once an Apple TV target exists.

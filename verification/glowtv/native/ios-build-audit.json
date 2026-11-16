@@ -1,0 +1,29 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43736278167",
+  "file": "GlowTV-0.7.0-unsigned.ipa",
+  "size": 32457339,
+  "sha256": "6a27aca1e2ae920bdf5307346949e633ee95d89f45843215fd388b43d8fc37f0",
+  "info": {
+    "CFBundleDisplayName": "GlowTV",
+    "CFBundleName": "GlowTV",
+    "CFBundleIdentifier": "com.nhshajib.nodecast",
+    "CFBundleShortVersionString": "0.7.0",
+    "CFBundleVersion": "700",
+    "MinimumOSVersion": "16.4",
+    "CFBundleSupportedPlatforms": [
+      "iPhoneOS"
+    ],
+    "UIDeviceFamily": [
+      1,
+      2
+    ]
+  },
+  "compiledIcons": [
+    "Payload/GlowTV.app/AppIcon60x60@2x.png",
+    "Payload/GlowTV.app/Assets.car",
+    "Payload/GlowTV.app/AppIcon76x76@2x~ipad.png"
+  ],
+  "nativeVLC": true,
+  "testRunnerNotInDeviceApp": true,
+  "status": "Unsigned device Release build; CI architecture and scene-delegate gates also passed; not a published store release"
+}

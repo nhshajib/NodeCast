@@ -17,6 +17,6 @@ Brand files were supplied by the project owner; original bytes are retained in `
 
 ## Screenshot provenance
 
-Website galleries currently show actual React Native Web renders of the shared app at iPhone, Android and TV design settings, exercised through a synthetic Xtream provider. They are not native-device captures and are not suitable as proof of native launcher, decoder or store compliance. See `store-assets/README.md` for the native capture requirements and `verification/glowtv/browser-audit.json` for browser coverage.
+Galleries use captures of the real shared app, with native emulator/simulator images preferred over browser candidates. Each image’s source, dimensions and native status are recorded in `verification/glowtv/screenshot-provenance.json`. Native TV captures use the compiled release APK and remote input only. The original abstract video, landscape artwork, invented titles and synthetic provider contain no third-party shows or account credentials. See `store-assets/README.md` and the native audit records for the exact coverage. A simulator or emulator capture is not proof of physical-device or store approval.
 
 The web fonts are further subset to the English text and punctuation used by the site. Modified font metadata uses GlowTV Web family names; CSS aliases still select Inter / IBM Plex Mono. The native Inter files also have unique GlowTV Inter names per weight to prevent iOS registering every file as Inter-Regular. Original font licenses remain bundled.

@@ -31,5 +31,11 @@ try{
   console.log(`${route} axe:${axe.violations.length} html:${htmlErrors.length} runtime:${errors.length} requests:${failed.length}`);await context.close();
  }
  const context=await browser.newContext();const page=await context.newPage();await page.goto(origin+'/support/');await page.locator('#help-search').fill('buffering');assert(await page.locator('[data-help]:visible').count()>0);assert(await page.locator('[data-help]:visible').count()<20);await context.close();
+ const interactions=await browser.newContext({viewport:{width:360,height:900},reducedMotion:'reduce'});const home=await interactions.newPage();await home.goto(origin+'/');
+ const summary=home.locator('details summary').first();await summary.focus();await home.keyboard.press('Enter');assert(await summary.evaluate(el=>el.parentElement.open),'FAQ must open from the keyboard');
+ const gallery=home.locator('.gallery').first();await gallery.scrollIntoViewIfNeeded();await gallery.focus();await home.keyboard.press('ArrowRight');await home.waitForTimeout(250);assert(await gallery.evaluate(el=>el.scrollLeft>0),'Gallery must scroll from the keyboard');
+ assert.equal(await home.locator('.photo-card').first().evaluate(el=>getComputedStyle(el).animationName),'none','Reduced motion must disable floating cards');await interactions.close();
+ for(const [userAgent,target] of [['Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)','/download/iphone/'],['Mozilla/5.0 (Linux; Android 11)','/download/android/'],['Mozilla/5.0 (Linux; Android 11; AFTMM)','/download/tv/']]){const c=await browser.newContext({userAgent});const p=await c.newPage();await p.goto(origin+'/');assert.equal(await p.locator('[data-platform-download]').first().getAttribute('href'),target);await c.close();}
+ report.interactions=['FAQ keyboard toggle','gallery arrow-key scrolling','reduced motion','iPhone, Android and Fire TV download detection'];
  report.externalLinks=[...external];assert.deepEqual(report.errors,[],'See audit-results/pages.json');
 }finally{await fs.writeFile(path.join(output,'pages.json'),JSON.stringify(report,null,2)+'\n');await browser.close();server.close();}

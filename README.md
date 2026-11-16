@@ -1,4 +1,4 @@
-<p align="center"><img src="brand/logo/glowtv-logo-light-bg.svg" alt="GlowTV" width="260" /></p>
+<p align="center"><picture><source media="(prefers-color-scheme: dark)" srcset="brand/logo/glowtv-logo-dark-bg.svg" /><img src="brand/logo/glowtv-logo-light-bg.svg" alt="GlowTV" width="260" /></picture></p>
 
 # GlowTV
 

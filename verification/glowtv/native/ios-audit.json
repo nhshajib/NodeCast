@@ -1,0 +1,17 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43736278167",
+  "source": "38c91a2ca82ed5160ff19a4bccdf8780efc0994a",
+  "result": "Passed",
+  "passedTests": 2,
+  "failedTests": 0,
+  "device": {
+    "architecture": "arm64",
+    "deviceId": "5277349A-B219-4ED4-853A-8AE666B9F5B1",
+    "deviceName": "iPhone 17 Pro Max",
+    "modelName": "iPhone 17 Pro Max",
+    "osBuildNumber": "23F77",
+    "osVersion": "26.5",
+    "platform": "iOS Simulator"
+  },
+  "scope": "Native simulator; cold starts, six tab round trips, 1/15/60-second background intervals, three relaunches and eight design captures. Physical device testing is separate."
+}

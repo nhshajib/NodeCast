@@ -1,0 +1,8 @@
+{
+  "capture": "android-player.png",
+  "sha256": "cf9a3b455bab2e3d4d61a1b1cb9333e3e86c10050d3d782e060fcd243180acce",
+  "greenVideoBandFraction": 0.3181818181818182,
+  "lightVideoMarkerFraction": 0.03921156004489338,
+  "result": "Original scene marker pixels are present in the native Android player capture",
+  "scope": "Screenshot inspection, separate from the live TV remote runtime pixel assertion"
+}

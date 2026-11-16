@@ -1,0 +1,285 @@
+{
+  "isRendered": false,
+  "tripleGroups": [
+    {
+      "ownerSet": {},
+      "nodes": [
+        {
+          "types": [
+            {
+              "pred": "itemtype",
+              "value": "BreadcrumbList",
+              "errors": [],
+              "begin": 2419,
+              "end": 2435
+            }
+          ],
+          "typeGroup": "BreadcrumbList",
+          "errors": [],
+          "properties": [],
+          "nodeProperties": [
+            {
+              "pred": "itemListElement",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "ListItem",
+                    "errors": [],
+                    "begin": 2464,
+                    "end": 2474
+                  }
+                ],
+                "typeGroup": "ListItem",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "position",
+                    "value": "1",
+                    "errors": [],
+                    "begin": 2486,
+                    "end": 2487
+                  },
+                  {
+                    "pred": "name",
+                    "value": "Home",
+                    "errors": [],
+                    "begin": 2495,
+                    "end": 2501
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "item",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Thing",
+                          "errors": [],
+                          "begin": 2509,
+                          "end": 2530
+                        }
+                      ],
+                      "typeGroup": "Thing",
+                      "idProperty": {
+                        "pred": "urn:spore:url",
+                        "value": "https://glowtv.app/",
+                        "errors": [],
+                        "begin": 2509,
+                        "end": 2530
+                      },
+                      "errors": [],
+                      "properties": [],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 2509,
+                    "end": 2530
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 2455,
+              "end": 2531
+            },
+            {
+              "pred": "itemListElement",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "ListItem",
+                    "errors": [],
+                    "begin": 2541,
+                    "end": 2551
+                  }
+                ],
+                "typeGroup": "ListItem",
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "position",
+                    "value": "2",
+                    "errors": [],
+                    "begin": 2563,
+                    "end": 2564
+                  },
+                  {
+                    "pred": "name",
+                    "value": "404",
+                    "errors": [],
+                    "begin": 2572,
+                    "end": 2577
+                  }
+                ],
+                "nodeProperties": [
+                  {
+                    "pred": "item",
+                    "target": {
+                      "types": [
+                        {
+                          "pred": "itemtype",
+                          "value": "Thing",
+                          "errors": [],
+                          "begin": 2585,
+                          "end": 2610
+                        }
+                      ],
+                      "typeGroup": "Thing",
+                      "idProperty": {
+                        "pred": "urn:spore:url",
+                        "value": "https://glowtv.app/404/",
+                        "errors": [],
+                        "begin": 2585,
+                        "end": 2610
+                      },
+                      "errors": [],
+                      "properties": [],
+                      "nodeProperties": [],
+                      "numErrors": 0,
+                      "numWarnings": 0
+                    },
+                    "errors": [],
+                    "begin": 2585,
+                    "end": 2610
+                  }
+                ],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 2532,
+              "end": 2611
+            }
+          ],
+          "numErrors": 0,
+          "numWarnings": 0
+        }
+      ],
+      "numNodesWithError": 0,
+      "numNodesWithWarning": 0,
+      "numErrors": 0,
+      "numWarnings": 0,
+      "type": "BreadcrumbList"
+    },
+    {
+      "ownerSet": {},
+      "nodes": [
+        {
+          "types": [
+            {
+              "pred": "itemtype",
+              "value": "WebSite",
+              "errors": [],
+              "begin": 2208,
+              "end": 2217
+            }
+          ],
+          "typeGroup": "WebSite",
+          "errors": [],
+          "properties": [
+            {
+              "pred": "name",
+              "value": "GlowTV",
+              "errors": [],
+              "begin": 2225,
+              "end": 2233
+            },
+            {
+              "pred": "url",
+              "value": "https://glowtv.app/",
+              "errors": [],
+              "begin": 2240,
+              "end": 2260
+            },
+            {
+              "pred": "inLanguage",
+              "value": "en",
+              "errors": [],
+              "begin": 2274,
+              "end": 2278
+            }
+          ],
+          "nodeProperties": [
+            {
+              "pred": "publisher",
+              "target": {
+                "types": [
+                  {
+                    "pred": "itemtype",
+                    "value": "Organization",
+                    "errors": [],
+                    "begin": 1954,
+                    "end": 1968
+                  }
+                ],
+                "typeGroup": "Organization",
+                "idProperty": {
+                  "pred": "urn:spore:url",
+                  "value": "https://glowtv.app/#organization",
+                  "errors": [],
+                  "begin": 1975,
+                  "end": 2009
+                },
+                "errors": [],
+                "properties": [
+                  {
+                    "pred": "name",
+                    "value": "GlowTV",
+                    "errors": [],
+                    "begin": 2017,
+                    "end": 2025
+                  },
+                  {
+                    "pred": "url",
+                    "value": "https://glowtv.app/",
+                    "errors": [],
+                    "begin": 2032,
+                    "end": 2052
+                  },
+                  {
+                    "pred": "logo",
+                    "value": "https://glowtv.app/icon-512.png",
+                    "errors": [],
+                    "begin": 2060,
+                    "end": 2093
+                  },
+                  {
+                    "pred": "email",
+                    "value": "support@glowtv.app",
+                    "errors": [],
+                    "begin": 2102,
+                    "end": 2122
+                  }
+                ],
+                "nodeProperties": [],
+                "numErrors": 0,
+                "numWarnings": 0
+              },
+              "errors": [],
+              "begin": 2291,
+              "end": 2333
+            }
+          ],
+          "numErrors": 0,
+          "numWarnings": 0
+        }
+      ],
+      "numNodesWithError": 0,
+      "numNodesWithWarning": 0,
+      "numErrors": 0,
+      "numWarnings": 0,
+      "type": "WebSite"
+    }
+  ],
+  "numObjects": 2,
+  "html": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><title>Page Not Found | GlowTV</title><meta name=\"description\" content=\"This GlowTV page could not be found. Return home, choose the version for your device or visit support for help with playlists, playback and installation.\"><link rel=\"canonical\" href=\"https://glowtv.app/404/\"><meta name=\"google-site-verification\" content=\"[GSC_TOKEN]\"><link rel=\"icon\" href=\"/favicon.ico\" sizes=\"48x48\"><link rel=\"icon\" href=\"/favicon.svg\" type=\"image/svg+xml\"><link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\"><link rel=\"manifest\" href=\"/site.webmanifest\"><meta name=\"theme-color\" content=\"#0D4029\"><link rel=\"preload\" href=\"/fonts/Inter-800.woff2\" as=\"font\" type=\"font/woff2\" crossorigin><meta property=\"og:type\" content=\"website\"><meta property=\"og:site_name\" content=\"GlowTV\"><meta property=\"og:title\" content=\"Page Not Found | GlowTV\"><meta property=\"og:description\" content=\"This GlowTV page could not be found. Return home, choose the version for your device or visit support for help with playlists, playback and installation.\"><meta property=\"og:url\" content=\"https://glowtv.app/404/\"><meta property=\"og:image\" content=\"https://glowtv.app/og-image-1200x630.png\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta name=\"twitter:card\" content=\"summary_large_image\"><meta name=\"twitter:title\" content=\"Page Not Found | GlowTV\"><meta name=\"twitter:description\" content=\"This GlowTV page could not be found. Return home, choose the version for your device or visit support for help with playlists, playback and installation.\"><meta name=\"twitter:image\" content=\"https://glowtv.app/og-image-1200x630.png\"><link rel=\"alternate\" type=\"application/rss+xml\" title=\"GlowTV updates\" href=\"/changelog/rss.xml\"><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"Organization\",\"@id\":\"https://glowtv.app/#organization\",\"name\":\"GlowTV\",\"url\":\"https://glowtv.app\",\"logo\":\"https://glowtv.app/icon-512.png\",\"email\":\"support@glowtv.app\"}</script><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"WebSite\",\"name\":\"GlowTV\",\"url\":\"https://glowtv.app\",\"inLanguage\":\"en\",\"publisher\":{\"@id\":\"https://glowtv.app/#organization\"}}</script><script type=\"application/ld+json\">{\"@context\":\"https://schema.org\",\"@type\":\"BreadcrumbList\",\"itemListElement\":[{\"@type\":\"ListItem\",\"position\":1,\"name\":\"Home\",\"item\":\"https://glowtv.app/\"},{\"@type\":\"ListItem\",\"position\":2,\"name\":\"404\",\"item\":\"https://glowtv.app/404/\"}]}</script><!-- Analytics disabled. Configure [ANALYTICS_DOMAIN] and [ANALYTICS_SCRIPT_URL] after choosing a privacy-friendly service. --><style>@font-face{font-family:Inter;src:url(/fonts/Inter-400.woff2) format(\"woff2\");font-weight:400;font-display:swap}@font-face{font-family:Inter;src:url(/fonts/Inter-600.woff2) format(\"woff2\");font-weight:600;font-display:swap}@font-face{font-family:Inter;src:url(/fonts/Inter-800.woff2) format(\"woff2\");font-weight:800;font-display:swap}@font-face{font-family:Mono;src:url(/fonts/Mono-400.woff2) format(\"woff2\");font-weight:400;font-display:swap}:root{--canvas:#e6e4f0;--ink:#111613;--muted:#454b47;--green:#1ec677;--mint:#d4efe3;--peach:#f6e2d3;--lilac:#d6cce6;--line:#11161330;--pill:#1c1f1e;--white:#f7f6f1;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--canvas);font-synthesis:none;scroll-behavior:smooth;scroll-padding-top:24px}*{box-sizing:border-box}body{margin:0}img{max-width:100%;height:auto;display:block}a{color:inherit;text-underline-offset:4px}a:hover{text-decoration-thickness:2px}button,input{font:inherit}button,a,summary{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #0b7a47;outline-offset:5px}h1,h2,h3,p{margin:0}h1,h2,h3{font-weight:800;letter-spacing:-.055em;line-height:1.04;text-wrap:balance}h1{font-size:clamp(42px,5.65vw,88px)}h2{font-size:clamp(32px,3.8vw,58px)}h3{font-size:24px;letter-spacing:-.035em;line-height:1.15}p{line-height:1.65;color:var(--muted)}.small{font-size:12px}.eyebrow,.hero-sub,.platform-links,.feature-number,.breadcrumbs,.release-label{font-family:Mono,monospace;text-transform:uppercase;letter-spacing:.09em;font-weight:400}.eyebrow{font-size:12px;line-height:1.6;margin-bottom:18px;color:var(--ink)}.nav{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:20px 4%;max-width:1920px;margin:auto;min-height:90px}.brand{display:block;flex-shrink:0}.brand img{object-fit:contain}.nav nav{display:flex;gap:28px}.nav nav a{font-family:Mono,monospace;text-transform:uppercase;font-size:12px;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}.button{background:var(--pill);color:#fff;border:1px solid var(--pill);border-radius:999px;min-height:50px;display:inline-flex;align-items:center;justify-content:center;gap:20px;padding:16px 30px;text-transform:uppercase;font-size:13px;font-weight:600;text-decoration:none;line-height:1.25;text-align:center}.button:hover{background:#333b35}.nav-download{min-height:44px;padding:12px 24px}.button.secondary{color:var(--ink);background:transparent}.skip{position:fixed;z-index:99;top:10px;left:10px;background:var(--white);padding:16px;border-radius:8px;transform:translateY(-180%)}.skip:focus{transform:none}.panel{border-radius:32px;margin:0 20px;background-color:#cfcae8;background-image:radial-gradient(#383b6920 .8px,transparent .8px);background-size:9px 9px;overflow:hidden}.mint{background-color:var(--mint);background-image:radial-gradient(#0d402915 .8px,transparent .8px)}.peach{background-color:var(--peach);background-image:radial-gradient(#69492c18 .8px,transparent .8px)}.hero{padding-top:60px;text-align:center;isolation:isolate;background-image:radial-gradient(#383b6920 .8px,transparent .8px),linear-gradient(120deg,#c9c8ea,#d6cce6);background-size:9px 9px,100% 100%}.hero-copy{position:relative;z-index:4;margin:auto;max-width:920px;padding:0 24px}.hero-copy .eyebrow{margin-bottom:20px}.new{background:#fff8;border-radius:999px;padding:7px 12px;margin-right:10px}.hero h1{margin-bottom:24px}.hero-sub{font-size:clamp(13px,1.4vw,20px);max-width:700px;margin:0 auto 24px;line-height:1.6;color:var(--ink)}.platform-links{font-size:10px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:18px}.platform-links a{display:flex;align-items:center;min-height:32px}.hero-stage{position:relative;height:650px;max-width:1460px;margin:48px auto 0}.phone{position:relative;z-index:3;width:358px;margin:auto;border:9px solid #121713;border-radius:54px 54px 0 0;background:#f7f6f1;box-shadow:0 0 0 2px #767a7499,0 20px 60px #24223a30;overflow:hidden;min-height:780px}.phone img{width:100%;height:auto}.island{position:absolute;z-index:2;top:12px;left:35%;width:30%;height:23px;border-radius:30px;background:#0a0e0c}.photo-card{position:absolute;z-index:1;width:230px;height:290px;border:11px solid #ffffffe0;border-radius:24px;box-shadow:0 20px 38px #25203924;overflow:hidden;background:#efedf6;animation:float 8s ease-in-out infinite alternate}.photo-card img{width:100%;height:100%;object-fit:cover}.photo-0{left:6%;top:-80px;--tilt:-11deg;transform:rotate(var(--tilt))}.photo-1{left:3%;top:275px;--tilt:9deg;transform:rotate(var(--tilt));animation-delay:-3s}.photo-2{left:22%;top:365px;--tilt:-17deg;transform:rotate(var(--tilt));animation-delay:-5s}.photo-3{right:5%;top:-55px;--tilt:13deg;transform:rotate(var(--tilt));animation-delay:-1s}.photo-4{right:2%;top:300px;--tilt:-7deg;transform:rotate(var(--tilt));animation-delay:-6s}.photo-5{right:22%;top:370px;--tilt:17deg;transform:rotate(var(--tilt));animation-delay:-4s}@keyframes float{0%{transform:translateY(0) rotate(var(--tilt))}to{transform:translateY(-8px) rotate(var(--tilt))}}.section{padding:88px max(32px,6vw);max-width:1600px;margin:0 auto}.section.panel{max-width:none;margin:0 20px;padding:80px max(32px,7vw)}.section>h2{max-width:800px;margin-bottom:44px}.compatibility{text-align:center;padding-top:48px;padding-bottom:48px}.compatibility>div{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:16px;font-weight:600;font-size:18px}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:50px 48px;margin-top:48px}.feature-grid article{border-top:1px solid var(--line);padding-top:24px}.feature-number{display:block;color:#285c45;font-size:13px;margin-bottom:28px}.feature-grid h3{margin-bottom:14px}.feature-grid p{max-width:330px;font-size:15px}.three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}.step{border-top:1px solid var(--line);padding-top:24px}.step h3{margin-bottom:14px}.step p:not(.eyebrow){margin-bottom:20px;max-width:330px}.step a,.text-link{font-weight:600;min-height:44px;display:inline-flex;align-items:center}.platform-card{text-decoration:none;display:block;min-width:0}.platform-card h3{display:flex;justify-content:space-between;gap:10px;margin:28px 0 12px}.mini-device{height:320px;background:#b6cbc3;overflow:hidden;border-radius:20px;padding:30px 24px 0;display:flex;justify-content:center}.mini-device img{width:170px;object-fit:cover;object-position:top;border:6px solid #111613;border-radius:24px 24px 0 0;align-self:flex-start}.mini-device.wide{background:#c1b3db;align-items:center;padding:16px}.mini-device.wide img{width:100%;border-radius:12px;object-fit:contain;align-self:center}.gallery-section{overflow:hidden}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:36px}.section-heading p{font-size:13px;max-width:240px}.gallery{display:flex;gap:26px;overflow-x:auto;scroll-snap-type:x mandatory;padding:12px 8px 24px;scrollbar-color:#697d70 transparent;overscroll-behavior-x:contain}.gallery figure{margin:0;flex:0 0 250px;scroll-snap-align:start;min-width:0}.gallery img{width:100%;aspect-ratio:720/1560;object-fit:cover;border:8px solid #fff;border-radius:24px;background:#f7f6f1}.gallery figcaption{font-size:12px;line-height:1.5;margin-top:14px;font-family:Mono,monospace}.tv-gallery figure{flex-basis:600px;max-width:85vw}.tv-gallery img{aspect-ratio:16/9;border-radius:16px}.faq{max-width:1000px}.faq details{border-top:1px solid var(--line);padding:12px 0}.faq summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:52px;font-weight:600;font-size:17px}.faq summary::-webkit-details-marker{display:none}.faq summary span{font-weight:400;font-size:25px}.faq details p{padding:6px 48px 18px 0;font-size:15px}.faq .text-link{margin-top:24px}.final{text-align:center;padding:64px 24px}.final h2{margin-bottom:28px}footer{max-width:1500px;padding:60px max(32px,5vw);margin:auto}footer nav{display:flex;gap:14px 28px;flex-wrap:wrap;margin:28px 0}footer nav a{font-size:13px;display:inline-flex;min-height:44px;align-items:center}.disclaimer{font-size:13px;max-width:820px;margin-bottom:20px}.breadcrumbs{display:flex;gap:10px;flex-wrap:wrap;padding:20px max(32px,5vw);font-size:10px;text-transform:capitalize}.breadcrumbs a,.breadcrumbs span{min-height:24px;display:inline-flex;align-items:center}.page-hero{padding:64px max(28px,6vw);text-align:center}.page-hero h1{max-width:950px;margin:0 auto 24px;font-size:clamp(40px,5.5vw,76px)}.page-hero .intro{max-width:700px;margin:0 auto 28px;font-size:18px}.page-hero .button{margin:8px}.content{max-width:1000px;margin:auto;padding:60px 32px}.content h2{font-size:32px;margin:36px 0 18px}.content h3{font-size:23px;margin:28px 0 14px}.content p{margin-bottom:18px}.content ul,.content ol{padding-left:24px;line-height:1.8;color:var(--muted)}.content li{margin-bottom:10px}.notice{border:1px solid #11161330;padding:20px 24px;border-radius:16px;background:#f7f6f180;margin:24px 0;font-size:14px;line-height:1.65;overflow-wrap:anywhere}.availability{display:inline-flex;border:1px solid #11161330;border-radius:999px;padding:10px 16px;margin:8px;font:11px/1.5 Mono,monospace;min-height:44px;align-items:center}.release-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.release-grid div{background:#f7f6f188;padding:16px;border-radius:12px;min-width:0}.release-label{display:block;font-size:10px;margin-bottom:8px}.release-grid code{overflow-wrap:anywhere;font-size:11px}.guide-step{display:grid;grid-template-columns:80px 1fr;gap:20px;padding:28px 0;border-top:1px solid var(--line)}.guide-step .number{font:12px/1.5 Mono,monospace;padding:12px;background:#d4efe3;border-radius:10px;height:max-content;text-align:center}.guide-step h2{margin:0 0 14px;font-size:26px}.guide-step p{margin:0 0 12px}.step-result{border-left:3px solid #0b7a47;padding-left:15px;font-size:14px}.step-illustration{border-radius:14px;background:#d4efe3;width:100%;max-width:360px;max-height:180px;object-fit:contain;margin-top:18px}.search-label{display:block;font-weight:600;margin-bottom:12px}.support-search{padding:16px 18px;background:#f7f6f1;border:1px solid #727b73;border-radius:12px;width:100%;min-height:52px;font-size:16px}.search-results{padding:0!important;list-style:none}.search-results a{display:block;padding:16px 0;border-bottom:1px solid var(--line);font-weight:600;min-height:44px}.route-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin:30px 0}.route-card{display:block;border:1px solid var(--line);border-radius:16px;padding:24px;text-decoration:none;background:#f7f6f166}.route-card h2,.route-card h3{font-size:23px;margin:0 0 12px}.route-card p{margin:0;font-size:14px}.download-stage{position:relative;display:flex;align-items:center;justify-content:center;gap:24px;max-width:900px;margin:50px auto 0;height:380px;overflow:hidden}.download-shot{width:190px;border:9px solid #fff;border-radius:24px;overflow:hidden;align-self:flex-start;transform:rotate(-8deg);box-shadow:0 12px 25px #0002}.download-shot.center{transform:none;width:220px;border-color:#111613;z-index:2}.download-shot:last-child{transform:rotate(9deg)}.download-stage.tv .download-shot{width:32%;border-radius:14px}.download-stage.tv{height:auto;padding:30px 10px}.download-stage.tv img{aspect-ratio:16/9;object-fit:cover}.platform-notes{max-width:700px;margin:24px auto 0}.platform-notes p{font-size:13px}.download-options{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden}[hidden]{display:none!important}@media(min-width:1600px){.hero-stage{height:740px}.phone{width:390px}.photo-card{width:260px;height:320px}.hero{padding-top:80px}}@media(max-width:900px){.nav nav{gap:16px}.nav nav a{font-size:10px}.nav{gap:16px}.brand img{width:128px}.nav-download{padding:12px 18px;font-size:11px}.hero{padding-top:44px}.hero-stage{height:560px}.phone{width:310px}.photo-card{width:170px;height:220px;border-width:9px}.photo-0{left:0;top:30px}.photo-1{left:-2%;top:310px}.photo-2{display:none}.photo-3{right:0;top:40px}.photo-4{right:-2%;top:330px}.photo-5{display:none}.section,.section.panel{padding:60px 32px}.feature-grid{grid-template-columns:repeat(2,1fr);gap:35px}.three-up{gap:18px}.mini-device{height:270px;padding:22px 15px 0}.mini-device img{width:140px}.platform-card h3{font-size:21px}.compatibility>div{gap:18px;font-size:15px}.hero-copy{max-width:680px}.photo-card{animation:none}}@media(max-width:600px){.nav{padding:14px 20px;min-height:78px}.nav nav{display:none}.nav-download{padding:12px 18px}.panel,.section.panel{margin:0 12px;border-radius:24px}.hero{padding-top:34px}.hero-copy{padding:0 18px}.hero .eyebrow{font-size:9px;letter-spacing:.04em;margin-bottom:22px}.new{margin-right:4px}.hero h1{font-size:45px;letter-spacing:-.055em;line-height:1.02;margin-bottom:20px}.hero-sub{font-size:11px;letter-spacing:.06em;max-width:285px;margin-bottom:22px}.hero-copy .button{min-height:48px;padding:15px 28px}.platform-links{gap:8px;font-size:9px;margin-top:14px}.hero-stage{margin-top:30px;height:450px}.phone{width:230px;border-width:6px;border-radius:36px 36px 0 0;min-height:500px}.island{height:16px;top:8px}.photo-card{width:108px;height:145px;border-width:6px;border-radius:16px;box-shadow:0 10px 22px #25203922}.photo-0{left:-33px;top:45px}.photo-3{right:-34px;top:65px}.photo-1{left:-30px;top:275px}.photo-4{right:-32px;top:300px}.section,.section.panel{padding:48px 24px}.section>h2{margin-bottom:30px}.eyebrow{font-size:10px;letter-spacing:.08em}.compatibility{padding:38px 24px}.compatibility>div{gap:14px 20px;font-size:13px}.feature-grid{grid-template-columns:1fr;gap:30px;margin-top:30px}.feature-number{margin-bottom:14px}.feature-grid p{max-width:none}.three-up{grid-template-columns:1fr;gap:30px}.step p:not(.eyebrow){max-width:none}.platforms{gap:40px}.mini-device{height:260px}.mini-device img{width:180px}.mini-device.wide{height:220px}.section-heading{display:block}.section-heading>p{margin-top:16px}.gallery{gap:18px}.gallery figure{flex-basis:220px}.tv-gallery figure{flex-basis:85vw}.faq summary{font-size:15px;gap:12px}.faq details p{padding-right:8px;font-size:14px}.final{padding:48px 20px}.final h2{font-size:36px}footer{padding:40px 24px}footer nav{gap:6px 22px}.breadcrumbs{padding:12px 24px;font-size:9px}.page-hero{padding:40px 22px}.page-hero h1{font-size:40px}.page-hero .intro{font-size:16px}.content{padding:40px 24px}.content h2{font-size:28px}.route-cards,.release-grid{grid-template-columns:1fr}.download-stage{height:300px;gap:10px;margin-top:35px}.download-shot{width:100px;border-width:5px;border-radius:14px}.download-shot.center{width:155px}.download-stage.tv{gap:6px}.download-stage.tv .download-shot{border-width:4px}.guide-step{grid-template-columns:1fr;gap:14px}.guide-step .number{width:max-content}.nav-download span{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}.phone{padding-top:36px}.phone:before{content:\"9:41\";position:absolute;top:12px;left:20px;font:600 11px Inter,system-ui,sans-serif;color:#111613}.button span[aria-hidden=true]{display:inline-block;width:10px;height:10px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;font-size:0;position:relative}.button span[aria-hidden=true]:after{content:\"\";position:absolute;width:13px;height:1.5px;background:currentColor;transform:rotate(-45deg);top:4px;left:-3px}@media(max-width:600px){.phone{padding-top:29px}.phone:before{top:10px;left:14px;font-size:9px}}a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid #1EC677;outline-offset:3px;box-shadow:0 0 0 7px #0d4029}\n</style></head><body><a class=\"skip\" href=\"#main\">Skip to content</a><header class=\"nav\"><a class=\"brand\" href=\"/\" aria-label=\"GlowTV home\"><img src=\"/logo.svg\" alt=\"GlowTV\" width=\"156\" height=\"48\"></a><nav aria-label=\"Main navigation\"><a href=\"/#features\">Features</a><a href=\"/download/\">Download</a><a href=\"/install/\">Install</a><a href=\"/support/\">Support</a></nav><a class=\"button nav-download\" href=\"/download/\">Download <span aria-hidden=\"true\">\u2197</span></a></header><main id=\"main\"><nav class=\"breadcrumbs\" aria-label=\"Breadcrumb\"><a href=\"/\">Home</a><span aria-hidden=\"true\">/</span><span aria-current=\"page\">404</span></nav><section class=\"page-hero panel\"><p class=\"eyebrow\">404 \u00b7 A small detour</p><h1>This channel is off the map.</h1><p class=\"intro\">The page may have moved. Let\u2019s get you somewhere useful.</p><a class=\"button\" href=\"/\">Back to home</a><a class=\"button secondary\" href=\"/support/\">Find help</a></section></main><section class=\"final panel mint\"><p class=\"eyebrow\">Your playlist. A better place to play.</p><h2>Your TV, beautifully lit.</h2><a class=\"button\" href=\"/download/\">Find your version <span aria-hidden=\"true\">\u2197</span></a></section><footer><a class=\"brand\" href=\"/\" aria-label=\"GlowTV home\"><img src=\"/logo.svg\" alt=\"GlowTV\" width=\"156\" height=\"48\" loading=\"lazy\"></a><nav aria-label=\"Footer\"><a href=\"/download/\">Download</a><a href=\"/install/\">Install</a><a href=\"/support/\">Support</a><a href=\"/changelog/\">Changelog</a><a href=\"/privacy/\">Privacy</a><a href=\"/terms/\">Terms</a><a href=\"/legal/\">Legal and copyright</a><a href=\"https://github.com/nhshajib/NodeCast\">Source code</a></nav><p class=\"disclaimer\">GlowTV is a media player only. It does not sell, host or provide channels, subscriptions or content. Add your own legally obtained playlists.</p><p class=\"small\">\u00a9 2026 GlowTV. Open source under GPL-3.0-only.</p></footer><script type=\"module\">const o=navigator.userAgent;for(const d of document.querySelectorAll(\"[data-platform-download]\"))d.href=/TV|AFT|BRAVIA|SHIELD/i.test(o)?\"/download/tv/\":/Android/i.test(o)?\"/download/android/\":/iPhone|iPad|iPod/i.test(o)?\"/download/iphone/\":\"/download/\";</script></body></html>",
+  "errors": [],
+  "totalNumErrors": 0,
+  "totalNumWarnings": 0
+}

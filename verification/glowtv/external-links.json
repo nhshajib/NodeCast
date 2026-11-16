@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://github.com/nhshajib/NodeCast",
+    "result": "200 https://github.com/nhshajib/NodeCast",
+    "error": ""
+  },
+  {
+    "url": "https://github.com/nhshajib/NodeCast/issues/new?template=problem.yml",
+    "result": "200 https://github.com/login?return_to=https%3A%2F%2Fgithub.com%2Fnhshajib%2FNodeCast%2Fissues%2Fnew%3Ftemplate%3Dproblem.yml",
+    "error": ""
+  },
+  {
+    "url": "https://github.com/nhshajib/NodeCast/releases",
+    "result": "200 https://github.com/nhshajib/NodeCast/releases",
+    "error": ""
+  },
+  {
+    "url": "https://glowtv.app/",
+    "result": "000 https://glowtv.app/",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n"
+  },
+  {
+    "url": "https://www.glowtv.app/",
+    "result": "000 https://www.glowtv.app/",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n"
+  },
+  {
+    "url": "https://glowtv.app/sitemap.xml",
+    "result": "000 https://glowtv.app/sitemap.xml",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n"
+  },
+  {
+    "url": "https://glowtv.app/robots.txt",
+    "result": "000 https://glowtv.app/robots.txt",
+    "error": "curl: (56) CONNECT tunnel failed, response 403\n"
+  }
+]

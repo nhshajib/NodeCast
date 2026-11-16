@@ -4,221 +4,307 @@
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
-  },
-  {
-    "route": "/head-snippet.html",
-    "errors": 0,
-    "warnings": 0,
-    "types": []
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": false,
+    "verification": "Local structure checked; fresh official check pending (service returned HTTP 405/rate-limit challenge)",
+    "sha256": "3ce1512039ad6c63e47d673a2b9f5c585d9be5528be55d630b6979783247fc71"
   },
   {
     "route": "/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "SoftwareApplication",
+      "Organization",
       "WebSite",
+      "SoftwareApplication",
       "FAQPage"
-    ]
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "14bd4ff2ef024cf9f2040635d55ed75b07463c7eb5b571442003001bb58d382b"
   },
   {
     "route": "/download/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "SoftwareApplication",
+      "Organization",
+      "WebSite",
       "BreadcrumbList",
-      "WebSite"
-    ]
+      "SoftwareApplication"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "ab1387e21daac425dc23acc02e324257292023914100ea4ead183c2c4f4a4cd5"
   },
   {
     "route": "/install/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "7c66ead238d89196a6d52eb095ed9c5cf58606fdfda9da4f78be1841b6495bbf"
   },
   {
     "route": "/changelog/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "eaab2cf2c6ead0b92d60ac244bdb01d0e896f4ec12e76eaeae2376aaeedde975"
   },
   {
     "route": "/support/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "ff52a34ad1eef6336001e0c49a82154bd479f5e7261ef3208ecfef7bae48ee5b"
   },
   {
     "route": "/terms/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "73927ba4882117784d49b5077f0188d61f00529171fa407b259327a7a1f677a9"
   },
   {
     "route": "/legal/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "af8e0b10abafda83792af775d5dbeb28bca13a1a161f701ca0a08c39f17cb779"
   },
   {
     "route": "/guides/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "6b016f5d0eff26bf84e29ec71ce3469d905a8dc0925c0178695c94d13f394b1c"
   },
   {
     "route": "/privacy/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "0b72629d35bce15c9acc6c17bb7d82f98980705e1512f72ee5dd6c137b38c889"
   },
   {
     "route": "/download/android/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "SoftwareApplication",
-      "BreadcrumbList",
+      "Organization",
       "WebSite",
+      "BreadcrumbList",
+      "SoftwareApplication",
       "FAQPage"
-    ]
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "45bd8c3507cf63291a55e51ef21b7c53d2cf79f7b0011f708827beeb18c0fb14"
   },
   {
     "route": "/download/iphone/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "SoftwareApplication",
-      "BreadcrumbList",
+      "Organization",
       "WebSite",
+      "BreadcrumbList",
+      "SoftwareApplication",
       "FAQPage"
-    ]
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "5e0b1f8b5574d5bee1d6402969ed8d4adf6f2a2e09f2d896d870978693fd12d4"
   },
   {
     "route": "/download/tv/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "SoftwareApplication",
-      "BreadcrumbList",
+      "Organization",
       "WebSite",
+      "BreadcrumbList",
+      "SoftwareApplication",
       "FAQPage"
-    ]
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "d7d3395751be9da225364406b29b2c092d8f0f3288f6ee7f4cda85249e83bac3"
   },
   {
     "route": "/install/fire-tv/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "71d5d55f86787c92bcc7aa485bb9e5690e2091094013c01e7c9ea6ead267d21c"
   },
   {
     "route": "/install/android-tv/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "59af03e0a629c6e282c54a7384e3d37bab8cb098356ed1dcc82452455f20a336"
   },
   {
     "route": "/install/apple-tv/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "f95054ec73c5960d1c6c31d8c9897373bfa5b439541614bcb5c1929aae5fd060"
   },
   {
     "route": "/install/android/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "8f392b0d4b149ead4fb6f37c79a5f90b7aac39495e125a0d5d5a6ece5419516c"
   },
   {
     "route": "/install/iphone/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "84d5854cfc1dcbf6c2a6585bb502bdafb54c05ce9b5beb616c1a178dc5b41495"
   },
   {
     "route": "/support/faq/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
+      "Organization",
       "WebSite",
+      "BreadcrumbList",
       "FAQPage"
-    ]
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "cfc0aa07ffe3beef59ab5594648719d2ea7d6f99c4baade8d2f510fc2d839875"
   },
   {
     "route": "/guides/add-m3u-playlist/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "fb4acd94560aee18fc7e5d42d37aa55d46f677cfbcb1eb96d089909a6fda475c"
   },
   {
     "route": "/guides/tv-guide-epg/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "8eca3d42eb5c3708b9015940e8141cb72a9702b1246b8e0a6003d5e6744d2af4"
   },
   {
     "route": "/guides/xtream-codes-login/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "db174e3945a469e73adf8541fe654706f23620b2c2cf1127ef3c6143c0455cab"
   },
   {
     "route": "/guides/fix-buffering/",
     "errors": 0,
     "warnings": 0,
     "types": [
-      "BreadcrumbList",
-      "WebSite"
-    ]
+      "Organization",
+      "WebSite",
+      "BreadcrumbList"
+    ],
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
+    "sha256": "0eadcc464a19b6eb01cde05ad04e5248914259b820e1b4d553fd4b91844e20af"
   }
 ]

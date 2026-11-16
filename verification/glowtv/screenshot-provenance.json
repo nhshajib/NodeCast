@@ -1,0 +1,290 @@
+[
+  {
+    "platform": "ios",
+    "screen": "home",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-home.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "guide",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-guide.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "player",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-player.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "movies",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-movies.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "series",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-series.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "playlists",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-playlists.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "search",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-search.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ios",
+    "screen": "settings",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ios-settings.png",
+    "width": 1320,
+    "height": 2868
+  },
+  {
+    "platform": "ipad",
+    "screen": "home",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-home.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "guide",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-guide.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "player",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-player.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "movies",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-movies.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "series",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-series.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "playlists",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-playlists.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "search",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-search.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "ipad",
+    "screen": "settings",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/ipad-settings.png",
+    "width": 2064,
+    "height": 2752
+  },
+  {
+    "platform": "android",
+    "screen": "home",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-home.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "guide",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-guide.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "player",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-player.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "movies",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-movies.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "series",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-series.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "playlists",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-playlists.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "search",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-search.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "android",
+    "screen": "settings",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/android-settings.png",
+    "width": 1080,
+    "height": 1920
+  },
+  {
+    "platform": "tv",
+    "screen": "home",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-home.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "guide",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-guide.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "player",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-player.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "movies",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-movies.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "series",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-series.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "playlists",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-playlists.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "search",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-search.png",
+    "width": 1920,
+    "height": 1080
+  },
+  {
+    "platform": "tv",
+    "screen": "settings",
+    "native": true,
+    "usableForMarketing": true,
+    "source": "verification/glowtv/native/tv-settings.png",
+    "width": 1920,
+    "height": 1080
+  }
+]
