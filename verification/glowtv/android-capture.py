@@ -39,7 +39,9 @@ server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Threa
 def capture(screen):
  time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 def home():click('Home')
-def back():click('Back' if TV else 'Go back')
+def back():
+ if TV:click('Back')
+ else:adb('shell','input','keyevent','4');time.sleep(.6)
 package='com.nhshajib.nodecast'+('.tv'if TV else '')
 try:
  apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk));adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
@@ -57,7 +59,7 @@ try:
  else:click('Evening studio,')
  capture('guide')
  if TV:click('Close mini player');back();home()
- else:click('Close programme details');home()
+ else:click('Close');home()
  click('Watch live');time.sleep(3);adb('shell','input','keyevent','127');time.sleep(1);capture('player')
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'

@@ -1,6 +1,6 @@
 from playwright.sync_api import sync_playwright,expect
 from pathlib import Path
-import json,time,sys,threading,http.server,functools
+import json,time,sys,threading,http.server,functools,re
 root=Path(__file__).resolve().parents[2];out=root/'verification/glowtv';app=root/'apps/player'
 video=Path(__import__('os').environ.get('NODECAST_SCREENSHOT_CLIP',str(app/'assets/demo/glow-study.mp4'))).read_bytes();art=(app/'assets/demo/Evening.png').read_bytes();now=time.time();stamp=lambda t:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(t))
 xml='<tv>'+''.join(f'<channel id="ch{i}"><display-name>{n}</display-name></channel>'+''.join(f'<programme channel="ch{i}" start="{stamp(now-1200+j*2400)}" stop="{stamp(now+1200+j*2400)}"><title>{t}</title><desc>Original demo schedule for GlowTV interface verification.</desc></programme>' for j,t in enumerate(['Evening studio','Wild North','Quiet studio'])) for i,n in enumerate(['Evening studio','Wild North','Quiet studio'],1))+'</tv>'
@@ -20,7 +20,15 @@ def provider(r):
  elif 'action=' in u:v=[]
  else:v={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
  r.fulfill(json=v)
-def button(page,name):return page.get_by_role('button',name=name,exact=True).first
+def button(page,name):
+ if name=='Close programme details':name='Close'
+ if name=='Go back':
+  if '/sheet/' in page.url:return page.get_by_role('button',name='Close',exact=True).first
+  candidates=page.get_by_role('button',name=re.compile(r', back$|^Go back$|^Back$',re.I))
+  if not candidates.count():
+   print('Native back controls:',page.url,page.locator('[aria-label]').evaluate_all('(els)=>els.map(el=>({label:el.getAttribute("aria-label"),role:el.getAttribute("role"),tag:el.tagName})).filter(v=>/back|close/i.test(v.label))'),flush=True)
+  return candidates.first
+ return page.get_by_role('button',name=name,exact=True).first
 # Each capture run serves its own exports; no stale background server is used.
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*_):pass
@@ -38,32 +46,32 @@ with sync_playwright() as p:
   button(page,'Add your playlist' if name=='tv' else 'Add playlist').click()
   for label,value in [('Profile name','My playlist'),('Server address','https://provider.example'),('Username','example'),('Password','example')]:page.get_by_label(label,exact=True).fill(value)
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-playlists.png'))
-  (page.get_by_role('dialog').get_by_role('button',name='Connect playlist',exact=True) if name!='tv' else button(page,'Connect playlist')).click();page.wait_for_timeout(2000)
+  button(page,'Connect playlist').click();page.wait_for_timeout(2000)
   if name=='tv':
    button(page,'Settings').click();button(page,'Library organization').click();page.get_by_role('switch',name='Channel logos in list view').click();button(page,'Back').click();button(page,'Home').click();page.wait_for_timeout(1500)
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-home.png'))
   # Full guide source and detail sheet through the original saved profile.
-  (button(page,'TV guide') if name=='tv' else page.get_by_role('tab',name='Guide',exact=True)).click();button(page,'Add full TV guide').click();page.get_by_label('XMLTV URL',exact=True).fill('https://provider.example/guide.xml');button(page,'Save and refresh guide').click();page.get_by_role('button',name='Evening studio,',exact=False).first.wait_for(timeout=20000)
+  (button(page,'TV guide') if name=='tv' else page.get_by_test_id('navigation-tab-guide')).click();button(page,'Add full TV guide').click();page.get_by_label('XMLTV URL',exact=True).fill('https://provider.example/guide.xml');button(page,'Save and refresh guide').click();page.get_by_role('button',name='Evening studio,',exact=False).first.wait_for(timeout=20000)
   if name in ('ios','ipad'):page.get_by_role('button',name='Evening studio,',exact=False).first.click()
   if name=='tv':button(page,'Preview Evening studio').click();page.wait_for_timeout(1500)
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-guide.png'))
   if name in ('ios','ipad'):button(page,'Close programme details').click()
   if name=='tv':
    button(page,'Close mini player').click();button(page,'Back').click();button(page,'Live TV').click()
-  else:page.get_by_role('tab',name='Home',exact=True).click()
+  else:page.get_by_test_id('navigation-tab-home').click()
   button(page,'Watch live' if name!='tv' else 'Play Evening studio').click();page.wait_for_timeout(1500);
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-player.png'))
   button(page,'Back to library').first.click()
   if name!='tv':
    (page.get_by_test_id('navigation-tab-movies') if name in ('ios','ipad') else button(page,'Movies')).click();page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-movies.png'))
-   if name=='android':page.get_by_role('tab',name='Home',exact=True).click()
-   (page.get_by_test_id('navigation-tab-series') if name in ('ios','ipad') else button(page,'Series')).click();page.get_by_label('Open Tidewater Stories',exact=True).click();page.get_by_role('button',name='Start series',exact=True).wait_for(timeout=20000);page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-series.png'));button(page,'Go back').click()
+   if name=='android':page.get_by_test_id('navigation-tab-home').click()
+   (page.get_by_test_id('navigation-tab-series') if name in ('ios','ipad') else button(page,'Series')).click();page.get_by_role('button',name='Open Tidewater Stories',exact=True).filter(visible=True).last.click();page.get_by_role('button',name='Start series',exact=True).wait_for(timeout=20000);page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-series.png'));button(page,'Go back').click()
   if name=='tv':
-   button(page,'Movies').click();page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-movies.png'));button(page,'Series').click();page.get_by_label('Open Tidewater Stories',exact=True).click();page.wait_for_timeout(800);page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-series.png'));button(page,'Back').click()
+   button(page,'Movies').click();page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-movies.png'));button(page,'Series').click();page.get_by_role('button',name='Open Tidewater Stories',exact=True).filter(visible=True).last.click();page.wait_for_timeout(800);page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-series.png'));button(page,'Back').click()
   # Every settings destination remains reachable through the redesigned shell.
   settings_names = ['Appearance','Family controls','Playback' if name=='tv' else 'Default player','Library organization','Backup & transfer','Library & storage','Set home IP reference' if name=='tv' else 'Home IP & connection','Version history']
   def open_settings():
-   if name=='android':page.get_by_role('tab',name='Settings',exact=True).click()
+   if name=='android':page.get_by_test_id('navigation-tab-settings').click()
    else:button(page,'Settings').click()
   open_settings()
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-settings.png'))
@@ -84,11 +92,11 @@ with sync_playwright() as p:
   assert not errors,errors
   page.set_viewport_size({'width':w,'height':h})
   if name in ('ios','ipad'):
-   button(page,'Appearance').click();page.get_by_role('radio',name='light appearance',exact=True).click();button(page,'Go back').click()
+   button(page,'Appearance').click();page.get_by_role('radio',name='light appearance',exact=True).click();button(page,'Go back').click();button(page,'Go back').click()
   if name=='tv':
    button(page,'Search').click()
-  elif name in ('ios','ipad'):page.get_by_role('tab',name='Search',exact=True).click()
-  else:button(page,'GlowTV home').click();button(page,'Search').click()
+  elif name in ('ios','ipad'):page.get_by_test_id('navigation-tab-search').click()
+  else:page.get_by_test_id('navigation-tab-home').click();button(page,'Search').click()
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-search.png'))
   c.close();print(name,'PASS',flush=True)
  b.close();(out/'browser-audit.json').write_text(json.dumps(results,indent=2)+'\n')
