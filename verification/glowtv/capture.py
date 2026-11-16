@@ -24,11 +24,12 @@ def button(page,name):
  if name=='Close programme details':name='Close'
  if name=='Go back':
   if '/sheet/' in page.url:return page.get_by_role('button',name='Close',exact=True).first
-  candidates=page.get_by_role('button',name=re.compile(r', back$|^Go back$|^Back$',re.I))
-  if not candidates.count():
-   print('Native back controls:',page.url,page.locator('[aria-label]').evaluate_all('(els)=>els.map(el=>({label:el.getAttribute("aria-label"),role:el.getAttribute("role"),tag:el.tagName})).filter(v=>/back|close/i.test(v.label))'),flush=True)
-  return candidates.first
- return page.get_by_role('button',name=name,exact=True).first
+  return page.locator('[aria-label$=", back"], [aria-label="Go back"], [aria-label="Back"]').filter(visible=True).last
+ candidates=page.get_by_role('button',name=name,exact=True)
+ for candidate in candidates.all():
+  if candidate.evaluate('(el)=>{const r=el.getBoundingClientRect();const x=r.left+r.width/2,y=r.top+r.height/2;const hit=document.elementFromPoint(x,y);return x>=0&&y>=0&&x<innerWidth&&y<innerHeight&&!!hit&&(hit===el||el.contains(hit))}'):
+   return candidate
+ return candidates.filter(visible=True).last
 # Each capture run serves its own exports; no stale background server is used.
 class QuietHandler(http.server.SimpleHTTPRequestHandler):
  def log_message(self,*_):pass
