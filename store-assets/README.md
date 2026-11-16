@@ -1,6 +1,6 @@
 # GlowTV screenshot and icon assets
 
-The original platform icons are in `brand/icons/`, unchanged. Copies are bundled inside the self-contained app project at `apps/player/assets/launchers/` for native packaging. Supplied Apple TV assets are preparation only: there is no tvOS target yet.
+The original platform icons are in `brand/icons/`, unchanged. Copies are bundled inside the self-contained app project at `apps/player/assets/launchers/` for native packaging. Store-ready PNG icon and banner copies also sit alongside each platform’s screenshots. Supplied Apple TV assets are preparation only: there is no tvOS target yet.
 
 `ios/`, `android/` and `tv/` contain fresh captures from the real shared app, not mockup reconstructions. Native emulator/simulator captures replace browser candidates as their audits pass; the per-image source is recorded in [screenshot-provenance.json](../verification/glowtv/screenshot-provenance.json). They exercise normal screens with a synthetic Xtream provider, an original abstract video, generated landscape artwork and invented channel names. Browser candidates are explicitly marked and must not be submitted as native store screenshots. Native captures also need store and physical-device review before submission.
 

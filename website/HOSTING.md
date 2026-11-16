@@ -38,4 +38,4 @@ Unavailable store labels are plain text, not broken anchors. APK links become ac
 
 ## Release metadata
 
-`apps-release.yml` produces `GlowTV.apk`, `GlowTV-TV.apk`, checksums and `release-metadata.json`. Verify the draft before publishing. The website build fetches the latest public, non-prerelease `glowtv-v*` release and accepts metadata only for actual matching assets, sizes and SHA-256 fields. Trigger the website workflow after publishing a release to refresh availability. This avoids hand-entered release versions, dates or checksums.
+`apps-release.yml` produces `GlowTV.apk` and `GlowTV-TV.apk` with checksums as build artifacts. A version tag or the manual `create_draft` option attaches APKs and `release-metadata.json` to a draft GitHub Release. Manual validation builds default to artifacts only. Verify the draft before publishing. The website build fetches the latest public, non-prerelease `glowtv-v*` release and accepts metadata only for actual matching assets, sizes and SHA-256 fields. Trigger the website workflow after publishing a release to refresh availability. This avoids hand-entered release versions, dates or checksums.

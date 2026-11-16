@@ -80,7 +80,7 @@ try:
  if not TV:home()
  click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
- else:home();click('Search')
+ else:home();click('Search');fill('Search library','Evening');find('Evening studio',timeout=30)
  capture('search')
  if not TV:back() # Android Search is a pushed page; return to its native tabs first.
  click('Settings');capture('settings')
