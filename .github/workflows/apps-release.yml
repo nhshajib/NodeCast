@@ -3,7 +3,7 @@ on:
   push:
     tags: ['glowtv-v*', 'v[0-9]*']
     branches: ['glowtv-audit']
-    paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh']
+    paths: ['apps/**', '!apps/**/*.md', '!apps/player/scripts/GlowTVResumeUITests.swift', '!apps/player/scripts/ios-resume-check.sh', '!apps/player/scripts/ios-design-fixture.py']
   workflow_dispatch:
     inputs:
       target:

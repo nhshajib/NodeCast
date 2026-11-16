@@ -14,6 +14,7 @@ def click(label,scroll=False):
   bounds=list(map(int,__import__('re').findall(r'\d+',node.get('bounds',''))))
   adb('shell','input','tap',str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2));time.sleep(.5)
  else:h.click(label,scroll)
+CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
 class Handler(http.server.BaseHTTPRequestHandler):
  def log_message(self,*_):pass
@@ -22,11 +23,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
   if path.endswith(('.mp4','.m3u8','.ts')):body=(APP/'assets/demo/glow-study.mp4').read_bytes();kind='video/mp4'
   elif path.endswith('.png'):body=(APP/'assets/demo/Evening.png').read_bytes();kind='image/png'
   elif path.endswith('guide.xml'):
-   now=time.time();body=('<tv><channel id="demo"><display-name>Evening studio</display-name></channel>'+''.join(f'<programme channel="demo" start="{stamp(now-1800+i*3600)}" stop="{stamp(now+1800+i*3600)}"><title>{title}</title><desc>An original GlowTV demonstration schedule.</desc></programme>'for i,title in enumerate(['Evening studio','A quiet morning','Tidewater']))+'</tv>').encode();kind='application/xml'
+   now=time.time();body=('<tv>'+''.join(f'<channel id="{channel}"><display-name>{name}</display-name></channel>'+''.join(f'<programme channel="{channel}" start="{stamp(now-1800+i*3600)}" stop="{stamp(now+1800+i*3600)}"><title>{title}</title><desc>An original GlowTV demonstration schedule.</desc></programme>'for i,title in enumerate(['Evening studio','A quiet morning','Tidewater']))for channel,name in CHANNELS)+'</tv>').encode();kind='application/xml'
   else:
    data={'user_info':{'auth':1,'status':'Active'},'server_info':{'timezone':'UTC'}}
    if action=='get_live_categories':data=[{'category_id':'1','category_name':'Original demos'}]
-   elif action=='get_live_streams':data=[{'stream_id':1,'name':'Evening studio','category_id':'1','epg_channel_id':'demo','stream_icon':base+'/art.png','direct_source':base+'/live.mp4','tv_archive':1,'tv_archive_duration':7}]
+   elif action=='get_live_streams':data=[{'stream_id':i,'name':name,'category_id':'1','epg_channel_id':channel,'stream_icon':base+'/art.png','direct_source':base+'/live.mp4','tv_archive':1,'tv_archive_duration':7}for i,(channel,name) in enumerate(CHANNELS,1)]
    elif action=='get_vod_categories':data=[{'category_id':'2','category_name':'Original demos'}]
    elif action=='get_vod_streams':data=[{'stream_id':11,'name':'Tidewater','category_id':'2','stream_icon':base+'/art.png','container_extension':'mp4'}]
    elif action=='get_series_categories':data=[{'category_id':'3','category_name':'Original demos'}]

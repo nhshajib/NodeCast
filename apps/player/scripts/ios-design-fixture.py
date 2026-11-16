@@ -4,6 +4,7 @@ from pathlib import Path
 import json, time
 from urllib.parse import urlparse, parse_qs
 ROOT = Path(__file__).resolve().parents[1]
+CHANNELS = [('demo', 'Evening studio'), ('demo2', 'Wild North'), ('demo3', 'Quiet studio')]
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_): pass
     def do_GET(self):
@@ -15,11 +16,11 @@ class Handler(BaseHTTPRequestHandler):
             body = (ROOT/'assets/demo/Evening.png').read_bytes(); kind = 'image/png'
         elif path.endswith('guide.xml'):
             now = time.time(); stamp = lambda value: time.strftime('%Y%m%d%H%M%S +0000', time.gmtime(value))
-            body = ('<tv><channel id="demo"><display-name>Evening studio</display-name></channel>' + ''.join(f'<programme channel="demo" start="{stamp(now-1200+i*2400)}" stop="{stamp(now+1200+i*2400)}"><title>{title}</title><desc>A public sample schedule for GlowTV UI verification.</desc></programme>' for i,title in enumerate(['Evening studio','The great outdoors','Cinema preview'])) + '</tv>').encode(); kind = 'application/xml'
+            body = ('<tv>' + ''.join(f'<channel id="{channel}"><display-name>{name}</display-name></channel>' + ''.join(f'<programme channel="{channel}" start="{stamp(now-1200+i*2400)}" stop="{stamp(now+1200+i*2400)}"><title>{title}</title><desc>An original GlowTV demonstration schedule.</desc></programme>' for i,title in enumerate(['Evening studio','Wild North','Quiet studio'])) for channel,name in CHANNELS) + '</tv>').encode(); kind = 'application/xml'
         else:
             data = {'user_info': {'auth':1,'status':'Active'}, 'server_info': {'timezone':'UTC'}}
             if action == 'get_live_categories': data = [{'category_id':'1','category_name':'Documentary'}]
-            elif action == 'get_live_streams': data = [{'stream_id':1,'name':'Evening studio','category_id':'1','epg_channel_id':'demo','stream_icon':'http://127.0.0.1:9090/art.png','direct_source':'http://127.0.0.1:9090/live.mp4','tv_archive':1,'tv_archive_duration':7}]
+            elif action == 'get_live_streams': data = [{'stream_id':i,'name':name,'category_id':'1','epg_channel_id':channel,'stream_icon':'http://127.0.0.1:9090/art.png','direct_source':'http://127.0.0.1:9090/live.mp4','tv_archive':1,'tv_archive_duration':7} for i,(channel,name) in enumerate(CHANNELS,1)]
             elif action == 'get_vod_categories': data = [{'category_id':'2','category_name':'Original demos'}]
             elif action == 'get_vod_streams': data = [{'stream_id':11,'name':'Tidewater','category_id':'2','stream_icon':'http://127.0.0.1:9090/art.png','container_extension':'mp4'}]
             elif action == 'get_series_categories': data = [{'category_id':'3','category_name':'Original demos'}]
