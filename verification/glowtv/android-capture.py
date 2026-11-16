@@ -83,7 +83,36 @@ try:
  result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
  (OUT/f'emulator-design-{TARGET}-result.json').write_text(json.dumps(result,indent=2)+'\n')
 except Exception:
- (OUT/f'emulator-design-{TARGET}-traceback.txt').write_text(__import__('traceback').format_exc())
+ original_failure=__import__('traceback').format_exc()
+ # Preserve the original failure, then isolate native tab input on this exact APK.
+ if not TV:
+  try:
+   (OUT/'emulator-mobile-window-state.txt').write_text(adb('shell','dumpsys','window','windows'))
+   diagnostics=[]
+   def tab_state(action):
+    time.sleep(1);root=h.dump();nodes=[dict(n.attrib)for n in root.iter('node')if(n.get('resource-id')or'').startswith('navigation-tab-')]
+    diagnostics.append({'action':action,'tabs':nodes});capture('diagnostic-'+action)
+    return root
+   def tap_guide(bottom=False):
+    node=next(n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-guide')
+    box=list(map(int,__import__('re').findall(r'\d+',node.get('bounds',''))))
+    adb('shell','input','tap',str((box[0]+box[2])//2),str(box[3]-25 if bottom else(box[1]+box[3])//2))
+   tab_state('original-failure');tap_guide(True);tab_state('guide-second-tap')
+   for key in ['window_animation_scale','transition_animation_scale','animator_duration_scale']:adb('shell','settings','put','global',key,'1')
+   tap_guide();tab_state('guide-animations-enabled')
+   # Restart retains the synthetic saved profile and isolates a stale sheet/window.
+   adb('shell','am','force-stop',package);adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
+   tap_guide();root=tab_state('guide-after-relaunch')
+   for _ in range(24):
+    target=next((n for n in root.iter('node')if n.get('resource-id')=='navigation-tab-guide'and n.get('focused')=='true'),None)
+    if target is not None:
+     adb('shell','input','keyevent','23');break
+    adb('shell','input','keyevent','61');root=h.dump()
+   tab_state('guide-keyboard-select')
+   (OUT/'emulator-mobile-tab-diagnostic.json').write_text(json.dumps(diagnostics,indent=2)+'\n')
+  except Exception as diagnostic_error:
+   (OUT/'emulator-mobile-tab-diagnostic-error.txt').write_text(str(diagnostic_error))
+ (OUT/f'emulator-design-{TARGET}-traceback.txt').write_text(original_failure)
  (OUT/f'emulator-design-{TARGET}-logcat.txt').write_text(adb('logcat','-d'))
  capture('failure');(OUT/f'emulator-design-{TARGET}-failure.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));raise
 finally:server.shutdown()
