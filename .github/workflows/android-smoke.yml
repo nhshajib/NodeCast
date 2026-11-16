@@ -71,7 +71,8 @@ jobs:
           arch: x86_64
           target: google_apis
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
-          disable-animations: true
+          # Exercise the real native transition completion path and hit testing.
+          disable-animations: false
           emulator-options: -no-window -gpu swangle -no-snapshot -noaudio -no-boot-anim
           script: cd apps/player && if [ "${{ inputs.tv_suite }}" = design ]; then python3 ../../verification/glowtv/android-capture.py ${{ matrix.target }}; else bash scripts/android-smoke.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
