@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const provider = {kind:'xtream',name:'Test',address:'https://fixture.example/prefix',username:'u@name',password:'p/word'};
-const channel = {id:'live:42',kind:'live',streamId:'42',name:'BBC One HD',group:'UK',url:'https://fixture.example/prefix/live/u%40name/p%2Fword/42.m3u8'};
+const channel = {id:'live:42',kind:'live',streamId:'42',name:'GLW One HD',group:'UK',url:'https://fixture.example/prefix/live/u%40name/p%2Fword/42.m3u8'};
 test('automatic Xtream playback offers sequential HLS and TS, with TS sent to external players',()=>{
  const item=preparePlayback(channel,provider);
  assert.deepEqual(playbackURLs(item),[channel.url,'https://fixture.example/prefix/live/u%40name/p%2Fword/42.ts']);
@@ -38,11 +38,11 @@ test('fallback URLs and external credentials are omitted from persisted catalogu
  const restored=restoreCatalog(JSON.parse(json),provider).items[0]; assert.equal(preparePlayback(restored,provider).playbackURLs.length,2);
 });
 test('channel search matches punctuation, accents, compact numbers and Unicode names',()=>{
- const items=[{...channel,name:'BBC 1 HD'},{...channel,id:'2',name:'Café-News'},{...channel,id:'3',name:'বাংলা সংবাদ'}];
+ const items=[{...channel,name:'GLW 1 HD'},{...channel,id:'2',name:'Café-News'},{...channel,id:'3',name:'বাংলা সংবাদ'}];
  const index=createSearchIndex(items);
- for (const q of ['BBC1','bbc 1','BBC-1']) assert.equal(searchIndex(index,q)[0].id,channel.id);
+ for (const q of ['GLW1','glw 1','GLW-1']) assert.equal(searchIndex(index,q)[0].id,channel.id);
  assert.equal(searchIndex(index,'cafe news')[0].id,'2'); assert.equal(searchIndex(index,'বাংলা')[0].id,'3');
- assert.equal(searchIndex(index,'BBC1','All',['UK']).length,0);
+ assert.equal(searchIndex(index,'GLW1','All',['UK']).length,0);
 });
 test('live format preference roundtrips without invalidating existing profiles',()=>{
  const profile={id:'1',provider,createdAt:new Date().toISOString(),favorites:[]};

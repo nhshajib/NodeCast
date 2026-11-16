@@ -167,7 +167,7 @@ export const releases = [
     'Xtream live playback can try HLS and MPEG-TS; VLC uses MPEG-TS by default in Automatic mode. A per-profile format choice is available in Playback.',
     'Corrected retry scheduling and source replacement; failed streams show recovery actions instead of a stalled video surface.',
     'Provider-supplied direct live URLs are preserved. M3U stream links remain unchanged.',
-    'Channel search spans visible categories and handles punctuation, accents and spacing such as BBC1 / BBC 1.',
+    'Channel search spans visible categories and handles punctuation, accents and spacing such as GLW1 / GLW 1.',
     'Version history is now available in Settings.',
   ] },
   { version: '0.2.0', date: 'October 23, 2026', title: 'Your personal TV space.', changes: [

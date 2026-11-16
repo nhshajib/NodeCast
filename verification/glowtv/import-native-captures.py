@@ -13,6 +13,7 @@ parser.add_argument('platform',choices=['ios','ipad','android','tv'])
 parser.add_argument('directory',type=Path)
 parser.add_argument('--run',required=True)
 parser.add_argument('--source',required=True)
+parser.add_argument('--capture-source',help='Capture harness commit, if different from the native app source')
 parser.add_argument('--build-run',help='APK source build, when different from the capture workflow')
 args=parser.parse_args();platform=args.platform
 out=Path(__file__).resolve().parent/'native'
@@ -50,6 +51,7 @@ with Image.open(files['player'])as image:
 out.mkdir(parents=True,exist_ok=True)
 for screen,file in files.items():shutil.copyfile(file,out/f'{platform}-{screen}.png')
 result.update(workflow=workflow,source=args.source)
+if args.capture_source:result['captureSource']=args.capture_source
 if args.build_run:result['buildWorkflow']=f'https://github.com/nhshajib/NodeCast/actions/runs/{args.build_run}'
 (out/f'{platform}-audit.json').write_text(json.dumps(result,indent=2)+'\n')
 (out/f'{platform}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{platform}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'result':'Original decoded scene pixels are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
