@@ -95,6 +95,7 @@ export function TabsNavigator() {
       return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarButtonTestID: `navigation-tab-${name}`, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;
     })}
   </Tabs>;
+  // Android must keep content and its touch area above the native bottom bar.
   return <NativeTabs backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
     labelStyle={{ default: { color: colors.secondary }, selected: { color: colors.link } }}>
     {ordered.map(name => {
@@ -191,7 +192,8 @@ export function SheetScreen() {
   return <FamilyChallengeHost active>
     <Stack.Screen options={{ gestureEnabled: !busy }} />
     <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <View style={[u.between, { paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 18 : 12, paddingBottom: 4 }]}>
+      {/* iOS form sheets resize the first scroll view around one native header. */}
+      <View collapsable={Platform.OS !== 'ios'} style={[u.between, { paddingHorizontal: 20, paddingTop: Platform.OS === 'ios' ? 18 : 12, paddingBottom: 4 }]}>
         <Text accessibilityRole="header" numberOfLines={2} style={[u.h2, { flex: 1 }]}>{page ? c.pageTitle(page) : ''}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel="Close" disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>
       </View>

@@ -13,6 +13,19 @@ final class GlowTVResumeUITests: XCTestCase {
     attachment.lifetime = .keepAlways
     add(attachment)
   }
+  // Native sheets retain the tab content underneath. Only the visible button
+  // is a valid interaction target when both layers share an action label.
+  private func tapButton(_ label: String, scroll: Bool = false) {
+    let deadline = Date().addingTimeInterval(15)
+    while Date() < deadline {
+      for button in app.buttons.matching(identifier: label).allElementsBoundByIndex where button.isHittable {
+        button.tap(); return
+      }
+      if scroll { app.swipeUp() } else { Thread.sleep(forTimeInterval: 0.5) }
+    }
+    capture("failure-button-" + label)
+    XCTFail("No visible button: \(label). \(app.debugDescription)")
+  }
   // A playing-state event can precede the simulator's first decoded frame.
   // The original fixture has a leaf-green video band, absent from player chrome.
   private func waitForOriginalVideoFrame() {
@@ -66,7 +79,11 @@ final class GlowTVResumeUITests: XCTestCase {
       skip.tap()
       XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
       // The playlist form is a native form sheet; its Done button closes it.
-      app.buttons["Close"].tap()
+      tapButton("Close")
+      let closed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+        !self.app.buttons["Close"].exists
+      }, object: nil)
+      XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 15), .completed, "The native sheet did not dismiss")
     }
     let skip = app.buttons["Not now"]
     if skip.exists { skip.tap() }
@@ -111,7 +128,7 @@ final class GlowTVResumeUITests: XCTestCase {
     continueAfterFailure = false
     app.launch()
     settleHome()
-    app.buttons["Add playlist"].tap()
+    tapButton("Add playlist")
     func fill(_ label: String, _ value: String, secure: Bool = false) {
       let field = secure ? app.secureTextFields[label] : app.textFields[label]
       XCTAssertTrue(field.waitForExistence(timeout: 15), app.debugDescription)
@@ -123,10 +140,7 @@ final class GlowTVResumeUITests: XCTestCase {
     fill("Username", "example")
     fill("Password", "example", secure: true)
     app.swipeUp()
-    let connect = app.buttons["Connect playlist"]
-    XCTAssertTrue(connect.waitForExistence(timeout: 15))
-    if !connect.isHittable { app.swipeUp() }
-    connect.tap()
+    tapButton("Connect playlist", scroll: true)
     XCTAssertTrue(app.staticTexts["Evening studio"].firstMatch.waitForExistence(timeout: 30))
     capture("ios-home")
     element("navigation-tab-guide").tap()
@@ -142,7 +156,7 @@ final class GlowTVResumeUITests: XCTestCase {
     XCTAssertTrue(program.waitForExistence(timeout: 30), app.debugDescription)
     program.tap()
     capture("ios-guide")
-    app.buttons["Watch live"].tap()
+    tapButton("Watch live")
     let pause = app.buttons["Pause live TV"]
     XCTAssertTrue(pause.waitForExistence(timeout: 30), app.debugDescription)
     waitForOriginalVideoFrame()
@@ -160,11 +174,11 @@ final class GlowTVResumeUITests: XCTestCase {
     goBackOnNativePage()
     element("navigation-tab-search").tap()
     capture("ios-search")
-    app.buttons["Settings"].tap()
+    tapButton("Settings")
     XCTAssertTrue(app.buttons["Version history"].waitForExistence(timeout: 15))
     capture("ios-settings")
     goBackOnNativePage()
-    app.buttons["Add playlist"].tap()
+    tapButton("Add playlist")
     XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 15))
     capture("ios-playlists")
   }
