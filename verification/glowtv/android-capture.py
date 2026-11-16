@@ -64,8 +64,9 @@ try:
  click('Watch live');time.sleep(3);adb('shell','input','keyevent','127');time.sleep(1);capture('player')
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'
- frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(image),'-vf', 'crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8','-f','rawvideo','-pix_fmt','rgb24','pipe:1']) if TV else None
- if frame:assert sum(frame[i+1]>100 and frame[i]<100 and frame[i+2]<170 for i in range(0,len(frame),3))>len(frame)/12,'Native TV decoder did not render the original green test band'
+ region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
+ frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(image),'-vf',region,'-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
+ assert sum(frame[i+1]>150 and frame[i]<50 and 70<frame[i+2]<160 for i in range(0,len(frame),3))>len(frame)/12,'Native decoder did not render the original green test band'
  click('Back to library')
  if not TV:home()
  click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
