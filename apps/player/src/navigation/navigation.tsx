@@ -96,7 +96,7 @@ export function TabsNavigator() {
     })}
   </Tabs>;
   // Android must keep content and its touch area above the native bottom bar.
-  return <NativeTabs backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
+  return <NativeTabs {...(Platform.OS === 'android' ? { labelVisibilityMode: 'labeled' as const } : {})} backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
     labelStyle={{ default: { color: colors.secondary }, selected: { color: colors.link } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
