@@ -174,12 +174,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     setSheetError('');
   };
   const getPage = useCallback((key: string) => pagesRef.current.find(entry => entry.key === key) || null, []);
-  const goTab = useCallback((tab: string) => {
-    // One Android action finishes the sheet and selects its destination. A
-    // queued dismissAll + navigate can overwrite the first subsequent tab tap.
-    if (Platform.OS === 'android' && pagesRef.current.length && router.canDismiss()) router.dismissTo(`/${tab}` as never);
-    else { closeAll(); router.navigate(`/${tab}` as never); }
-  }, [closeAll]);
+  const goTab = useCallback((tab: string) => { closeAll(); router.navigate(`/${tab}` as never); }, [closeAll]);
   const setView = useCallback((view: LibraryView, patch: Partial<ViewState>) => setViews(current => ({ ...current, [view]: { ...current[view], ...patch } })), []);
 
   useEffect(() => {

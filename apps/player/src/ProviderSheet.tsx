@@ -4,7 +4,7 @@ import {useFamily} from './FamilyControls';
 import { pickPlaylist } from './localPlaylist';
 import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { Platform, ScrollView, View } from 'react-native';
+import { Keyboard, Platform, ScrollView, View } from 'react-native';
 import type { Provider } from './provider';
 import { importXtreamLink } from './provider';
 import type { Profile } from './vault';
@@ -20,6 +20,7 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
   const [form, setForm] = useState<Provider>(profile?.provider || blank);
   const exportLogin = importXtreamLink(form.address);
   const detected = form.kind === 'xtream' ? exportLogin : null;
+  const submit = (provider: Provider) => { Keyboard.dismiss(); onSave(provider, profile); };
   const change = (key: keyof Provider, value: string) => setForm(old => ({ ...old, [key]: value }));
   if(family.enabled&&!family.unlocked)return <View style={u.content}><Text style={u.h1}>Unlock profile settings</Text><Text style={u.body}>Your changes are kept while this page is open.</Text><Button title="Unlock profile settings" onPress={family.request}/></View>;
   return <View style={{ flex: 1 }}><ScrollView {...(Platform.OS === 'ios' ? { contentInsetAdjustmentBehavior: 'automatic' as const, automaticallyAdjustKeyboardInsets: true, keyboardDismissMode: 'interactive' as const } : {})} keyboardShouldPersistTaps="handled" contentContainerStyle={[u.content,{gap:16,paddingBottom:32}]}>
@@ -35,8 +36,8 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
     {advanced && <View style={u.card}><Field label="User-Agent (optional)" value={form.headers?.['User-Agent'] || ''} onChangeText={value => setForm(current => ({ ...current, headers: { ...current.headers, 'User-Agent': value } }))} maxLength={1000} /><Field label="Referer (optional)" value={form.headers?.Referer || ''} onChangeText={value => setForm(current => ({ ...current, headers: { ...current.headers, Referer: value } }))} maxLength={1000} /><Text style={u.small}>Use only values supplied by your provider. They apply to provider requests and supported built-in playback engines.</Text></View>}
     {!!localError && <Notice danger>{localError}</Notice>}
     {!!error && <Notice danger>{error}</Notice>}
-    {form.kind === 'm3u' && exportLogin && /HTTP 404/.test(error) && <View style={[u.card, { backgroundColor: colors.pale }]}><Text style={u.label}>Use the working server connection</Text><Text style={u.small}>This link includes Xtream login details. If your provider does not offer this playlist endpoint, connect directly with those details instead.</Text><Button title="Connect with Xtream instead" busy={busy} onPress={() => { const provider = { ...form, ...exportLogin, kind: 'xtream' as const }; setSource('xtream'); setForm(provider); onSave(provider, profile); }} /></View>}
-    <Button title={busy ? 'Connecting to your provider…' : 'Connect playlist'} busy={busy} onPress={() => onSave(form, profile)} icon="arrow-forward" />
+    {form.kind === 'm3u' && exportLogin && /HTTP 404/.test(error) && <View style={[u.card, { backgroundColor: colors.pale }]}><Text style={u.label}>Use the working server connection</Text><Text style={u.small}>This link includes Xtream login details. If your provider does not offer this playlist endpoint, connect directly with those details instead.</Text><Button title="Connect with Xtream instead" busy={busy} onPress={() => { const provider = { ...form, ...exportLogin, kind: 'xtream' as const }; setSource('xtream'); setForm(provider); submit(provider); }} /></View>}
+    <Button title={busy ? 'Connecting to your provider…' : 'Connect playlist'} busy={busy} onPress={() => submit(form)} icon="arrow-forward" />
     <View style={[u.row, { alignItems: 'flex-start', gap: 8 }]}><Icon name="lock-closed-outline" size={16} color={colors.link} /><Text style={[u.small, { flex: 1 }]}>{Platform.OS === 'web' ? 'Preview only. Save profiles securely in the installed app.' : 'Saved securely on this device. Shared only with your provider when connecting.'}</Text></View>
     <Text style={u.small}>Use HTTPS when available. HTTP connections send details without encryption. You’ll need your own IPTV subscription or playlist.</Text>
   </ScrollView></View>;
