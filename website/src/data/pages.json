@@ -91,14 +91,14 @@
     "title": "Install GlowTV on iPhone and iPad",
     "h1": "Settle in on iPhone.",
     "description": "Follow the GlowTV iPhone and iPad installation guide. Check App Store availability, learn the expected steps and understand personal IPA signing.",
-    "intro": "The current public iPhone download is an unsigned IPA under the previous NodeCast name. Sign it with your own Apple account using Impactor. App Store availability is pending.",
+    "intro": "Download the published iPhone and iPad IPA, then sign it with your own Apple account using Impactor. App Store availability is pending.",
     "kind": "guide",
     "notice": "[APP_STORE_URL] — awaiting a published listing. Existing personal IPA installation needs signing; a seven-day free certificate must be refreshed. An unsigned IPA cannot be installed by tapping it.",
     "steps": [
       {
         "title": "Download the iPhone IPA",
         "text": "Open the iPhone download page on your computer and download the published IPA from GitHub. Compare the checksum if you verify files.",
-        "result": "The versioned NodeCast IPA is saved on your computer."
+        "result": "The versioned IPA is saved on your computer."
       },
       {
         "title": "Install Impactor on your computer",
@@ -117,7 +117,7 @@
       },
       {
         "title": "Open the app",
-        "text": "Follow any iOS prompts to trust your own developer profile or enable Developer Mode. Open NodeCast and add your own playlist.",
+        "text": "Follow any iOS prompts to trust your own developer profile or enable Developer Mode. Open the player and add your own playlist.",
         "result": "You can watch without keeping your computer on."
       },
       {
@@ -137,7 +137,7 @@
     "steps": [
       {
         "title": "Download the official APK",
-        "text": "Open the Android download page and choose Download APK. It links directly to the published GitHub release; the current file still uses the NodeCast name. Compare the SHA-256 if you verify files.",
+        "text": "Open the Android download page and choose Download APK. It links directly to the published GitHub release. Compare the SHA-256 if you verify files.",
         "result": "The versioned Android phone APK appears in Downloads."
       },
       {
@@ -147,8 +147,8 @@
       },
       {
         "title": "Open the downloaded file",
-        "text": "Open the downloaded NodeCast-mobile APK in Downloads.",
-        "result": "Android shows the NodeCast installation confirmation."
+        "text": "Open the downloaded phone APK in Downloads.",
+        "result": "Android shows the player installation confirmation."
       },
       {
         "title": "Install the player",
@@ -174,7 +174,7 @@
       {
         "title": "Choose the published TV APK",
         "text": "The Play Store listing is pending. Choose Download TV APK on the official TV download page; it links directly to the published GitHub file.",
-        "result": "You have the versioned NodeCast TV APK, rather than the phone APK."
+        "result": "You have the versioned TV APK, rather than the phone APK."
       },
       {
         "title": "Use the official APK as a fallback",
@@ -184,7 +184,7 @@
       {
         "title": "Allow the source and install",
         "text": "Allow installs for that file manager only, then confirm Install. Return the permission to off after installation if you do not need it.",
-        "result": "The published NodeCast TV player launches with a remote-friendly interface."
+        "result": "The TV player launches with a remote-friendly interface."
       }
     ]
   },
@@ -195,7 +195,7 @@
     "description": "Install GlowTV on Fire TV or Firestick with Downloader and the official TV APK. Learn source permissions, release availability and remote setup.",
     "intro": "Use the Android TV / Fire TV edition. The phone APK is not designed for your remote.",
     "kind": "guide",
-    "notice": "No Downloader code or Amazon listing is published yet. Use the official TV download page to get the direct GitHub APK; the current public file still uses the NodeCast name.",
+    "notice": "No Downloader code or Amazon listing is published yet. Use the official TV download page to get the direct GitHub TV APK.",
     "steps": [
       {
         "title": "Install Downloader",
@@ -215,7 +215,7 @@
       {
         "title": "Open the official TV download",
         "text": "Enter https://glowtv.app/download/tv/ in Downloader, then select Download TV APK. The button opens the direct GitHub download. A short Downloader code has not been assigned.",
-        "result": "The versioned NodeCast TV APK downloads from the official GitHub Release."
+        "result": "The versioned TV APK downloads from the official GitHub Release."
       },
       {
         "title": "Install and open the player",

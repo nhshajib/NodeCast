@@ -132,6 +132,17 @@ try:
  click('Watch live')
  if TV:time.sleep(3)
  else:wait_for_phone_video()
+ if not TV:
+  # Repeated real media-key pauses exercise the native prop-update lifecycle.
+  # A matching source/options update must not recreate or crash the decoder.
+  player_pid=adb('shell','pidof',package)
+  for cycle in range(6):
+   adb('shell','input','keyevent','127');find('Play live TV',timeout=20)
+   assert adb('shell','pidof',package)==player_pid,'Player process changed while pausing'
+   wait_for_phone_video(timeout=10)
+   adb('shell','input','keyevent','126');find('Pause live TV',timeout=20)
+   assert adb('shell','pidof',package)==player_pid,'Player process changed while resuming'
+  (OUT/'emulator-mobile-pause-resume.json').write_text(json.dumps({'cycles':6,'sameProcess':True,'originalVideoPixels':True})+'\n')
  adb('shell','input','keyevent','127');time.sleep(1);capture('player')
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'

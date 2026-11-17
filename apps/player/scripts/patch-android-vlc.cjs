@@ -15,7 +15,8 @@ if (source.includes(original)) {
   console.log('Applied Android VLC startup lifecycle fix.');
 } else if (!source.includes(fixed)) throw new Error('Android VLC startup patch no longer matches; review before building.');
 
-// TV rerenders may resend identical native props. They must not restart the decoder.
+// Fabric rerenders may resend identical native props on phones and TV.
+// Unchanged source/options must not tear down a decoder while it is pausing.
 const viewFile=path.join(path.dirname(packagePath),'android/src/main/java/expo/modules/libvlcplayer/LibVlcPlayerView.kt');
 let viewSource=fs.readFileSync(viewFile,'utf8');
 // The phone's portrait stage has Yoga-constrained dimensions. VLC adds its
@@ -30,9 +31,11 @@ if(!viewSource.includes(layoutAfter)){
 }
 for(const declaration of ['  var source: String? = null','  var options: MutableList<String> = mutableListOf()']){
  const before=declaration+'\n    set(value) {\n      field = value';
- const after=declaration+'\n    set(value) {\n      if (context.packageName.endsWith(".tv") && field == value) return\n      field = value';
- if(viewSource.includes(before))viewSource=viewSource.replace(before,after);
- else if(!viewSource.includes(after))throw new Error('Review TV VLC prop identity patch');
+ const tvOnly=declaration+'\n    set(value) {\n      if (context.packageName.endsWith(".tv") && field == value) return\n      field = value';
+ const after=declaration+'\n    set(value) {\n      if (field == value) return\n      field = value';
+ if(viewSource.includes(tvOnly))viewSource=viewSource.replace(tvOnly,after);
+ else if(viewSource.includes(before))viewSource=viewSource.replace(before,after);
+ else if(!viewSource.includes(after))throw new Error('Review Android VLC prop identity patch');
 }
 fs.writeFileSync(viewFile,viewSource);
 
