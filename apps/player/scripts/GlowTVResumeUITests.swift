@@ -133,7 +133,11 @@ final class GlowTVResumeUITests: XCTestCase {
       let field = secure ? app.secureTextFields[label] : app.textFields[label]
       XCTAssertTrue(field.waitForExistence(timeout: 15), app.debugDescription)
       if !field.isHittable { app.scrollViews.firstMatch.swipeUp() }
-      field.tap(); field.typeText(value)
+      field.tap()
+      // Inject at a human pace so controlled inputs receive every native event.
+      for character in value { field.typeText(String(character)) }
+      if !secure { XCTAssertEqual(field.value as? String, value, "The entered field value was not retained") }
+      if secure { field.typeText("\n") }
     }
     fill("Profile name", "Demo playlist")
     fill("Server address", "http://127.0.0.1:9090")

@@ -4,7 +4,7 @@ import {useFamily} from './FamilyControls';
 import { pickPlaylist } from './localPlaylist';
 import Pressable from './FocusPressable';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import type { Provider } from './provider';
 import { importXtreamLink } from './provider';
 import type { Profile } from './vault';
@@ -22,7 +22,7 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
   const detected = form.kind === 'xtream' ? exportLogin : null;
   const change = (key: keyof Provider, value: string) => setForm(old => ({ ...old, [key]: value }));
   if(family.enabled&&!family.unlocked)return <View style={u.content}><Text style={u.h1}>Unlock profile settings</Text><Text style={u.body}>Your changes are kept while this page is open.</Text><Button title="Unlock profile settings" onPress={family.request}/></View>;
-  return <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={{ flex: 1 }}><ScrollView keyboardShouldPersistTaps="handled" contentContainerStyle={[u.content,{gap:16,paddingBottom:32}]}>
+  return <View style={{ flex: 1 }}><ScrollView {...(Platform.OS === 'ios' ? { contentInsetAdjustmentBehavior: 'automatic' as const, automaticallyAdjustKeyboardInsets: true, keyboardDismissMode: 'interactive' as const } : {})} keyboardShouldPersistTaps="handled" contentContainerStyle={[u.content,{gap:16,paddingBottom:32}]}>
     <View style={{ gap: 10 }}><Text style={u.h1}>{profile ? 'Profile details' : 'Add playlist'}</Text><Text style={u.body}>Live channels, films, and series from your own provider.</Text></View>
     <View style={{ flexDirection: 'row', padding: 3, borderRadius: 999, borderWidth: 1, borderColor: colors.line }}>{(['m3u', 'xtream', 'file'] as const).map(kind => <Pressable key={kind} accessibilityRole="tab" accessibilityLabel={kind === 'xtream' ? 'Xtream Codes' : kind === 'file' ? 'File' : 'M3U link'} aria-selected={source === kind} accessibilityState={{ selected: source === kind }} disabled={busy} onPress={() => { setSource(kind); setForm(current => ({ ...current, kind: kind === 'file' ? 'm3u' : kind, localText: kind === 'file' ? current.localText : undefined, address: current.localText ? '' : current.address })); }} style={{ flex: 1, minHeight: 44, justifyContent: 'center', alignItems: 'center', paddingHorizontal: 6, borderRadius: 999, backgroundColor: source === kind ? colors.selected : 'transparent' }}><Text style={{ color: source === kind ? colors.selectedText : colors.secondary, fontWeight: '600', fontSize: 13 }}>{source === kind ? '✓ ' : ''}{kind === 'xtream' ? 'Xtream' : kind === 'file' ? 'File' : 'M3U link'}</Text></Pressable>)}</View>
     <Field label="Profile name" placeholder="My living room" value={form.name} onChangeText={v => change('name', v)} editable={!busy} />
@@ -39,5 +39,5 @@ export default function ProviderSheet({ profile, busy, error, onSave }: { profil
     <Button title={busy ? 'Connecting to your provider…' : 'Connect playlist'} busy={busy} onPress={() => onSave(form, profile)} icon="arrow-forward" />
     <View style={[u.row, { alignItems: 'flex-start', gap: 8 }]}><Icon name="lock-closed-outline" size={16} color={colors.link} /><Text style={[u.small, { flex: 1 }]}>{Platform.OS === 'web' ? 'Preview only. Save profiles securely in the installed app.' : 'Saved securely on this device. Shared only with your provider when connecting.'}</Text></View>
     <Text style={u.small}>Use HTTPS when available. HTTP connections send details without encryption. You’ll need your own IPTV subscription or playlist.</Text>
-  </ScrollView></KeyboardAvoidingView>;
+  </ScrollView></View>;
 }
