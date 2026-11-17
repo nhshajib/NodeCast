@@ -1,0 +1,33 @@
+{
+  "platform": "tv",
+  "native": true,
+  "input": "D-pad, Select, Back and keyboard text only",
+  "screens": [
+    "home",
+    "guide",
+    "player",
+    "movies",
+    "series",
+    "playlists",
+    "search",
+    "settings"
+  ],
+  "settingsDestinations": [
+    "Appearance",
+    "Family controls",
+    "Playback",
+    "Library organization",
+    "Backup & transfer",
+    "Library & storage",
+    "Set home IP reference",
+    "Version history"
+  ],
+  "actualVideoPixels": true,
+  "androidApi": "35",
+  "emulatorGpu": "swangle",
+  "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44096346926",
+  "source": "30e6109bda3a590ac63b6b66c1a9f9f6504fac76",
+  "captureSource": "d9e9c551b38df570556ef6d28166efee9c92d9d0",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44092474689"
+}

@@ -15,6 +15,7 @@ parser.add_argument('--run',required=True)
 parser.add_argument('--source',required=True)
 parser.add_argument('--capture-source',help='Capture harness commit, if different from the native app source')
 parser.add_argument('--build-run',help='APK source build, when different from the capture workflow')
+parser.add_argument('--evidence-only',action='store_true',help='Validate an additional Android API without replacing the selected gallery captures')
 args=parser.parse_args();platform=args.platform
 out=Path(__file__).resolve().parent/'native'
 screens=['home','guide','player','movies','series','playlists','search','settings']
@@ -54,10 +55,14 @@ with Image.open(files['player'])as image:
  green=sum(r<50 and 150<g<230 and 70<b<160 for r,g,b in pixels)/len(pixels)
  assert green>.01,f'No original decoded green scene in {platform} player capture ({green:.4f})'
 out.mkdir(parents=True,exist_ok=True)
-for screen,file in files.items():shutil.copyfile(file,out/f'{platform}-{screen}.png')
+if args.evidence_only:
+ assert platform in ('android','tv') and result.get('androidApi'), 'Additional API evidence requires Android results'
+label=f'{platform}-api{result["androidApi"]}'if args.evidence_only else platform
+for screen,file in files.items():
+ if not args.evidence_only or screen=='player':shutil.copyfile(file,out/f'{label}-{screen}.png')
 result.update(workflow=workflow,source=args.source)
 if args.capture_source:result['captureSource']=args.capture_source
 if args.build_run:result['buildWorkflow']=f'https://github.com/nhshajib/NodeCast/actions/runs/{args.build_run}'
-(out/f'{platform}-audit.json').write_text(json.dumps(result,indent=2)+'\n')
-(out/f'{platform}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{platform}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'darkSceneRegionFraction':dark,'result':'Both original scene colors are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
+(out/f'{label}-audit.json').write_text(json.dumps(result,indent=2)+'\n')
+(out/f'{label}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{label}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'darkSceneRegionFraction':dark,'result':'Both original scene colors are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
 print(f'Imported all eight {platform} native captures from successful workflow {args.run}')
