@@ -5,7 +5,7 @@ from urllib.parse import urlparse,parse_qs
 TARGET=sys.argv[1];TV=TARGET=='tv';ROOT=Path(__file__).resolve().parents[2];APP=ROOT/'apps/player';OUT=APP/'verification/android';OUT.mkdir(parents=True,exist_ok=True)
 if TV:os.environ['NODECAST_REMOTE_ONLY']='1'
 spec=importlib.util.spec_from_file_location('helpers',APP/'scripts/android-tv-playback-smoke.py');h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
-adb,fill,find=h.adb,h.text,h.find
+adb,find=h.adb,h.find
 native_tab_taps=[]
 def click(label,scroll=False):
  if not TV and label=='Connect playlist':
@@ -34,6 +34,19 @@ def click(label,scroll=False):
   (OUT/'emulator-mobile-native-tab-taps.json').write_text(json.dumps(native_tab_taps,indent=2)+'\n')
   adb('shell','input','swipe',x,y,x,y,'100');time.sleep(.5)
  else:h.click(label,scroll)
+
+def fill(label,value):
+ if TV:h.text(label,value);return
+ click(label,True)
+ # Do not submit while ADB's burst keys are still queued in a controlled input.
+ for character in value:
+  adb('shell','input','text',character);time.sleep(.08)
+ nodes=[n for n in h.dump().iter('node')if n.get('class')=='android.widget.EditText'and n.get('content-desc')==label]
+ assert nodes,f'Missing entered field: {label}'
+ entered=nodes[-1].get('text','')
+ if nodes[-1].get('password')!='true':assert entered==value,f'Native field {label} did not retain the full synthetic value'
+ elif entered:assert len(entered)==len(value),f'Native secure field {label} did not retain every character'
+ adb('shell','input','keyevent','66');time.sleep(.3)
 
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
