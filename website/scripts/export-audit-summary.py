@@ -5,8 +5,25 @@ for name,dest in [('pages.json','website-audit.json'),('schema-summary.json','sc
  if (source/name).exists():(out/dest).write_bytes((source/name).read_bytes())
 rows=[]
 for mode in ['mobile','desktop']:
- rows+=json.loads((source/'lighthouse'/f'scores-{mode}.json').read_text())
+ # Targeted reruns replace scores-<mode>.json. Read the individual reports
+ # instead so a refreshed screenshot audit cannot discard other page results.
+ from urllib.parse import urlsplit
+ for report in sorted((source/'lighthouse').glob(f'{mode}-*.json')):
+  data=json.loads(report.read_text())
+  assert not data.get('runtimeError'), (report,data.get('runtimeError'))
+  audit=data['audits']
+  rows.append({'route':urlsplit(data['requestedUrl']).path,'mode':mode,
+   'measuredAt':data['fetchTime'],
+   'scores':{key:round(value['score']*100) for key,value in data['categories'].items()},
+   'lcp':audit['largest-contentful-paint']['numericValue'],
+   'cls':audit['cumulative-layout-shift']['numericValue'],
+   'tbt':audit['total-blocking-time']['numericValue'],
+   'bytes':audit['total-byte-weight']['numericValue'],
+   'failedAudits':[{'id':a['id'],'title':a['title'],'score':a['score'],
+    **({'displayValue':a['displayValue']} if 'displayValue' in a else {})}
+    for a in audit.values() if a.get('score') is not None and a['score']<1 and a.get('details')]})
 assert len(rows)==46, f'Expected all 23 pages on both profiles, found {len(rows)}'
+assert len({(row['route'],row['mode']) for row in rows})==46, 'Duplicate page reports'
 assert all(all(score>=95 for score in row['scores'].values()) for row in rows)
 (out/'lighthouse-scores.json').write_text(json.dumps(rows,indent=2)+'\n')
 by={}
