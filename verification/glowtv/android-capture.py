@@ -86,6 +86,23 @@ def back():
   # Legacy KEYCODE_BACK bypasses that native gesture dispatch on newer images.
   adb('shell','input','swipe','1',str(h.height//2),str(h.width*2//3),str(h.height//2),'350');time.sleep(.6)
  else:adb('shell','input','keyevent','4');time.sleep(.6)
+def touch_player(label,timeout=20):
+ # Phone playback uses its touch controls. Raw Android media keys are routed
+ # through the dedicated TV controller only, so they do not prove a phone pause.
+ assert not TV
+ deadline=time.monotonic()+timeout
+ while time.monotonic()<deadline:
+  nodes=list(h.dump().iter('node'))
+  target=next((n for n in nodes if n.get('content-desc')==label and n.get('clickable')=='true'),None)
+  if target is None:target=next((n for n in nodes if n.get('content-desc')=='Show player controls' and n.get('clickable')=='true'),None)
+  if target is not None:
+   b=list(map(int,__import__('re').findall(r'\d+',target.get('bounds',''))))
+   if len(b)==4 and b[2]>b[0] and b[3]>b[1]:
+    x,y=str((b[0]+b[2])//2),str((b[1]+b[3])//2)
+    adb('shell','input','swipe',x,y,x,y,'100');time.sleep(.4)
+    if target.get('content-desc')==label:return
+  time.sleep(.2)
+ raise AssertionError('Phone player control is not reachable: '+label)
 def wait_for_phone_video(timeout=45):
  # A native playing event can precede the first texture frame. Require actual
  # scene pixels before pausing; a fixed delay can freeze a still-black surface.
@@ -133,17 +150,19 @@ try:
  if TV:time.sleep(3)
  else:wait_for_phone_video()
  if not TV:
-  # Repeated real media-key pauses exercise the native prop-update lifecycle.
+  # Repeated real touch pauses exercise the native prop-update lifecycle.
   # A matching source/options update must not recreate or crash the decoder.
   player_pid=adb('shell','pidof',package)
   for cycle in range(6):
-   adb('shell','input','keyevent','127');find('Play live TV',timeout=20)
+   touch_player('Pause live TV');find('Play live TV',timeout=20)
    assert adb('shell','pidof',package)==player_pid,'Player process changed while pausing'
    wait_for_phone_video(timeout=10)
-   adb('shell','input','keyevent','126');find('Pause live TV',timeout=20)
+   touch_player('Play live TV')
    assert adb('shell','pidof',package)==player_pid,'Player process changed while resuming'
   (OUT/'emulator-mobile-pause-resume.json').write_text(json.dumps({'cycles':6,'sameProcess':True,'originalVideoPixels':True})+'\n')
- adb('shell','input','keyevent','127');time.sleep(1);capture('player')
+ if TV:adb('shell','input','keyevent','127')
+ else:touch_player('Pause live TV');find('Play live TV',timeout=20)
+ time.sleep(1);capture('player')
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'
  region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
