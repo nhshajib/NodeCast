@@ -64,6 +64,16 @@ def home():click('Home')
 def back():
  if TV:click('Back')
  else:adb('shell','input','keyevent','4');time.sleep(.6)
+def wait_for_phone_video(timeout=45):
+ # A native playing event can precede the first texture frame. Require actual
+ # scene pixels before pausing; a fixed delay can freeze a still-black surface.
+ deadline=time.monotonic()+timeout
+ while time.monotonic()<deadline:
+  probe=OUT/'emulator-design-mobile-video-probe.png';probe.write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+  pixels=subprocess.check_output(['ffmpeg','-v','error','-i',str(probe),'-vf','crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8','-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
+  if sum(pixels[i+1]>150 and pixels[i]<50 and 70<pixels[i+2]<160 for i in range(0,len(pixels),3))>len(pixels)/12:return
+  time.sleep(1)
+ raise AssertionError('Native decoder did not expose the original green scene within 45 seconds')
 package='com.nhshajib.nodecast'+('.tv'if TV else '')
 try:
  apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk));adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
@@ -85,7 +95,10 @@ try:
  capture('guide')
  if TV:click('Close mini player');back();home()
  else:click('Close');home()
- click('Watch live');time.sleep(3);adb('shell','input','keyevent','127');time.sleep(1);capture('player')
+ click('Watch live')
+ if TV:time.sleep(3)
+ else:wait_for_phone_video()
+ adb('shell','input','keyevent','127');time.sleep(1);capture('player')
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'
  region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
@@ -109,7 +122,7 @@ try:
 except Exception:
  original_failure=__import__('traceback').format_exc()
  # Preserve the original failure, then isolate native tab input on this exact APK.
- if not TV:
+ if not TV and 'UI not found: Add full TV guide' in original_failure:
   try:
    (OUT/'emulator-mobile-window-state.txt').write_text(adb('shell','dumpsys','window','windows'))
    diagnostics=[]

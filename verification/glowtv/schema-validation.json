@@ -8,8 +8,8 @@
       "WebSite",
       "BreadcrumbList"
     ],
-    "officialPayloadUnchanged": false,
-    "verification": "Local structure checked; fresh official check pending (service returned HTTP 405/rate-limit challenge)",
+    "officialPayloadUnchanged": true,
+    "verification": "Identical JSON-LD to saved official Schema.org validation",
     "sha256": "3ce1512039ad6c63e47d673a2b9f5c585d9be5528be55d630b6979783247fc71"
   },
   {
