@@ -18,6 +18,16 @@ if (source.includes(original)) {
 // TV rerenders may resend identical native props. They must not restart the decoder.
 const viewFile=path.join(path.dirname(packagePath),'android/src/main/java/expo/modules/libvlcplayer/LibVlcPlayerView.kt');
 let viewSource=fs.readFileSync(viewFile,'utf8');
+// The phone's portrait stage has Yoga-constrained dimensions. VLC adds its
+// Android TextureView after that first layout; ExpoView otherwise ignores the
+// child's requestLayout and can leave a playing decoder on a zero-size surface.
+// Keep the validated TV fullscreen layout behavior unchanged.
+const layoutBefore=') : ExpoView(context, appContext) {';
+const layoutAfter=layoutBefore+'\n  override val shouldUseAndroidLayout: Boolean = !context.packageName.endsWith(".tv")';
+if(!viewSource.includes(layoutAfter)){
+ if(!viewSource.includes(layoutBefore))throw new Error('Review Android VLC native child-layout patch');
+ viewSource=viewSource.replace(layoutBefore,layoutAfter);
+}
 for(const declaration of ['  var source: String? = null','  var options: MutableList<String> = mutableListOf()']){
  const before=declaration+'\n    set(value) {\n      field = value';
  const after=declaration+'\n    set(value) {\n      if (context.packageName.endsWith(".tv") && field == value) return\n      field = value';
