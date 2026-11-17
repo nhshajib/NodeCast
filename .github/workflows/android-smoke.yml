@@ -75,6 +75,10 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Record emulator feature support
+        run: |
+          mkdir -p apps/player/verification/android
+          "$ANDROID_HOME/emulator/emulator" -feature-list > apps/player/verification/android/emulator-host-features.txt 2>&1 || true
       - name: Launch offline and exercise remote keys
         env:
           NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'core' }}
@@ -89,7 +93,7 @@ jobs:
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           # Exercise the real native transition completion path and hit testing.
           disable-animations: false
-          emulator-options: -no-window -gpu ${{ inputs.gpu_mode || 'swangle' }} -no-snapshot -noaudio -no-boot-anim ${{ inputs.disable_vulkan && '-feature -Vulkan' || '' }}
+          emulator-options: -no-window -gpu ${{ inputs.gpu_mode || 'swangle' }} -no-snapshot -noaudio -no-boot-anim ${{ inputs.disable_vulkan && '-feature -Vulkan' || '' }} ${{ inputs.disable_codec2 && '-feature -VideoPlayback' || '' }}
           script: cd apps/player && if [ "${{ inputs.tv_suite }}" = design ]; then python3 ../../verification/glowtv/android-capture.py ${{ matrix.target }}; else bash scripts/android-smoke.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
         if: always()
