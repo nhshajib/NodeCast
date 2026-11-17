@@ -50,6 +50,9 @@ const decoderAfter=`    val virtualCodecFallback = android.os.Build.VERSION.SDK_
     } else {
       LibVLC(context)
     }`;
+// Also upgrade an existing local install carrying the earlier preview patch.
+const legacyDecoderAfter=decoderAfter.replace('arrayListOf("--codec=avcodec")','arrayListOf("--codec=avcodec", "--avcodec-hw=none")');
+if(playerSource.includes(legacyDecoderAfter))playerSource=playerSource.replace(legacyDecoderAfter,decoderAfter);
 if(playerSource.includes(decoderBefore))playerSource=playerSource.replace(decoderBefore,decoderAfter);
 else if(!playerSource.includes(decoderAfter))throw new Error('Review Android VLC virtual-codec compatibility patch');
 fs.writeFileSync(playerFile,playerSource);
