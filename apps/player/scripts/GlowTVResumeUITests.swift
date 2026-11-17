@@ -12,7 +12,7 @@ final class GlowTVResumeUITests: XCTestCase {
       let title = String(id.dropFirst("navigation-tab-".count)).capitalized
       return app.buttons.matching(identifier: title).firstMatch
     }
-    app.descendants(matching: .any).matching(identifier: id).firstMatch
+    return app.descendants(matching: .any).matching(identifier: id).firstMatch
   }
   private func capture(_ name: String) {
     let attachment = XCTAttachment(screenshot: app.screenshot())
