@@ -93,7 +93,7 @@ try:
  if TV:
   # Wait for the first-run task itself. A blind Back during a slower cold
   # launch can close the Activity before the IP-reference sheet is presented.
-  find('Not now',timeout=45);click('Not now');click('Add your playlist')
+  find('Home IP reference',timeout=45);click('Back');click('Add your playlist')
  else:
   click('Get started');click('Not now',True)
  for label,value in [('Profile name','GlowTVDemo'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:fill(label,value)
