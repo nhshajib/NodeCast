@@ -172,5 +172,9 @@ except Exception:
    (OUT/'emulator-mobile-tab-diagnostic-error.txt').write_text(str(diagnostic_error))
  (OUT/f'emulator-design-{TARGET}-traceback.txt').write_text(original_failure)
  (OUT/f'emulator-design-{TARGET}-logcat.txt').write_text(adb('logcat','-d'))
+ try:
+  (OUT/f'emulator-design-{TARGET}-native-layout.txt').write_text(adb('shell','dumpsys','activity','top'))
+ except Exception as layout_error:
+  (OUT/f'emulator-design-{TARGET}-native-layout-error.txt').write_text(str(layout_error))
  capture('failure');(OUT/f'emulator-design-{TARGET}-failure.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));raise
 finally:server.shutdown()
