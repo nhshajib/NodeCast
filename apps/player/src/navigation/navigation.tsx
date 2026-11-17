@@ -96,9 +96,7 @@ export function TabsNavigator() {
     })}
   </Tabs>;
   // Android must keep content and its touch area above the native bottom bar.
-  // Do not let an older JS render replace a newer native user selection.
-  // The native host compares each update's provenance before applying it.
-  return <NativeTabs unstable_nativeProps={Platform.OS === 'android' ? { rejectStaleNavStateUpdates: true } : undefined} backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
+  return <NativeTabs backBehavior="initialRoute" tintColor={colors.link} iconColor={{ default: colors.secondary, selected: colors.link }} indicatorColor={colors.selected} backgroundColor={colors.bg}
     labelStyle={{ default: { color: colors.secondary }, selected: { color: colors.link } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
