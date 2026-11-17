@@ -1,6 +1,4 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43736278167",
-  "source": "38c91a2ca82ed5160ff19a4bccdf8780efc0994a",
   "result": "Passed",
   "passedTests": 2,
   "failedTests": 0,
@@ -13,5 +11,7 @@
     "osVersion": "26.5",
     "platform": "iOS Simulator"
   },
-  "scope": "Native simulator; cold starts, six tab round trips, 1/15/60-second background intervals, three relaunches and eight design captures. Physical device testing is separate."
+  "scope": "Native simulator UI tests and captures; physical-device testing is separate.",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44000097756",
+  "source": "aa3cd2e6cb6b21d5d447e394f8fd66df82784adc"
 }

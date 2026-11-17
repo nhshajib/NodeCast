@@ -5,6 +5,13 @@ final class GlowTVResumeUITests: XCTestCase {
   private let app = XCUIApplication(bundleIdentifier: "com.nhshajib.nodecast")
 
   private func element(_ id: String) -> XCUIElement {
+    // UIKit's iPadOS top tab presentation exposes the native button label,
+    // while its phone tab bar also forwards the React test identifier.
+    // Select the actual visible system tab on both presentations.
+    if app.frame.width >= 700 && id.hasPrefix("navigation-tab-") {
+      let title = String(id.dropFirst("navigation-tab-".count)).capitalized
+      return app.buttons.matching(identifier: title).firstMatch
+    }
     app.descendants(matching: .any).matching(identifier: id).firstMatch
   }
   private func capture(_ name: String) {

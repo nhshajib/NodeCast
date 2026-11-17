@@ -1,0 +1,9 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44000097756",
+  "source": "aa3cd2e6cb6b21d5d447e394f8fd66df82784adc",
+  "capture": "ios-player.png",
+  "sha256": "4e4af49dddd79d04cc5f9038f714cd2054233448bd8478624abcf6510e40ecb5",
+  "greenVideoBandFraction": 0.07799744897959184,
+  "result": "Original decoded scene pixels are present in the native player capture",
+  "scope": "Native screenshot inspection; physical-device playback is separate."
+}
