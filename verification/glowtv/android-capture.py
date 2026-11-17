@@ -176,6 +176,7 @@ except Exception:
  (OUT/f'emulator-design-{TARGET}-logcat.txt').write_text(adb('logcat','-d'))
  try:
   (OUT/f'emulator-design-{TARGET}-native-layout.txt').write_text(adb('shell','dumpsys','activity','top'))
+  (OUT/f'emulator-design-{TARGET}-native-codecs.txt').write_text(adb('shell','dumpsys','media.codec'))
  except Exception as layout_error:
   (OUT/f'emulator-design-{TARGET}-native-layout-error.txt').write_text(str(layout_error))
  capture('failure');(OUT/f'emulator-design-{TARGET}-failure.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));raise

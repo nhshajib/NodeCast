@@ -30,6 +30,10 @@ on:
         type: choice
         default: swangle
         options: [swangle, swiftshader_indirect]
+      disable_vulkan:
+        description: Disable the emulator Vulkan path for native video comparison
+        type: boolean
+        default: false
       make_public:
         description: Publish the android-v<version> release once these emulator checks pass
         type: boolean
@@ -71,6 +75,7 @@ jobs:
         env:
           NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'core' }}
           GLOWTV_EMULATOR_GPU: ${{ inputs.gpu_mode || 'swangle' }}
+          GLOWTV_EMULATOR_VULKAN: ${{ inputs.disable_vulkan && 'disabled' || 'default' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: ${{ inputs.api_level || '35' }}
@@ -79,7 +84,7 @@ jobs:
           profile: ${{ matrix.target == 'tv' && 'tv_1080p' || 'pixel_2' }}
           # Exercise the real native transition completion path and hit testing.
           disable-animations: false
-          emulator-options: -no-window -gpu ${{ inputs.gpu_mode || 'swangle' }} -no-snapshot -noaudio -no-boot-anim
+          emulator-options: -no-window -gpu ${{ inputs.gpu_mode || 'swangle' }} -no-snapshot -noaudio -no-boot-anim ${{ inputs.disable_vulkan && '-feature -Vulkan' || '' }}
           script: cd apps/player && if [ "${{ inputs.tv_suite }}" = design ]; then python3 ../../verification/glowtv/android-capture.py ${{ matrix.target }}; else bash scripts/android-smoke.sh ${{ matrix.target }}; fi
       - uses: actions/upload-artifact@v4
         if: always()
