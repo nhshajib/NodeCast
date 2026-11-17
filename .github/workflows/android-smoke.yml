@@ -30,6 +30,10 @@ on:
         type: choice
         default: swangle
         options: [swangle, swiftshader_indirect]
+      disable_codec2:
+        description: Isolate the emulator's virtual Codec2 decoder (app settings unchanged)
+        type: boolean
+        default: false
       disable_vulkan:
         description: Disable the emulator Vulkan path for native video comparison
         type: boolean
@@ -75,6 +79,7 @@ jobs:
         env:
           NODECAST_TV_SUITE: ${{ inputs.tv_suite || 'core' }}
           GLOWTV_EMULATOR_GPU: ${{ inputs.gpu_mode || 'swangle' }}
+          GLOWTV_EMULATOR_DISABLE_CODEC2: ${{ inputs.disable_codec2 && 'true' || 'false' }}
           GLOWTV_EMULATOR_VULKAN: ${{ inputs.disable_vulkan && 'disabled' || 'default' }}
         uses: reactivecircus/android-emulator-runner@v2
         with:

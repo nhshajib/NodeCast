@@ -6,6 +6,10 @@ TARGET=sys.argv[1];TV=TARGET=='tv';ROOT=Path(__file__).resolve().parents[2];APP=
 if TV:os.environ['NODECAST_REMOTE_ONLY']='1'
 spec=importlib.util.spec_from_file_location('helpers',APP/'scripts/android-tv-playback-smoke.py');h=importlib.util.module_from_spec(spec);spec.loader.exec_module(h)
 adb,find=h.adb,h.find
+if os.environ.get('GLOWTV_EMULATOR_DISABLE_CODEC2')=='true':
+ # This changes only the disposable virtual device, never the installed app.
+ adb('shell','setprop','debug.stagefright.ccodec','0')
+ assert adb('shell','getprop','debug.stagefright.ccodec').strip()=='0'
 native_tab_taps=[]
 def click(label,scroll=False):
  if not TV and label=='Connect playlist':
