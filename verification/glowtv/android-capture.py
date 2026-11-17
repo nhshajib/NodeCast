@@ -11,6 +11,7 @@ if os.environ.get('GLOWTV_EMULATOR_DISABLE_CODEC2')=='true':
  adb('shell','setprop','debug.stagefright.ccodec','0')
  assert adb('shell','getprop','debug.stagefright.ccodec').strip()=='0'
 native_tab_taps=[]
+gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
 def click(label,scroll=False):
  if not TV and label=='Connect playlist':
   # The native sheet covers the tab bar. The shared legacy helper excludes
@@ -80,6 +81,10 @@ def capture(screen):
 def home():click('Home')
 def back():
  if TV:click('Back')
+ elif gesture_navigation:
+  # Exercise the system's actual predictive-back gesture on gesture-nav AVDs.
+  # Legacy KEYCODE_BACK bypasses that native gesture dispatch on newer images.
+  adb('shell','input','swipe','1',str(h.height//2),str(h.width*2//3),str(h.height//2),'350');time.sleep(.6)
  else:adb('shell','input','keyevent','4');time.sleep(.6)
 def wait_for_phone_video(timeout=45):
  # A native playing event can precede the first texture frame. Require actual

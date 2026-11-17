@@ -46,7 +46,7 @@ const decoderBefore='    libVlc = LibVLC(context)';
 const decoderAfter=`    val virtualCodecFallback = android.os.Build.VERSION.SDK_INT >= 35 &&
       (android.os.Build.HARDWARE == "ranchu" || android.os.Build.HARDWARE == "goldfish")
     libVlc = if (virtualCodecFallback) {
-      LibVLC(context, arrayListOf("--codec=avcodec", "--avcodec-hw=none"))
+      LibVLC(context, arrayListOf("--codec=avcodec"))
     } else {
       LibVLC(context)
     }`;
