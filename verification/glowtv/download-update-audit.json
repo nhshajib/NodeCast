@@ -1,0 +1,56 @@
+{
+  "checkedAt": "2026-11-17T16:46:38.190896+00:00",
+  "scope": "Website and download documentation only; no native app changes or installer publication",
+  "directDownloads": [
+    {
+      "edition": "ios",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+      "version": "0.6.7",
+      "publicTestingRelease": true,
+      "httpStatus": 200,
+      "contentLength": 35754931,
+      "sha256": "f6829d2ce28114429c730ae35eb8cf1d27fb2f19237f42f672ed068aa87f5a30"
+    },
+    {
+      "edition": "android",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+      "version": "0.6.7",
+      "publicTestingRelease": true,
+      "httpStatus": 200,
+      "contentLength": 225135495,
+      "sha256": "f90a857ded82542b2efc56173b957702cd4fcc11610e8a73374d5f457d8b4554"
+    },
+    {
+      "edition": "tv",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk",
+      "version": "0.6.7",
+      "publicTestingRelease": true,
+      "httpStatus": 200,
+      "contentLength": 223769039,
+      "sha256": "6a3dcbcd6c9b3c42ee4a236006ad8f142785dc41957e91b926aae0bf8513ee01"
+    }
+  ],
+  "typecheck": "0 errors, 0 warnings, 0 hints",
+  "releaseSelectionTests": 4,
+  "websiteBuildPages": 23,
+  "pageAudit": {
+    "pages": 23,
+    "widths": [
+      360,
+      768,
+      1280,
+      1920
+    ],
+    "errors": [],
+    "checks": [
+      "axe WCAG 2.2 AA",
+      "HTML validation",
+      "runtime errors",
+      "image requests",
+      "internal links",
+      "horizontal overflow",
+      "per-platform direct file, version, checksum and feature assertions"
+    ]
+  },
+  "previewNotice": "The public NodeCast 0.6.7 files are clearly distinguished from the unpublished GlowTV redesign."
+}

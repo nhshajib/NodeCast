@@ -2,6 +2,14 @@
 
 **Your TV, beautifully lit.**
 
+<!-- direct-download:start -->
+## Download 0.6.7
+
+[**Download IPA directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) · [Features, size and checksum](DOWNLOADS.md) · [0.6.7 release notes](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7)
+
+This public testing build uses the previous NodeCast name. The GlowTV redesign is still in development. Sign the unsigned IPA with Impactor before installing.
+<!-- direct-download:end -->
+
 [Download availability](https://glowtv.app/download/iphone/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)
 
 The iPhone app uses the native player for compatible streams and built-in VLC for supported live playback. AirPlay and picture-in-picture depend on the native engine and stream. Store availability is pending. Existing personally signed IPA installations need a valid signing certificate; free signing usually expires after seven days. Refresh with your signing tool before expiry. An unsigned IPA is not an App Store release and cannot be installed simply by opening the file. Keep your current app installed to retain profiles when updating.

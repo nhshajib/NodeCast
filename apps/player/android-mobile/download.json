@@ -1,0 +1,47 @@
+{
+  "version": "0.6.7",
+  "tag": "android-v0.6.7",
+  "publishedAt": "2026-10-31T01:01:22Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+  "prerelease": true,
+  "legacy": true,
+  "file": "NodeCast-mobile-0.6.7.apk",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+  "size": 225135495,
+  "sha256": "f90a857ded82542b2efc56173b957702cd4fcc11610e8a73374d5f457d8b4554",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk.sha256",
+  "minimumOS": "Android 7.0 (API 24)",
+  "checkedAt": "2026-11-17T16:34:55.505Z",
+  "edition": "android",
+  "features": [
+    {
+      "title": "Your playlists, together",
+      "description": "Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+    },
+    {
+      "title": "A full TV guide",
+      "description": "Load XMLTV schedules, search programmes and use catch-up when your provider supports it."
+    },
+    {
+      "title": "Movies and series",
+      "description": "Browse your provider’s library, choose seasons and continue with the next episode."
+    },
+    {
+      "title": "Favorites and history",
+      "description": "Save channels, resume watching and clear recents without deleting your profiles."
+    },
+    {
+      "title": "Playback your way",
+      "description": "Adjust playback over the video, choose supported player options and set a sleep timer."
+    },
+    {
+      "title": "Take your settings with you",
+      "description": "Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories."
+    }
+  ],
+  "changes": [
+    "Compact playback settings stay over the video instead of opening a separate page.",
+    "Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.",
+    "Portrait and landscape playback share the same controls; local profiles and settings are retained."
+  ]
+}

@@ -1,0 +1,6 @@
+---
+import release from '../data/release';
+import type {DownloadPlatform} from '../data/release';
+const editions:[DownloadPlatform,string,string][]=[['ios','iPhone & iPad','IPA'],['android','Android phone','APK'],['tv','Android TV & Fire TV','TV APK']];
+---
+<section class="content"><p class="eyebrow">From our GitHub releases</p><h2>Direct downloads</h2><p>These are the currently published testing builds. Files using the previous NodeCast name do not include the upcoming GlowTV design.</p><div class="direct-download-grid">{editions.map(([platform,title,format])=>{const item=release.platforms[platform];return <article class="direct-download-card"><h3>{title}</h3>{item?<><p class="eyebrow">{item.version} · {item.prerelease?'Testing release':'Published release'}</p><a class="button" href={item.url}>Download {format} ↓</a><a href={`/download/${platform==='ios'?'iphone':platform}/`}>Features, checksum &amp; release notes ↗</a></>:<p>Download not published yet.</p>}</article>})}</div></section>

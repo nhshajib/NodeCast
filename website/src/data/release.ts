@@ -1,4 +1,5 @@
 import metadata from './release.json';
-export interface ReleaseAsset { url:string; size:number; sha256:string; minimumOS:string }
-export interface ReleaseMetadata { version:string|null; publishedAt:string|null; source:string; assets:Record<string,ReleaseAsset> }
+export type DownloadPlatform='ios'|'android'|'tv';
+export interface DownloadRelease {version:string;tag:string;publishedAt:string;source:string;prerelease:boolean;legacy:boolean;file:string;url:string;size:number;sha256:string;checksumUrl:string|null;minimumOS:string|null}
+export interface ReleaseMetadata {checkedAt:string;verification?:string;platforms:Record<DownloadPlatform,DownloadRelease|null>}
 export default metadata as ReleaseMetadata;

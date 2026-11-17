@@ -10,11 +10,13 @@ The GlowTV rebrand is in development. Store listings and new branded binaries ar
 
 [![GlowTV website preview with the actual iPhone app, pastel panels and framed TV-night photography](verification/glowtv/website-home.png)](https://glowtv.app/)
 
-| Your device | Download and setup | Project |
-| --- | --- | --- |
-| iPhone / iPad | [iOS availability](https://glowtv.app/download/iphone/) · [Install](https://glowtv.app/install/iphone/) | [iPhone documentation](apps/player/iphone/) |
-| Android phone | [Android availability](https://glowtv.app/download/android/) · [Install APK](https://glowtv.app/install/android/) | [Phone documentation](apps/player/android-mobile/) |
-| Android TV / Fire TV | [TV availability](https://glowtv.app/download/tv/) · [Fire TV setup](https://glowtv.app/install/fire-tv/) | [TV documentation](apps/player/android-tv/) |
+<!-- downloads:start -->
+| Your device | Direct GitHub download | Setup and features | Project |
+| --- | --- | --- | --- |
+| iPhone / iPad | [IPA · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
+| Android phone | [APK · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
+| Android TV / Fire TV | [TV APK · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
+<!-- downloads:end -->
 
 Apple TV is not supported yet. Apple TV brand assets are prepared for a future tvOS project.
 

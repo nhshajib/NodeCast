@@ -2,6 +2,8 @@
 
 ## GlowTV rebrand — in development
 
+- Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. Current NodeCast testing downloads are clearly distinguished from the upcoming GlowTV design.
+
 - New GlowTV name, supplied launcher assets and tagline. Existing IDs, signing, profiles, backups and animations are retained.
 - Shared app moved to `apps/player/`; independent Astro website in `website/`.
 - Original demo scenes replace the bundled public samples.

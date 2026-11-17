@@ -1,0 +1,47 @@
+{
+  "version": "0.6.7",
+  "tag": "ios-v0.6.7",
+  "publishedAt": "2026-10-31T00:09:48Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7",
+  "prerelease": true,
+  "legacy": true,
+  "file": "NodeCast-0.6.7-unsigned.ipa",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+  "size": 35754931,
+  "sha256": "f6829d2ce28114429c730ae35eb8cf1d27fb2f19237f42f672ed068aa87f5a30",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/SHA256SUMS.txt",
+  "minimumOS": null,
+  "checkedAt": "2026-11-17T16:34:55.505Z",
+  "edition": "ios",
+  "features": [
+    {
+      "title": "Your playlists, together",
+      "description": "Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+    },
+    {
+      "title": "A full TV guide",
+      "description": "Load XMLTV schedules, search programmes and use catch-up when your provider supports it."
+    },
+    {
+      "title": "Movies and series",
+      "description": "Browse your provider’s library, choose seasons and continue with the next episode."
+    },
+    {
+      "title": "Favorites and history",
+      "description": "Save channels, resume watching and clear recents without deleting your profiles."
+    },
+    {
+      "title": "Built for iPhone and iPad",
+      "description": "Watch in portrait or landscape. Compatible native playback supports AirPlay and picture-in-picture; availability depends on the stream and engine."
+    },
+    {
+      "title": "Take your settings with you",
+      "description": "Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories."
+    }
+  ],
+  "changes": [
+    "Compact playback settings stay over the video instead of opening a separate page.",
+    "Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.",
+    "Portrait and landscape playback share the same controls and touch seek timeline."
+  ]
+}

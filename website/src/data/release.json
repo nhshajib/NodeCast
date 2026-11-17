@@ -1,6 +1,48 @@
 {
-  "version": null,
-  "publishedAt": null,
-  "source": "No published GlowTV release was found",
-  "assets": {}
+  "checkedAt": "2026-11-17T16:34:55.505Z",
+  "platforms": {
+    "ios": {
+      "version": "0.6.7",
+      "tag": "ios-v0.6.7",
+      "publishedAt": "2026-10-31T00:09:48Z",
+      "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7",
+      "prerelease": true,
+      "legacy": true,
+      "file": "NodeCast-0.6.7-unsigned.ipa",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+      "size": 35754931,
+      "sha256": "f6829d2ce28114429c730ae35eb8cf1d27fb2f19237f42f672ed068aa87f5a30",
+      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/SHA256SUMS.txt",
+      "minimumOS": null
+    },
+    "android": {
+      "version": "0.6.7",
+      "tag": "android-v0.6.7",
+      "publishedAt": "2026-10-31T01:01:22Z",
+      "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+      "prerelease": true,
+      "legacy": true,
+      "file": "NodeCast-mobile-0.6.7.apk",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+      "size": 225135495,
+      "sha256": "f90a857ded82542b2efc56173b957702cd4fcc11610e8a73374d5f457d8b4554",
+      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk.sha256",
+      "minimumOS": "Android 7.0 (API 24)"
+    },
+    "tv": {
+      "version": "0.6.7",
+      "tag": "android-v0.6.7",
+      "publishedAt": "2026-10-31T01:01:22Z",
+      "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+      "prerelease": true,
+      "legacy": true,
+      "file": "NodeCast-tv-0.6.7.apk",
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk",
+      "size": 223769039,
+      "sha256": "6a3dcbcd6c9b3c42ee4a236006ad8f142785dc41957e91b926aae0bf8513ee01",
+      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk.sha256",
+      "minimumOS": "Android 7.0 (API 24)"
+    }
+  },
+  "verification": "Saved public GitHub release metadata"
 }

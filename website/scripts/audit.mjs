@@ -36,6 +36,20 @@ try{
  const gallery=home.locator('.gallery').first();await gallery.scrollIntoViewIfNeeded();await gallery.focus();await home.keyboard.press('ArrowRight');await home.waitForTimeout(250);assert(await gallery.evaluate(el=>el.scrollLeft>0),'Gallery must scroll from the keyboard');
  assert.equal(await home.locator('.photo-card').first().evaluate(el=>getComputedStyle(el).animationName),'none','Reduced motion must disable floating cards');await interactions.close();
  for(const [userAgent,target] of [['Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)','/download/iphone/'],['Mozilla/5.0 (Linux; Android 11)','/download/android/'],['Mozilla/5.0 (Linux; Android 11; AFTMM)','/download/tv/']]){const c=await browser.newContext({userAgent});const p=await c.newPage();await p.goto(origin+'/');assert.equal(await p.locator('[data-platform-download]').first().getAttribute('href'),target);await c.close();}
- report.interactions=['FAQ keyboard toggle','gallery arrow-key scrolling','reduced motion','iPhone, Android and Fire TV download detection'];
+ const downloads=JSON.parse(await fs.readFile('src/data/release.json','utf8')).platforms;
+ const downloadContext=await browser.newContext();const downloadPage=await downloadContext.newPage();
+ for(const [edition,item]of Object.entries(downloads)){
+  if(!item)continue;
+  await downloadPage.goto(origin+'/download/'+(edition==='ios'?'iphone':edition)+'/');
+  assert(await downloadPage.locator(`a.button[href="${item.url}"]`).count()===1,'One correct primary file per edition: '+edition);
+  const details=await downloadPage.locator('.release-grid').innerText();
+  for(const value of [item.version,item.file,item.sha256])assert(details.includes(value),'Missing release detail '+edition+' '+value);
+  assert(await downloadPage.locator('.download-features article').count()>=6,'Platform features: '+edition);
+  if(item.legacy)assert((await downloadPage.locator('.download-notice').innerText()).includes('not included'),'Legacy design notice: '+edition);
+ }
+ await downloadPage.goto(origin+'/download/');
+ for(const item of Object.values(downloads))if(item)assert(await downloadPage.locator(`.direct-download-card a[href="${item.url}"]`).count()===1,'Download index must link every edition');
+ await downloadContext.close();
+ report.interactions=['Per-edition direct download links, features, checksums and legacy notices','FAQ keyboard toggle','gallery arrow-key scrolling','reduced motion','iPhone, Android and Fire TV download detection'];
  report.externalLinks=[...external];assert.deepEqual(report.errors,[],'See audit-results/pages.json');
 }finally{await fs.writeFile(path.join(output,'pages.json'),JSON.stringify(report,null,2)+'\n');await browser.close();server.close();}

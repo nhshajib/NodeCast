@@ -1,5 +1,5 @@
 {
-  "time": "2026-11-17T12:34:17.263Z",
+  "time": "2026-11-17T16:42:57.963Z",
   "origin": "local production Astro output",
   "pages": [
     {
@@ -474,6 +474,7 @@
   ],
   "errors": [],
   "interactions": [
+    "Per-edition direct download links, features, checksums and legacy notices",
     "FAQ keyboard toggle",
     "gallery arrow-key scrolling",
     "reduced motion",
@@ -481,6 +482,17 @@
   ],
   "externalLinks": [
     "https://github.com/nhshajib/NodeCast",
+    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa",
+    "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk",
+    "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk",
+    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/SHA256SUMS.txt",
+    "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7",
+    "https://github.com/nhshajib/NodeCast/blob/main/apps/player/iphone/CHANGELOG.md",
+    "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk.sha256",
+    "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+    "https://github.com/nhshajib/NodeCast/blob/main/apps/player/android-mobile/CHANGELOG.md",
+    "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk.sha256",
+    "https://github.com/nhshajib/NodeCast/blob/main/apps/player/android-tv/CHANGELOG.md",
     "https://github.com/nhshajib/NodeCast/issues/new?template=problem.yml",
     "https://github.com/nhshajib/NodeCast/releases"
   ]

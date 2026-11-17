@@ -1,0 +1,47 @@
+{
+  "version": "0.6.7",
+  "tag": "android-v0.6.7",
+  "publishedAt": "2026-10-31T01:01:22Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+  "prerelease": true,
+  "legacy": true,
+  "file": "NodeCast-tv-0.6.7.apk",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk",
+  "size": 223769039,
+  "sha256": "6a3dcbcd6c9b3c42ee4a236006ad8f142785dc41957e91b926aae0bf8513ee01",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk.sha256",
+  "minimumOS": "Android 7.0 (API 24)",
+  "checkedAt": "2026-11-17T16:34:55.505Z",
+  "edition": "tv",
+  "features": [
+    {
+      "title": "Made for your remote",
+      "description": "Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV."
+    },
+    {
+      "title": "Your playlists, together",
+      "description": "Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+    },
+    {
+      "title": "A full TV guide",
+      "description": "Load XMLTV schedules, search programmes and use catch-up when your provider supports it."
+    },
+    {
+      "title": "Movies and series",
+      "description": "Browse your provider’s library, choose seasons and continue with the next episode."
+    },
+    {
+      "title": "A lighter channel library",
+      "description": "Use the default text list, enable grid or logos when you want them, and organize each media library separately."
+    },
+    {
+      "title": "Take your settings with you",
+      "description": "Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories."
+    }
+  ],
+  "changes": [
+    "Compact playback settings stay over the video instead of opening a separate page.",
+    "Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.",
+    "A lightweight channel list, optional grid/logos and cached category/favorite restoration after restart."
+  ]
+}

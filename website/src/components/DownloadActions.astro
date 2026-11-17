@@ -1,0 +1,16 @@
+---
+import release from '../data/release';
+import type {DownloadPlatform} from '../data/release';
+const {platform}=Astro.props as {platform:DownloadPlatform};
+const item=release.platforms[platform];
+const format=platform==='ios'?'IPA':platform==='tv'?'TV APK':'APK';
+---
+<div class="download-options">
+ {item?<a class="button" href={item.url}>Download {format} · {item.version} ↓</a>:<span class="availability">Public download not available yet</span>}
+ <a class="download-guide-link" href={`/install/${platform==='ios'?'iphone':platform==='tv'?'android-tv':'android'}/`}>Installation instructions ↗</a>
+</div>
+<div class="platform-notes">
+ {item&&<><p class="eyebrow">GitHub direct download · {item.prerelease?'Public testing release':'Published release'}</p>{item.legacy&&<p class="download-notice">The available {item.version} file still uses the <strong>NodeCast</strong> name. The GlowTV screenshots show the upcoming redesign; it is not included in this download.</p>}</>}
+ <p>{platform==='ios'?'Unsigned IPA: sign it with your own Apple account before installing. Free Apple signing usually needs renewal every seven days.':platform==='tv'?'Choose the TV APK for Android TV, Google TV and Fire TV. Use the phone APK on touch devices. Apple TV is not supported yet.':'Standalone Android APK. Allow installation for your browser or file manager when prompted, then install over the existing app to keep your profiles.'}</p>
+ <details class="store-status"><summary>Store availability</summary><p>{platform==='ios'?'App Store · [APP_STORE_URL]':'Google Play · [PLAY_STORE_URL]'}</p>{platform==='tv'&&<p>Amazon Appstore · [AMAZON_URL]<br/>Downloader · [DOWNLOADER_CODE]</p>}</details>
+</div>

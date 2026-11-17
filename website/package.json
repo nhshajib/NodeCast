@@ -8,7 +8,8 @@
     "build": "node scripts/sync-brand.mjs && node scripts/release-metadata.mjs && astro build",
     "preview": "astro preview --host 0.0.0.0",
     "audit": "node scripts/audit.mjs",
-    "typecheck": "astro check"
+    "typecheck": "astro check",
+    "test": "node --test scripts/release-selection.test.mjs"
   },
   "dependencies": {
     "astro": "^6.0.0"
