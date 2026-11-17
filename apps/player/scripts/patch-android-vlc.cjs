@@ -35,3 +35,21 @@ for(const declaration of ['  var source: String? = null','  var options: Mutable
  else if(!viewSource.includes(after))throw new Error('Review TV VLC prop identity patch');
 }
 fs.writeFileSync(viewFile,viewSource);
+
+// Android 15's x86 virtual Goldfish codec advertises hardware decoding but
+// produces a black texture in the headless emulator. Keep VLC and its normal
+// settings on physical devices; use its existing software decoder only for
+// this virtual hardware/API combination.
+const playerFile=path.join(path.dirname(packagePath),'android/src/main/java/expo/modules/libvlcplayer/player/MediaPlayer.kt');
+let playerSource=fs.readFileSync(playerFile,'utf8');
+const decoderBefore='    libVlc = LibVLC(context)';
+const decoderAfter=`    val virtualCodecFallback = android.os.Build.VERSION.SDK_INT >= 35 &&
+      (android.os.Build.HARDWARE == "ranchu" || android.os.Build.HARDWARE == "goldfish")
+    libVlc = if (virtualCodecFallback) {
+      LibVLC(context, arrayListOf("--codec=avcodec", "--avcodec-hw=none"))
+    } else {
+      LibVLC(context)
+    }`;
+if(playerSource.includes(decoderBefore))playerSource=playerSource.replace(decoderBefore,decoderAfter);
+else if(!playerSource.includes(decoderAfter))throw new Error('Review Android VLC virtual-codec compatibility patch');
+fs.writeFileSync(playerFile,playerSource);
