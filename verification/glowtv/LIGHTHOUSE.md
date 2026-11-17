@@ -26,6 +26,6 @@ Local production Astro output; Lighthouse simulated mobile 4G and desktop, Chrom
 | `/support/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 0.76s | 0.0012 |
 | `/support/faq/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 0.80s | 0.0000 |
 | `/terms/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 0.76s | 0.0000 |
-| `/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 1.59s | 0.0000 |
+| `/` | 100 / 100 / 100 / 100 | 100 / 100 / 100 / 100 | 1.73s | 0.0000 |
 
 P = performance; A = accessibility; BP = best practices. Homepage transfer and scripts are below the requested 1 MB / 100 KB budgets. INP requires actual interactions and field traffic; TBT is a lab responsiveness signal, not a claim of measured field INP.

@@ -1,15 +1,15 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43732520804",
-  "source": "94fa791ffc7d7c033a6ab6ab68094bc5143b2343",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44000097756",
+  "source": "aa3cd2e6cb6b21d5d447e394f8fd66df82784adc",
   "device": "iPhone 17 Pro Max simulator, iOS 26.5",
   "coldStartResumeTest": "passed",
-  "durationSeconds": 206.56,
+  "durationSeconds": 237.85,
   "checks": [
     "six tab round trips",
     "background and return after 1, 15 and 60 seconds",
     "three cold relaunches",
     "Home content remains visible and interactive"
   ],
-  "designCaptureTest": "Passed in final run 43736278167; see ios-audit.json",
+  "designCaptureTest": "Passed with all eight native captures; see ios-audit.json",
   "physicalDevice": false
 }

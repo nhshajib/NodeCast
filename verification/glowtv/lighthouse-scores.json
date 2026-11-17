@@ -162,23 +162,23 @@
   {
     "route": "/download/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:22.781Z",
+    "measuredAt": "2026-11-17T02:43:08.071Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1658.9491500000001,
+    "lcp": 1662.9238500000001,
     "cls": 0.0010162553190977,
-    "tbt": 23,
-    "bytes": 347147,
+    "tbt": 42,
+    "bytes": 364335,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 305\u00a0KiB"
+        "displayValue": "Est savings of 322\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -190,7 +190,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 158\u00a0KiB"
+        "displayValue": "Est savings of 168\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -902,23 +902,23 @@
   {
     "route": "/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:09.687Z",
+    "measuredAt": "2026-11-17T02:43:01.265Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1586.4,
+    "lcp": 1732.7397,
     "cls": 0,
-    "tbt": 3,
-    "bytes": 205324,
+    "tbt": 8,
+    "bytes": 217814,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 164\u00a0KiB"
+        "displayValue": "Est savings of 176\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -930,7 +930,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 44\u00a0KiB"
+        "displayValue": "Est savings of 50\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1102,17 +1102,17 @@
   {
     "route": "/download/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:42:39.595Z",
+    "measuredAt": "2026-11-17T02:43:27.137Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 225.617,
+    "lcp": 227.7391,
     "cls": 0.0001086378101960166,
     "tbt": 0,
-    "bytes": 169643,
+    "bytes": 176688,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1124,18 +1124,13 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 132\u00a0KiB"
+        "displayValue": "Est savings of 139\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 22\u00a0KiB"
-      },
-      {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1837,23 +1832,23 @@
   {
     "route": "/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:42:20.444Z",
+    "measuredAt": "2026-11-17T02:43:19.287Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 353.352,
+    "lcp": 369.1916,
     "cls": 0,
-    "tbt": 42,
-    "bytes": 323881,
+    "tbt": 0,
+    "bytes": 341570,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 279\u00a0KiB"
+        "score": 0,
+        "displayValue": "Est savings of 297\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1865,7 +1860,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 91\u00a0KiB"
+        "displayValue": "Est savings of 101\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
