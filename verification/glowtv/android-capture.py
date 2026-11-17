@@ -91,7 +91,9 @@ package='com.nhshajib.nodecast'+('.tv'if TV else '')
 try:
  apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk));adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
  if TV:
-  adb('shell','input','keyevent','4');time.sleep(1);click('Add your playlist')
+  # Wait for the first-run task itself. A blind Back during a slower cold
+  # launch can close the Activity before the IP-reference sheet is presented.
+  find('Not now',timeout=45);click('Not now');click('Add your playlist')
  else:
   click('Get started');click('Not now',True)
  for label,value in [('Profile name','GlowTVDemo'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:fill(label,value)
@@ -130,7 +132,7 @@ try:
  checked=[]
  for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Set home IP reference'if TV else'Home IP & connection','Version history']:
   click(label,True);back();checked.append(label)
- result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
+ result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'androidApi':adb('shell','getprop','ro.build.version.sdk').strip(),'emulatorGpu':os.environ.get('GLOWTV_EMULATOR_GPU','unspecified'),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
  (OUT/f'emulator-design-{TARGET}-result.json').write_text(json.dumps(result,indent=2)+'\n')
 except Exception:
  original_failure=__import__('traceback').format_exc()
