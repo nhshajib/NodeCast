@@ -8,6 +8,8 @@
 
 The GlowTV rebrand is in development. Store listings and new branded binaries are pending; previous project releases remain in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases) under their original names. The website's custom domain needs GitHub Pages and DNS setup; see [hosting instructions](website/HOSTING.md).
 
+[![GlowTV website preview with the actual iPhone app, pastel panels and framed TV-night photography](verification/glowtv/website-home.png)](https://glowtv.app/)
+
 | Your device | Download and setup | Project |
 | --- | --- | --- |
 | iPhone / iPad | [iOS availability](https://glowtv.app/download/iphone/) · [Install](https://glowtv.app/install/iphone/) | [iPhone documentation](apps/player/iphone/) |
