@@ -93,7 +93,17 @@ def wait_for_phone_video(timeout=45):
  raise AssertionError('Native decoder did not expose the original green scene within 45 seconds')
 package='com.nhshajib.nodecast'+('.tv'if TV else '')
 try:
- apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk));adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
+ apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk))
+ # A fresh API 35 AVD can leave its Pixel Launcher ANR over another app.
+ # Clear only that known system-launcher failure before starting GlowTV.
+ # Never dismiss an ANR belonging to the app under test.
+ startup=h.dump()
+ if any(n.get('package')=='android' and n.get('text')=="Pixel Launcher isn't responding" for n in startup.iter('node')):
+  (OUT/f'emulator-design-{TARGET}-launcher-anr.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(startup,encoding='unicode'))
+  adb('shell','am','force-stop','com.google.android.apps.nexuslauncher')
+  time.sleep(1)
+  print('Cleared the AVD Pixel Launcher ANR before app launch',flush=True)
+ adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
  if TV:
   # Wait for the first-run task itself. A blind Back during a slower cold
   # launch can close the Activity before the IP-reference sheet is presented.
