@@ -1,0 +1,107 @@
+name: Publish verified GlowTV Android downloads
+on:
+  workflow_dispatch:
+    inputs:
+      build_run:
+        description: Successful Android phone and TV build run ID
+        required: true
+      check_run:
+        description: Successful both-editions native design audit using those APKs
+        required: true
+      source_sha:
+        description: Full source commit built by the build run
+        required: true
+      make_public:
+        description: Publish after verifying both signed APKs
+        type: boolean
+        default: false
+permissions:
+  contents: write
+  actions: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/player
+    env:
+      BUILD_RUN: ${{ inputs.build_run }}
+      CHECK_RUN: ${{ inputs.check_run }}
+      SOURCE_SHA: ${{ inputs.source_sha }}
+      MAKE_PUBLIC: ${{ inputs.make_public }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.source_sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Require successful builds and matching native audits
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN" > /tmp/glowtv-build.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CHECK_RUN" > /tmp/glowtv-check.json
+          python3 - <<'PY'
+          import json,os,re
+          build=json.load(open('/tmp/glowtv-build.json'));check=json.load(open('/tmp/glowtv-check.json'))
+          assert re.fullmatch('[a-f0-9]{40}',os.environ['SOURCE_SHA'])
+          assert build['head_sha']==os.environ['SOURCE_SHA'] and build['conclusion']=='success'
+          assert build['path']=='.github/workflows/apps-release.yml'
+          assert check['conclusion']=='success' and check['path']=='.github/workflows/android-smoke.yml'
+          assert f"Check both design - APK {os.environ['BUILD_RUN']} - API 35"==check['display_title']
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: GlowTV-Android-*
+          path: apps/player/apks
+          run-id: ${{ inputs.build_run }}
+          github-token: ${{ github.token }}
+      - name: Verify exact archives, checksums and existing signing identities
+        run: |
+          set -euo pipefail
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+          export BUILD_TOOLS
+          python3 - <<'PY'
+          import hashlib,json,os,re,subprocess,zipfile
+          from pathlib import Path
+          for edition,filename in [('mobile','GlowTV.apk'),('tv','GlowTV-TV.apk')]:
+              files=list(Path('apks').rglob(filename));assert len(files)==1
+              apk=files[0];checksum=apk.with_name(filename+'.sha256').read_text().split()[0]
+              assert hashlib.sha256(apk.read_bytes()).hexdigest()==checksum
+              with zipfile.ZipFile(apk)as archive:assert archive.testzip()is None
+              tools=Path(os.environ['BUILD_TOOLS'])
+              signing=subprocess.check_output([str(tools/'apksigner'),'verify','--verbose','--print-certs',str(apk)],text=True)
+              certificate=re.search(r'Signer #1 certificate SHA-256 digest: ([a-fA-F0-9]+)',signing).group(1).lower()
+              previous=json.loads(Path(f'android-{edition}/build.json').read_text())
+              assert certificate==previous['signingCertificateSha256'],'Update signing identity changed'
+              manifest=subprocess.check_output([str(tools/'aapt'),'dump','badging',str(apk)],text=True)
+              (apk.parent/'apk-manifest.txt').write_text(manifest)
+              subprocess.run(['python3','scripts/verify-android.py',str(apk),edition,str(apk.parent/'apk-manifest.txt')],check=True)
+          PY
+          GITHUB_SHA="$SOURCE_SHA" python3 scripts/release-metadata.py apks
+      - name: Attach verified files and optionally publish
+        run: |
+          set -euo pipefail
+          VERSION=$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')
+          TAG="glowtv-v${VERSION}"
+          cat > /tmp/glowtv-android-notes.md <<'NOTES'
+          GlowTV for Android phone, Android TV, Google TV and Fire TV. Choose the correct edition:
+
+          - `GlowTV.apk`: touch interface for phones and tablets.
+          - `GlowTV-TV.apk`: dedicated D-pad and remote interface.
+
+          New GlowTV name, launcher artwork, leaf-green styling and Inter typography. Native phone navigation and on-screen playback settings are retained. TV has an icon rail, featured live content and a compact guide. Local profiles, favorites, provider details and encrypted backups remain compatible with previous installations. Install over your existing edition to retain data.
+
+          Both APKs include JavaScript and VLC and work without Expo Go or a computer. SHA-256 files and release-metadata.json describe these exact builds. Original application IDs and signing certificates were verified. Native emulator audits passed for both editions; physical-device/provider compatibility still depends on the device and stream.
+
+          These are public testing APKs using the existing Android test signing identity, not Play Store or Amazon Appstore releases. GlowTV provides no channels, playlists or subscriptions. See the repository CHANGELOG.md and apps/player/android-mobile or apps/player/android-tv for installation and version details.
+          NOTES
+          if ! gh release view "$TAG" >/dev/null 2>&1; then
+            gh release create "$TAG" --target "$SOURCE_SHA" --draft --prerelease --title "GlowTV ${VERSION} — Android phone and TV" --notes-file /tmp/glowtv-android-notes.md
+          fi
+          test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
+          gh release edit "$TAG" --target "$SOURCE_SHA" --notes-file /tmp/glowtv-android-notes.md
+          gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 apks/release-metadata.json --clobber
+          if [ "$MAKE_PUBLIC" = true ]; then gh release edit "$TAG" --draft=false; fi

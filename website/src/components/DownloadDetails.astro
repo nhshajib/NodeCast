@@ -17,5 +17,5 @@ const guide=platform==='ios'?'iphone':platform==='tv'?'android-tv':'android';
  <section class="release-notes"><p class="eyebrow">Version history</p><h2>{item?`What’s new in ${item.version}`:'Published release notes'}</h2>{item&&<ul>{versionHighlights(platform,item.version).map(note=><li>{note}</li>)}</ul>}<div class="release-links">{item&&<a href={item.source}>Full notes for {item.version} ↗</a>}<a href={`https://github.com/nhshajib/NodeCast/blob/main/apps/player/${folder}/CHANGELOG.md`}>Earlier {platform==='ios'?'iPhone':platform==='tv'?'TV':'Android'} versions ↗</a></div></section>
  <h2>Install, then add your playlist.</h2><p><a href={`/install/${guide}/`}>Follow the installation guide</a>, then connect your own <a href="/guides/add-m3u-playlist/">M3U playlist</a> or <a href="/guides/xtream-codes-login/">Xtream Codes account</a>.</p>
  {platform==='tv'&&<p><a href="/install/fire-tv/">Fire TV installation</a> · <a href="/install/apple-tv/">Apple TV availability</a></p>}
- <p><a href="/changelog/">Explore the upcoming GlowTV design and development changelog ↗</a></p><p class="disclaimer">{disclaimer}</p>
+ <p><a href="/changelog/">{item?.legacy?'Explore the upcoming GlowTV design and development changelog ↗':'Read the complete GlowTV changelog ↗'}</a></p><p class="disclaimer">{disclaimer}</p>
 </section>

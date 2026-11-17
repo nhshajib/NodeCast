@@ -14,6 +14,11 @@ export const features:Record<DownloadPlatform,string[][]>={
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
+ if(version==='0.7.0')return [
+  'GlowTV branding, launcher icons, Inter typography and a leaf-green design system.',
+  platform==='tv'?'A dedicated TV icon rail, featured live-channel Home and compact guide with remote focus.':platform==='ios'?'Warm iPhone and iPad surfaces, native tabs and sheets, a timeline guide and full-width portrait playback.':'Dark Android surfaces, native pill navigation, checked filters and an Add playlist sheet.',
+  platform==='android'?'Fixed Android 13–15 Back navigation from details and settings, including after reopening the app.':'Existing playlists, profiles, playback engines, backups and transition settings remain compatible.',
+ ];
  if(version!=='0.6.7')return ['Read the version-specific GitHub release notes for the complete list of changes.'];
  const notes=['Compact playback settings stay over the video instead of opening a separate page.','Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.'];
  return [...notes,platform==='tv'?'A lightweight channel list, optional grid/logos and cached category/favorite restoration after restart.':platform==='ios'?'Portrait and landscape playback share the same controls and touch seek timeline.':'Portrait and landscape playback share the same controls; local profiles and settings are retained.'];

@@ -89,6 +89,9 @@ jobs:
               assert info['CFBundleIdentifier'] == 'com.nhshajib.nodecast'
               assert info['DTPlatformName'] == 'iphoneos'
           Path('existing-ipa/SHA256SUMS.txt').write_text(f'{digest}  {ipa.name}\n')
+          minimum = info.get('MinimumOSVersion')
+          assert isinstance(minimum, str) and minimum
+          Path('existing-ipa/release-metadata.json').write_text(json.dumps({'sourceCommit': os.environ['SOURCE_SHA'], 'assets': {ipa.name: {'sha256': digest, 'size': ipa.stat().st_size, 'minimumOS': f'iOS {minimum} or later'}}}, indent=2)+'\n')
           print(json.dumps({'version': version, 'sha256': digest, 'bytes': ipa.stat().st_size}))
           PY
           VERSION=$(node -p "require('./package.json').version")
@@ -97,7 +100,7 @@ jobs:
             gh release create "$TAG" --target "$SOURCE_SHA" --draft --prerelease --title "GlowTV ${VERSION} — iPhone" --notes "Unsigned iPhone IPA for personal signing with your own Apple account. Install steps: apps/player/iphone/README.md. Checksum: SHA256SUMS.txt."
           fi
           test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
-          gh release upload "$TAG" "existing-ipa/GlowTV-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt --clobber
+          gh release upload "$TAG" "existing-ipa/GlowTV-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt existing-ipa/release-metadata.json --clobber
           if [ "$MAKE_PUBLIC" = true ]; then
             # Published only after provenance, archive and checksum checks above have passed.
             gh release edit "$TAG" --draft=false
