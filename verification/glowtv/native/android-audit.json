@@ -22,6 +22,12 @@
     "Home IP & connection",
     "Version history"
   ],
-  "actualVideoPixels": false,
-  "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks."
+  "actualVideoPixels": true,
+  "androidApi": "30",
+  "emulatorGpu": "swangle",
+  "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44081851830",
+  "source": "b7bd9c29b271c58de8e08823d4422c458e8cd16a",
+  "captureSource": "4de26ad714d2ef5eb89bc958e45be0b3cb89839f",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44078474690"
 }

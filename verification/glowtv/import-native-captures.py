@@ -45,7 +45,12 @@ for screen,file in files.items():
 # The original video has a large green band; player chrome
 # alone must never qualify a black native video surface for the website.
 with Image.open(files['player'])as image:
- image=image.convert('RGB');image.thumbnail((160,320));pixels=list(image.get_flattened_data())
+ image=image.convert('RGB');width,height=image.size
+ top,bottom=(.4,.44)if platform=='tv'else(.14,.16)
+ scene=list(image.crop((int(width*.2),int(height*top),int(width*.8),int(height*bottom))).get_flattened_data())
+ dark=sum(14<r<24 and 48<g<59 and 37<b<47 for r,g,b in scene)/len(scene)
+ assert dark>.5,f'No original dark scene background in {platform} player capture ({dark:.4f})'
+ image.thumbnail((160,320));pixels=list(image.get_flattened_data())
  green=sum(r<50 and 150<g<230 and 70<b<160 for r,g,b in pixels)/len(pixels)
  assert green>.01,f'No original decoded green scene in {platform} player capture ({green:.4f})'
 out.mkdir(parents=True,exist_ok=True)
@@ -54,5 +59,5 @@ result.update(workflow=workflow,source=args.source)
 if args.capture_source:result['captureSource']=args.capture_source
 if args.build_run:result['buildWorkflow']=f'https://github.com/nhshajib/NodeCast/actions/runs/{args.build_run}'
 (out/f'{platform}-audit.json').write_text(json.dumps(result,indent=2)+'\n')
-(out/f'{platform}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{platform}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'result':'Original decoded scene pixels are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
+(out/f'{platform}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{platform}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'darkSceneRegionFraction':dark,'result':'Both original scene colors are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
 print(f'Imported all eight {platform} native captures from successful workflow {args.run}')

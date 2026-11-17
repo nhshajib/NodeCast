@@ -1,76 +1,36 @@
 [
   {
-    "route": "/404.html",
+    "route": "/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:53:23.948Z",
+    "measuredAt": "2026-11-17T12:35:16.196Z",
     "scores": {
-      "performance": 100,
+      "performance": 99,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 752.6146,
+    "lcp": 1730.4777999999997,
     "cls": 0,
-    "tbt": 0,
-    "bytes": 73463,
+    "tbt": 77,
+    "bytes": 217704,
     "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
+        "score": 0,
+        "displayValue": "Est savings of 176\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
+        "displayValue": "Est savings of 24\u00a0KiB"
       },
       {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/changelog/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:54.200Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 793.6905,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 74659,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
         "score": 0.5,
         "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -82,14 +42,14 @@
   {
     "route": "/download/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:16.736Z",
+    "measuredAt": "2026-11-17T12:03:34.407Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 811.2289,
+    "lcp": 752.4618,
     "cls": 0,
     "tbt": 0,
     "bytes": 74833,
@@ -120,25 +80,25 @@
     ]
   },
   {
-    "route": "/download/android/",
+    "route": "/download/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:29.081Z",
+    "measuredAt": "2026-11-17T12:03:40.445Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 756.70845,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 329940,
+    "lcp": 1664.514,
+    "cls": 0.0010162553190977,
+    "tbt": 14,
+    "bytes": 356887,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 288\u00a0KiB"
+        "score": 0,
+        "displayValue": "Est savings of 315\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -150,7 +110,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 147\u00a0KiB"
+        "displayValue": "Est savings of 164\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -160,25 +120,25 @@
     ]
   },
   {
-    "route": "/download/iphone/",
+    "route": "/download/android/",
     "mode": "mobile",
-    "measuredAt": "2026-11-17T02:43:08.071Z",
+    "measuredAt": "2026-11-17T12:35:23.049Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1662.9238500000001,
-    "cls": 0.0010162553190977,
-    "tbt": 42,
-    "bytes": 364335,
+    "lcp": 827.75205,
+    "cls": 0,
+    "tbt": 10,
+    "bytes": 335146,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 322\u00a0KiB"
+        "score": 0.5,
+        "displayValue": "Est savings of 293\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -190,7 +150,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 168\u00a0KiB"
+        "displayValue": "Est savings of 149\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -202,17 +162,17 @@
   {
     "route": "/download/tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-16T06:09:19.100Z",
+    "measuredAt": "2026-11-17T12:03:53.031Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 944.8557,
+    "lcp": 812.95275,
     "cls": 0.004094760448762713,
-    "tbt": 5.5,
-    "bytes": 180286,
+    "tbt": 0,
+    "bytes": 180950,
     "failedAudits": [
       {
         "id": "cache-insight",
@@ -230,227 +190,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:53:17.993Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 793.3263,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 74593,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/add-m3u-playlist/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:29.849Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 1430.9037000000003,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 79403,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "lcp-discovery-insight",
-        "title": "LCP request discovery",
-        "score": 0
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/fix-buffering/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:48.152Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 1428.8343,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 79988,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "lcp-discovery-insight",
-        "title": "LCP request discovery",
-        "score": 0
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/tv-guide-epg/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:42.021Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 1430.7514,
-    "cls": 0,
-    "tbt": 42,
-    "bytes": 79282,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "lcp-discovery-insight",
-        "title": "LCP request discovery",
-        "score": 0
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/xtream-codes-login/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:35.973Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 1433.2307,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 79362,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "lcp-discovery-insight",
-        "title": "LCP request discovery",
-        "score": 0
+        "displayValue": "Est savings of 48\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -462,16 +202,16 @@
   {
     "route": "/install/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:41.593Z",
+    "measuredAt": "2026-11-17T12:03:59.240Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 792.6913,
+    "lcp": 753.3391,
     "cls": 0,
-    "tbt": 0,
+    "tbt": 10,
     "bytes": 74703,
     "failedAudits": [
       {
@@ -500,16 +240,56 @@
     ]
   },
   {
-    "route": "/install/android/",
+    "route": "/install/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:53.629Z",
+    "measuredAt": "2026-11-17T12:04:05.302Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 795.90985,
+    "lcp": 795.903,
+    "cls": 0.003276124241411012,
+    "tbt": 0,
+    "bytes": 78181,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 52\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 15\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/install/android/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:04:11.371Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 754.31985,
     "cls": 0,
     "tbt": 0,
     "bytes": 79377,
@@ -542,14 +322,14 @@
   {
     "route": "/install/android-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:59.721Z",
+    "measuredAt": "2026-11-17T12:04:17.454Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 756.01775,
+    "lcp": 801.12285,
     "cls": 0.01829852973710113,
     "tbt": 0,
     "bytes": 79624,
@@ -580,58 +360,18 @@
     ]
   },
   {
-    "route": "/install/apple-tv/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:11.870Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 794.92335,
-    "cls": 0,
-    "tbt": 19,
-    "bytes": 78263,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 11\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 52\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
     "route": "/install/fire-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:05.706Z",
+    "measuredAt": "2026-11-17T12:04:23.636Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 758.03655,
+    "lcp": 761.3805,
     "cls": 0.0002755110891242467,
-    "tbt": 3,
+    "tbt": 0,
     "bytes": 80173,
     "failedAudits": [
       {
@@ -660,19 +400,19 @@
     ]
   },
   {
-    "route": "/install/iphone/",
+    "route": "/install/apple-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:51:47.485Z",
+    "measuredAt": "2026-11-17T12:04:29.747Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 810.23665,
+    "lcp": 802.42805,
     "cls": 0,
-    "tbt": 7,
-    "bytes": 78181,
+    "tbt": 0,
+    "bytes": 78263,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -700,98 +440,18 @@
     ]
   },
   {
-    "route": "/legal/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:53:12.031Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 755.23625,
-    "cls": 0,
-    "tbt": 10,
-    "bytes": 74946,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/privacy/",
-    "mode": "mobile",
-    "measuredAt": "2026-11-15T17:53:00.131Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 787.8178,
-    "cls": 0.0003805612485260673,
-    "tbt": 0,
-    "bytes": 75180,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
     "route": "/support/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:17.969Z",
+    "measuredAt": "2026-11-17T12:04:35.783Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 755.6245,
-    "cls": 0.001173942989400958,
-    "tbt": 0,
+    "lcp": 752.54175,
+    "cls": 0,
+    "tbt": 1.5,
     "bytes": 80288,
     "failedAudits": [
       {
@@ -822,14 +482,14 @@
   {
     "route": "/support/faq/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:52:23.947Z",
+    "measuredAt": "2026-11-17T12:04:41.914Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 804.5848,
+    "lcp": 755.3116,
     "cls": 0,
     "tbt": 0,
     "bytes": 78318,
@@ -860,18 +520,278 @@
     ]
   },
   {
-    "route": "/terms/",
+    "route": "/guides/add-m3u-playlist/",
     "mode": "mobile",
-    "measuredAt": "2026-11-15T17:53:06.087Z",
+    "measuredAt": "2026-11-17T12:04:47.871Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 758.4441,
+    "lcp": 1429.8002000000001,
     "cls": 0,
-    "tbt": 5,
+    "tbt": 0,
+    "bytes": 79403,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "lcp-discovery-insight",
+        "title": "LCP request discovery",
+        "score": 0
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/xtream-codes-login/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:04:53.970Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 1433.1512,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79362,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "lcp-discovery-insight",
+        "title": "LCP request discovery",
+        "score": 0
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/tv-guide-epg/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:00.091Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 1428.9041000000002,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79282,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "lcp-discovery-insight",
+        "title": "LCP request discovery",
+        "score": 0
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/fix-buffering/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:06.192Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 1431.1439999999998,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79988,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "lcp-discovery-insight",
+        "title": "LCP request discovery",
+        "score": 0
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/changelog/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:12.256Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 795.7368,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 74659,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 14\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/privacy/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:18.158Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 760.12735,
+    "cls": 0.0003805612485260673,
+    "tbt": 0,
+    "bytes": 75180,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 15\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/terms/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:24.140Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 789.30855,
+    "cls": 0,
+    "tbt": 0,
     "bytes": 74787,
     "failedAudits": [
       {
@@ -900,37 +820,77 @@
     ]
   },
   {
-    "route": "/",
+    "route": "/legal/",
     "mode": "mobile",
-    "measuredAt": "2026-11-17T02:43:01.265Z",
+    "measuredAt": "2026-11-17T12:05:30.021Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1732.7397,
+    "lcp": 755.52125,
     "cls": 0,
-    "tbt": 8,
-    "bytes": 217814,
+    "tbt": 0,
+    "bytes": 74946,
     "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 176\u00a0KiB"
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 24\u00a0KiB"
+        "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
-        "id": "image-delivery-insight",
-        "title": "Improve image delivery",
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:35.981Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 796.84115,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 74593,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 11\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
         "score": 0.5,
         "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 14\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -941,16 +901,16 @@
   },
   {
     "route": "/404.html",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:45:01.333Z",
+    "mode": "mobile",
+    "measuredAt": "2026-11-17T12:05:41.965Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 228.03715,
-    "cls": 3.769026912629832e-05,
+    "lcp": 796.08765,
+    "cls": 0,
     "tbt": 0,
     "bytes": 73463,
     "failedAudits": [
@@ -980,37 +940,37 @@
     ]
   },
   {
-    "route": "/changelog/",
+    "route": "/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:30.027Z",
+    "measuredAt": "2026-11-17T12:35:34.175Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 221.8715,
+    "lcp": 372.6374,
     "cls": 0,
-    "tbt": 4.999999999999986,
-    "bytes": 74659,
+    "tbt": 0,
+    "bytes": 338610,
     "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
+        "score": 0,
+        "displayValue": "Est savings of 294\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
+        "displayValue": "Est savings of 24\u00a0KiB"
+      },
+      {
+        "id": "image-delivery-insight",
+        "title": "Improve image delivery",
+        "score": 0.5,
+        "displayValue": "Est savings of 100\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1022,14 +982,14 @@
   {
     "route": "/download/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:42:31.816Z",
+    "measuredAt": "2026-11-17T12:06:00.604Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 225.49915,
+    "lcp": 219.5762,
     "cls": 9.97912900531042e-05,
     "tbt": 0,
     "bytes": 74833,
@@ -1060,19 +1020,19 @@
     ]
   },
   {
-    "route": "/download/android/",
+    "route": "/download/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:42:47.682Z",
+    "measuredAt": "2026-11-17T12:06:06.840Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 271.50710000000004,
-    "cls": 0,
+    "lcp": 217.4578,
+    "cls": 0.0001086378101960166,
     "tbt": 0,
-    "bytes": 168625,
+    "bytes": 174648,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1084,7 +1044,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 131\u00a0KiB"
+        "displayValue": "Est savings of 137\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1100,19 +1060,19 @@
     ]
   },
   {
-    "route": "/download/iphone/",
+    "route": "/download/android/",
     "mode": "desktop",
-    "measuredAt": "2026-11-17T02:43:27.137Z",
+    "measuredAt": "2026-11-17T12:35:41.883Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 227.7391,
-    "cls": 0.0001086378101960166,
+    "lcp": 219.48225,
+    "cls": 0,
     "tbt": 0,
-    "bytes": 176688,
+    "bytes": 169788,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1124,7 +1084,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 139\u00a0KiB"
+        "displayValue": "Est savings of 132\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1142,23 +1102,23 @@
   {
     "route": "/download/tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-16T06:09:30.633Z",
+    "measuredAt": "2026-11-17T12:06:19.987Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 238.9908,
+    "lcp": 221.99145000000001,
     "cls": 0.0004167147926196724,
     "tbt": 0,
-    "bytes": 165316,
+    "bytes": 165980,
     "failedAudits": [
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 127\u00a0KiB"
+        "displayValue": "Est savings of 128\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1180,216 +1140,16 @@
     ]
   },
   {
-    "route": "/guides/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:55.096Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 218.73835,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 74593,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 14\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/add-m3u-playlist/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:03.722Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 239.15725,
-    "cls": 0.0001536337109094149,
-    "tbt": 0,
-    "bytes": 79403,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/fix-buffering/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:23.531Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 217.4563,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 79988,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/tv-guide-epg/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:16.944Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 227.36425,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 79282,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/guides/xtream-codes-login/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:10.263Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 237.9359,
-    "cls": 9.100375218282907e-05,
-    "tbt": 0,
-    "bytes": 79362,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
     "route": "/install/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:03.722Z",
+    "measuredAt": "2026-11-17T12:06:26.626Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 222.65505,
+    "lcp": 217.44285,
     "cls": 7.508674609761943e-05,
     "tbt": 0,
     "bytes": 74703,
@@ -1420,16 +1180,56 @@
     ]
   },
   {
-    "route": "/install/android/",
+    "route": "/install/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:18.266Z",
+    "measuredAt": "2026-11-17T12:06:32.779Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 255.2946,
+    "lcp": 216.95905,
+    "cls": 0.0001629763014376901,
+    "tbt": 0,
+    "bytes": 78181,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 52\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 15\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/install/android/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:06:38.968Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 207.65615,
     "cls": 0,
     "tbt": 0,
     "bytes": 79377,
@@ -1462,17 +1262,57 @@
   {
     "route": "/install/android-tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:25.929Z",
+    "measuredAt": "2026-11-17T12:06:45.246Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 296.38239999999996,
+    "lcp": 215.59285,
     "cls": 0.0001574399514950085,
-    "tbt": 0.5,
+    "tbt": 0,
     "bytes": 79624,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/install/fire-tv/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:06:51.564Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 218.8444,
+    "cls": 0.0001463215506077599,
+    "tbt": 0,
+    "bytes": 80173,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1502,14 +1342,14 @@
   {
     "route": "/install/apple-tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:44.420Z",
+    "measuredAt": "2026-11-17T12:06:57.908Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 219.91035,
+    "lcp": 218.13055,
     "cls": 0.0001294121799101828,
     "tbt": 0,
     "bytes": 78263,
@@ -1540,181 +1380,16 @@
     ]
   },
   {
-    "route": "/install/fire-tv/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:36.636Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 312.06215,
-    "cls": 0.0001463215506077599,
-    "tbt": 27.99999999999997,
-    "bytes": 80173,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 53\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 16\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/install/iphone/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:10.881Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 242.4357,
-    "cls": 0.0001629763014376901,
-    "tbt": 0,
-    "bytes": 78181,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 52\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/legal/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:48.680Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 248.36325,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 74946,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
-    "route": "/privacy/",
-    "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:36.269Z",
-    "scores": {
-      "performance": 100,
-      "accessibility": 100,
-      "best-practices": 100,
-      "seo": 100
-    },
-    "lcp": 211.8364,
-    "cls": 0,
-    "tbt": 0,
-    "bytes": 75180,
-    "failedAudits": [
-      {
-        "id": "unused-css-rules",
-        "title": "Reduce unused CSS",
-        "score": 0.5,
-        "displayValue": "Est savings of 12\u00a0KiB"
-      },
-      {
-        "id": "cache-insight",
-        "title": "Use efficient cache lifetimes",
-        "score": 0.5,
-        "displayValue": "Est savings of 50\u00a0KiB"
-      },
-      {
-        "id": "document-latency-insight",
-        "title": "Document request latency",
-        "score": 0.5,
-        "displayValue": "Est savings of 15\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
-      }
-    ]
-  },
-  {
     "route": "/support/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:50.848Z",
+    "measuredAt": "2026-11-17T12:07:04.013Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 243.4288,
+    "lcp": 209.7123,
     "cls": 0.0006875173663807165,
     "tbt": 0,
     "bytes": 80288,
@@ -1738,11 +1413,6 @@
         "displayValue": "Est savings of 18\u00a0KiB"
       },
       {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
-      },
-      {
         "id": "network-dependency-tree-insight",
         "title": "Network dependency tree",
         "score": 0
@@ -1752,14 +1422,14 @@
   {
     "route": "/support/faq/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:43:57.334Z",
+    "measuredAt": "2026-11-17T12:07:10.276Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 219.563,
+    "lcp": 217.36015,
     "cls": 8.283633027446268e-05,
     "tbt": 0,
     "bytes": 78318,
@@ -1790,16 +1460,256 @@
     ]
   },
   {
-    "route": "/terms/",
+    "route": "/guides/add-m3u-playlist/",
     "mode": "desktop",
-    "measuredAt": "2026-11-15T17:44:42.448Z",
+    "measuredAt": "2026-11-17T12:07:16.540Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 217.0432,
+    "lcp": 216.4556,
+    "cls": 0.0001536337109094149,
+    "tbt": 0,
+    "bytes": 79403,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/xtream-codes-login/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:22.941Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 209.61045000000001,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79362,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/tv-guide-epg/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:29.256Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 208.75445,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79282,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/fix-buffering/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:35.527Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 221.10755,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 79988,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 53\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 16\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/changelog/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:41.892Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 218.94455,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 74659,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 14\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/privacy/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:48.023Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 214.06495,
+    "cls": 0.0001380627266956228,
+    "tbt": 0,
+    "bytes": 75180,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 15\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/terms/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:07:54.197Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 214.692,
     "cls": 0.000107619330725429,
     "tbt": 0,
     "bytes": 74787,
@@ -1830,37 +1740,117 @@
     ]
   },
   {
-    "route": "/",
+    "route": "/legal/",
     "mode": "desktop",
-    "measuredAt": "2026-11-17T02:43:19.287Z",
+    "measuredAt": "2026-11-17T12:08:00.286Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 369.1916,
+    "lcp": 212.34171138897753,
     "cls": 0,
     "tbt": 0,
-    "bytes": 341570,
+    "bytes": 74946,
     "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
       {
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
-        "score": 0,
-        "displayValue": "Est savings of 297\u00a0KiB"
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
-        "displayValue": "Est savings of 24\u00a0KiB"
+        "displayValue": "Est savings of 15\u00a0KiB"
       },
       {
-        "id": "image-delivery-insight",
-        "title": "Improve image delivery",
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/guides/",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:08:06.347Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 216.21015,
+    "cls": 0,
+    "tbt": 0,
+    "bytes": 74593,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
         "score": 0.5,
-        "displayValue": "Est savings of 101\u00a0KiB"
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 14\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
+      }
+    ]
+  },
+  {
+    "route": "/404.html",
+    "mode": "desktop",
+    "measuredAt": "2026-11-17T12:08:12.467Z",
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 100
+    },
+    "lcp": 215.48155,
+    "cls": 3.769026912629832e-05,
+    "tbt": 0,
+    "bytes": 73463,
+    "failedAudits": [
+      {
+        "id": "unused-css-rules",
+        "title": "Reduce unused CSS",
+        "score": 0.5,
+        "displayValue": "Est savings of 12\u00a0KiB"
+      },
+      {
+        "id": "cache-insight",
+        "title": "Use efficient cache lifetimes",
+        "score": 0.5,
+        "displayValue": "Est savings of 50\u00a0KiB"
+      },
+      {
+        "id": "document-latency-insight",
+        "title": "Document request latency",
+        "score": 0.5,
+        "displayValue": "Est savings of 14\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",

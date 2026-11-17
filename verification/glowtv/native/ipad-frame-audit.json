@@ -1,9 +1,10 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/43742367334",
-  "source": "32af4edc5d416a386bc0677dd5cc3c0f77d97c6a",
-  "result": "Passed",
-  "passedTests": 1,
-  "failedTests": 0,
-  "decodedFrameAssertion": true,
-  "scope": "Isolated iPad simulator; waits for original decoded video pixels before capturing. App player engine unchanged."
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44004969792",
+  "source": "96bc32c14a93b1087a4ad226f1b092e83d1563c1",
+  "capture": "ipad-player.png",
+  "sha256": "85dee54edd9e08a8cb01efce84e0ffa8f712e8db919e913c781b3b7050994576",
+  "greenVideoBandFraction": 0.13280516431924883,
+  "darkSceneRegionFraction": 0.8057817888326363,
+  "result": "Both original scene colors are present in the native player capture",
+  "scope": "Native screenshot inspection; physical-device playback is separate."
 }

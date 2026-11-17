@@ -25,6 +25,8 @@ for mode in ['mobile','desktop']:
 assert len(rows)==46, f'Expected all 23 pages on both profiles, found {len(rows)}'
 assert len({(row['route'],row['mode']) for row in rows})==46, 'Duplicate page reports'
 assert all(all(score>=95 for score in row['scores'].values()) for row in rows)
+routes=['/']+['/'+page['path']+'/' for page in json.loads((root/'website/src/data/pages.json').read_text())]+['/404.html']
+rows.sort(key=lambda row: (['mobile','desktop'].index(row['mode']),routes.index(row['route'])))
 (out/'lighthouse-scores.json').write_text(json.dumps(rows,indent=2)+'\n')
 by={}
 for row in rows:by.setdefault(row['route'],{})[row['mode']]=row
