@@ -1,0 +1,10 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44105553364",
+  "source": "c864f661166ba7fc2dda05c3c8799e1d35135ef8",
+  "capture": "android-api35-player.png",
+  "sha256": "0bad990e8cdcc42f52bc7c6241155a2324b980c349d970569b53ac0462b34df8",
+  "greenVideoBandFraction": 0.09432218309859156,
+  "darkSceneRegionFraction": 0.8070987654320988,
+  "result": "Both original scene colors are present in the native player capture",
+  "scope": "Native screenshot inspection; physical-device playback is separate."
+}

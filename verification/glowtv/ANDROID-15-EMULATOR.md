@@ -18,7 +18,11 @@ Both legacy Back-key injection and a real system Back gesture returned to the la
 
 The phone-only `withAndroidBackDispatch` config plugin bridges the existing RN Back dispatch on Android 13–15. It preserves the native stack, route definitions and animation options. The root fallback temporarily disables the bridge to avoid recursion, then reenables it for resume. Android 16+, TV and iOS retain their existing paths. The native verification additionally checks gesture Back, key Back, root backgrounding and navigation after resume.
 
-The corrected phone build and full native Back audit are pending. Do not claim this follow-up has passed until the workflow finishes.
+The corrected three-ABI phone build passed in [44100211918](https://github.com/nhshajib/NodeCast/actions/runs/44100211918). The complete API 35 phone audit then passed in [44105553364](https://github.com/nhshajib/NodeCast/actions/runs/44105553364), using that exact APK: all eight screens, all eight settings destinations, actual video, gesture Back, Back keys, root exit, reopening and navigation after reopening. [Phone result](native/android-api35-audit.json) and [independent original-scene pixel check](native/android-api35-frame-audit.json).
+
+The final harness dismisses Search's keyboard before asserting route Back after a cold reopen. Android correctly dismisses an open keyboard before leaving Search; this standard behavior is not treated as a navigation defect. An interrupted Google emulator-image download was retried without changing the APK.
+
+Release packaging also exposed insufficient Gradle metaspace on one runner. The workflow now allocates 3 GiB heap and 1 GiB metaspace and retains stack traces on failure. This affects CI build resources only, not the app's runtime memory or signing.
 
 ## Test-environment isolation and limits
 

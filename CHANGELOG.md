@@ -6,6 +6,8 @@
 - Shared app moved to `apps/player/`; independent Astro website in `website/`.
 - Original demo scenes replace the bundled public samples.
 - Platform guides, support, structured data and accessible screenshot galleries.
+- Fixed Android 13–15 phone Back dispatch, including navigation after reopening; native routes and transition settings are retained.
+- Added a virtual-device-only VLC decoder fallback for Android 15 emulator rendering; physical-device decoding remains unchanged.
 - Store publication, physical-device review and custom-domain activation remain release gates.
 
 # What's new in NodeCast

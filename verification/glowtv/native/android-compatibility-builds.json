@@ -1,0 +1,30 @@
+{
+  "phone": {
+    "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44100211918",
+    "source": "c864f661166ba7fc2dda05c3c8799e1d35135ef8",
+    "result": "success",
+    "architectures": [
+      "armeabi-v7a",
+      "arm64-v8a",
+      "x86_64"
+    ],
+    "checks": [
+      "Compilation",
+      "APK signature",
+      "Original package identifier",
+      "Embedded JavaScript and VLC"
+    ]
+  },
+  "tv": {
+    "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44096965608",
+    "job": "https://github.com/nhshajib/NodeCast/actions/runs/44096965608/job/134086541536",
+    "source": "636c9ea88b1cb5ee907907bba931be322fcee99b",
+    "result": "TV build job succeeded; the sibling superseded phone job failed packaging before the CI memory correction",
+    "architectures": [
+      "armeabi-v7a",
+      "arm64-v8a",
+      "x86_64"
+    ]
+  },
+  "release": "Validation artifacts only; no public installer release"
+}
