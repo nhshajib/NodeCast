@@ -56,7 +56,7 @@ jobs:
         run: npx expo prebuild --platform android --no-install
       - name: Compile standalone release including VLC
         working-directory: apps/player/android
-        run: ./gradlew assembleRelease --no-daemon --max-workers=2 -PreactNativeArchitectures=armeabi-v7a,arm64-v8a,x86_64
+        run: ./gradlew assembleRelease --no-daemon --max-workers=2 --stacktrace '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError' -PreactNativeArchitectures=armeabi-v7a,arm64-v8a,x86_64
       - name: Sign and validate APK
         shell: bash
         run: |
