@@ -1,0 +1,50 @@
+[
+  {
+    "role": "Primary action",
+    "foreground": "#0D4029",
+    "background": "#1EC677",
+    "contrast": 5.27
+  },
+  {
+    "role": "Light secondary",
+    "foreground": "#646B67",
+    "background": "#F7F6F1",
+    "contrast": 5.05
+  },
+  {
+    "role": "Light link",
+    "foreground": "#0B7A47",
+    "background": "#F7F6F1",
+    "contrast": 4.99
+  },
+  {
+    "role": "Dark secondary",
+    "foreground": "#A3ADA7",
+    "background": "#1B2420",
+    "contrast": 6.89
+  },
+  {
+    "role": "Dark link",
+    "foreground": "#C9F5DD",
+    "background": "#1B2420",
+    "contrast": 13.33
+  },
+  {
+    "role": "Live badge",
+    "foreground": "#FFFFFF",
+    "background": "#B42320",
+    "contrast": 6.56
+  },
+  {
+    "role": "Light error",
+    "foreground": "#B42320",
+    "background": "#FBEAE8",
+    "contrast": 5.63
+  },
+  {
+    "role": "Dark error",
+    "foreground": "#FFB4AC",
+    "background": "#392321",
+    "contrast": 8.62
+  }
+]

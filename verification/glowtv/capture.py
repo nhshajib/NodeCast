@@ -64,7 +64,7 @@ with sync_playwright() as p:
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-player.png'))
   button(page,'Back to library').first.click()
   if name!='tv':
-   (page.get_by_test_id('navigation-tab-movies') if name in ('ios','ipad') else button(page,'Movies')).click();page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-movies.png'))
+   (page.get_by_test_id('navigation-tab-movies') if name in ('ios','ipad') else button(page,'Movies')).click();page.get_by_role('button',name='Open Tidewater',exact=True).filter(visible=True).first.wait_for(timeout=30000);page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-movies.png'))
    if name=='android':page.get_by_test_id('navigation-tab-home').click()
    (page.get_by_test_id('navigation-tab-series') if name in ('ios','ipad') else button(page,'Series')).click();page.get_by_role('button',name='Open Tidewater Stories',exact=True).filter(visible=True).last.click();page.get_by_role('button',name='Start series',exact=True).wait_for(timeout=20000);page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-series.png'));button(page,'Go back').click()
   if name=='tv':
@@ -75,6 +75,7 @@ with sync_playwright() as p:
    if name=='android':page.get_by_test_id('navigation-tab-settings').click()
    else:button(page,'Settings').click()
   open_settings()
+  button(page,'Playback' if name=='tv' else 'Default player').wait_for(timeout=30000)
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-settings.png'))
   for destination in settings_names:
    button(page,destination).click();page.wait_for_timeout(180)
