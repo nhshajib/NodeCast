@@ -9,10 +9,14 @@ on:
         description: Full release audit or isolated iPad frame capture
         type: choice
         default: full
-        options: [full, ipad-capture]
+        options: [full, ipad-capture, device-build]
+      audit_run:
+        description: Prior full run with passing iPhone and iPad UI audits (device-build only)
+        required: false
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: nodecast-ios-sideload-${{ inputs.mode || 'full' }}
@@ -33,6 +37,28 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+      - name: Verify previously passed native audits for device-only retry
+        if: inputs.mode == 'device-build'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AUDIT_RUN: ${{ inputs.audit_run }}
+        run: |
+          set -euo pipefail
+          test -n "$AUDIT_RUN"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$AUDIT_RUN" > /tmp/prior-run.json
+          PRIOR_SHA=$(python3 -c 'import json; r=json.load(open("/tmp/prior-run.json")); assert r["path"]==".github/workflows/ios-sideload.yml"; print(r["head_sha"])')
+          git fetch --depth=1 origin "$PRIOR_SHA"
+          # The excluded patch only modifies Android Kotlin; iOS runtime inputs must match.
+          test -z "$(git -C "$GITHUB_WORKSPACE" diff "$PRIOR_SHA" HEAD -- apps/player ':!apps/player/scripts/patch-android-vlc.cjs')"
+          gh run download "$AUDIT_RUN" --name GlowTV-iPhone-resume-check --dir /tmp/prior-audits
+          python3 - <<'PYVERIFY'
+          import json
+          from pathlib import Path
+          for name in ['resume-summary.json','resume-ipad-summary.json']:
+              summary=json.loads((Path('/tmp/prior-audits')/name).read_text())
+              assert summary.get('result')=='Passed' and summary.get('passedTests',0)>0 and summary.get('failedTests')==0, summary
+          print('Both native UI audits passed; all iOS runtime inputs are identical.')
+          PYVERIFY
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
@@ -68,6 +94,7 @@ jobs:
           print('scene delegate plist matches @objc(SceneDelegate)')
           PY
       - name: Restore compiled simulator dependencies
+        if: inputs.mode != 'device-build'
         id: native-cache
         uses: actions/cache/restore@v4
         with:
@@ -79,6 +106,7 @@ jobs:
         working-directory: apps/player/ios
         run: pod install --repo-update
       - name: Prepare and validate the native resume test target
+        if: inputs.mode != 'device-build'
         run: |
           mkdir -p build
           ruby scripts/ios-resume-project.rb
@@ -94,6 +122,7 @@ jobs:
           print('UI-test product, executable and app target names match')
           PYSETTINGS
       - name: Compile Release app for the iPhone simulator
+        if: inputs.mode != 'device-build'
         shell: bash
         run: |
           set -o pipefail
@@ -108,7 +137,7 @@ jobs:
             CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- \
             build 2>&1 | tee build/xcodebuild-simulator.log
       - name: Save compiled simulator dependencies
-        if: steps.native-cache.outputs.cache-hit != 'true'
+        if: inputs.mode != 'device-build' && steps.native-cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -116,14 +145,16 @@ jobs:
             apps/player/build/DerivedDataSim
           key: ${{ steps.native-cache.outputs.cache-primary-key }}
       - name: Launch the simulator app and require it to stay open
-        if: inputs.mode != 'ipad-capture'
+        if: inputs.mode == 'full' || inputs.mode == ''
         run: bash scripts/ios-simulator-launch.sh
       - name: Start local UI fixture service
+        if: inputs.mode != 'device-build'
         run: python3 scripts/ios-design-fixture.py > build/design-fixture.log 2>&1 &
       - name: Verify Home after tab navigation, suspension and cold relaunch
-        if: inputs.mode != 'ipad-capture'
+        if: inputs.mode == 'full' || inputs.mode == ''
         run: bash scripts/ios-resume-check.sh
       - name: Capture and verify supported iPad screens
+        if: inputs.mode != 'device-build'
         env:
           GLOWTV_CAPTURE_DEVICE: ipad
           GLOWTV_ONLY_DESIGN: ${{ inputs.mode == 'ipad-capture' && '1' || '0' }}
@@ -159,6 +190,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p build
+          xcrun simctl shutdown all || true
           xcodebuild \
             -workspace ios/GlowTV.xcworkspace \
             -scheme GlowTV \
@@ -169,7 +201,10 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY='' \
-            build 2>&1 | tee build/xcodebuild.log
+            build 2>&1 | tee build/xcodebuild.log || {
+              grep -q 'scan-modules.*timed out' build/xcodebuild.log || exit 1
+              xcodebuild -workspace ios/GlowTV.xcworkspace -scheme GlowTV -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY='' build 2>&1 | tee build/xcodebuild-retry.log
+            }
       - name: Validate and package IPA
         if: inputs.mode != 'ipad-capture'
         run: python3 scripts/package-unsigned-ipa.py build/DerivedData/Build/Products/Release-iphoneos/GlowTV.app build/artifacts

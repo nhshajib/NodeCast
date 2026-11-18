@@ -18,6 +18,7 @@ export function versionHighlights(platform:DownloadPlatform,version:string):stri
   'GlowTV branding, launcher icons, Inter typography and a leaf-green design system.',
   platform==='tv'?'A dedicated TV icon rail, featured live-channel Home and compact guide with remote focus.':platform==='ios'?'Warm iPhone and iPad surfaces, native tabs and sheets, a timeline guide and full-width portrait playback.':'Dark Android surfaces, native pill navigation, checked filters and an Add playlist sheet.',
   platform==='android'?'Fixed Android 13–15 Back navigation from details and settings, including after reopening the app.':'Existing playlists, profiles, playback engines, backups and transition settings remain compatible.',
+  ...(platform==='ios'?[]:['Repeated identical player updates keep the existing VLC decoder alive instead of restarting playback.']),
  ];
  if(version!=='0.6.7')return ['Read the version-specific GitHub release notes for the complete list of changes.'];
  const notes=['Compact playback settings stay over the video instead of opening a separate page.','Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.'];
