@@ -113,6 +113,23 @@ def touch_player(label,timeout=20):
     if target.get('content-desc')==label:return
   time.sleep(.2)
  raise AssertionError('Phone player control is not reachable: '+label)
+def expect_phone_control(label,timeout=20):
+ # Auto-hiding controls are valid app behavior. Wake them without toggling
+ # playback before checking the expected state. Never repeat Play/Pause to
+ # turn a missed assertion into a pass.
+ assert not TV
+ deadline=time.monotonic()+timeout
+ while time.monotonic()<deadline:
+  nodes=list(h.dump().iter('node'))
+  if any(n.get('content-desc')==label and n.get('clickable')=='true' for n in nodes):return
+  wake=next((n for n in nodes if n.get('content-desc')=='Show player controls' and n.get('clickable')=='true'),None)
+  if wake is not None:
+   bounds=list(map(int,__import__('re').findall(r'\d+',wake.get('bounds',''))))
+   assert len(bounds)==4 and bounds[2]>bounds[0] and bounds[3]>bounds[1]
+   x,y=str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2)
+   adb('shell','input','swipe',x,y,x,y,'100')
+  time.sleep(.2)
+ raise AssertionError('Phone playback state did not expose control: '+label)
 def wait_for_native_video(timeout=45):
  # A native playing event can precede the first texture frame. Require actual
  # scene pixels before pausing; a fixed delay can freeze a still-black surface.
@@ -168,14 +185,14 @@ try:
   # A matching source/options update must not recreate or crash the decoder.
   player_pid=adb('shell','pidof',package)
   for cycle in range(6):
-   touch_player('Pause live TV');find('Play live TV',timeout=20)
+   touch_player('Pause live TV');expect_phone_control('Play live TV')
    assert adb('shell','pidof',package)==player_pid,'Player process changed while pausing'
    wait_for_native_video(timeout=10)
-   touch_player('Play live TV')
+   touch_player('Play live TV');expect_phone_control('Pause live TV')
    assert adb('shell','pidof',package)==player_pid,'Player process changed while resuming'
   (OUT/'emulator-mobile-pause-resume.json').write_text(json.dumps({'cycles':6,'sameProcess':True,'originalVideoPixels':True})+'\n')
  if TV:adb('shell','input','keyevent','127')
- else:touch_player('Pause live TV');find('Play live TV',timeout=20)
+ else:touch_player('Pause live TV');expect_phone_control('Play live TV')
  time.sleep(1);capture('player')
  assert adb('shell','pidof',package)==player_pid,'Player process changed while pausing the decoded video'
  # The actual decoded bottom band is green; a blank decoder or Home is not.
