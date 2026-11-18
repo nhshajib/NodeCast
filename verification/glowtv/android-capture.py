@@ -31,9 +31,19 @@ def click(label,scroll=False):
  if not TV and label in native_keys:
   # Native Material widgets use a real down/up gesture. ADB's zero-duration
   # input tap is not equivalent to a finger press through the native dispatcher.
-  nodes=[n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-'+native_keys[label]]
-  candidates=[(n,list(map(int,__import__('re').findall(r'\d+',n.get('bounds','')))))for n in nodes]
-  node,bounds=next((n,b)for n,b in candidates if len(b)==4 and b[2]>b[0]and b[3]>b[1]and b[1]>h.height*.65 and b[3]<=h.height)
+  # A native Back animation can temporarily remove the tab bar from the
+  # accessibility tree. Wait for the real visible target; do not repeat Back,
+  # tap a guessed coordinate, or relax the on-screen geometry requirement.
+  deadline=time.monotonic()+20
+  target=None
+  while time.monotonic()<deadline:
+   nodes=[n for n in h.dump().iter('node')if n.get('resource-id')=='navigation-tab-'+native_keys[label]]
+   candidates=[(n,list(map(int,__import__('re').findall(r'\d+',n.get('bounds','')))))for n in nodes]
+   target=next(((n,b)for n,b in candidates if len(b)==4 and b[2]>b[0]and b[3]>b[1]and b[1]>h.height*.65 and b[3]<=h.height),None)
+   if target is not None:break
+   time.sleep(.2)
+  assert target is not None,f'Native tab {label} did not become visible after navigation'
+  node,bounds=target
   x,y=str((bounds[0]+bounds[2])//2),str((bounds[1]+bounds[3])//2)
   native_tab_taps.append({'label':label,'candidates':[dict(n.attrib)for n in nodes],'selected':dict(node.attrib),'tap':[int(x),int(y)],'durationMilliseconds':100})
   (OUT/'emulator-mobile-native-tab-taps.json').write_text(json.dumps(native_tab_taps,indent=2)+'\n')
