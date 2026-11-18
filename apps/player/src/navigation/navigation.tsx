@@ -114,13 +114,13 @@ export function TabStack({ tab }: { tab: string }) {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const spec = tabs.find(item => item.name === tab);
-  const headerRight = () => <View style={{ flexDirection: 'row', gap: 8, paddingRight: Platform.OS === 'web' ? 12 : 0 }}>
+  const headerRight = () => <View style={{ flexDirection: 'row', gap: 8, paddingRight: Platform.OS === 'web' ? 16 : 0 }}>
     {androidDesign && <IconButton name="search-outline" label="Search" onPress={c.openSearch} />}
     {androidDesign ? <IconButton name="person-circle-outline" label="Your playlists" onPress={c.openProfiles} />
       : <><IconButton name="heart-outline" label="Favorites" onPress={c.openFavorites} /><IconButton name="settings-outline" label="Settings" onPress={c.openSettings} /></>}
     <IconButton name="add" label="Add playlist" onPress={() => c.addProfile()} />
   </View>;
-  const brand = () => <Pressable accessibilityRole="button" accessibilityLabel="GlowTV home" onPress={c.goHome} style={[u.row, { minHeight: 44, gap: 8, paddingLeft: Platform.OS === 'web' ? 4 : 0 }]}><BrandMark size={33} /><Text style={{ fontSize: 20, color: colors.text, letterSpacing: -1, fontWeight: '800' }}>GlowTV</Text></Pressable>;
+  const brand = () => <Pressable accessibilityRole="button" accessibilityLabel="GlowTV home" onPress={c.goHome} style={[u.row, { minHeight: 44, gap: 8, paddingLeft: Platform.OS === 'web' ? 8 : 0 }]}><BrandMark size={33} /><Text style={{ fontSize: 20, color: colors.text, letterSpacing: -1, fontWeight: '800' }}>GlowTV</Text></Pressable>;
   return <Stack screenOptions={options}>
     <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight }} />
   </Stack>;

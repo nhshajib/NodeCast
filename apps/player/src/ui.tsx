@@ -24,7 +24,7 @@ export function IconButton({ name, label, onPress, disabled, dark = false, nativ
 export function Field({ label, hideLabel=false, style, onFocus, onBlur, inputRef, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean; inputRef?: React.Ref<React.ComponentRef<typeof TextInput>> }) {
   const [focused, setFocused] = useState(false);
   const floating = androidDesign && !hideLabel;
-  return <View style={{ gap: hideLabel || floating ? 0 : 8, paddingTop: floating ? 7 : 0 }}>
+  return <View style={{ gap: hideLabel || floating ? 0 : 8, paddingTop: floating ? 8 : 0 }}>
     {!hideLabel && <Text pointerEvents="none" style={[u.fieldLabel, floating && { position: 'absolute', left: 12, top: 0, paddingHorizontal: 8, backgroundColor: colors.bg, zIndex: 1, fontSize: 12, color: focused ? colors.link : colors.secondary }]}>{label}</Text>}
     <TextInput {...props} ref={inputRef} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} autoCapitalize="none" autoCorrect={false} placeholderTextColor={colors.secondary} style={[u.input, floating && { borderRadius: 12, backgroundColor: 'transparent' }, focused && { borderColor: colors.accent, borderWidth:isTVBuild?3:2 }, props.editable === false && { opacity: .65 }, style]} />
   </View>;
