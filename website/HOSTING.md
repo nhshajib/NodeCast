@@ -1,6 +1,6 @@
 # glowtv.app hosting
 
-The independent Astro site builds with `npm ci && npm run build` from `website/`, producing `website/dist/`. The workflow `website-deploy.yml` validates and deploys that output. It runs for website/brand changes, independently of app CI. Asset sources are copied into this project; it never imports from `apps/`.
+The independent Astro site builds with `npm ci && npm run build` from `website/`, producing `website/dist/`. The workflow `website-deploy.yml` validates that output. GitHub Pages deployment is optional and runs only when the repository variable `GITHUB_PAGES_ENABLED` is `true`. It runs for website/brand changes, independently of app CI. Asset sources are copied into this project; it never imports from `apps/`.
 
 In repository Settings → Pages, choose **GitHub Actions** as the source. Set **Custom domain** to `glowtv.app`. The generated artifact includes CNAME with that exact value. Wait for GitHub's domain check and certificate provisioning, then enable **Enforce HTTPS**. A CNAME file alone does not configure DNS or prove HTTPS is active.
 
@@ -25,6 +25,14 @@ Verify all four with an HTTPS client after propagation:
 
 The `support@glowtv.app` mailto also requires a working mailbox. Keep existing MX and email-verification records when adding the web records above.
 
+## Vercel (current live host)
+
+The connected Vercel project deploys pushes to `main`. Use the Astro preset, root directory `website`, build command `npm run build`, output directory `dist` and Node.js 24. The site is static and needs no app secrets. The checked public-release snapshot keeps the download pages current even if GitHub rate limits the build.
+
+Keep Vercel’s DNS records when hosting there; the GitHub Pages DNS table above applies only if you move hosting to GitHub Pages. Do not combine the two hosts’ apex records. Domain redirects are configured in Vercel → Project Settings → Domains. The source canonical host is `https://glowtv.app/`; configure `www` to redirect to the apex when making that host canonical.
+
+Leave `GITHUB_PAGES_ENABLED` unset for Vercel. Website tests, build, accessibility audit and the downloadable site artifact still run in GitHub Actions; this avoids attempting deployment to an unconfigured Pages site. To use Pages later, configure the site first and set the variable to `true`.
+
 ## Pending values
 
 - `[APP_STORE_URL]`: verified iOS listing; a separate tvOS listing is required once an Apple TV target exists.
@@ -34,7 +42,7 @@ The `support@glowtv.app` mailto also requires a working mailbox. Keep existing M
 - `[GSC_TOKEN]`: Google Search Console HTML verification token.
 - `[ANALYTICS_DOMAIN]`, `[ANALYTICS_SCRIPT_URL]`: optional privacy-friendly analytics configuration. Analytics is disabled until configured and documented in the privacy policy.
 
-Unavailable store labels are plain text, not broken anchors. Download buttons use verified public GitHub assets, including clearly labeled NodeCast testing releases while the GlowTV redesign remains unpublished. Draft releases and build artifacts are never presented as public downloads.
+Unavailable store labels are plain text, not broken anchors. Download buttons use verified public GitHub assets, with testing releases clearly labeled and each platform selected independently. Draft releases and build artifacts are never presented as public downloads.
 
 ## Release metadata
 
