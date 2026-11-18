@@ -16,12 +16,14 @@ import { useTabScrollToTop } from './scrollToTop';
 import type { LibraryView } from './types';
 
 const PosterItem = React.memo(function PosterItem({ item, favorite, onPlay, onFavorite }: { item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void }) {
+  useThemeChoice();
   return <View style={{ flex: 1, maxWidth: '50%', marginBottom: 24, gap: 8 }}>
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
     <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={{ position: 'absolute', right: 10, top: 10, width: 44, height: 44, borderRadius: 16, backgroundColor: colors.panel, alignItems: 'center', justifyContent: 'center' }}><Icon name={favorite ? 'heart' : 'heart-outline'} size={17} color={colors.link} /></Pressable>
   </View>;
 });
 const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFavorite, onOptions }: { item: Media; favorite: boolean; demo: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void; onOptions: (item: Media) => void }) {
+  useThemeChoice();
   return <View style={s.mediaRow}>
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
     {item.kind === 'live' && <Pressable accessibilityRole="button" accessibilityLabel={`Playback options for ${item.name}`} onPress={() => onOptions(item)} style={s.iconAction}><Icon name="ellipsis-horizontal" size={20} color={colors.secondary} /></Pressable>}

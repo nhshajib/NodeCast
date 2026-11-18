@@ -821,21 +821,23 @@ index 0000000..bfa5b97
 + return <Glyph size={size} color={color} strokeWidth={1.8} fill={name === 'heart' ? color : 'none'} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
 +}
 diff --git a/apps/player/src/navigation/LibraryScreen.tsx b/apps/player/src/navigation/LibraryScreen.tsx
-index 4522a0d..211c52d 100644
+index 4522a0d..8a7dbf9 100644
 --- a/apps/player/src/navigation/LibraryScreen.tsx
 +++ b/apps/player/src/navigation/LibraryScreen.tsx
-@@ -16,16 +16,16 @@ import { useTabScrollToTop } from './scrollToTop';
+@@ -16,16 +16,18 @@ import { useTabScrollToTop } from './scrollToTop';
  import type { LibraryView } from './types';
  
  const PosterItem = React.memo(function PosterItem({ item, favorite, onPlay, onFavorite }: { item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void }) {
 -  return <View style={{ flex: 1, maxWidth: '50%', marginBottom: 20, gap: 8 }}>
 -    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={{ gap: 10 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
++  useThemeChoice();
 +  return <View style={{ flex: 1, maxWidth: '50%', marginBottom: 24, gap: 8 }}>
 +    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
      <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={{ position: 'absolute', right: 10, top: 10, width: 44, height: 44, borderRadius: 16, backgroundColor: colors.panel, alignItems: 'center', justifyContent: 'center' }}><Icon name={favorite ? 'heart' : 'heart-outline'} size={17} color={colors.link} /></Pressable>
    </View>;
  });
  const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFavorite, onOptions }: { item: Media; favorite: boolean; demo: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void; onOptions: (item: Media) => void }) {
++  useThemeChoice();
    return <View style={s.mediaRow}>
 -    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 14 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 6 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 7 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
 +    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
@@ -845,7 +847,7 @@ index 4522a0d..211c52d 100644
    </View>;
  });
  
-@@ -70,33 +70,33 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?:
+@@ -70,33 +72,33 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?:
    const updated = c.updatedAt[section];
  
    return <View style={{ flex: 1, backgroundColor: colors.bg }}>
