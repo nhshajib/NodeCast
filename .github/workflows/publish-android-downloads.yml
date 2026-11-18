@@ -102,6 +102,6 @@ jobs:
             gh release create "$TAG" --target "$SOURCE_SHA" --draft --prerelease --title "GlowTV ${VERSION} — Android phone and TV" --notes-file /tmp/glowtv-android-notes.md
           fi
           test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
-          gh release edit "$TAG" --target "$SOURCE_SHA" --notes-file /tmp/glowtv-android-notes.md
+          gh release edit "$TAG" --notes-file /tmp/glowtv-android-notes.md
           gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 apks/release-metadata.json --clobber
           if [ "$MAKE_PUBLIC" = true ]; then gh release edit "$TAG" --draft=false; fi
