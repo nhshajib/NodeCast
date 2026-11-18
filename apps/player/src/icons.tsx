@@ -95,5 +95,5 @@ const icons = {
 export type IconName = keyof typeof icons;
 export function AppIcon({name,size=22,color}:{name:IconName;size?:number;color:string}) {
  const Glyph:LucideIcon=icons[name] || CircleHelp;
- return <Glyph size={size} color={color} strokeWidth={1.8} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
+ return <Glyph size={size} color={color} strokeWidth={1.8} fill={name === 'heart' ? color : 'none'} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
 }

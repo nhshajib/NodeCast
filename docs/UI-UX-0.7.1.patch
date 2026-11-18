@@ -717,7 +717,7 @@ index 0000000..f5de502
 +} as const;
 diff --git a/apps/player/src/icons.tsx b/apps/player/src/icons.tsx
 new file mode 100644
-index 0000000..a267c8f
+index 0000000..bfa5b97
 --- /dev/null
 +++ b/apps/player/src/icons.tsx
 @@ -0,0 +1,99 @@
@@ -818,7 +818,7 @@ index 0000000..a267c8f
 +export type IconName = keyof typeof icons;
 +export function AppIcon({name,size=22,color}:{name:IconName;size?:number;color:string}) {
 + const Glyph:LucideIcon=icons[name] || CircleHelp;
-+ return <Glyph size={size} color={color} strokeWidth={1.8} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
++ return <Glyph size={size} color={color} strokeWidth={1.8} fill={name === 'heart' ? color : 'none'} accessible={false} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />;
 +}
 diff --git a/apps/player/src/navigation/LibraryScreen.tsx b/apps/player/src/navigation/LibraryScreen.tsx
 index 4522a0d..211c52d 100644
