@@ -1,3 +1,5 @@
+import { Icon } from './ui';
+import type { IconName } from './ui';
 import { Text } from './Typography';
 import React from 'react';
 import { AccessibilityInfo, ActivityIndicator, Animated, StyleSheet } from 'react-native';
@@ -5,15 +7,15 @@ import Pressable from './FocusPressable';
 import { usePlaybackChrome } from './PlaybackChrome';
 export const glass = StyleSheet.create({
   panel: { backgroundColor: '#0A0E0CD9', borderColor: '#FFFFFF30', borderWidth: 1, borderRadius: 24, overflow: 'hidden' },
-  content: { padding: 18, gap: 14 },
+  content: { padding: 16, gap: 16 },
   title: { color: '#FFFFFF', fontSize: 21, fontWeight: '600' },
   text: { color: '#E8EEEA', fontSize: 14, lineHeight: 20 },
   label: { color: '#1EC677', fontSize: 13, fontWeight: '600', marginTop: 8 },
-  button: { minHeight: 48, paddingHorizontal: 14, paddingVertical: 12, borderRadius: 14, backgroundColor: '#FFFFFF10', borderWidth: 1, borderColor: '#FFFFFF18', justifyContent: 'center' },
+  button: { minHeight: 48, paddingHorizontal: 16, paddingVertical: 16, borderRadius: 14, backgroundColor: '#FFFFFF10', borderWidth: 1, borderColor: '#FFFFFF18', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 8 },
 });
-export function GlassButton({ title, onPress, busy, disabled, ...props }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean } & Omit<React.ComponentProps<typeof Pressable>, 'onPress' | 'children'>) {
+export function GlassButton({ title, onPress, busy, disabled, icon, ...props }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean; icon?: IconName } & Omit<React.ComponentProps<typeof Pressable>, 'onPress' | 'children'>) {
   const chrome = usePlaybackChrome();
-  return <Pressable {...props} disabled={disabled || busy} accessibilityRole={props.accessibilityRole || 'button'} accessibilityLabel={props.accessibilityLabel || title} accessibilityState={{ ...props.accessibilityState, disabled: !!disabled || !!busy, busy: !!busy }} onFocus={chrome.activity} onPress={() => { chrome.activity(); onPress(); }} style={({ pressed }) => [glass.button, pressed && { backgroundColor: '#FFFFFF2A' }, { opacity: disabled || busy ? .5 : 1 }]}>{busy ? <ActivityIndicator color="#1EC677" /> : <Text style={{ color: '#FFFFFF', fontSize: 14 }}>{title}</Text>}</Pressable>;
+  return <Pressable {...props} disabled={disabled || busy} accessibilityRole={props.accessibilityRole || 'button'} accessibilityLabel={props.accessibilityLabel || title} accessibilityState={{ ...props.accessibilityState, disabled: !!disabled || !!busy, busy: !!busy }} onFocus={chrome.activity} onPress={() => { chrome.activity(); onPress(); }} style={({ pressed }) => [glass.button, pressed && { backgroundColor: '#FFFFFF2A' }, { opacity: disabled || busy ? .5 : 1 }]}>{busy ? <ActivityIndicator color="#1EC677" /> : <>{icon && <Icon name={icon} color="#FFFFFF" size={18}/>}<Text style={{ color: '#FFFFFF', fontSize: 14, flexShrink: 1 }}>{title}</Text></>}</Pressable>;
 }
 
 /** Animate opacity only: video and control layout never move or remount on idle. */

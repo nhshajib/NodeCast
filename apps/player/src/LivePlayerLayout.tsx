@@ -1,6 +1,7 @@
 import React from 'react';
 import {isTVBuild} from './FocusPressable';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { colors, themedStyles } from './theme';
 
 /** Keep the native surface mounted outside scrolling content, including during rotation. */
 export default function LivePlayerLayout({ fullscreen, video, overlay, children }: {
@@ -15,11 +16,11 @@ export default function LivePlayerLayout({ fullscreen, video, overlay, children 
     {overlay}
   </View>;
 }
-const styles = StyleSheet.create({
+const styles = themedStyles(() => ({
   root: { flex: 1, backgroundColor: '#000', overflow: 'hidden' },
   inline: { width: '100%', aspectRatio: 16 / 9, backgroundColor: '#000', overflow: 'hidden' },
   fullscreen: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, backgroundColor: '#000', overflow: 'hidden' },
-  details: { flex: 1, backgroundColor: '#0D4029' },
+  details: { flex: 1, backgroundColor: colors.bg },
   hidden: { display: 'none' },
-  content: { flexGrow: 1, justifyContent: 'center', gap: 18, paddingVertical: 24 },
-});
+  content: { flexGrow: 1, justifyContent: 'center', gap: 16, paddingVertical: 24 },
+}));

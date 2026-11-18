@@ -28,7 +28,7 @@ export default function ProgrammeSheet({ profile, item, programme, onPlay, onAut
     } catch (e) { if (!controller.signal.aborted) setError(e instanceof Error ? e.message : 'Could not open provider catch-up.'); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
-  return <ScrollView contentContainerStyle={{ padding: 20, gap: 12, paddingBottom: 32 }}>
+  return <ScrollView contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 32 }}>
     <Text numberOfLines={1} style={u.eyebrow}>{item.name}</Text>
     <Text style={u.h2}>{programme.title}</Text>
     <Text style={u.small}>{new Date(programme.start).toLocaleDateString()} · {time(programme.start)} – {time(programme.end)}</Text>

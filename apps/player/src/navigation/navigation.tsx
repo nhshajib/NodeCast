@@ -80,6 +80,7 @@ const androidTabs: TabSpec[] = [
   { name: 'library', title: 'Library', sf: { default: 'books.vertical', selected: 'books.vertical.fill' }, md: 'video_library', icon: 'library-outline', selected: 'library' },
   { name: 'settings', title: 'Settings', sf: { default: 'gearshape', selected: 'gearshape.fill' }, md: 'settings', icon: 'settings-outline', selected: 'settings' },
 ];
+const tabIcons = { home: require('../../assets/icons/house.png'), live: require('../../assets/icons/tv.png'), guide: require('../../assets/icons/grid-2x2.png'), movies: require('../../assets/icons/film.png'), series: require('../../assets/icons/layers.png'), search: require('../../assets/icons/search.png'), library: require('../../assets/icons/library.png'), settings: require('../../assets/icons/settings.png') };
 export const tabs = androidDesign ? androidTabs : iosTabs;
 const allTabNames = ['home', 'live', 'guide', 'library', 'settings', 'movies', 'series', 'search'];
 
@@ -102,7 +103,7 @@ export function TabsNavigator() {
       const spec = tabs.find(tab => tab.name === name);
       return <NativeTabs.Trigger key={name} name={name} hidden={!spec} testID={`navigation-tab-${name}`} disableAutomaticContentInsets={Platform.OS !== 'android'} listeners={{ tabPress: () => tabPressed(name) }}>
         {spec && <NativeTabs.Trigger.Label>{spec.title}</NativeTabs.Trigger.Label>}
-        {spec && <NativeTabs.Trigger.Icon sf={spec.sf as never} md={spec.md as never} />}
+        {spec && <NativeTabs.Trigger.Icon src={tabIcons[spec.name as keyof typeof tabIcons]} renderingMode="template" />}
       </NativeTabs.Trigger>;
     })}
   </NativeTabs>;
@@ -113,7 +114,7 @@ export function TabStack({ tab }: { tab: string }) {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const spec = tabs.find(item => item.name === tab);
-  const headerRight = () => <View style={{ flexDirection: 'row', gap: 4, paddingRight: Platform.OS === 'web' ? 12 : 0 }}>
+  const headerRight = () => <View style={{ flexDirection: 'row', gap: 8, paddingRight: Platform.OS === 'web' ? 12 : 0 }}>
     {androidDesign && <IconButton name="search-outline" label="Search" onPress={c.openSearch} />}
     {androidDesign ? <IconButton name="person-circle-outline" label="Your playlists" onPress={c.openProfiles} />
       : <><IconButton name="heart-outline" label="Favorites" onPress={c.openFavorites} /><IconButton name="settings-outline" label="Settings" onPress={c.openSettings} /></>}
@@ -128,7 +129,7 @@ export function TabStack({ tab }: { tab: string }) {
 function MessageBanner() {
   const c = useNodeCast();
   if (!c.message) return null;
-  return <View style={{ paddingHorizontal: 24, paddingBottom: 4 }}><Notice danger>{c.message}</Notice><Pressable onPress={() => c.setMessage('')} accessibilityRole="button" style={[s.textAction, { alignSelf: 'flex-end' }]}><Text style={u.link}>Dismiss</Text></Pressable></View>;
+  return <View style={{ paddingHorizontal: 24, paddingBottom: 8 }}><Notice danger>{c.message}</Notice><Pressable onPress={() => c.setMessage('')} accessibilityRole="button" style={[s.textAction, { alignSelf: 'flex-end' }]}><Text style={u.link}>Dismiss</Text></Pressable></View>;
 }
 
 /** Reports focus so the library loads what is on screen, and so off-screen work can pause. */
@@ -198,7 +199,7 @@ export function SheetScreen() {
     {/* UIKit owns the sheet header and its hit testing. Keep scrolling content
         separate so the native sheet never coerces it over the Done control. */}
     {Platform.OS === 'ios' ? content : <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <View style={[u.between, { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 4 }]}>
+      <View style={[u.between, { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 8 }]}>
         <Text accessibilityRole="header" numberOfLines={2} style={[u.h2, { flex: 1 }]}>{page ? c.pageTitle(page) : ''}</Text>
         {close}
       </View>

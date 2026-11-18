@@ -1,12 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Appearance, Platform } from 'react-native';
+import { palette } from './designTokens';
 import type { TextStyle, ViewStyle, ImageStyle } from 'react-native';
 export type ThemeChoice = 'light' | 'dark' | 'system';
 export const androidDesign = Platform.OS === 'android' || process.env.EXPO_PUBLIC_DESIGN_PLATFORM === 'android';
 export const tvDesign = process.env.EXPO_PUBLIC_APP_VARIANT === 'tv' || Platform.isTV;
 export const defaultTheme: ThemeChoice = androidDesign || tvDesign ? 'dark' : 'light';
-const light = { bg: '#F7F6F1', panel: '#FFFFFF', surface: '#EEEEE7', text: '#111613', secondary: '#646B67', accent: '#1EC677', link: '#0B7A47', mint: '#DDF4E7', pale: '#EEEEE7', line: '#E6E3DA', danger: '#B42320', amber: '#775315', ink: '#0D4029', onAccent: '#0D4029', primary: '#1EC677', primaryText: '#0D4029', selected: '#DDF4E7', selectedText: '#0D4029', live: '#DD3027', featured: '#0D4029' };
-const dark = { ...light, bg: tvDesign ? '#0A0E0C' : '#0F1412', panel: '#1B2420', surface: '#18201C', text: '#E8EEEA', secondary: '#A3ADA7', link: '#C9F5DD', mint: '#1F4A36', pale: '#18201C', line: '#3D4B43', danger: '#FFB4AC', amber: '#F0D28E', onAccent: '#C9F5DD', selected: '#1F4A36', selectedText: '#C9F5DD' };
+const light: Record<'bg' | 'panel' | 'surface' | 'text' | 'secondary' | 'accent' | 'link' | 'mint' | 'pale' | 'line' | 'danger' | 'amber' | 'ink' | 'onAccent' | 'primary' | 'primaryText' | 'selected' | 'selectedText' | 'live' | 'featured' | 'dangerSurface', string> = { bg: palette.neutral.light, panel: palette.neutral.white, surface: palette.neutral.lightSurface, text: palette.neutral.ink, secondary: palette.neutral.muted, accent: palette.primary.action, link: palette.primary.link, mint: palette.primary.subtle, pale: palette.neutral.lightSurface, line: palette.neutral.lightBorder, danger: palette.semantic.red, amber: palette.neutral.muted, ink: palette.primary.ink, onAccent: palette.primary.ink, primary: palette.primary.action, primaryText: palette.primary.ink, selected: palette.primary.subtle, selectedText: palette.primary.ink, live: palette.semantic.red, featured: palette.primary.ink, dangerSurface: palette.semantic.lightSurface };
+const dark = { ...light, bg: tvDesign ? palette.neutral.night : palette.neutral.dark, panel: palette.neutral.darkPanel, surface: palette.neutral.darkSurface, text: palette.neutral.onDark, secondary: palette.neutral.darkMuted, link: palette.primary.onDark, mint: palette.primary.darkSubtle, pale: palette.neutral.darkSurface, line: palette.neutral.darkBorder, danger: palette.semantic.onDark, amber: palette.neutral.darkMuted, onAccent: palette.primary.onDark, selected: palette.primary.darkSubtle, selectedText: palette.primary.onDark, dangerSurface: palette.semantic.darkSurface };
 export const colors: typeof light = { ...(defaultTheme === 'dark' ? dark : light) };
 let darkMode = defaultTheme === 'dark';
 export function isDarkTheme() { return darkMode; }

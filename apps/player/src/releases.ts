@@ -1,5 +1,12 @@
-export const appVersion = '0.7.0';
+export const appVersion = '0.7.1';
 export const releases = [
+  {version:'0.7.1',date:'November 18, 2026',title:'A calmer, clearer GlowTV.',changes:[
+    'Consistent Lucide icons across phone, TV and native tab bars, without decorative icon backplates.',
+    'An 8px spacing grid and a three-family palette with dark-mode-safe surfaces and semantic live/error indicators.',
+    'Home centers the featured title; repeated navigation and passive information cards have been simplified.',
+    'Settings, connection details, playlist forms and library controls use clearer groups and real selection icons.',
+    'Existing playlists, playback engines, backups, remote focus and transition behavior are retained.',
+  ]},
   {version:'0.7.0',date:'November 15, 2026',title:'GlowTV. Your TV, beautifully lit.',changes:[
     'Renamed to GlowTV with new platform icons and launch artwork; existing identifiers and saved profiles remain compatible.',
     'Removed Discover the world and third-party sample streams; demos now use an original GlowTV test scene.',
