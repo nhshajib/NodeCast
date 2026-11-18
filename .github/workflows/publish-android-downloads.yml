@@ -85,7 +85,7 @@ jobs:
         run: |
           set -euo pipefail
           VERSION=$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')
-          TAG="glowtv-v${VERSION}"
+          TAG="glowtv-android-v${VERSION}"
           cat > /tmp/glowtv-android-notes.md <<'NOTES'
           GlowTV for Android phone, Android TV, Google TV and Fire TV. Choose the correct edition:
 
