@@ -2,6 +2,16 @@
 
 [← iPhone download & installation](README.md) · [All editions](../../../CHANGELOG.md)
 
+## 0.7.0 · November 18, 2026 · Public testing release
+
+- GlowTV name, launcher artwork, Inter typography and leaf-green design.
+- Warm iPhone and iPad surfaces, native tabs and sheets, timeline guide and full-width portrait playback.
+- Existing bundle ID, profiles, playlists, backups and playback engines are retained.
+- iPhone and iPad simulator tests passed Home navigation, background/resume, cold launch and all eight design screens, including decoded video.
+- Standalone ARM64 IPA includes JavaScript and VLC; no computer or Expo Go is required while watching. Physical-device/provider testing remains separate.
+- Sign with Impactor and your Apple account. Free signing normally needs renewal every seven days; keep the app installed when updating.
+- [Direct IPA download, requirements and checksum](DOWNLOADS.md).
+
 ## 0.6.7 · October 30, 2026 · All editions
 
 - Compact translucent playback settings stay over the video on iPhone, Android mobile and TV. Long panels scroll; short menus fit their contents.

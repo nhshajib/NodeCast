@@ -6,14 +6,14 @@
 
 [Website](https://glowtv.app/) · [Download availability](https://glowtv.app/download/) · [Installation guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Changelog](CHANGELOG.md)
 
-The GlowTV rebrand is in development. Store listings and new branded binaries are pending; previous project releases remain in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases) under their original names. The website's custom domain needs GitHub Pages and DNS setup; see [hosting instructions](website/HOSTING.md).
+GlowTV 0.7.0 is available for iPhone/iPad, Android phone and Android TV/Fire TV. The IPA needs personal signing; Android APKs install directly. Store listings are pending. See [hosting instructions](website/HOSTING.md) for the website domain.
 
 [![GlowTV website preview with the actual iPhone app, pastel panels and framed TV-night photography](verification/glowtv/website-home.png)](https://glowtv.app/)
 
 <!-- downloads:start -->
 | Your device | Direct GitHub download | Setup and features | Project |
 | --- | --- | --- | --- |
-| iPhone / iPad | [IPA · 0.6.7](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
+| iPhone / iPad | [IPA · 0.7.0](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/GlowTV-0.7.0-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
 | Android phone | [APK · 0.7.0](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
 | Android TV / Fire TV | [TV APK · 0.7.0](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
 <!-- downloads:end -->

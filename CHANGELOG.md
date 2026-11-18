@@ -1,8 +1,8 @@
 # GlowTV changes
 
-## GlowTV 0.7.0 — Android phone and TV testing release
+## GlowTV 0.7.0 — November 18, 2026 · Public testing release
 
-- Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. GlowTV 0.7.0 Android phone and TV downloads are published; the iPhone 0.7.0 device build is still completing.
+- Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. GlowTV 0.7.0 is published for iPhone/iPad, Android phone/tablet and Android TV/Fire TV.
 
 - New GlowTV name, supplied launcher assets and tagline. Existing IDs, signing, profiles, backups and animations are retained.
 - Shared app moved to `apps/player/`; independent Astro website in `website/`.
@@ -10,9 +10,9 @@
 - Platform guides, support, structured data and accessible screenshot galleries.
 - Fixed Android 13–15 phone Back dispatch, including navigation after reopening; native routes and transition settings are retained.
 - Added a virtual-device-only VLC decoder fallback for Android 15 emulator rendering; physical-device decoding remains unchanged.
-- Store publication, physical-device review and custom-domain activation remain release gates.
+- Direct testing downloads are published; store publication and physical-device review remain follow-ups. The website is live on Vercel.
 
-# What's new in NodeCast
+## Version history
 
 ## 0.7.0 — GlowTV design
 
@@ -28,7 +28,7 @@
 - Rules for future screens are in `CLAUDE.md`, and the audit is in `docs/NATIVE-AUDIT.md`.
 - Existing player lifecycle effects are preserved. The same configured slide is added around TV pages.
 - Provider, catalog, guide, catch-up, backup models and playback-policy modules remain unchanged.
-- Android 0.7.0 is published after native eight-screen and eight-settings audits, decoded-frame checks and six phone touch pause/resume cycles. Existing update signing identity was verified. iPhone and iPad UI audits passed; the 0.7.0 physical-device package is still compiling.
+- Android 0.7.0 is published after native eight-screen and eight-settings audits, decoded-frame checks and six phone touch pause/resume cycles. Existing update signing identity was verified. iPhone and iPad UI audits passed, and the standalone ARM64 IPA passed archive, identifier and checksum verification. Physical-device/provider testing remains separate.
 - Identical Android VLC source/options updates retain the current decoder instead of restarting playback.
 
 

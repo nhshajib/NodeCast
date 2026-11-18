@@ -3,11 +3,11 @@
 **Your TV, beautifully lit.**
 
 <!-- direct-download:start -->
-## Download 0.6.7
+## Download 0.7.0
 
-[**Download IPA directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa) · [Features, size and checksum](DOWNLOADS.md) · [0.6.7 release notes](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7)
+[**Download IPA directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/GlowTV-0.7.0-unsigned.ipa) · [Features, size and checksum](DOWNLOADS.md) · [0.7.0 release notes](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.0)
 
-This public testing build uses the previous NodeCast name. The GlowTV redesign is still in development. Sign the unsigned IPA with Impactor before installing.
+This is the published GlowTV 0.7.0 testing release. Sign the unsigned IPA with Impactor before installing.
 <!-- direct-download:end -->
 
 [Download availability](https://glowtv.app/download/iphone/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)
@@ -16,6 +16,6 @@ The iPhone app uses the native player for compatible streams and built-in VLC fo
 
 GlowTV is a player only. Add your own legally obtained M3U link, playlist file or Xtream account. No channels, subscriptions or content are provided.
 
-The GlowTV rebrand is in development. Earlier releases remain under their original names in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases). New branded binaries are available only after their native build checks pass and the release is published.
+GlowTV 0.7.0 is available from the verified GitHub download above. Existing identifiers, signing identity and local profiles are preserved. Earlier project releases remain available in GitHub Releases.
 
 Profiles, favorites, EPG, catch-up where supported, playback settings, encrypted backups and family controls use the shared [app project](../). Existing identifiers and signing configuration are retained for update compatibility. [Screenshot provenance](../../../store-assets/README.md).

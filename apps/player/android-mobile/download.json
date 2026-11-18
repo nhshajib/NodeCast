@@ -11,7 +11,7 @@
   "sha256": "331515e2f6b4ca48aaa38d0ece827eeab7f9d1175c9afcf90e87f4f2203cd62c",
   "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk.sha256",
   "minimumOS": "Android API 24 or later",
-  "checkedAt": "2026-11-18T12:23:47.479Z",
+  "checkedAt": "2026-11-18T12:37:49.067Z",
   "edition": "android",
   "features": [
     {

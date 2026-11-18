@@ -2,18 +2,18 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.6.7
+## Current published version: 0.7.0
 
-- [**Direct GitHub download — NodeCast-0.6.7-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/NodeCast-0.6.7-unsigned.ipa)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.6.7)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.6.7/SHA256SUMS.txt)
-- Published: 2026-10-31
+- [**Direct GitHub download — GlowTV-0.7.0-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/GlowTV-0.7.0-unsigned.ipa)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.0)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/SHA256SUMS.txt)
+- Published: 2026-11-18
 - Status: Public testing release
-- Size: 35,754,931 bytes (34.1 MiB)
-- Minimum OS: not listed in the published release
-- SHA-256: `f6829d2ce28114429c730ae35eb8cf1d27fb2f19237f42f672ed068aa87f5a30`
+- Size: 34,728,445 bytes (33.1 MiB)
+- Minimum OS: iOS 16.4 or later
+- SHA-256: `1b079d9a203d10e1a01b3f26a5979c8125feee6af39b74a809c55236d1cc58b7`
 
-This is the existing NodeCast binary. The upcoming GlowTV design is not included, and no file has been renamed or republished.
+This is a published GlowTV binary.
 
 ## Features
 
@@ -24,11 +24,11 @@ This is the existing NodeCast binary. The upcoming GlowTV design is not included
 - **Built for iPhone and iPad:** Watch in portrait or landscape. Compatible native playback supports AirPlay and picture-in-picture; availability depends on the stream and engine.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.6.7
+## What changed in 0.7.0
 
-- Compact playback settings stay over the video instead of opening a separate page.
-- Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.
-- Portrait and landscape playback share the same controls and touch seek timeline.
+- GlowTV branding, launcher icons, Inter typography and a leaf-green design system.
+- Warm iPhone and iPad surfaces, native tabs and sheets, a timeline guide and full-width portrait playback.
+- Existing playlists, profiles, playback engines, backups and transition settings remain compatible.
 
 The IPA is unsigned. Sign it with Impactor and your own Apple account. Free Apple signing normally needs renewal every seven days. Keep the app installed when updating to retain profiles.
 
