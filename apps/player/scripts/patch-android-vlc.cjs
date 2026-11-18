@@ -29,7 +29,9 @@ if(!viewSource.includes(layoutAfter)){
  if(!viewSource.includes(layoutBefore))throw new Error('Review Android VLC native child-layout patch');
  viewSource=viewSource.replace(layoutBefore,layoutAfter);
 }
-for(const declaration of ['  var source: String? = null','  var options: MutableList<String> = mutableListOf()']){
+// Expo also resends the default PiP prop on native updates. Reapplying false
+// must not schedule a decoder teardown while pause/track events are in flight.
+for(const declaration of ['  var source: String? = null','  var options: MutableList<String> = mutableListOf()','  var pictureInPicture: Boolean = false']){
  const before=declaration+'\n    set(value) {\n      field = value';
  const tvOnly=declaration+'\n    set(value) {\n      if (context.packageName.endsWith(".tv") && field == value) return\n      field = value';
  const after=declaration+'\n    set(value) {\n      if (field == value) return\n      field = value';
