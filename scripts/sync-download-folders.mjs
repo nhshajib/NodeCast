@@ -13,6 +13,7 @@ for(const [platform,folder]of Object.entries(folders)){
  if(body.includes('<!-- direct-download:start -->'))body=body.replace(/<!-- direct-download:start -->[\s\S]*?<!-- direct-download:end -->/,block);
  else body=body.replace('**Your TV, beautifully lit.**','**Your TV, beautifully lit.**\n\n'+block);
  if(!release.legacy)body=body.replace('The GlowTV rebrand is in development. Earlier releases remain under their original names in [GitHub Releases](https://github.com/nhshajib/NodeCast/releases). New branded binaries are available only after their native build checks pass and the release is published.','GlowTV '+release.version+' is available from the verified GitHub download above. Existing identifiers, signing identity and local profiles are preserved. Earlier project releases remain available in GitHub Releases.');
+ if(!release.legacy)body=body.replace(/GlowTV \d+\.\d+\.\d+ is available from the verified GitHub download above\./,'GlowTV '+release.version+' is available from the verified GitHub download above.');
  body=body.replace('Download the official APK from the GlowTV download page when published','Download the current published APK using the direct GitHub link above');
  await fs.writeFile(readme,body);
 }
@@ -23,5 +24,9 @@ const links=[['ios','iPhone / iPad','iphone','IPA'],['android','Android phone','
 const table='<!-- downloads:start -->\n| Your device | Direct GitHub download | Setup and features | Project |\n| --- | --- | --- | --- |\n'+links.map(([platform,title,slug,format])=>{const r=metadata.platforms[platform];return `| ${title} | ${r?`[${format} · ${r.version}](${r.url})`:'Not published'} | [Download details](https://glowtv.app/download/${slug}/) · [Instructions](apps/player/${folders[platform]}/README.md) | [${title} project](apps/player/${folders[platform]}/) |`;}).join('\n')+'\n<!-- downloads:end -->';
 if(home.includes('<!-- downloads:start -->'))home=home.replace(/<!-- downloads:start -->[\s\S]*?<!-- downloads:end -->/,table);
 else home=home.replace(/\| Your device \|[\s\S]*?(?=\n\n)/,table);
-if(Object.values(metadata.platforms).every(item=>item&&!item.legacy))home=home.replace(/The GlowTV rebrand is in development\.[^\n]+/,'GlowTV '+metadata.platforms.ios.version+' is available for iPhone/iPad, Android phone and Android TV/Fire TV. The IPA needs personal signing; Android APKs install directly. Store listings are pending. See [hosting instructions](website/HOSTING.md) for the website domain.');
+if(Object.values(metadata.platforms).every(item=>item&&!item.legacy)){
+ const versions=new Set(Object.values(metadata.platforms).map(item=>item.version));
+ const name=versions.size===1?'GlowTV '+metadata.platforms.ios.version:'GlowTV';
+ home=home.replace(/The GlowTV rebrand is in development\.[^\n]+|GlowTV(?: \d+\.\d+\.\d+)? is available for iPhone\/iPad,[^\n]+/,name+' is available for iPhone/iPad, Android phone and Android TV/Fire TV. The IPA needs personal signing; Android APKs install directly. Store listings are pending. See [hosting instructions](website/HOSTING.md) for the website domain.');
+}
 await fs.writeFile(rootReadme,home);
