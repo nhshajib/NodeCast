@@ -1,11 +1,15 @@
-NodeCast 0.6.7 keeps playback settings on the video, with compact translucent menus for iPhone, Android mobile and TV. Controls hide after four idle seconds; settings dismiss after eight. Tap the video or press a TV navigation key to reveal controls. Unsaved edits, active touches, saving, paused playback and screen readers keep controls available. Mobile portrait/landscape playback shares the same custom controls. TV media keys remain direct playback shortcuts, and settings retain the existing live session.
+# GlowTV 0.7.0 — Android phone and TV
 
+GlowTV has a new name, supplied launcher artwork, leaf-green styling and Inter typography. Android phones use dark surfaces, native navigation, checked filters and an Add playlist sheet. Android TV and Fire TV have a dedicated icon rail, featured live Home, compact guide and D-pad focus.
 
-TV also gets a lightweight default channel list, optional grid/logos, separate organization panels, lazy catalog loading and correct cached category/favorite restoration after restarting. The mobile library layout is unchanged.
+- [Android phone and tablet APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk)
+- [Android TV and Fire TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk)
+- [Checksums and exact release metadata](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0)
 
-- [Android mobile APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk)
-- [Fire TV / Android TV APK](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk)
+Back navigation works after reopening the Android phone app. Identical source/options updates no longer restart VLC. Phone pause/resume passed six touch cycles in the same process with decoded video present. Both exact APKs passed eight-screen and eight-settings audits on Android API 35; TV used remote input only. Physical-device and provider-specific playback remain separate checks.
 
-Install over your existing edition to retain local profiles. Android has no weekly signing renewal. These personal-testing APKs use the existing Android test signing key and are not Play Store releases.
+Existing application IDs, signing identity, profiles, playlists, favorites and encrypted backups are retained. Install over the matching existing edition to keep your local data. Playback settings remain over the video, and both APKs include their JavaScript and VLC: Expo Go and a running computer are not required.
 
-[Installation guides](https://github.com/nhshajib/NodeCast#choose-your-edition) · [Version history](https://github.com/nhshajib/NodeCast/blob/main/CHANGELOG.md) · [Playback behavior and verification](https://github.com/nhshajib/NodeCast/blob/main/verification/playback-overlay/README.md)
+These are public testing APKs using the existing Android test signing identity, not store releases. Android does not require weekly signing renewal. GlowTV is a player only and provides no channels, playlists, content or subscriptions.
+
+[Phone setup](README.md) · [TV setup](../android-tv/README.md) · [Version history](../../../CHANGELOG.md)

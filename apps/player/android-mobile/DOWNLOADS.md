@@ -2,18 +2,18 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.6.7
+## Current published version: 0.7.0
 
-- [**Direct GitHub download — NodeCast-mobile-0.6.7.apk**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-mobile-0.6.7.apk.sha256)
-- Published: 2026-10-31
+- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk.sha256)
+- Published: 2026-11-18
 - Status: Public testing release
-- Size: 225,135,495 bytes (214.7 MiB)
-- Minimum OS: Android 7.0 (API 24)
-- SHA-256: `f90a857ded82542b2efc56173b957702cd4fcc11610e8a73374d5f457d8b4554`
+- Size: 239,769,045 bytes (228.7 MiB)
+- Minimum OS: Android API 24 or later
+- SHA-256: `331515e2f6b4ca48aaa38d0ece827eeab7f9d1175c9afcf90e87f4f2203cd62c`
 
-This is the existing NodeCast binary. The upcoming GlowTV design is not included, and no file has been renamed or republished.
+This is a published GlowTV binary.
 
 ## Features
 
@@ -24,11 +24,12 @@ This is the existing NodeCast binary. The upcoming GlowTV design is not included
 - **Playback your way:** Adjust playback over the video, choose supported player options and set a sleep timer.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.6.7
+## What changed in 0.7.0
 
-- Compact playback settings stay over the video instead of opening a separate page.
-- Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.
-- Portrait and landscape playback share the same controls; local profiles and settings are retained.
+- GlowTV branding, launcher icons, Inter typography and a leaf-green design system.
+- Dark Android surfaces, native pill navigation, checked filters and an Add playlist sheet.
+- Fixed Android 13–15 Back navigation from details and settings, including after reopening the app.
+- Repeated identical player updates keep the existing VLC decoder alive instead of restarting playback.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

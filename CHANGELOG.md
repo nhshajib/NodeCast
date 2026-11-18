@@ -1,8 +1,8 @@
 # GlowTV changes
 
-## GlowTV rebrand — in development
+## GlowTV 0.7.0 — Android phone and TV testing release
 
-- Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. Current NodeCast testing downloads are clearly distinguished from the upcoming GlowTV design.
+- Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. GlowTV 0.7.0 Android phone and TV downloads are published; the iPhone 0.7.0 device build is still completing.
 
 - New GlowTV name, supplied launcher assets and tagline. Existing IDs, signing, profiles, backups and animations are retained.
 - Shared app moved to `apps/player/`; independent Astro website in `website/`.
@@ -14,7 +14,7 @@
 
 # What's new in NodeCast
 
-## 0.7.0 — Unreleased design preview
+## 0.7.0 — GlowTV design
 
 - Leaf-green palette and bundled Inter typography across the phone and TV interfaces.
 - iPhone: warm light surfaces, five-tab navigation, timeline guide with program sheet, full-width portrait player.
@@ -28,7 +28,8 @@
 - Rules for future screens are in `CLAUDE.md`, and the audit is in `docs/NATIVE-AUDIT.md`.
 - Existing player lifecycle effects are preserved. The same configured slide is added around TV pages.
 - Provider, catalog, guide, catch-up, backup models and playback-policy modules remain unchanged.
-- Native audit builds validate the rebrand; a new public installer release is still pending. Current public releases remain 0.6.7.
+- Android 0.7.0 is published after native eight-screen and eight-settings audits, decoded-frame checks and six phone touch pause/resume cycles. Existing update signing identity was verified. iPhone and iPad UI audits passed; the 0.7.0 physical-device package is still compiling.
+- Identical Android VLC source/options updates retain the current decoder instead of restarting playback.
 
 
 [← Choose your edition](README.md)

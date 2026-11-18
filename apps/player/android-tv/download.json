@@ -1,17 +1,17 @@
 {
-  "version": "0.6.7",
-  "tag": "android-v0.6.7",
-  "publishedAt": "2026-10-31T01:01:22Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7",
+  "version": "0.7.0",
+  "tag": "glowtv-android-v0.7.0",
+  "publishedAt": "2026-11-18T12:22:55Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0",
   "prerelease": true,
-  "legacy": true,
-  "file": "NodeCast-tv-0.6.7.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk",
-  "size": 223769039,
-  "sha256": "6a3dcbcd6c9b3c42ee4a236006ad8f142785dc41957e91b926aae0bf8513ee01",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk.sha256",
-  "minimumOS": "Android 7.0 (API 24)",
-  "checkedAt": "2026-11-17T16:34:55.505Z",
+  "legacy": false,
+  "file": "GlowTV-TV.apk",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk",
+  "size": 238272181,
+  "sha256": "cd3c462569622763ad72e973f04e864355b58339f4bb157b7224ed1692cf1492",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk.sha256",
+  "minimumOS": "Android API 24 or later",
+  "checkedAt": "2026-11-18T12:23:47.479Z",
   "edition": "tv",
   "features": [
     {
@@ -40,8 +40,9 @@
     }
   ],
   "changes": [
-    "Compact playback settings stay over the video instead of opening a separate page.",
-    "Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.",
-    "A lightweight channel list, optional grid/logos and cached category/favorite restoration after restart."
+    "GlowTV branding, launcher icons, Inter typography and a leaf-green design system.",
+    "A dedicated TV icon rail, featured live-channel Home and compact guide with remote focus.",
+    "Existing playlists, profiles, playback engines, backups and transition settings remain compatible.",
+    "Repeated identical player updates keep the existing VLC decoder alive instead of restarting playback."
   ]
 }

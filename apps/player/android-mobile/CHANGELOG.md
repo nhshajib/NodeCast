@@ -2,6 +2,15 @@
 
 [← Mobile download & installation](README.md) · [All editions](../../../CHANGELOG.md)
 
+## 0.7.0 · November 18, 2026 · Public testing release
+
+- GlowTV display name, launcher icons, Inter typography and leaf-green styling.
+- Dark Android surfaces, native navigation and playlist sheet; Back works after reopening.
+- Duplicate VLC source/options updates retain the decoder during playback.
+- Existing app IDs, signing certificates, local profiles and backups are retained.
+- Verified release APK on Android API 35: eight screens, eight settings destinations and decoded video. Six touch pause/resume cycles passed in the same process. Physical-device/provider testing remains separate.
+- [Direct download, requirements and checksum](DOWNLOADS.md).
+
 ## 0.6.7 · October 30, 2026 · All editions
 
 - Compact translucent playback settings stay over the video on iPhone, Android mobile and TV. Long panels scroll; short menus fit their contents.

@@ -11,3 +11,7 @@ The original platform icons are in `brand/icons/`, unchanged. Copies are bundled
 - Apple TV: no screenshots; a tvOS implementation is required.
 
 The independent website has local optimized copies; it imports nothing from `apps/`. `verification/glowtv/capture.py` exercises the flows and writes provenance in `browser-audit.json`. Native iOS/iPad resume and screen tests and the Android 11 phone/TV emulator audits passed. Additional Android 15 x86 rendering checks remain unresolved; see [the audit follow-up](../verification/glowtv/ANDROID-15-EMULATOR.md). The standalone iPhone device Release build also passed. A browser pass does not validate native decoding, launcher masking or physical remote behavior.
+
+## 0.7.0 native captures
+
+All 32 selected screens were refreshed from the passing iPhone/iPad UI audits in run [44131878153](https://github.com/nhshajib/NodeCast/actions/runs/44131878153) and the exact Android release APK audit [44144629229](https://github.com/nhshajib/NodeCast/actions/runs/44144629229). Player screenshots include both original decoded scene colors. These are simulator/emulator captures; no physical-device or store approval is implied.

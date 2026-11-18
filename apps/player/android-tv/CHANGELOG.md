@@ -2,6 +2,15 @@
 
 [← TV download & installation](README.md) · [All editions](../../../CHANGELOG.md)
 
+## 0.7.0 · November 18, 2026 · Public testing release
+
+- GlowTV display name, launcher icons, Inter typography and leaf-green styling.
+- Dedicated TV icon rail, featured Home, compact guide and remote-only focus.
+- Duplicate VLC source/options updates retain the decoder during playback.
+- Existing app IDs, signing certificates, local profiles and backups are retained.
+- Verified release APK on Android API 35: eight screens, eight settings destinations and decoded video. D-pad, Select and Back passed without touch input. Physical-device/provider testing remains separate.
+- [Direct download, requirements and checksum](DOWNLOADS.md).
+
 ## 0.6.7 · October 30, 2026 · All editions
 
 - TV channels now default to a compact text list with Grid view and optional logos. Logos are off in the list to avoid artwork requests; movies and series retain their layout.

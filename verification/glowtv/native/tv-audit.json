@@ -23,11 +23,11 @@
     "Version history"
   ],
   "actualVideoPixels": true,
-  "androidApi": "30",
+  "androidApi": "35",
   "emulatorGpu": "swangle",
   "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44076804369",
-  "source": "a591349f9517ac2194895936e74bf56b85b71114",
-  "captureSource": "f1c8b0a7a366eecda1867ec9c687dd0c36612897",
-  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44009489980"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44144629229",
+  "source": "65d5f7a504fbb441ec57d15bb4419fe44b8afcea",
+  "captureSource": "f20695236500fbf83f219cef8b85f0aa993e1fb0",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44141109196"
 }

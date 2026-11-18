@@ -1,0 +1,10 @@
+{
+  "cycles": 6,
+  "sameProcess": true,
+  "originalVideoPixels": true,
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44144629229",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44141109196",
+  "source": "65d5f7a504fbb441ec57d15bb4419fe44b8afcea",
+  "captureSource": "f20695236500fbf83f219cef8b85f0aa993e1fb0",
+  "scope": "Exact release APK on Android API 35 emulator, actual touch pause/play controls. Physical-device playback remains separate."
+}

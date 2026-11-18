@@ -2,18 +2,18 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.6.7
+## Current published version: 0.7.0
 
-- [**Direct GitHub download — NodeCast-tv-0.6.7.apk**](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/android-v0.6.7)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/android-v0.6.7/NodeCast-tv-0.6.7.apk.sha256)
-- Published: 2026-10-31
+- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk.sha256)
+- Published: 2026-11-18
 - Status: Public testing release
-- Size: 223,769,039 bytes (213.4 MiB)
-- Minimum OS: Android 7.0 (API 24)
-- SHA-256: `6a3dcbcd6c9b3c42ee4a236006ad8f142785dc41957e91b926aae0bf8513ee01`
+- Size: 238,272,181 bytes (227.2 MiB)
+- Minimum OS: Android API 24 or later
+- SHA-256: `cd3c462569622763ad72e973f04e864355b58339f4bb157b7224ed1692cf1492`
 
-This is the existing NodeCast binary. The upcoming GlowTV design is not included, and no file has been renamed or republished.
+This is a published GlowTV binary.
 
 ## Features
 
@@ -24,11 +24,12 @@ This is the existing NodeCast binary. The upcoming GlowTV design is not included
 - **A lighter channel library:** Use the default text list, enable grid or logos when you want them, and organize each media library separately.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.6.7
+## What changed in 0.7.0
 
-- Compact playback settings stay over the video instead of opening a separate page.
-- Playing controls hide after four idle seconds; settings dismiss after eight while keeping unsaved edits and accessibility needs in mind.
-- A lightweight channel list, optional grid/logos and cached category/favorite restoration after restart.
+- GlowTV branding, launcher icons, Inter typography and a leaf-green design system.
+- A dedicated TV icon rail, featured live-channel Home and compact guide with remote focus.
+- Existing playlists, profiles, playback engines, backups and transition settings remain compatible.
+- Repeated identical player updates keep the existing VLC decoder alive instead of restarting playback.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 
