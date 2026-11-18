@@ -18,6 +18,8 @@ GlowTV 0.7.0 is available for iPhone/iPad, Android phone and Android TV/Fire TV.
 | Android TV / Fire TV | [TV APK · 0.7.0](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
 <!-- downloads:end -->
 
+[0.7.1 UI audit and before/after code](docs/UI-UX-AUDIT-0.7.1.md) · [Design tokens](apps/player/src/designTokens.ts)
+
 Apple TV is not supported yet. Apple TV brand assets are prepared for a future tvOS project.
 
 ## Features

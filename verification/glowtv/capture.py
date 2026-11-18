@@ -51,6 +51,13 @@ with sync_playwright() as p:
   if name=='tv':
    button(page,'Settings').click();button(page,'Library organization').click();page.get_by_role('switch',name='Channel logos in list view').click();button(page,'Back').click();button(page,'Home').click();page.wait_for_timeout(1500)
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-home.png'))
+  if name!='tv':
+   # Preserve an actual visible saved/unsaved state through the icon migration.
+   button(page,'Save favorite: Evening studio').click()
+   saved=button(page,'Remove favorite: Evening studio');saved.wait_for(timeout=10000)
+   expect(saved.locator('svg')).to_have_attribute('fill','#E8EEEA')
+   saved.click()
+   expect(button(page,'Save favorite: Evening studio').locator('svg')).to_have_attribute('fill','none')
   # Full guide source and detail sheet through the original saved profile.
   (button(page,'TV guide') if name=='tv' else page.get_by_test_id('navigation-tab-guide')).click();button(page,'Add full TV guide').click();page.get_by_label('XMLTV URL',exact=True).fill('https://provider.example/guide.xml');button(page,'Save and refresh guide').click();page.get_by_role('button',name='Evening studio,',exact=False).first.wait_for(timeout=20000)
   if name in ('ios','ipad'):page.get_by_role('button',name='Evening studio,',exact=False).first.click()
@@ -90,7 +97,7 @@ with sync_playwright() as p:
     overflow=page.evaluate('document.documentElement.scrollWidth > window.innerWidth')
     geometries.append({'theme':theme,'width':width,'height':height,'overflow':overflow})
     assert not overflow,(name,theme,width,height)
-  results[name]={'errors':errors,'checkedDestinations':settings_names,'geometries':geometries,'screenshots':'home, guide'+(', player, series' if name!='tv' else ''),'scope':'React Native Web platform preview; not a native-device test'}
+  results[name]={'savedFavoriteVisualState':'passed' if name!='tv' else 'shared icon; remote audit separate','errors':errors,'checkedDestinations':settings_names,'geometries':geometries,'screenshots':'home, guide'+(', player, series' if name!='tv' else ''),'scope':'React Native Web platform preview; not a native-device test'}
   assert not errors,errors
   page.set_viewport_size({'width':w,'height':h})
   if name in ('ios','ipad'):
