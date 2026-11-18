@@ -39,7 +39,7 @@ trap collect_results EXIT
 set --
 if [[ "${GLOWTV_ONLY_DESIGN:-0}" = 1 ]]; then set -- -only-testing:GlowTVResumeUITests/GlowTVResumeUITests/testDesignHomeGuideAndPlayer; fi
 set -o pipefail
-xcodebuild test "$@" -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
+xcodebuild test "$@" -workspace ios/GlowTV.xcworkspace -scheme GlowTVResume -configuration Release -destination "id=$SIMULATOR_ID" -derivedDataPath build/DerivedDataSim -resultBundlePath build/${CAPTURE}.xcresult ONLY_ACTIVE_ARCH=YES ARCHS="$(uname -m)" CODE_SIGNING_ALLOWED=YES CODE_SIGN_IDENTITY=- CODE_SIGNING_REQUIRED=NO 2>&1 | tee build/${CAPTURE}-ui.log
 
 # A successful shell step is not evidence unless Xcode actually ran tests.
 [[ -d "build/${CAPTURE}.xcresult" ]] || { echo "Missing native UI-test result bundle" >&2; exit 1; }
