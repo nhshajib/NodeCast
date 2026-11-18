@@ -107,5 +107,19 @@ with sync_playwright() as p:
   elif name in ('ios','ipad'):page.get_by_test_id('navigation-tab-search').click()
   else:page.get_by_test_id('navigation-tab-home').click();button(page,'Search').click()
   page.wait_for_timeout(250);page.screenshot(path=str(out/f'{name}-search.png'))
+  if name!='tv':
+   if name=='android':button(page,'Go back').click()
+   # Check existing retained cells, not only a fresh screen in each theme.
+   for kind,tab,title in [('posters','movies' if name in ('ios','ipad') else 'library','Tidewater'),('rows','search' if name in ('ios','ipad') else 'live','Evening studio')]:
+    page.get_by_test_id('navigation-tab-'+tab).click()
+    cell=page.get_by_role('button',name='Open '+title,exact=True).filter(visible=True).last
+    cell.wait_for(timeout=30000)
+    for theme,expected in [('dark','rgb(232, 238, 234)'),('light','rgb(17, 22, 19)')]:
+     open_settings();button(page,'Appearance').click();page.get_by_role('radio',name=theme+' appearance',exact=True).click();button(page,'Go back').click()
+     if name in ('ios','ipad'):button(page,'Go back').click()
+     else:page.get_by_test_id('navigation-tab-'+tab).click()
+     text=cell.get_by_text(title,exact=True);text.wait_for(timeout=30000)
+     expect(text).to_have_css('color',expected)
+   results[name]['retainedCardThemeRoundTrip']='posters and rows, dark then light: passed'
   c.close();print(name,'PASS',flush=True)
  b.close();(out/'browser-audit.json').write_text(json.dumps(results,indent=2)+'\n')

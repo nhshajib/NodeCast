@@ -1,5 +1,6 @@
 {
   "ios": {
+    "savedFavoriteVisualState": "passed",
     "errors": [],
     "checkedDestinations": [
       "Appearance",
@@ -63,10 +64,11 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "appSource": "2e557f300138c7c0869880294bcbcc89f1efde95",
-    "savedFavoriteVisualState": "passed"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
+    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
   },
   "ipad": {
+    "savedFavoriteVisualState": "passed",
     "errors": [],
     "checkedDestinations": [
       "Appearance",
@@ -130,10 +132,11 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "appSource": "2e557f300138c7c0869880294bcbcc89f1efde95",
-    "savedFavoriteVisualState": "passed"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
+    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
   },
   "android": {
+    "savedFavoriteVisualState": "passed",
     "errors": [],
     "checkedDestinations": [
       "Appearance",
@@ -197,10 +200,11 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "appSource": "2e557f300138c7c0869880294bcbcc89f1efde95",
-    "savedFavoriteVisualState": "passed"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
+    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
   },
   "tv": {
+    "savedFavoriteVisualState": "shared icon; remote audit separate",
     "errors": [],
     "checkedDestinations": [
       "Appearance",
@@ -252,7 +256,6 @@
     ],
     "screenshots": "home, guide",
     "scope": "React Native Web platform preview; not a native-device test",
-    "appSource": "2e557f300138c7c0869880294bcbcc89f1efde95",
-    "savedFavoriteVisualState": "shared icon; remote audit separate"
+    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
   }
 }

@@ -1,0 +1,26 @@
+{
+  "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97",
+  "before": {
+    "scope": "Retained movie-card text in a browser preview",
+    "light": "rgb(17, 22, 19)",
+    "afterSwitchToDark": "rgb(17, 22, 19)",
+    "passed": false
+  },
+  "after": {
+    "scope": "Actual appearance navigation round-trips in all three phone/tablet previews",
+    "light": "rgb(17, 22, 19)",
+    "dark": "rgb(232, 238, 234)",
+    "platforms": [
+      "ios",
+      "ipad",
+      "android"
+    ],
+    "layouts": [
+      "posters",
+      "rows"
+    ],
+    "themeChecks": 12,
+    "passed": true
+  },
+  "fix": "Subscribe memoized PosterItem and RowItem to the existing theme context. Lists are not remounted; data, callbacks and playback models remain unchanged."
+}

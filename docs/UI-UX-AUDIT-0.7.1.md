@@ -67,6 +67,21 @@ Semantic, theme-safe color:
 + // Standard neutral card border; CURRENT text conveys version state.
 ```
 
+Retained cards respond to appearance changes without remounting:
+
+```diff
+ const PosterItem = React.memo(function PosterItem(props) {
++  useThemeChoice();
+   return …;
+ });
+ const RowItem = React.memo(function RowItem(props) {
++  useThemeChoice();
+   return …;
+ });
+```
+
+The original retained title stayed `rgb(17, 22, 19)` after switching to dark. It now uses `rgb(232, 238, 234)` in dark and restores the original value in light. Poster and row checks passed on iPhone, iPad and Android previews.
+
 Grid and virtualization:
 
 ```diff
