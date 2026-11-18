@@ -1,5 +1,11 @@
-export const appVersion = '0.7.1';
+export const appVersion = '0.7.2';
 export const releases = [
+  {version:'0.7.2',date:'November 18, 2026',title:'A consistent finish, on every screen.',changes:[
+    'The 8px spacing grid now includes player controls, track menus, TV switches and guide cells.',
+    'Provider catch-up indicators use Lucide icons; guide cells retain room for both schedule and title.',
+    'Android ignores unchanged picture-in-picture props so UI updates do not request decoder recreation.',
+    'The calmer UI, light/dark appearance, native navigation, transitions and all saved profiles are retained.',
+  ]},
   {version:'0.7.1',date:'November 18, 2026',title:'A calmer, clearer GlowTV.',changes:[
     'Consistent Lucide icons across phone, TV and native tab bars, without decorative icon backplates.',
     'An 8px spacing grid and a three-family palette with dark-mode-safe surfaces and semantic live/error indicators.',

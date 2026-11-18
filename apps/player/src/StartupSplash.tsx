@@ -99,7 +99,7 @@ const s = StyleSheet.create({
   image: { width: 200, height: 200, borderRadius: 0 },
   halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: '#1EC677' },
   orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: '#EEEEE7' },
-  copy: { position: 'absolute', top: '50%', marginTop: 50, left: 20, right: 20, alignItems: 'center', gap: 17 },
+  copy: { position: 'absolute', top: '50%', marginTop: 48, left: 24, right: 24, alignItems: 'center', gap: 16 },
   wordmark: { fontFamily: 'Inter-800', fontWeight: '800', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: '#EEEEE7' },
   rule: { width: 28, height: 1, backgroundColor: '#1EC677', opacity: .7 },
   tagline: { fontSize: 14, lineHeight: 21, letterSpacing: .5, color: '#D0E9DB' },
