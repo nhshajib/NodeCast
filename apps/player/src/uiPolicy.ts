@@ -4,3 +4,9 @@ export function tvBackAction({ home, lastBack, now }: { home: boolean; lastBack:
   if (!home) return 'home';
   return lastBack !== null && now - lastBack <= 2000 ? 'exit' : 'warn';
 }
+
+/** Native search and the tab body must address the same independent library view. */
+export function libraryTabView(tab:string,android:boolean):'watch'|'live'|'library'|'search'|null {
+ if(tab==='live')return android?'watch':'live';
+ return tab==='library'||tab==='search'?tab:null;
+}

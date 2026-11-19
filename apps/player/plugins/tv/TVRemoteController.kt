@@ -34,6 +34,8 @@ class TVRemoteController(private val activity: Activity) {
   private val scopeMounts = java.util.IdentityHashMap<View, Long>()
   private var mountSequence = 0L
   private var activeScope: View? = null
+  private var activeScopeName: String? = null
+  private val scopeNames = java.util.IdentityHashMap<View, String>()
   private var scopeRoots = emptyList<View>()
   private val indicatorLayout = View.OnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
     indicatorBounds(view)
@@ -133,7 +135,8 @@ class TVRemoteController(private val activity: Activity) {
       if (!view.isAttachedToWindow || view.visibility!=View.VISIBLE || view.alpha<=.01f || view.importantForAccessibility==View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) return
       if (nativeId(view)?.startsWith("tv-scope:")==true || nativeId(view)?.startsWith("tv-trap:")==true) {
         mounted.add(view)
-        if(!scopeMounts.containsKey(view))scopeMounts[view]=++mountSequence
+        val name=nativeId(view)!!
+        if(!scopeMounts.containsKey(view)||scopeNames[view]!=name){scopeMounts[view]=++mountSequence;scopeNames[view]=name}
       }
       if (nativeId(view)?.startsWith("tv-trap:") == true) trap = view
       if (nativeId(view)?.startsWith("tv-scope:mini") == true) occluders.add(view)
@@ -141,7 +144,7 @@ class TVRemoteController(private val activity: Activity) {
       if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
     }
     visit(root)
-    scopeMounts.keys.retainAll(mounted.toSet());scopeRoots=mounted
+    scopeMounts.keys.retainAll(mounted.toSet());scopeNames.keys.retainAll(mounted.toSet());scopeRoots=mounted
     val active = trap
     cached = views.filter { view -> (active == null || inside(view,active)) && occluders.none { cover -> !inside(view,cover) && rect(cover).contains(rect(view).centerX(),rect(view).centerY()) } }
     return cached
@@ -169,7 +172,8 @@ class TVRemoteController(private val activity: Activity) {
     if (!root.hasWindowFocus()) return choices
     val nonRail=scopeRoots.filter { nativeId(it)!="tv-scope:rail" && nativeId(it)?.startsWith("tv-scope:mini")!=true && choices.any { choice -> inside(choice,it) } }
     val latest=nonRail.maxByOrNull { scopeMounts[it] ?: 0L }
-    val changed=latest!==activeScope;activeScope=latest
+    val latestName=latest?.let { nativeId(it) }
+    val changed=latest!==activeScope||latestName!=activeScopeName;activeScope=latest;activeScopeName=latestName
     if(!changed && choices.any { it===activity.currentFocus })return choices
     val scoped=if(latest!=null)choices.filter { inside(it,latest) } else choices
     val shown=scoped.filter { visible(it) }

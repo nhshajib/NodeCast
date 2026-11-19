@@ -36,7 +36,383 @@
       ],
       "grid": true,
       "protectedScope": true
+    },
+    "low": {
+      "npmCi": true,
+      "typecheck": true,
+      "tests": 137,
+      "exports": [
+        "ios/shared web",
+        "android phone web",
+        "tv web"
+      ],
+      "grid": true,
+      "protectedScope": true,
+      "cleanMetroCachePerVariant": true
     }
   },
-  "nativeOnly": "Not verified: TV ring and remote flows, CH/INFO keys, iPad multitasking/rotation, screen-reader announcements, largest native Dynamic Type. No native builds requested."
+  "nativeOnly": [
+    "Not verified: native TV ring, D-pad restoration/navigation and IME flows",
+    "Not verified: CH+/\u2212, INFO/GUIDE and media keys on Fire TV/Android TV",
+    "Not verified: iPad multitasking and rotation",
+    "Not verified: VoiceOver/TalkBack announcements and maximum native Dynamic Type",
+    "Not verified: native cold detail-link restoration from secure vault/cache",
+    "Not verified: exact native mini-player position relative to NativeTabs"
+  ],
+  "finalExports": {
+    "ios": {
+      "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js": "80e3ab02b3bac22608cdf29a2e3cc1270616a695bbe479f7f500941e8d2bbe41",
+      "/_expo/static/js/web/__common-5b65e4ed9edb74d6352b189a760584f8.js": "9fbcc5607b44493cd18370c4c31f62c427a9369039d9a08d59f48725d0731bf3",
+      "/_expo/static/js/web/index-200d74d4398e8bd643bd3e7d9dfcf1dc.js": "1341361c98f845a7b4ac6d9eaa3d081364290c5cdc16b7d1aea38b541b98b8f5"
+    },
+    "android": {
+      "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js": "80e3ab02b3bac22608cdf29a2e3cc1270616a695bbe479f7f500941e8d2bbe41",
+      "/_expo/static/js/web/__common-6181c329d9185f56ee1959925f937dfa.js": "c02134e38518c73203f06012adbbc32141564128a7a34ca921b36009f4940133",
+      "/_expo/static/js/web/index-200d74d4398e8bd643bd3e7d9dfcf1dc.js": "1341361c98f845a7b4ac6d9eaa3d081364290c5cdc16b7d1aea38b541b98b8f5"
+    },
+    "tv": {
+      "/_expo/static/js/web/index-e41c82891ce0cfba96aaacb06aad38e0.js": "c6b8414c5a27d624288e9aaffc3c7251e20c93768691b0771cb7eeb131c28724"
+    }
+  },
+  "browser": {
+    "passed": true,
+    "contexts": 14,
+    "screenshots": 278,
+    "viewportOverflowFailures": 0,
+    "pageErrors": [],
+    "details": "browser-audit.json",
+    "scope": "RN Web preview, not native device verification",
+    "textScale": "1 and 2 on iPhone/Android/iPad; 1 on TV; four RN Web Dimensions constants patched only in test responses for scale 2",
+    "viewports": {
+      "ios": [
+        393,
+        852
+      ],
+      "android": [
+        412,
+        915
+      ],
+      "ipad": [
+        1032,
+        1376
+      ],
+      "tv": [
+        1920,
+        1080
+      ]
+    }
+  },
+  "supplementaryTV": {
+    "contexts": 2,
+    "screenshots": 38,
+    "logicalViewport": {
+      "width": 960,
+      "height": 540
+    },
+    "pixelDensity": 2,
+    "outputSize": {
+      "width": 1920,
+      "height": 1080
+    },
+    "passed": true,
+    "details": "browser-audit-tv-dp1080.json",
+    "nativeDeviceTest": false
+  },
+  "contrast": {
+    "passed": true,
+    "pairs": 36,
+    "minimumTextRatio": 4.633,
+    "details": [
+      {
+        "pair": "primary action, both themes",
+        "foreground": "#0D4029",
+        "background": "#1EC677",
+        "ratio": 5.273,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light primary text",
+        "foreground": "#111613",
+        "background": "#F7F6F1",
+        "ratio": 16.905,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light secondary text",
+        "foreground": "#646B67",
+        "background": "#F7F6F1",
+        "ratio": 5.053,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light links / selected state icons",
+        "foreground": "#0B7A47",
+        "background": "#F7F6F1",
+        "ratio": 4.99,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light primary text",
+        "foreground": "#111613",
+        "background": "#FFFFFF",
+        "ratio": 18.293,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light secondary text",
+        "foreground": "#646B67",
+        "background": "#FFFFFF",
+        "ratio": 5.468,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light links / selected state icons",
+        "foreground": "#0B7A47",
+        "background": "#FFFFFF",
+        "ratio": 5.4,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light primary text",
+        "foreground": "#111613",
+        "background": "#EEEEE7",
+        "ratio": 15.696,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light secondary text",
+        "foreground": "#646B67",
+        "background": "#EEEEE7",
+        "ratio": 4.692,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light links / selected state icons",
+        "foreground": "#0B7A47",
+        "background": "#EEEEE7",
+        "ratio": 4.633,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light selected programme title",
+        "foreground": "#111613",
+        "background": "#DDF4E7",
+        "ratio": 15.826,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light selected chips",
+        "foreground": "#0D4029",
+        "background": "#DDF4E7",
+        "ratio": 10.193,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light destructive actions",
+        "foreground": "#B42320",
+        "background": "#FBEAE8",
+        "ratio": 5.633,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "light progress fill against track",
+        "foreground": "#0B7A47",
+        "background": "#D8DCD7",
+        "ratio": 3.893,
+        "minimum": 3,
+        "passed": true
+      },
+      {
+        "pair": "dark primary text",
+        "foreground": "#E8EEEA",
+        "background": "#0F1412",
+        "ratio": 15.808,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark secondary text",
+        "foreground": "#A3ADA7",
+        "background": "#0F1412",
+        "ratio": 8.053,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark links / selected state icons",
+        "foreground": "#C9F5DD",
+        "background": "#0F1412",
+        "ratio": 15.577,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark primary text",
+        "foreground": "#E8EEEA",
+        "background": "#0A0E0C",
+        "ratio": 16.511,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark secondary text",
+        "foreground": "#A3ADA7",
+        "background": "#0A0E0C",
+        "ratio": 8.411,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark links / selected state icons",
+        "foreground": "#C9F5DD",
+        "background": "#0A0E0C",
+        "ratio": 16.27,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark primary text",
+        "foreground": "#E8EEEA",
+        "background": "#1B2420",
+        "ratio": 13.524,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark secondary text",
+        "foreground": "#A3ADA7",
+        "background": "#1B2420",
+        "ratio": 6.889,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark links / selected state icons",
+        "foreground": "#C9F5DD",
+        "background": "#1B2420",
+        "ratio": 13.327,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark primary text",
+        "foreground": "#E8EEEA",
+        "background": "#18201C",
+        "ratio": 14.141,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark secondary text",
+        "foreground": "#A3ADA7",
+        "background": "#18201C",
+        "ratio": 7.204,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark links / selected state icons",
+        "foreground": "#C9F5DD",
+        "background": "#18201C",
+        "ratio": 13.935,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark selected programme title",
+        "foreground": "#E8EEEA",
+        "background": "#1F4A36",
+        "ratio": 8.536,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark selected chips",
+        "foreground": "#C9F5DD",
+        "background": "#1F4A36",
+        "ratio": 8.411,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark destructive actions",
+        "foreground": "#FFB4AC",
+        "background": "#392321",
+        "ratio": 8.616,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "dark progress fill against track",
+        "foreground": "#C9F5DD",
+        "background": "#3D4B43",
+        "ratio": 7.694,
+        "minimum": 3,
+        "passed": true
+      },
+      {
+        "pair": "TV progress fill against video track",
+        "foreground": "#1EC677",
+        "background": "#3D4B43",
+        "ratio": 4.112,
+        "minimum": 3,
+        "passed": true
+      },
+      {
+        "pair": "LIVE badge",
+        "foreground": "#FFFFFF",
+        "background": "#B42320",
+        "ratio": 6.559,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "video text at darkest scrim edge over white video",
+        "foreground": "#FFFFFF",
+        "background": "#4C4C4C",
+        "ratio": 8.587,
+        "minimum": 4.5,
+        "passed": true
+      },
+      {
+        "pair": "two-tone TV focus ring on #1EC677",
+        "outerRatio": 2.234,
+        "innerRatio": 8.695,
+        "effectiveRatio": 8.695,
+        "minimum": 3,
+        "passed": true
+      },
+      {
+        "pair": "two-tone TV focus ring on #0A0E0C",
+        "outerRatio": 19.426,
+        "innerRatio": 1.0,
+        "effectiveRatio": 19.426,
+        "minimum": 3,
+        "passed": true
+      },
+      {
+        "pair": "two-tone TV focus ring on #FFFFFF",
+        "outerRatio": 1.0,
+        "innerRatio": 19.426,
+        "effectiveRatio": 19.426,
+        "minimum": 3,
+        "passed": true
+      }
+    ]
+  },
+  "nativeBuildRequired": "Yes, for changed orientation configuration and existing TV native-controller code; no native module was added. No native builds or releases were produced.",
+  "sourceDigest": "d748c65d1516860ab31a94b1c1b0f793272a3a2046644f5b24dbdd871c3b2631"
 }

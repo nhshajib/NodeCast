@@ -52,6 +52,7 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
   }, [layoutReady, imageReady, nativeHandoff]);
   useEffect(() => {
     if (!laidOut || reduceMotion === null) return;
+    if(ready){setIntroDone(true);return;}
     let cancelled = false;
     const timing = (value: Animated.Value, toValue: number, duration: number) => Animated.timing(value, { toValue, duration, easing: Easing.out(Easing.cubic), useNativeDriver: true });
     lift.setValue(reduceMotion ? 1 : 0); reveal.setValue(reduceMotion ? 1 : 0); halo.setValue(0);
@@ -67,7 +68,7 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
     const completion = setTimeout(() => { if (!cancelled) setIntroDone(true); }, reduceMotion ? 900 : 2000);
     animation.start(({ finished: complete }) => { if (complete && !cancelled) setIntroDone(true); });
     return () => { cancelled = true; clearTimeout(completion); animation.stop(); };
-  }, [laidOut, reduceMotion, lift, reveal, halo]);
+  }, [laidOut, reduceMotion, ready, lift, reveal, halo]);
   useEffect(() => {
     if (!ready || !introDone || finished.current) return;
     const animation = Animated.timing(exit, { toValue: 0, duration: reduceMotion ? 100 : 260, easing: Easing.inOut(Easing.cubic), useNativeDriver: true });

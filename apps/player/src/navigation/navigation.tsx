@@ -1,6 +1,9 @@
+import {libraryTabView} from '../uiPolicy';
+import {detailRoute} from '../detailRoute';
+import {LibrarySkeleton} from '../Skeletons';
 import BrandMark from '../BrandMark';
 import { Text } from '../Typography';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, StatusBar, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -95,7 +98,7 @@ export function TabsNavigator() {
   // Only this platform's tabs are visible; the other platform's routes stay hidden and unreachable.
   const ordered = [...tabs.map(tab => tab.name), ...allTabNames.filter(name => !visible.has(name))];
   // The browser preview has no native tab bar; it uses Expo Router's bottom tabs with the same routes.
-  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line }, tabBarLabelStyle: { fontFamily: 'Inter-600', fontSize: 11 } }}>
+  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line, height:64, paddingBottom:8, paddingTop:8 }, tabBarLabelStyle: { fontFamily: 'Inter-600', fontSize: 11 } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
       return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarButtonTestID: `navigation-tab-${name}`, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;
@@ -122,7 +125,7 @@ export function TabStack({ tab }: { tab: string }) {
   const headerRight=()=>tab==='home'||tab==='settings'?<IconButton name="add" label="Add playlist" onPress={()=>c.addProfile()}/>:<IconButton name="settings-outline" label="Settings" onPress={c.openSettings}/>;
   const brand = () => <Pressable accessibilityRole="button" accessibilityLabel="GlowTV home" onPress={c.goHome} style={[u.row, { minHeight: 44, gap: 8, paddingLeft: Platform.OS === 'web' ? 8 : 0 }]}><BrandMark size={33} /><Text style={{ fontSize: 20, color: colors.text, letterSpacing: -1, fontWeight: '800' }}>GlowTV</Text></Pressable>;
   return <Stack screenOptions={options}>
-    <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(tab==='live'?'live':tab==='library'?'library':'search',{search:event.nativeEvent.text})}}:{}) }} />
+    <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(libraryTabView(tab,androidDesign)!,{search:event.nativeEvent.text})}}:{}) }} />
   </Stack>;
 }
 
@@ -140,7 +143,7 @@ function useReportFocus(view: FocusView | null, tab?: string) {
   useFocusEffect(useCallback(() => { if (view) setFocused(view); if (tab) setFocusedTab(tab); }, [view, tab, setFocused]));
 }
 
-const tabViews: Record<string, FocusView> = { home: 'home', live: 'watch', guide: 'guide', library: 'library', settings: 'settings', movies: 'movies', series: 'series', search: 'search' };
+const tabViews: Record<string, FocusView> = { home: 'home', live: libraryTabView('live',androidDesign)!, guide: 'guide', library: 'library', settings: 'settings', movies: 'movies', series: 'series', search: 'search' };
 export function TabScreen({ tab }: { tab: string }) {
   useThemeChoice();
   const c = useNodeCast();
@@ -160,8 +163,13 @@ export function TabScreen({ tab }: { tab: string }) {
 const busyTypes: Page['type'][] = ['provider', 'delete', 'profiles', 'backup'];
 function usePage() {
   const c = useNodeCast();
-  const { key } = useLocalSearchParams<{ key?: string }>();
-  const entry = key ? c.pages.find(item => item.key === key) || c.getPage(key) : null;
+  const params=useLocalSearchParams<{key?:string;type?:string;id?:string;section?:string}>();
+  const descriptor=detailRoute(params.type,params.id,params.section);
+  const key=params.key||(descriptor?`detail:${descriptor.type}:${descriptor.id}`:undefined);
+  const entry=key?c.pages.find(item=>item.key===key)||c.getPage(key):null;
+  const [resolving,setResolving]=useState(!!descriptor);
+  const restore=c.restoreDetail,remember=c.rememberDetail;
+  useEffect(()=>{if(entry||!key||!descriptor||c.booting)return;let alive=true;setResolving(true);void restore(descriptor.type,descriptor.id,descriptor.section,key).then(found=>{if(!alive)return;if(found)remember(found)}).catch(()=>{}).finally(()=>{if(alive)setResolving(false)});return()=>{alive=false}},[key,params.id,params.section,params.type,entry,c.booting,restore,remember]);
   const retain = c.retain, release = c.release;
   useEffect(() => { if (!key) return; retain(key); return () => release(key); }, [key, retain, release]);
   const busy = !!entry && c.connecting && busyTypes.includes(entry.page.type);
@@ -169,7 +177,7 @@ function usePage() {
   const navigation=useNavigation();
   const dirty=entry?.page.type==='provider'&&c.providerDirty;
   usePreventRemove(busy||dirty,({data})=>{if(c.providerCloseAllowed.current){navigation.dispatch(data.action);return;}if(busy)return;Alert.alert('Discard playlist changes?','Your unsaved entries will be lost.',[{text:'Keep editing',style:'cancel'},{text:'Discard changes',style:'destructive',onPress:()=>{c.providerCloseAllowed.current=true;c.setProviderDirty(false);navigation.dispatch(data.action)}}])});
-  return { c, entry, busy };
+  return { c, entry, busy, resolving,restorable:!!descriptor };
 }
 function Missing() {
   const c = useNodeCast();
@@ -178,20 +186,20 @@ function Missing() {
 
 export function PageScreen() {
   useThemeChoice();
-  const { c, entry, busy } = usePage();
+  const { c, entry, busy, resolving,restorable } = usePage();
   const page = entry?.page;
   const view: LibraryView | null = page?.type === 'browse' ? page.view : null;
   useReportFocus(view ?? (page?.type === 'settings' ? 'settings' : page?.type==='guide-settings'?'guide':null));
   const focused = useIsFocused();
   return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}>
     <Stack.Screen options={{ title: page ? c.pageTitle(page) : '', gestureEnabled: !busy, headerBackVisible: !busy }} />
-    {!entry ? <Missing /> : page?.type === 'browse' ? <LibraryScreen view={page.view} /> : <NativeHeaderTitle.Provider value>{c.renderPage(entry, view => <LibraryScreen view={view} />)}</NativeHeaderTitle.Provider>}
+    {!entry ? resolving||c.booting?<LibrarySkeleton label="Opening saved title"/>:restorable?<Empty icon="albums-outline" title="This title is not available in the saved library" message={c.connected?'Refresh the matching playlist and open the title again.':'Connect the playlist that contains this title.'}><Button title="Back to Home" onPress={c.goHome}/>{!c.connected&&<Button title="Add playlist" onPress={()=>c.addProfile()}/>}</Empty>:<Missing /> : page?.type === 'browse' ? <LibraryScreen view={page.view} /> : <NativeHeaderTitle.Provider value>{c.renderPage(entry, view => <LibraryScreen view={view} />)}</NativeHeaderTitle.Provider>}
   </View></ScreenFocusProvider>;
 }
 
 export function SheetScreen() {
   useThemeChoice();
-  const { c, entry, busy } = usePage();
+  const { c, entry, busy, resolving,restorable } = usePage();
   const page = entry?.page;
   const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'}</Text></Pressable>;
   const content = !entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />);

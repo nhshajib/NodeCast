@@ -1,3 +1,4 @@
+import {detailRoute} from '../detailRoute';
 import {H2,H1} from '../ui';
 import { confirmDestructive } from '../confirmDestructive';
 import { messageLifetime, type AppMessage } from '../uiPolicy';
@@ -158,8 +159,18 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     const key = `p${++pageCounter}`;
     setPages(current => [...current, { key, page }]);
     pagesRef.current = [...pagesRef.current, { key, page }];
-    router.push({ pathname: isSheet(page.type) ? '/sheet/[type]' : '/page/[type]', params: { type: page.type, key, title:pageTitle(page) } });
+    router.push({ pathname: isSheet(page.type) ? '/sheet/[type]' : '/page/[type]', params: { type: page.type, key, title:pageTitle(page), ...((page.type==='details'||page.type==='series')?{id:page.item.id,section:page.item.kind}:{}) } });
   }, []);
+  const restoreDetail=useCallback(async(type:unknown,id:unknown,section:unknown,key:string)=>{
+    const descriptor=detailRoute(type,id,section);if(!descriptor)return null;
+    let item=mediaById.get(descriptor.id);
+    if(!item&&active){const cached=await readCatalog(active.id,active.provider.kind==='m3u'?'live':descriptor.section,active.provider);item=cached?.items.find(candidate=>candidate.id===descriptor.id);}
+    if(!item&&!active)item=demoLibrary.find(candidate=>candidate.id===descriptor.id);
+    if(!item||item.kind!==descriptor.section||!contentAllowed(active,item,!family.enabled||family.unlocked))return null;
+    const page:Page=descriptor.type==='series'?{type:'series',item}:{type:'details',item};
+    return {key,page};
+  },[mediaById,active,family.enabled,family.unlocked]);
+  const rememberDetail=useCallback((entry:PageEntry)=>{if(pagesRef.current.some(page=>page.key===entry.key))return;pagesRef.current=[...pagesRef.current,entry];setPages(pagesRef.current)},[]);
   const back = useCallback(() => { if (router.canGoBack()) router.back(); }, []);
   const closeAll = useCallback(() => { if (pagesRef.current.length && router.canDismiss()) router.dismissAll(); }, []);
   /** A route screen holds its page while mounted. Release waits a tick so a remount keeps it. */
@@ -576,7 +587,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     welcome: !preferences.onboarded && !active && !demo && !pages.length,
     onboardStart: () => { void updatePreferences({ onboarded: true }).then(() => openHomeIP(true)).catch(() => setMessage({text:'Could not save preferences. Try again.',tone:'error'})); },
     onboardDemo: () => { void updatePreferences({ onboarded: true }).catch(() => setMessage({text:'Could not save preferences.',tone:'error'})); startDemo(); },
-    pages, open, back, retain, release, getPage, pageTitle, renderPage, connecting, focused, setFocused,
+    pages, open, back, retain, release, getPage, restoreDetail,rememberDetail, pageTitle, renderPage, connecting, focused, setFocused,
     renderHome, renderSettings, renderGuide,
     views, setView, allItems, saved, favorites, hiddenGroups, loading, libraryError, refreshing, libraryNotice, updatedAt, scrollMemory: scrollMemory.current,
     play, toggleFavorite, addProfile, startDemo, refreshLibrary, browse, openSearch, openFavorites, openSettings, openProfiles, goHome,

@@ -52,3 +52,92 @@ Phase checks and final browser screenshot/contrast results are recorded in `veri
 | M8 | Fixed in source; native navigation follow-up | iPhone Home/Live/Guide/Library/Search tabs, native library search, reduced header actions, no duplicate Android Home nav chips, inherited native titles suppress duplicate body headings, guide settings pushes natively and pushed titles travel in route params. |
 | M9 | Fixed in source; native keys/focus follow-up | Shared TV track sheet holds chrome open; TV panels do not idle-close; video scrims protect chrome; mini scope receives media keys; Back navigates before closing mini playback; provider sheets trap focus; rail Search retains section. |
 | M10 | Fixed in source; remote follow-up | Chevron Back controls, fill/check selection, Menu/hold hint with per-item options, flexible library heading and grouped two-column settings. Light mode is retained with two-tone focus and fixed video scrims rather than hiding a working setting. |
+
+## Low
+
+Low findings have been assigned L1–L9 in their original order.
+
+| Finding | Status | Implementation |
+| --- | --- | --- |
+| L1 — seek hit area | Fixed | `VideoSeekBar.tsx`: 44pt hit area. |
+| L2 — secure-storage copy | Fixed | `navigation/NodeCastProvider.tsx`: Keychain on iOS, Android secure storage on Android; preview limitations retained. |
+| L3 — floating labels | Fixed | `ui.tsx`: field and floating label share the supplied surface color. |
+| L4 — ready-data splash | Fixed in source; native launch follow-up | `StartupSplash.tsx`: skip the intro once data is ready, then use the existing 100/260ms exit. Animation definitions and navigation transitions remain unchanged; skipping this intro is the explicit Low-phase exception. |
+| L5 — duplicate Home search | Fixed | `HomeScreen.tsx`, `navigation/navigation.tsx`: remove the fake Home search; retain Search tab and native library header search. |
+| L6 — detail deep links | Fixed in source; native cold restoration unverified | `detailRoute.ts`, `navigation/NodeCastProvider.tsx`, `navigation/navigation.tsx`: opaque ID/section params, validated cached-catalogue reconstruction, family access checks and an actionable missing-title screen. Browser profiles intentionally do not persist credentials, so browser reload cannot verify native secure-vault restoration. |
+| L7 — stable TV IDs | Fixed in source; native restoration follow-up | `SearchScope.tsx`, `FullGuide.tsx`, `SeriesEpisodes.tsx`, `TVLibraryOptions.tsx`: stable named controls replace generated IDs on the affected paths. |
+| L8 — inactive TV actions | Fixed | `TVApp.tsx`, `TVHome.tsx`, `BuiltInPlayer.tsx`: active-profile action disabled, featured action matches item kind, sleep-off disabled while off. |
+| L9 — TV alignment | Fixed in source; native visual follow-up | `TVHome.tsx`, `TVChannelRow.tsx`, `TVApp.tsx`: consistent content edges, 16dp row/card radii and 36sp page/hero titles. |
+
+### Corrections found during browser review
+
+- Returning from the pushed Guide source page could leave the retained guide with old mappings. `FullGuide.tsx` now rereads metadata on screen focus, using the existing guide APIs.
+- Doubled phone text exposed overlapping player controls. `Player.tsx` now uses compact icon controls with a flexible, single-line title; live streams omit inactive seek controls, and movie timing gets its own row. `BuiltInPlayer.tsx` gives large-text portrait chrome more height. No engine, lifecycle effect or seek implementation changed.
+- `LibraryScreen.tsx` segments wrap instead of clipping at doubled text; `SectionHeading` reserves space for its action. `Typography.tsx` honors the allowed dense-chrome font cap in the browser simulation while native text continues to use native scaling.
+- TV scope changes can reuse the same native view. `TVRemoteController.kt` tracks scope names as well as view identity, so reused containers still trigger content focus restoration.
+- The web fallback tab bar now has sufficient vertical padding for its labels. NativeTabs remain unchanged.
+- Large-text review also stacks the Home IP summary and source choices, wraps backup tabs, and widens the guide channel column. Dense day labels use the permitted 1.4 font cap. These fixes preserve full body-text scaling. Android fields place their labels above the input at large font scales, preventing floating-label text from overlapping entered values.
+
+### Reproducing verification
+
+Run `verification/glowtv/audit-0.7.3/verify-phase.sh phase4` from any directory. The three exports use `--clear` to prevent Metro reusing environment-specific transforms. Earlier phase checks passed, but the final cache-cleared run is the authoritative platform-variant export check.
+
+Then run `python verification/glowtv/audit-0.7.3/capture.py` with Chromium and Playwright installed, followed by `python verification/glowtv/audit-0.7.3/contrast.py`. The capture script serves only temporary local exports and uses a synthetic provider, original demo artwork and original video. IP lookup failure is deliberately simulated; no subscription credentials are used.
+
+For doubled text the browser harness patches only RN Web's four Dimensions font-scale defaults in the served response. Production bundles are not modified. This exercises shared adaptive UI; it is not a claim about native Dynamic Type or the native tab/header implementations.
+
+## Visual evidence
+
+Before images are the supplied **native 0.7.2 captures**; after images are **RN Web previews** at the specified viewport sizes. They are useful for shared layout review, but are not pixel-equivalent native comparisons. Contact sheets summarize eight full-resolution PNGs available in the same directory. Additional captures cover the bottom of Home, track selection, VOD and episode controls, and each settings destination.
+
+| Edition | Before | After, light / normal text | After, dark / normal text | Doubled text |
+| --- | --- | --- | --- | --- |
+| iPhone | [Native baseline](../verification/glowtv/audit-0.7.3/before/ios.jpg) | [393×852](../verification/glowtv/audit-0.7.3/after/ios-light-text1-contact.jpg) | [393×852](../verification/glowtv/audit-0.7.3/after/ios-dark-text1-contact.jpg) | [Light](../verification/glowtv/audit-0.7.3/after/ios-light-text2-contact.jpg), [dark](../verification/glowtv/audit-0.7.3/after/ios-dark-text2-contact.jpg) |
+| Android phone | [Native baseline](../verification/glowtv/audit-0.7.3/before/android.jpg) | [412×915](../verification/glowtv/audit-0.7.3/after/android-light-text1-contact.jpg) | [412×915](../verification/glowtv/audit-0.7.3/after/android-dark-text1-contact.jpg) | [Light](../verification/glowtv/audit-0.7.3/after/android-light-text2-contact.jpg), [dark](../verification/glowtv/audit-0.7.3/after/android-dark-text2-contact.jpg) |
+| iPad | [Native baseline](../verification/glowtv/audit-0.7.3/before/ipad.jpg) | [1032×1376](../verification/glowtv/audit-0.7.3/after/ipad-light-text1-contact.jpg) | [1032×1376](../verification/glowtv/audit-0.7.3/after/ipad-dark-text1-contact.jpg) | [Light](../verification/glowtv/audit-0.7.3/after/ipad-light-text2-contact.jpg), [dark](../verification/glowtv/audit-0.7.3/after/ipad-dark-text2-contact.jpg) |
+| TV | [Native baseline](../verification/glowtv/audit-0.7.3/before/tv.jpg) | [1920×1080](../verification/glowtv/audit-0.7.3/after/tv-light-text1-contact.jpg) | [1920×1080](../verification/glowtv/audit-0.7.3/after/tv-dark-text1-contact.jpg) | Native TV text/remote follow-up required |
+
+[Full screenshot index](../verification/glowtv/audit-0.7.3/SCREENSHOTS.md). Supplemental 1080p TV density previews: [light](../verification/glowtv/audit-0.7.3/after/tv-dp1080-light-text1-contact.jpg), [dark](../verification/glowtv/audit-0.7.3/after/tv-dp1080-dark-text1-contact.jpg). These use 960×540 logical pixels at 2× density, alongside the required 1920×1080 viewport captures.
+
+### Evidence by finding
+
+All filenames below are in `verification/glowtv/audit-0.7.3/after/`. The contact-sheet table above supplies the platform's before image and all theme/text-size variants. The completed run's exact screenshots and assertions are listed in [browser-audit.json](../verification/glowtv/audit-0.7.3/browser-audit.json).
+
+| Findings | After capture(s) / additional proof |
+| --- | --- |
+| C1, H13 | iPad `home`, `movies`, `settings`; orientation unit tests. Multitasking requires native verification. |
+| C2 | `episode-player`, `settings-library-organization`; [contrast ratios](../verification/glowtv/audit-0.7.3/contrast.json). |
+| C3–C4, H1–H4 | TV `home`, `guide`, `player`, `vod-player`; Back policy unit tests. Native ring/key/focus behavior is not verified in a browser. |
+| H5–H7 | TV `movies`, `guide`, `settings`, `player`. |
+| H8–H11 | `settings`, `settings-family-controls`, `settings-library-storage`, `settings-backup-transfer`, `home-bottom`, `player-tracks`. Native alerts/announcements require follow-up. |
+| H12, M5 | `home`, `series`, `guide`; loading/error branches are implemented in source, not all are exercised by the successful-provider screenshot fixture. |
+| H14, M1, M6–M8 | Phone/tablet `guide`, `movies`, `series`, `search`, `playlists`, including doubled-text variants. |
+| M2–M3 | `guide`, `player-tracks`, `settings-default-player` (phone) / `settings-playback` (TV), `settings-library-organization`; contrast results. |
+| M4 | `playlists`, `settings-backup-transfer`, `settings-family-controls`; provider validation tests. Native keyboard/autofill and discard alerts require follow-up. |
+| M9–M10 | TV `player-tracks`, `player`, `settings`, `search`; native remote/mini-player follow-up. |
+| L1–L3 | `vod-player`, `settings-backup-transfer`, Android `playlists`. |
+| L4 | Ready-data source branch; native cold-launch timing remains unmeasured. |
+| L5–L6 | `home`, `movies`; route-ID assertions and route validator tests. Cold restoration requires native secure storage. |
+| L7–L9 | TV `home`, `settings`, `settings-playback`, `search`; native focus follow-up. |
+
+The current RN Web version ignores native `accessibilityState`; `FocusPressable.tsx` now maps it to explicit web ARIA attributes. Backup Export/Import use tab roles, visible checks and selected state. Browser verification toggles both modes. Input focus uses the contrast-safe link tone on light surfaces; native TV EditText continues to use this JS border rather than the native ring.
+
+## Remaining limitations and next native pass
+
+- H13 remains partial: the mini player uses safe-area plus a platform tab-height fallback, rather than a measured NativeTabs bar height. Check iPad top tabs and phone tab placement on-device.
+- A new native build is required for the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers, signing and versions are unchanged.
+- Verify the two-tone TV ring on green/dark/light surfaces, scope and row restoration, every D-pad Back flow, Menu/hold, CH+/−, hidden-controls seeking, INFO/GUIDE and mini-player media keys on Fire TV and Android TV.
+- Verify iPad Split View, Slide Over/Stage Manager and all rotations, including closing landscape playback; phones must return to portrait.
+- Verify VoiceOver/TalkBack announcements, largest native Dynamic Type, form keyboard chaining/autofill/discard protection, and native cold detail/series links against the secure saved catalogue.
+- Successful synthetic-provider browser flows do not validate real subscriptions, codecs, provider catch-up endpoints, native casting/PiP or encrypted transfer on devices. The existing engine/model tests and protected scope checks remain in place.
+
+Additional TV-density review: poster width is capped at 160dp; the grid header scrolls with posters and contributes its measured height to `getItemLayout`. Tile height reserves 112dp for two title lines, metadata and padding. Guide cells reserve space for a separate On now label, so multi-line timing cannot push programme titles outside the timeline viewport. Timing uses selectedText on selected cells; ordinary secondary text on the dark selected fill would fall below 4.5:1.
+
+## Completed verification results
+
+- Critical, High, Medium and Low phase checks passed. Final run: `npm ci`, typecheck, 137 passing tests, three cache-cleared web exports, the 8px grid guard (456 properties) and the protected-scope guard.
+- Browser: 14 required cases plus 2 supplemental TV-density cases, 316 screenshots, zero recorded page errors or document-width overflows. Both themes and doubled phone/tablet text were exercised. Backup modes were switched and their ARIA selection asserted; search results and stable detail-route IDs were asserted.
+- Contrast: 36 recorded checks passed (4.5:1 for text; 3:1 for graphical state). See [checks.json](../verification/glowtv/audit-0.7.3/checks.json), [contrast.json](../verification/glowtv/audit-0.7.3/contrast.json) and [verification output](../verification/glowtv/audit-0.7.3/verification.txt). These are scoped token/surface checks, not a guarantee for arbitrary provider artwork or video frames.
+- Browser previews cannot validate native playback, TV keys/focus rings, iPad multitasking/rotation, screen-reader announcements or largest native Dynamic Type. H13 remains partial as described above.
+
+Native Live search routing: `uiPolicy.ts` supplies one shared platform-to-view mapping for both the tab body and its native search callback. iPhone uses the dedicated live view; Android retains its watch view. A regression test covers this contract so native search cannot silently update a different list.

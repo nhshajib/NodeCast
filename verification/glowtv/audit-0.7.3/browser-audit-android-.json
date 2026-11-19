@@ -1,0 +1,494 @@
+[
+  {
+    "case": "android-light-text1",
+    "passed": true,
+    "screenshots": [
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-playlists.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-home.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-home-bottom.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-guide.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-player-tracks.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-movies.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-vod-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-series.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-episode-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-appearance.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-family-controls.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-default-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-library-organization.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-backup-transfer.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-library-storage.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-home-ip-connection.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-settings-version-history.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text1-search.png"
+    ],
+    "geometries": [
+      {
+        "screen": "playlists",
+        "overflow": false
+      },
+      {
+        "screen": "home",
+        "overflow": false
+      },
+      {
+        "screen": "home-bottom",
+        "overflow": false
+      },
+      {
+        "screen": "guide",
+        "overflow": false
+      },
+      {
+        "screen": "player",
+        "overflow": false
+      },
+      {
+        "screen": "player-tracks",
+        "overflow": false
+      },
+      {
+        "screen": "movies",
+        "overflow": false
+      },
+      {
+        "screen": "vod-player",
+        "overflow": false
+      },
+      {
+        "screen": "series",
+        "overflow": false
+      },
+      {
+        "screen": "episode-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings",
+        "overflow": false
+      },
+      {
+        "screen": "settings-appearance",
+        "overflow": false
+      },
+      {
+        "screen": "settings-family-controls",
+        "overflow": false
+      },
+      {
+        "screen": "settings-default-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-organization",
+        "overflow": false
+      },
+      {
+        "screen": "settings-backup-transfer",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-storage",
+        "overflow": false
+      },
+      {
+        "screen": "settings-home-ip-connection",
+        "overflow": false
+      },
+      {
+        "screen": "settings-version-history",
+        "overflow": false
+      },
+      {
+        "screen": "search",
+        "overflow": false
+      }
+    ],
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "pageErrors": [],
+    "dimensionFontScalePatches": [],
+    "idDetailParams": true,
+    "nativeColdDetailRestore": "not verified; browser credential vault is intentionally memory-only"
+  },
+  {
+    "case": "android-light-text2",
+    "passed": true,
+    "screenshots": [
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-playlists.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-home.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-home-bottom.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-guide.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-player-tracks.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-movies.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-vod-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-series.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-episode-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-appearance.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-family-controls.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-default-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-library-organization.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-backup-transfer.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-library-storage.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-home-ip-connection.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-settings-version-history.png",
+      "verification/glowtv/audit-0.7.3/after/android-light-text2-search.png"
+    ],
+    "geometries": [
+      {
+        "screen": "playlists",
+        "overflow": false
+      },
+      {
+        "screen": "home",
+        "overflow": false
+      },
+      {
+        "screen": "home-bottom",
+        "overflow": false
+      },
+      {
+        "screen": "guide",
+        "overflow": false
+      },
+      {
+        "screen": "player",
+        "overflow": false
+      },
+      {
+        "screen": "player-tracks",
+        "overflow": false
+      },
+      {
+        "screen": "movies",
+        "overflow": false
+      },
+      {
+        "screen": "vod-player",
+        "overflow": false
+      },
+      {
+        "screen": "series",
+        "overflow": false
+      },
+      {
+        "screen": "episode-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings",
+        "overflow": false
+      },
+      {
+        "screen": "settings-appearance",
+        "overflow": false
+      },
+      {
+        "screen": "settings-family-controls",
+        "overflow": false
+      },
+      {
+        "screen": "settings-default-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-organization",
+        "overflow": false
+      },
+      {
+        "screen": "settings-backup-transfer",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-storage",
+        "overflow": false
+      },
+      {
+        "screen": "settings-home-ip-connection",
+        "overflow": false
+      },
+      {
+        "screen": "settings-version-history",
+        "overflow": false
+      },
+      {
+        "screen": "search",
+        "overflow": false
+      }
+    ],
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "pageErrors": [],
+    "dimensionFontScalePatches": [
+      4
+    ],
+    "idDetailParams": true,
+    "nativeColdDetailRestore": "not verified; browser credential vault is intentionally memory-only"
+  },
+  {
+    "case": "android-dark-text1",
+    "passed": true,
+    "screenshots": [
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-playlists.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-home.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-home-bottom.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-guide.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-player-tracks.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-movies.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-vod-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-series.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-episode-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-appearance.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-family-controls.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-default-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-library-organization.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-backup-transfer.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-library-storage.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-home-ip-connection.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-settings-version-history.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text1-search.png"
+    ],
+    "geometries": [
+      {
+        "screen": "playlists",
+        "overflow": false
+      },
+      {
+        "screen": "home",
+        "overflow": false
+      },
+      {
+        "screen": "home-bottom",
+        "overflow": false
+      },
+      {
+        "screen": "guide",
+        "overflow": false
+      },
+      {
+        "screen": "player",
+        "overflow": false
+      },
+      {
+        "screen": "player-tracks",
+        "overflow": false
+      },
+      {
+        "screen": "movies",
+        "overflow": false
+      },
+      {
+        "screen": "vod-player",
+        "overflow": false
+      },
+      {
+        "screen": "series",
+        "overflow": false
+      },
+      {
+        "screen": "episode-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings",
+        "overflow": false
+      },
+      {
+        "screen": "settings-appearance",
+        "overflow": false
+      },
+      {
+        "screen": "settings-family-controls",
+        "overflow": false
+      },
+      {
+        "screen": "settings-default-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-organization",
+        "overflow": false
+      },
+      {
+        "screen": "settings-backup-transfer",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-storage",
+        "overflow": false
+      },
+      {
+        "screen": "settings-home-ip-connection",
+        "overflow": false
+      },
+      {
+        "screen": "settings-version-history",
+        "overflow": false
+      },
+      {
+        "screen": "search",
+        "overflow": false
+      }
+    ],
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "pageErrors": [],
+    "dimensionFontScalePatches": [],
+    "idDetailParams": true,
+    "nativeColdDetailRestore": "not verified; browser credential vault is intentionally memory-only"
+  },
+  {
+    "case": "android-dark-text2",
+    "passed": true,
+    "screenshots": [
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-playlists.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-home.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-home-bottom.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-guide.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-player-tracks.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-movies.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-vod-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-series.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-episode-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-appearance.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-family-controls.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-default-player.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-library-organization.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-backup-transfer.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-library-storage.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-home-ip-connection.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-settings-version-history.png",
+      "verification/glowtv/audit-0.7.3/after/android-dark-text2-search.png"
+    ],
+    "geometries": [
+      {
+        "screen": "playlists",
+        "overflow": false
+      },
+      {
+        "screen": "home",
+        "overflow": false
+      },
+      {
+        "screen": "home-bottom",
+        "overflow": false
+      },
+      {
+        "screen": "guide",
+        "overflow": false
+      },
+      {
+        "screen": "player",
+        "overflow": false
+      },
+      {
+        "screen": "player-tracks",
+        "overflow": false
+      },
+      {
+        "screen": "movies",
+        "overflow": false
+      },
+      {
+        "screen": "vod-player",
+        "overflow": false
+      },
+      {
+        "screen": "series",
+        "overflow": false
+      },
+      {
+        "screen": "episode-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings",
+        "overflow": false
+      },
+      {
+        "screen": "settings-appearance",
+        "overflow": false
+      },
+      {
+        "screen": "settings-family-controls",
+        "overflow": false
+      },
+      {
+        "screen": "settings-default-player",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-organization",
+        "overflow": false
+      },
+      {
+        "screen": "settings-backup-transfer",
+        "overflow": false
+      },
+      {
+        "screen": "settings-library-storage",
+        "overflow": false
+      },
+      {
+        "screen": "settings-home-ip-connection",
+        "overflow": false
+      },
+      {
+        "screen": "settings-version-history",
+        "overflow": false
+      },
+      {
+        "screen": "search",
+        "overflow": false
+      }
+    ],
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Home IP & connection",
+      "Version history"
+    ],
+    "pageErrors": [],
+    "dimensionFontScalePatches": [
+      4
+    ],
+    "idDetailParams": true,
+    "nativeColdDetailRestore": "not verified; browser credential vault is intentionally memory-only"
+  }
+]

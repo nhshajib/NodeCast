@@ -2,7 +2,7 @@ import { useAnnouncement } from './accessibility';
 import { Text } from './Typography';
 import Pressable, {isTVBuild} from './FocusPressable';
 import React, { useState } from 'react';
-import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, TextInput, View, useWindowDimensions, Platform } from 'react-native';
 import { AppIcon } from './icons';
 import type { IconName } from './icons';
 import { space, control, tvType } from './designTokens';
@@ -11,10 +11,10 @@ export { colors } from './theme';
 import { colors, themedStyles, isDarkTheme, androidDesign, tvDesign } from './theme';
 
 export function Icon({ name, size = 22, color = colors.text }: { name: IconName; size?: number; color?: string }) { return <AppIcon name={name} size={size} color={color} />; }
-export function Button({ title, onPress, variant = 'primary', busy = false, disabled = false, icon, accessibilityLabel, nativeID, selected, expanded }: {
-  title: string; onPress: () => void; variant?: 'primary' | 'secondary' | 'danger' | 'mint' | 'ink'; busy?: boolean; disabled?: boolean; icon?: IconName; accessibilityLabel?:string; nativeID?:string; selected?:boolean; expanded?:boolean;
+export function Button({ title, onPress, variant = 'primary', busy = false, disabled = false, icon, accessibilityLabel, nativeID, selected, expanded, accessibilityRole='button' }: {
+  title: string; onPress: () => void; variant?: 'primary' | 'secondary' | 'danger' | 'mint' | 'ink'; busy?: boolean; disabled?: boolean; icon?: IconName; accessibilityLabel?:string; nativeID?:string; selected?:boolean; expanded?:boolean; accessibilityRole?:'button'|'tab'|'radio';
 }) {
-  return <Pressable nativeID={nativeID || (isTVBuild ? `tv-preferred:button:${title}` : undefined)} accessibilityRole="button" accessibilityLabel={accessibilityLabel||title} accessibilityState={{ disabled: disabled || busy, busy,selected,expanded }} disabled={disabled || busy} onPress={onPress} style={({ pressed }) => [u.button, variant === 'secondary' && u.secondaryButton, variant === 'mint' && { backgroundColor: colors.primary }, variant === 'ink' && { backgroundColor: colors.ink }, variant === 'danger' && { backgroundColor: colors.dangerSurface }, (pressed || disabled || busy) && { opacity: .6 }]}>
+  return <Pressable nativeID={nativeID || (isTVBuild ? `tv-preferred:button:${title}` : undefined)} accessibilityRole={accessibilityRole} accessibilityLabel={accessibilityLabel||title} accessibilityState={{ disabled: disabled || busy, busy,selected,expanded }} disabled={disabled || busy} onPress={onPress} style={({ pressed }) => [u.button, variant === 'secondary' && u.secondaryButton, variant === 'mint' && { backgroundColor: colors.primary }, variant === 'ink' && { backgroundColor: colors.ink }, variant === 'danger' && { backgroundColor: colors.dangerSurface }, (pressed || disabled || busy) && { opacity: .6 }]}>
     {busy ? <ActivityIndicator color={variant === 'ink' ? colors.onVideo : variant === 'primary' ? colors.primaryText : variant === 'mint' ? colors.primaryText : colors.text} /> : icon && <Icon name={icon} size={19} color={variant === 'danger' ? colors.danger : variant === 'ink' ? colors.onVideo : variant === 'primary' ? colors.primaryText : variant === 'mint' ? colors.primaryText : colors.text} />}
     <Text style={[u.buttonText, variant !== 'primary' && { color: variant === 'ink' ? colors.onVideo : variant === 'mint' ? colors.primaryText : colors.text }, variant === 'danger' && { color: colors.danger }]}>{title}</Text>
   </Pressable>;
@@ -23,11 +23,12 @@ export function IconButton({ name, label, onPress, disabled, dark = false, nativ
   return <Pressable nativeID={nativeID} accessibilityRole="button" accessibilityLabel={label} disabled={disabled} accessibilityState={{disabled:!!disabled,expanded}} onPress={onPress} style={({ pressed }) => [u.iconButton, disabled && {opacity:.4}, dark && { backgroundColor: colors.videoSurface }, pressed && { opacity: .6 }]}><Icon name={name} color={dark ? colors.onVideo : colors.text} /></Pressable>;
 }
 export function Field({ label, hideLabel=false, style, onFocus, onBlur, inputRef, error, surfaceColor=colors.panel, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean; inputRef?: React.Ref<React.ComponentRef<typeof TextInput>>; error?:string; surfaceColor?:string }) {
+  const {fontScale}=useWindowDimensions();
   const [focused, setFocused] = useState(false);
-  const floating = androidDesign && !hideLabel;
+  const floating = androidDesign && !hideLabel && fontScale <= 1.3;
   return <View style={{ gap: hideLabel || floating ? 0 : 8, paddingTop: floating ? 8 : 0 }}>
     {!hideLabel && <Text pointerEvents="none" style={[u.fieldLabel, floating && { position: 'absolute', left: 12, top: 0, paddingHorizontal: 8, backgroundColor: surfaceColor, zIndex: 1, fontSize: 12, color: focused ? colors.link : colors.secondary }]}>{label}</Text>}
-    <TextInput autoCapitalize="none" autoCorrect={false} disableFullscreenUI={isTVBuild} {...props} ref={inputRef} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} placeholderTextColor={colors.secondary} style={[u.input, floating && { borderRadius: 12, backgroundColor: surfaceColor }, !!error && {borderColor:colors.danger}, focused && { borderColor: error?colors.danger:colors.accent, borderWidth:isTVBuild?3:2 }, props.editable === false && { opacity: .65 }, style]} />
+    <TextInput autoCapitalize="none" autoCorrect={false} disableFullscreenUI={isTVBuild} {...props} ref={inputRef} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} placeholderTextColor={colors.secondary} style={[u.input, floating && { borderRadius: 12, backgroundColor: surfaceColor }, !!error && {borderColor:colors.danger}, focused && { borderColor: error?colors.danger:colors.link, borderWidth:isTVBuild?3:2 }, props.editable === false && { opacity: .65 }, style, Platform.OS==='web'&&{fontSize:(tvDesign?18:16)*fontScale}]} />
     {!!error&&<Notice danger>{error}</Notice>}
   </View>;
 }
@@ -43,7 +44,7 @@ export function Notice({ children, danger = false }: { children: React.ReactNode
   return <View accessibilityRole={danger?'alert':undefined} accessibilityLiveRegion={danger?'assertive':'polite'} style={[u.notice, danger && { backgroundColor: colors.dangerSurface }]}><Text style={[u.small, danger && { color: colors.danger }]}>{children}</Text></View>;
 }
 export function SectionHeading({ title, action, onAction }: { title: string; action?: string; onAction?: () => void }) {
-  return <View style={u.between}><H2>{title}</H2>{action && <Pressable accessibilityRole="button" hitSlop={4} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 8 }} onPress={onAction}><Text style={u.link}>{action}</Text></Pressable>}</View>;
+  return <View style={u.between}><H2 style={{flex:1,minWidth:0}}>{title}</H2>{action && <Pressable accessibilityRole="button" hitSlop={4} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 8 }} onPress={onAction}><Text style={u.link}>{action}</Text></Pressable>}</View>;
 }
 export const u = themedStyles(() => ({
   root: { flex: 1, backgroundColor: colors.bg }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 },

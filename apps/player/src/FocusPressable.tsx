@@ -20,7 +20,9 @@ export default forwardRef<React.ComponentRef<typeof Pressable>, Props>(function 
   const [focused, setFocused] = useState(false); const id = useId();
   const disabled = props.disabled || props.accessibilityState?.disabled || props['aria-disabled'] === true;
   const label = props.accessibilityLabel || props.testID || id;
-  return <Pressable {...props} ref={ref} nativeID={props.nativeID || (isTVBuild ? `tv-control:${label}` : undefined)}
+  // RN Web 0.22 consumes ARIA attributes rather than native accessibilityState.
+  const webState=Platform.OS==='web'?{'aria-selected':props['aria-selected']??props.accessibilityState?.selected,'aria-checked':props['aria-checked']??props.accessibilityState?.checked,'aria-expanded':props['aria-expanded']??props.accessibilityState?.expanded,'aria-busy':props['aria-busy']??props.accessibilityState?.busy,'aria-disabled':disabled}:{};
+  return <Pressable {...props} {...webState} ref={ref} nativeID={props.nativeID || (isTVBuild ? `tv-control:${label}` : undefined)}
     accessible={props.accessible ?? true} accessibilityRole={props.accessibilityRole ?? 'button'}
     focusable={!disabled && props.focusable !== false} disabled={disabled}
     android_ripple={android_ripple ?? (androidPhone && !noFeedback ? { color: colors.accent + '40', foreground: true } : undefined)}

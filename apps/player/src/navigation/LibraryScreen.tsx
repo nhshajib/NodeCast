@@ -38,7 +38,7 @@ const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFa
 export default function LibraryScreen({ view, tab, nativeSearch=false }: { view: LibraryView; tab?: string; nativeSearch?:boolean }) {
   useThemeChoice();
   const c = useNodeCast();
-  const {width}=useWindowDimensions();
+  const {width,fontScale}=useWindowDimensions();
   const numColumns=Math.max(2,Math.floor((width-2*16+16)/(150+16)));
   const state = c.views[view];
   const set = useCallback((patch: Partial<typeof state>) => c.setView(view, patch), [c.setView, view]);
@@ -79,13 +79,13 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   // Keep source, count and refresh feedback together; filters and actions stay intact.
   const compactHeader = androidDesign && posterLayout;
   const refreshLabel = c.refreshing ? 'Updating library…' : c.libraryNotice || (updated ? `Updated ${new Date(updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Not refreshed yet');
-  useAnnouncement(searching?`${filtered.length} search results`:'');
+  useAnnouncement(searching?plural(filtered.length,'search result'):'');
   useAnnouncement(refreshLabel);
   const countLabel = compactHeader ? `${filtered.length.toLocaleString()} ${filtered.length === 1 ? 'title' : 'titles'}` : '';
 
   return <View style={{ flex: 1, backgroundColor: colors.bg }}>
     {!compactHeader && <Text numberOfLines={1} style={[u.body, { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 8 }]}>{subtitle}</Text>}
-    {view === 'library' && <View style={{ flexDirection: 'row', gap: 8, paddingHorizontal: 24, paddingBottom: 16 }}>{(['saved', 'movies', 'series'] as const).map(source => {
+    {view === 'library' && <View style={{ flexDirection: 'row', flexWrap:'wrap',gap: 8, paddingHorizontal: 24, paddingBottom: 16 }}>{(['saved', 'movies', 'series'] as const).map(source => {
       const selected = state.source === source;
       return <Pressable key={source} accessibilityRole="tab" accessibilityState={{ selected }} haptic={selected ? undefined : 'selection'} onPress={() => set({ source, search: '', category: 'All' })} style={[s.chip, { backgroundColor: selected ? colors.selected : colors.panel, borderColor: selected ? colors.selected : colors.line }]}>{selected && <Icon name="checkmark" size={16} color={colors.selectedText}/>}<Text style={{ color: selected ? colors.selectedText : colors.text, fontWeight: '600' }}>{source === 'saved' ? 'Favorites' : source === 'movies' ? 'Movies' : 'Series'}</Text></Pressable>;
     })}</View>}
@@ -93,7 +93,7 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
       {view === 'watch' && <View style={s.segment}>{sections.map(item => <Pressable key={item.id} accessibilityRole="tab" accessibilityState={{ selected: section === item.id }} haptic={section === item.id ? undefined : 'selection'} onPress={() => set({ search: '', category: 'All', section: item.id })} style={[s.segmentItem, section === item.id && { backgroundColor: colors.selected }]}><Text style={{ color: section === item.id ? colors.selectedText : colors.text, fontWeight: section === item.id ? '700' : '500', fontSize: 14 }}>{item.title}</Text></Pressable>)}</View>}
       {!nativeSearch&&<View style={s.search}>
         <Icon name="search-outline" size={19} color={colors.secondary} />
-        <TextInput value={state.search} onChangeText={setSearch} returnKeyType="search" onSubmitEditing={() => Keyboard.dismiss()} autoCapitalize="none" autoFocus={view === 'search' && Platform.OS !== 'web' && !state.search} placeholder={favorites ? 'Search your favorites' : 'Search your library'} accessibilityLabel="Search library" placeholderTextColor={colors.secondary} style={{ flex: 1, paddingVertical: 16, color: colors.text, fontSize: 16, minHeight: 52 }} autoCorrect={false} />
+        <TextInput value={state.search} onChangeText={setSearch} returnKeyType="search" onSubmitEditing={() => Keyboard.dismiss()} autoCapitalize="none" autoFocus={view === 'search' && Platform.OS !== 'web' && !state.search} placeholder={favorites ? 'Search your favorites' : 'Search your library'} accessibilityLabel="Search library" placeholderTextColor={colors.secondary} style={{ flex: 1, paddingVertical: 16, color: colors.text, fontSize: Platform.OS==='web'?16*fontScale:16, minHeight: 52 }} autoCorrect={false} />
         {!!state.search && <Pressable accessibilityRole="button" accessibilityLabel="Clear search" onPress={() => setSearch('')} style={s.iconAction}><Icon name="close-circle" size={19} color={colors.secondary} /></Pressable>}
         <Pressable accessibilityRole="button" accessibilityLabel="Library options" onPress={() => c.open({ type: 'organize', view })} style={s.iconAction}><Icon name="options-outline" size={20} color={colors.secondary} /></Pressable>
       </View>}
@@ -110,7 +110,7 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
         key={`${view}:${posterLayout}:${numColumns}`} numColumns={posterLayout ? numColumns : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={filtered} keyExtractor={item => item.id}
         initialNumToRender={posterLayout ? 8 : 12} maxToRenderPerBatch={posterLayout ? 6 : 10} updateCellsBatchingPeriod={30} windowSize={11} removeClippedSubviews={Platform.OS === 'android'}
         contentContainerStyle={[{ paddingHorizontal: 24, paddingBottom: 112 }, !filtered.length && { flex: 1 }]}
-        ListHeaderComponent={!compactHeader && filtered.length ? <View style={[u.between, { paddingBottom: 8 }]}><Text style={u.eyebrow}>{favorites ? 'SAVED FOR YOU' : 'YOUR LIBRARY'}</Text><Text style={u.small}>{plural(filtered.length,section==='live'&&!favorites?'channel':'title')}</Text></View> : undefined}
+        ListHeaderComponent={!compactHeader && filtered.length ? <View style={[u.between, { paddingBottom: 8 }]}><Text style={u.eyebrow}>{favorites ? 'SAVED FOR YOU' : 'YOUR LIBRARY'}</Text><Text style={u.small}>{plural(filtered.length,section==='live'&&!favorites&&!allMediaSearch?'channel':'title')}</Text></View> : undefined}
         ListEmptyComponent={<Empty icon={favorites ? 'heart-outline' : 'search-outline'} title={deferred.trim() ? 'No matching titles' : favorites ? 'Your favorites belong here' : 'Nothing here just yet'} message={deferred.trim() ? 'Try another name, or reset your search to see the library again.' : favorites ? 'Tap the heart beside a channel, movie, or series. We’ll keep it here for this profile.' : section === 'series' && (c.demo || c.provider?.kind === 'm3u') ? 'Use an Xtream Codes profile for a structured series and episode library.' : 'Try another search or category, or check the library supplied by your provider.'}>{deferred.trim() ? <Button title="Reset search" variant="secondary" onPress={() => set({ search: '', category: 'All' })} /> : favorites ? <Button title="Browse your library" onPress={() => c.browse('live')} /> : null}</Empty>}
         renderItem={renderItem} extraData={favoriteSet} />}
     </>}

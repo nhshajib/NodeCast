@@ -38,3 +38,24 @@ test('provider form explains missing data, rejects unsupported URLs, and accepts
  assert.match(providerFormProblem(form,'file'),/Import/);
  assert.equal(providerFormProblem({...form,localText:'#EXTM3U'},'file'),'');
 });
+
+import {detailRoute} from '../src/detailRoute.ts';
+test('restorable detail links use opaque IDs and valid catalogue sections, never a stream URL',()=>{
+ assert.deepEqual(detailRoute('details','movies:42','movies'),{type:'details',id:'movies:42',section:'movies'});
+ assert.deepEqual(detailRoute('series','series:2','series'),{type:'series',id:'series:2',section:'series'});
+ assert.equal(detailRoute('series','series:2','movies'),null);
+ assert.equal(detailRoute('provider','anything','live'),null);
+ assert.equal(detailRoute('details','https://provider.example/secret','movies'),null);
+ assert.equal(detailRoute('details','','live'),null);
+});
+
+import {libraryTabView} from '../src/uiPolicy.ts';
+test('native library search and tab content share platform-specific view identities',()=>{
+ assert.equal(libraryTabView('live',false),'live');
+ assert.equal(libraryTabView('live',true),'watch');
+ for(const android of [false,true]){
+  assert.equal(libraryTabView('library',android),'library');
+  assert.equal(libraryTabView('search',android),'search');
+  assert.equal(libraryTabView('home',android),null);
+ }
+});
