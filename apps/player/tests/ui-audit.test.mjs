@@ -68,3 +68,10 @@ test('mini player clears measured native bars, top-tab tablets, rotations and pu
  assert.equal(miniPlayerBottom(852,null,34),50);
  assert.equal(miniPlayerBottom(852,900,34),50);
 });
+
+import {execFileSync} from 'node:child_process';
+test('count labels load when Hermes omits Intl.PluralRules',()=>{
+ const moduleURL=new URL('../src/formatting.ts',import.meta.url).href;
+ const result=execFileSync(process.execPath,['--input-type=module','-e',`Intl.PluralRules=undefined;const {plural}=await import(${JSON.stringify(moduleURL)});console.log(JSON.stringify([plural(0,'channel'),plural(1,'title'),plural(2,'title'),plural(1.5,'title')]));`],{encoding:'utf8'});
+ assert.deepEqual(JSON.parse(result),['0 channels','1 title','2 titles','1.5 titles']);
+});
