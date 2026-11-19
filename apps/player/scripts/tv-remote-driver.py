@@ -14,7 +14,9 @@ def tree():
 def bounds(n):
  a=list(map(int,re.findall(r'\d+',n.get('bounds',''))));return a if len(a)==4 else [0,0,0,0]
 def name(n):return (n.get('content-desc') or n.get('text') or '').strip()
+RAIL_LABELS=['Home','Search','Live TV','TV guide','Movies','Series','Favorites','Settings','Switch playlist']
 def match(n,label):
+ if label in RAIL_LABELS:return name(n).casefold()==label.casefold()
  return name(n).casefold()==label.casefold() or re.search(r'(?<!\w)'+re.escape(label.casefold())+r'(?!\w)',(n.get('content-desc') or '').casefold()) is not None
 def actions(root):return [n for n in root.iter('node') if n.get('enabled')!='false' and n.get('focusable')=='true' and (n.get('clickable')=='true' or n.get('class')=='android.widget.EditText') and bounds(n)[2]>bounds(n)[0] and bounds(n)[3]>bounds(n)[1]]
 def score(a,b,key):
@@ -56,9 +58,14 @@ def focus(label,timeout=100):
    a,b=bounds(nodes[i]),bounds(nodes[goals[0]]);dx=b[0]+b[2]-a[0]-a[2];dy=b[1]+b[3]-a[1]-a[3];direction=(22 if dx>0 else 21) if abs(dx)>abs(dy) else (20 if dy>0 else 19)
    if seen[signature]>2:direction=[19,22,20,21][seen[signature]%4]
   else:
-   # Enter content from the persistent sidebar before scrolling the main pane.
-   a=bounds(nodes[i]);direction=22 if a[2]<480 and name(nodes[i]) in ['Live TV','Movies','Series','Favorites','Settings','Connection details in Settings','Connection details'] else scan
-   if seen[signature]>2:scan=19 if scan==20 else 20;direction=scan
+   # A scrolled rail may hide Home above the viewport. Reach its actual named
+   # control with the remote, never a body control mentioning a home IP.
+   current_name=name(nodes[i])
+   if label in RAIL_LABELS:
+    direction=(19 if RAIL_LABELS.index(label)<RAIL_LABELS.index(current_name) else 20) if current_name in RAIL_LABELS else 21
+   else:
+    a=bounds(nodes[i]);direction=22 if a[2]<480 and current_name in RAIL_LABELS else scan
+    if seen[signature]>2:scan=19 if scan==20 else 20;direction=scan
   key(direction)
  raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None))
 def activate(label,timeout=100):
