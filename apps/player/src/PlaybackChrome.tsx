@@ -1,3 +1,4 @@
+import {isTVBuild} from './FocusPressable';
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, DeviceEventEmitter } from 'react-native';
 
@@ -15,7 +16,7 @@ export function PlaybackChromeProvider({ children, panelOpen, onIdle, playing, m
   const activity = useCallback(() => {
     clear();
     const state = latest.current;
-    if (!state.playing || state.minimized || state.screenReader || holds.current.size) return;
+    if ((isTVBuild && state.panelOpen) || !state.playing || state.minimized || state.screenReader || holds.current.size) return;
     timer.current = setTimeout(() => {
       if (holds.current.size) return;
       latest.current.onIdle(); setVisible(false);

@@ -1,3 +1,4 @@
+import {colors} from './theme';
 import {tvDesign} from './theme';
 import { Icon } from './ui';
 import type { IconName } from './ui';
@@ -7,16 +8,16 @@ import { AccessibilityInfo, ActivityIndicator, Animated, StyleSheet } from 'reac
 import Pressable from './FocusPressable';
 import { usePlaybackChrome } from './PlaybackChrome';
 export const glass = StyleSheet.create({
-  panel: { backgroundColor: '#0A0E0CD9', borderColor: '#FFFFFF30', borderWidth: 1, borderRadius: 24, overflow: 'hidden' },
+  panel: { backgroundColor: colors.videoScrim, borderColor: colors.videoBorder, borderWidth: 1, borderRadius: 24, overflow: 'hidden' },
   content: { padding: 16, gap: 16 },
-  title: { color: '#FFFFFF', fontSize: tvDesign?24:21, fontWeight: '600' },
-  text: { color: '#E8EEEA', fontSize: tvDesign?18:14, lineHeight: 20 },
-  label: { color: '#1EC677', fontSize: tvDesign?18:13, fontWeight: '600', marginTop: 8 },
-  button: { minHeight: 48, paddingHorizontal: 16, paddingVertical: 16, borderRadius: 14, backgroundColor: '#FFFFFF10', borderWidth: 1, borderColor: '#FFFFFF18', justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 8 },
+  title: { color: colors.onVideo, fontSize: tvDesign?24:21, fontWeight: '600' },
+  text: { color: colors.videoCopy, fontSize: tvDesign?18:14, lineHeight: 20 },
+  label: { color: colors.primary, fontSize: tvDesign?18:13, fontWeight: '600', marginTop: 8 },
+  button: { minHeight: 48, paddingHorizontal: 16, paddingVertical: 16, borderRadius: 14, backgroundColor: colors.videoChip, borderWidth: 1, borderColor: colors.videoControlBorder, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 8 },
 });
 export function GlassButton({ title, onPress, busy, disabled, icon, ...props }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean; icon?: IconName } & Omit<React.ComponentProps<typeof Pressable>, 'onPress' | 'children'>) {
   const chrome = usePlaybackChrome();
-  return <Pressable {...props} disabled={disabled || busy} accessibilityRole={props.accessibilityRole || 'button'} accessibilityLabel={props.accessibilityLabel || title} accessibilityState={{ ...props.accessibilityState, disabled: !!disabled || !!busy, busy: !!busy }} onFocus={chrome.activity} onPress={() => { chrome.activity(); onPress(); }} style={({ pressed }) => [glass.button, pressed && { backgroundColor: '#FFFFFF2A' }, { opacity: disabled || busy ? .5 : 1 }]}>{busy ? <ActivityIndicator color="#1EC677" /> : <>{icon && <Icon name={icon} color="#FFFFFF" size={18}/>}<Text style={{ color: '#FFFFFF', fontSize: tvDesign?18:14, flexShrink: 1 }}>{title}</Text></>}</Pressable>;
+  return <Pressable {...props} disabled={disabled || busy} accessibilityRole={props.accessibilityRole || 'button'} accessibilityLabel={props.accessibilityLabel || title} accessibilityState={{ ...props.accessibilityState, disabled: !!disabled || !!busy, busy: !!busy }} onFocus={chrome.activity} onPress={() => { chrome.activity(); onPress(); }} style={({ pressed }) => [glass.button, pressed && { backgroundColor: colors.videoPressed }, { opacity: disabled || busy ? .5 : 1 }]}>{busy ? <ActivityIndicator color={colors.primary} /> : <>{icon && <Icon name={icon} color={colors.onVideo} size={18}/>}<Text style={{ color: colors.onVideo, fontSize: tvDesign?18:14, flexShrink: 1 }}>{title}</Text></>}</Pressable>;
 }
 
 /** Animate opacity only: video and control layout never move or remount on idle. */

@@ -1,18 +1,18 @@
 import BrandMark from '../BrandMark';
 import { Text } from '../Typography';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { ActivityIndicator, Platform, ScrollView, StatusBar, View } from 'react-native';
+import { ActivityIndicator, Alert, Platform, ScrollView, StatusBar, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove } from 'expo-router';
+import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove, useNavigation } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 import { androidDesign, isDarkTheme, useThemeChoice } from '../theme';
 import { FamilyChallengeHost } from '../FamilyControls';
 import { ScreenFocusProvider, useReducedMotion } from '../NavigationMotion';
 import WelcomeScreen from '../WelcomeScreen';
 import Pressable from '../FocusPressable';
-import { Button, Empty, Icon, IconButton, Notice, colors, u } from '../ui';
+import { NativeHeaderTitle, Button, Empty, Icon, IconButton, Notice, colors, u } from '../ui';
 import type { IconName } from '../ui';
 import LibraryScreen from './LibraryScreen';
 import { isLibraryView, useNodeCast } from './NodeCastProvider';
@@ -47,18 +47,18 @@ export function RootNavigator() {
       <Stack screenOptions={options}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="page/[type]" options={{ title: '' }} />
+        <Stack.Screen name="page/[type]" options={({route})=>({title:(route.params as {title?:string}|undefined)?.title||''})} />
         <Stack.Screen name="sheet/[type]" options={({ route }) => {
           const type = (route.params as { type?: Page['type'] } | undefined)?.type;
-          return { presentation: 'formSheet', headerShown: Platform.OS === 'ios', sheetGrabberVisible: true, sheetCornerRadius: 20, sheetAllowedDetents: (type && sheetDetents[type]) || [0.6, 1] };
+          return { presentation: 'formSheet', headerShown: true, sheetGrabberVisible: true, sheetCornerRadius: 20, sheetAllowedDetents: (type && sheetDetents[type]) || [0.6, 1] };
         }} />
       </Stack>
     </View>
     {player.element && <SafeAreaView edges={player.fullscreen || player.minimized ? [] : ['top', 'bottom', 'left', 'right']} accessibilityViewIsModal={!player.minimized} style={player.minimized
-      ? { position: 'absolute', right: 16, bottom: insets.bottom + tabBarHeight + 16, width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: '#000' }
-      : { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 100, backgroundColor: '#0D4029' }}>
+      ? { position: 'absolute', right: 16, bottom: insets.bottom + tabBarHeight + 16, width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: colors.videoBlack }
+      : { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 100, backgroundColor: colors.featured }}>
       {player.element}
-      {player.minimized && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, flexDirection: 'row' }}><Pressable noFeedback accessibilityRole="button" accessibilityLabel={`Return to ${player.session?.item.name}`} onPress={player.restore} style={{ flex: 1 }} /><Pressable accessibilityRole="button" accessibilityLabel="Close mini player" onPress={player.close} style={{ width: 44, height: 44, backgroundColor: '#0D4029CC', alignItems: 'center', justifyContent: 'center' }}><Icon name="close" color="#fff" /></Pressable></View>}
+      {player.minimized && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, flexDirection: 'row' }}><Pressable noFeedback accessibilityRole="button" accessibilityLabel={`Return to ${player.session?.item.name}`} onPress={player.restore} style={{ flex: 1 }} /><Pressable accessibilityRole="button" accessibilityLabel="Close mini player" onPress={player.close} style={{ width: 44, height: 44, backgroundColor: colors.videoControl, alignItems: 'center', justifyContent: 'center' }}><Icon name="close" color={colors.onVideo} /></Pressable></View>}
     </SafeAreaView>}
     <MessageBanner />
     {c.welcome && !c.booting && c.family.ready && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 50 }}><WelcomeScreen onStart={c.onboardStart} onDemo={c.onboardDemo} /></View>}
@@ -72,11 +72,11 @@ export function RootNavigator() {
 type TabSpec = { name: string; title: string; sf: { default: string; selected: string }; md: string; icon: IconName; selected: IconName };
 // iPhone: Home · Guide · Movies · Series · Search. Android: Home · Live · Guide · Library · Settings.
 const iosTabs: TabSpec[] = [
-  { name: 'home', title: 'Home', sf: { default: 'house', selected: 'house.fill' }, md: 'home', icon: 'home-outline', selected: 'home' },
-  { name: 'guide', title: 'Guide', sf: { default: 'square.grid.2x2', selected: 'square.grid.2x2.fill' }, md: 'grid_view', icon: 'grid-outline', selected: 'grid' },
-  { name: 'movies', title: 'Movies', sf: { default: 'film', selected: 'film.fill' }, md: 'movie', icon: 'film-outline', selected: 'film' },
-  { name: 'series', title: 'Series', sf: { default: 'square.stack', selected: 'square.stack.fill' }, md: 'video_library', icon: 'albums-outline', selected: 'albums' },
-  { name: 'search', title: 'Search', sf: { default: 'magnifyingglass', selected: 'magnifyingglass' }, md: 'search', icon: 'search-outline', selected: 'search' },
+ {name:'home',title:'Home',sf:{default:'house',selected:'house.fill'},md:'home',icon:'home-outline',selected:'home'},
+ {name:'live',title:'Live',sf:{default:'tv',selected:'tv.fill'},md:'live_tv',icon:'tv-outline',selected:'tv'},
+ {name:'guide',title:'Guide',sf:{default:'square.grid.2x2',selected:'square.grid.2x2.fill'},md:'grid_view',icon:'grid-outline',selected:'grid'},
+ {name:'library',title:'Library',sf:{default:'books.vertical',selected:'books.vertical.fill'},md:'video_library',icon:'library-outline',selected:'library'},
+ {name:'search',title:'Search',sf:{default:'magnifyingglass',selected:'magnifyingglass'},md:'search',icon:'search-outline',selected:'search'},
 ];
 const androidTabs: TabSpec[] = [
   { name: 'home', title: 'Home', sf: { default: 'house', selected: 'house.fill' }, md: 'home', icon: 'home-outline', selected: 'home' },
@@ -119,15 +119,10 @@ export function TabStack({ tab }: { tab: string }) {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const spec = tabs.find(item => item.name === tab);
-  const headerRight = () => <View style={{ flexDirection: 'row', gap: 8, paddingRight: Platform.OS === 'web' ? 16 : 0 }}>
-    {androidDesign && <IconButton name="search-outline" label="Search" onPress={c.openSearch} />}
-    {androidDesign ? <IconButton name="person-circle-outline" label="Your playlists" onPress={c.openProfiles} />
-      : <><IconButton name="heart-outline" label="Favorites" onPress={c.openFavorites} /><IconButton name="settings-outline" label="Settings" onPress={c.openSettings} /></>}
-    <IconButton name="add" label="Add playlist" onPress={() => c.addProfile()} />
-  </View>;
+  const headerRight=()=>tab==='home'||tab==='settings'?<IconButton name="add" label="Add playlist" onPress={()=>c.addProfile()}/>:<IconButton name="settings-outline" label="Settings" onPress={c.openSettings}/>;
   const brand = () => <Pressable accessibilityRole="button" accessibilityLabel="GlowTV home" onPress={c.goHome} style={[u.row, { minHeight: 44, gap: 8, paddingLeft: Platform.OS === 'web' ? 8 : 0 }]}><BrandMark size={33} /><Text style={{ fontSize: 20, color: colors.text, letterSpacing: -1, fontWeight: '800' }}>GlowTV</Text></Pressable>;
   return <Stack screenOptions={options}>
-    <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight }} />
+    <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(tab==='live'?'live':tab==='library'?'library':'search',{search:event.nativeEvent.text})}}:{}) }} />
   </Stack>;
 }
 
@@ -157,8 +152,8 @@ export function TabScreen({ tab }: { tab: string }) {
   const guideList = useRef<{ scrollToOffset: (options: { offset: number; animated?: boolean }) => void } | null>(null);
   useTabScrollToTop(tab === 'guide' ? `${tab}` : undefined, guideList);
   const content = view === 'home' ? c.renderHome(scroll) : view === 'settings' ? c.renderSettings(scroll) : view === 'guide' ? <View style={{ flex: 1 }}>{c.renderGuide(guideList)}</View>
-    : isLibraryView(view) ? <LibraryScreen view={view} tab={tab} /> : null;
-  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}>{content}</View></ScreenFocusProvider>;
+    : isLibraryView(view) ? <LibraryScreen nativeSearch={Platform.OS==='ios'&&['live','library','search'].includes(tab)} view={view} tab={tab} /> : null;
+  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider></View></ScreenFocusProvider>;
 }
 
 // ── Pages and sheets ─────────────────────────────────────────────────────────
@@ -171,7 +166,9 @@ function usePage() {
   useEffect(() => { if (!key) return; retain(key); return () => release(key); }, [key, retain, release]);
   const busy = !!entry && c.connecting && busyTypes.includes(entry.page.type);
   // While a profile is connecting or being removed, Back waits for the operation to finish.
-  usePreventRemove(busy, () => {});
+  const navigation=useNavigation();
+  const dirty=entry?.page.type==='provider'&&c.providerDirty;
+  usePreventRemove(busy||dirty,({data})=>{if(c.providerCloseAllowed.current){navigation.dispatch(data.action);return;}if(busy)return;Alert.alert('Discard playlist changes?','Your unsaved entries will be lost.',[{text:'Keep editing',style:'cancel'},{text:'Discard changes',style:'destructive',onPress:()=>{c.providerCloseAllowed.current=true;c.setProviderDirty(false);navigation.dispatch(data.action)}}])});
   return { c, entry, busy };
 }
 function Missing() {
@@ -184,11 +181,11 @@ export function PageScreen() {
   const { c, entry, busy } = usePage();
   const page = entry?.page;
   const view: LibraryView | null = page?.type === 'browse' ? page.view : null;
-  useReportFocus(view ?? (page?.type === 'settings' ? 'settings' : null));
+  useReportFocus(view ?? (page?.type === 'settings' ? 'settings' : page?.type==='guide-settings'?'guide':null));
   const focused = useIsFocused();
   return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}>
     <Stack.Screen options={{ title: page ? c.pageTitle(page) : '', gestureEnabled: !busy, headerBackVisible: !busy }} />
-    {!entry ? <Missing /> : page?.type === 'browse' ? <LibraryScreen view={page.view} /> : c.renderPage(entry, view => <LibraryScreen view={view} />)}
+    {!entry ? <Missing /> : page?.type === 'browse' ? <LibraryScreen view={page.view} /> : <NativeHeaderTitle.Provider value>{c.renderPage(entry, view => <LibraryScreen view={view} />)}</NativeHeaderTitle.Provider>}
   </View></ScreenFocusProvider>;
 }
 
@@ -196,21 +193,15 @@ export function SheetScreen() {
   useThemeChoice();
   const { c, entry, busy } = usePage();
   const page = entry?.page;
-  const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>;
+  const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'}</Text></Pressable>;
   const content = !entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />);
   return <FamilyChallengeHost active>
-    <Stack.Screen options={{ gestureEnabled: !busy, ...(Platform.OS === 'ios' ? {
+    <Stack.Screen options={{ gestureEnabled: !busy, ...({
       title: page ? c.pageTitle(page) : '', headerBackVisible: false, headerRight: () => close,
-    } : {}) }} />
+    }) }} />
     {/* UIKit owns the sheet header and its hit testing. Keep scrolling content
         separate so the native sheet never coerces it over the Done control. */}
-    {Platform.OS === 'ios' ? content : <View style={{ flex: 1, backgroundColor: colors.bg }}>
-      <View style={[u.between, { paddingHorizontal: 24, paddingTop: 16, paddingBottom: 8 }]}>
-        <Text accessibilityRole="header" numberOfLines={2} style={[u.h2, { flex: 1 }]}>{page ? c.pageTitle(page) : ''}</Text>
-        {close}
-      </View>
-      {content}
-    </View>}
+    <NativeHeaderTitle.Provider value>{content}</NativeHeaderTitle.Provider>
   </FamilyChallengeHost>;
 }
 

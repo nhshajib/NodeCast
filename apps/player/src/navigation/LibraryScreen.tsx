@@ -1,3 +1,5 @@
+import {plural} from '../formatting';
+import {LibrarySkeleton} from '../Skeletons';
 import {useAnnouncement} from '../accessibility';
 import { Text } from '../Typography';
 import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react';
@@ -26,14 +28,14 @@ const PosterItem = React.memo(function PosterItem({ item, favorite, width, onPla
 const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFavorite, onOptions }: { item: Media; favorite: boolean; demo: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void; onOptions: (item: Media) => void }) {
   useThemeChoice();
   return <View style={s.mediaRow}>
-    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'LIVE, ':''}${item.group}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'LIVE, ':''}${item.group}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: colors.onVideo, fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
     {item.kind === 'live' && <Pressable accessibilityRole="button" accessibilityLabel={`Playback options for ${item.name}`} onPress={() => onOptions(item)} style={s.iconAction}><Icon name="ellipsis-horizontal" size={20} color={colors.secondary} /></Pressable>}
-    <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={s.iconAction}><Icon name={favorite ? 'heart' : 'heart-outline'} size={21} color={favorite ? colors.accent : colors.secondary} /></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={s.iconAction}><Icon name={favorite ? 'heart' : 'heart-outline'} size={21} color={favorite ? colors.link : colors.secondary} /></Pressable>
   </View>;
 });
 
 /** One library list. Every tab or pushed page owns its view state, so lists never swap content. */
-export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: string }) {
+export default function LibraryScreen({ view, tab, nativeSearch=false }: { view: LibraryView; tab?: string; nativeSearch?:boolean }) {
   useThemeChoice();
   const c = useNodeCast();
   const {width}=useWindowDimensions();
@@ -76,7 +78,7 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
   // Android poster libraries need room for the playable titles on short phones.
   // Keep source, count and refresh feedback together; filters and actions stay intact.
   const compactHeader = androidDesign && posterLayout;
-  const refreshLabel = c.refreshing ? 'Updating library…' : c.libraryNotice || (updated ? `Updated ${new Date(updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : '');
+  const refreshLabel = c.refreshing ? 'Updating library…' : c.libraryNotice || (updated ? `Updated ${new Date(updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : 'Not refreshed yet');
   useAnnouncement(searching?`${filtered.length} search results`:'');
   useAnnouncement(refreshLabel);
   const countLabel = compactHeader ? `${filtered.length.toLocaleString()} ${filtered.length === 1 ? 'title' : 'titles'}` : '';
@@ -89,12 +91,12 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
     })}</View>}
     {!c.connected ? <Empty icon={favorites ? 'heart-outline' : 'tv-outline'} title={favorites ? 'Keep the good ones close' : 'Your library starts here'} message="Add a provider or explore the demo to start watching."><Button title="Connect my provider" onPress={() => c.addProfile()} /><Button title="Explore demo" variant="secondary" onPress={c.startDemo} /></Empty> : <>
       {view === 'watch' && <View style={s.segment}>{sections.map(item => <Pressable key={item.id} accessibilityRole="tab" accessibilityState={{ selected: section === item.id }} haptic={section === item.id ? undefined : 'selection'} onPress={() => set({ search: '', category: 'All', section: item.id })} style={[s.segmentItem, section === item.id && { backgroundColor: colors.selected }]}><Text style={{ color: section === item.id ? colors.selectedText : colors.text, fontWeight: section === item.id ? '700' : '500', fontSize: 14 }}>{item.title}</Text></Pressable>)}</View>}
-      <View style={s.search}>
+      {!nativeSearch&&<View style={s.search}>
         <Icon name="search-outline" size={19} color={colors.secondary} />
         <TextInput value={state.search} onChangeText={setSearch} returnKeyType="search" onSubmitEditing={() => Keyboard.dismiss()} autoCapitalize="none" autoFocus={view === 'search' && Platform.OS !== 'web' && !state.search} placeholder={favorites ? 'Search your favorites' : 'Search your library'} accessibilityLabel="Search library" placeholderTextColor={colors.secondary} style={{ flex: 1, paddingVertical: 16, color: colors.text, fontSize: 16, minHeight: 52 }} autoCorrect={false} />
         {!!state.search && <Pressable accessibilityRole="button" accessibilityLabel="Clear search" onPress={() => setSearch('')} style={s.iconAction}><Icon name="close-circle" size={19} color={colors.secondary} /></Pressable>}
         <Pressable accessibilityRole="button" accessibilityLabel="Library options" onPress={() => c.open({ type: 'organize', view })} style={s.iconAction}><Icon name="options-outline" size={20} color={colors.secondary} /></Pressable>
-      </View>
+      </View>}
       {searching && <SearchScopeControl value={state.scope} onChange={scope => set({ scope })} includeHidden={state.hidden} onHidden={() => set({ hidden: !state.hidden })} favorites={favorites} />}
       {!searching && <FlatList horizontal style={{ flexGrow: 0, flexShrink: 0 }} data={groups} keyExtractor={group => group} showsHorizontalScrollIndicator={false} contentContainerStyle={s.categories} initialNumToRender={8} windowSize={5} scrollsToTop={false}
         renderItem={({ item: group }) => <Pressable accessibilityRole="button" accessibilityState={{ selected: state.category === group }} onPress={() => set({ category: group, scope: 'category' })} style={[s.category, state.category === group && { backgroundColor: colors.selected }]}>{state.category === group && androidDesign && <Icon name="checkmark" size={16} color={colors.selectedText}/>}<Text numberOfLines={2} style={{ color: state.category === group ? colors.selectedText : colors.text, fontSize: 13, fontWeight: '600' }}>{group}</Text></Pressable>} />}
@@ -104,11 +106,11 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
         <Text accessibilityLiveRegion="polite" numberOfLines={compactHeader && !c.libraryNotice ? 2 : undefined} style={[u.small, { flex: 1 }]}>{compactHeader ? [countLabel, subtitle, refreshLabel].filter(Boolean).join(' · ') : refreshLabel}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel="Refresh library" disabled={c.refreshing} onPress={c.refreshLibrary} style={s.iconAction}>{c.refreshing ? <ActivityIndicator size="small" color={colors.link} /> : <Icon name="refresh-outline" size={17} color={colors.secondary} />}</Pressable>
       </View>
-      {c.loading ? <View style={u.center}><ActivityIndicator color={colors.link} /><Text style={u.small}>Bringing your library together…</Text></View> : c.libraryError ? <Empty icon="cloud-offline-outline" title="A little trouble connecting" message={c.libraryError}><Button title="Try again" onPress={c.refreshLibrary} /></Empty> : <RetainedList listRef={list} memory={c.scrollMemory} memoryKey={`${c.demo ? 'demo' : c.active?.id}:${view}:${filterKey}`} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"
+      {c.loading ? <LibrarySkeleton posters={posterLayout}/> : c.libraryError ? <Empty icon="cloud-offline-outline" title="A little trouble connecting" message={c.libraryError}><Button title="Try again" onPress={c.refreshLibrary} /></Empty> : <RetainedList listRef={list} memory={c.scrollMemory} memoryKey={`${c.demo ? 'demo' : c.active?.id}:${view}:${filterKey}`} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"
         key={`${view}:${posterLayout}:${numColumns}`} numColumns={posterLayout ? numColumns : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={filtered} keyExtractor={item => item.id}
         initialNumToRender={posterLayout ? 8 : 12} maxToRenderPerBatch={posterLayout ? 6 : 10} updateCellsBatchingPeriod={30} windowSize={11} removeClippedSubviews={Platform.OS === 'android'}
         contentContainerStyle={[{ paddingHorizontal: 24, paddingBottom: 112 }, !filtered.length && { flex: 1 }]}
-        ListHeaderComponent={!compactHeader && filtered.length ? <View style={[u.between, { paddingBottom: 8 }]}><Text style={u.eyebrow}>{favorites ? 'SAVED FOR YOU' : 'YOUR LIBRARY'}</Text><Text style={u.small}>{filtered.length.toLocaleString()} {section === 'live' && !favorites ? 'channels' : 'titles'}</Text></View> : undefined}
+        ListHeaderComponent={!compactHeader && filtered.length ? <View style={[u.between, { paddingBottom: 8 }]}><Text style={u.eyebrow}>{favorites ? 'SAVED FOR YOU' : 'YOUR LIBRARY'}</Text><Text style={u.small}>{plural(filtered.length,section==='live'&&!favorites?'channel':'title')}</Text></View> : undefined}
         ListEmptyComponent={<Empty icon={favorites ? 'heart-outline' : 'search-outline'} title={deferred.trim() ? 'No matching titles' : favorites ? 'Your favorites belong here' : 'Nothing here just yet'} message={deferred.trim() ? 'Try another name, or reset your search to see the library again.' : favorites ? 'Tap the heart beside a channel, movie, or series. We’ll keep it here for this profile.' : section === 'series' && (c.demo || c.provider?.kind === 'm3u') ? 'Use an Xtream Codes profile for a structured series and episode library.' : 'Try another search or category, or check the library supplied by your provider.'}>{deferred.trim() ? <Button title="Reset search" variant="secondary" onPress={() => set({ search: '', category: 'All' })} /> : favorites ? <Button title="Browse your library" onPress={() => c.browse('live')} /> : null}</Empty>}
         renderItem={renderItem} extraData={favoriteSet} />}
     </>}

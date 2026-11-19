@@ -20,7 +20,7 @@ type Props = {
   scrollRef?: React.ComponentProps<typeof ScrollView>['ref'];
 };
 export function MediaImage({ item, style }: { item: Media; style?: React.ComponentProps<typeof View>['style'] }) {
-  return <View style={[h.image, style]}>{item.artwork || item.logo ? <Image source={item.artwork || { uri: item.logo }} resizeMode="cover" style={StyleSheet.absoluteFill} /> : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 }}><Icon name={item.kind === 'live' ? 'tv-outline' : 'film-outline'} size={30} color="#A3ADA7" /><Text numberOfLines={1} style={{ color: '#E8EEEA', fontSize: 12 }}>{item.group}</Text></View>}</View>;
+  return <View style={[h.image, style]}>{item.artwork || item.logo ? <Image source={item.artwork || { uri: item.logo }} resizeMode="cover" style={StyleSheet.absoluteFill} /> : <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', gap: 8 }}><Icon name={item.kind === 'live' ? 'tv-outline' : 'film-outline'} size={30} color={colors.videoMuted} /><Text numberOfLines={1} style={{ color: colors.videoCopy, fontSize: 12 }}>{item.group}</Text></View>}</View>;
 }
 export default function HomeScreen(p: Props) {
   useThemeChoice();
@@ -39,15 +39,15 @@ export default function HomeScreen(p: Props) {
   return <ScrollView ref={p.scrollRef} testID="home-content" showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { paddingTop: 8, gap: 24 }]}>
     {!androidDesign && <View style={u.between}><View style={{ gap: 8, flex: 1 }}><Text style={u.small}>{greeting}{p.demo ? ' · Demo' : ''}</Text><H1 style={u.h1}>{androidDesign ? 'For you' : 'Watch'}</H1></View><Pressable accessibilityRole="button" accessibilityLabel="Switch active playlist" onPress={p.onProfiles} style={h.avatar}><Icon name="person-outline" color={colors.text} size={20} /></Pressable></View>}
     {!androidDesign && <Pressable accessibilityRole="button" accessibilityLabel="Search channels, movies and series" onPress={p.onSearch} style={h.search}><Icon name="search-outline" size={19} color={colors.secondary} /><Text style={u.small}>Channels, movies, series</Text></Pressable>}
-    {androidDesign && <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}>{(['For you', 'Live TV', 'Movies', 'Series'] as const).map((title, i) => <Pressable key={title} accessibilityRole="button" accessibilityState={{ selected: i === 0 }} onPress={() => i > 0 && p.onBrowse((['live', 'movies', 'series'] as Section[])[i - 1])} style={[h.chip, i === 0 && { backgroundColor: colors.selected }]}>{i === 0 && <Icon name="checkmark" size={16} color={colors.selectedText} />}<Text style={{ color: i === 0 ? colors.selectedText : colors.text, fontWeight: '600', fontSize: 13 }}>{title}</Text></Pressable>)}</ScrollView>}
+
     {p.loading ? <HomeSkeleton/> : connected && featured ? <View style={[h.feature, androidDesign && { minHeight: 226 }]}>
       {androidDesign && !!(featured.artwork || featured.logo) && <MediaImage item={featured} style={StyleSheet.absoluteFill} />}
-      <View style={[h.featureCopy, androidDesign && { backgroundColor: featured.artwork || featured.logo ? '#0A0E0CD9' : '#0D4029', marginTop: featured.artwork || featured.logo ? 80 : 0 }]}>
+      <View style={[h.featureCopy, androidDesign && { backgroundColor: featured.artwork || featured.logo ? colors.videoScrim : colors.featured, marginTop: featured.artwork || featured.logo ? 80 : 0 }]}>
         <Text style={h.kicker}>{resume ? 'CONTINUE WATCHING' : featured.kind === 'live' ? 'FROM YOUR LIVE PLAYLIST' : 'FROM YOUR LIBRARY'}</Text>
         <Text numberOfLines={2} style={h.featureTitle}>{featured.name}</Text>
         <Text numberOfLines={1} style={h.featureMeta}>{featured.group}{p.demo ? ' · Demo' : ''}</Text>
         {resume && <View style={h.track}><View style={[h.progress, { width: `${progressPercent(resume.position, resume.duration)}%` }]} /></View>}
-        <View style={[u.row, { marginTop: 8, gap: 8, flexWrap: 'wrap' }]}><View style={{ alignSelf: 'flex-start' }}><Button title={resume ? 'Resume' : featured.kind === 'live' ? 'Watch live' : 'Play'} icon="play" onPress={() => resume ? p.onResume(resume) : p.onPlay(featured)} /></View><Pressable accessibilityRole="button" accessibilityLabel={`${p.favoriteIds.includes(featured.id)?'Remove':'Save'} favorite: ${featured.name}`} onPress={() => p.onFavorite(featured)} style={h.featureFavorite}><Icon name={p.favoriteIds.includes(featured.id)?'heart':'heart-outline'} color="#E8EEEA" size={20} /></Pressable></View>
+        <View style={[u.row, { marginTop: 8, gap: 8, flexWrap: 'wrap' }]}><View style={{ alignSelf: 'flex-start' }}><Button title={resume ? 'Resume' : featured.kind === 'live' ? 'Watch live' : 'Play'} icon="play" onPress={() => resume ? p.onResume(resume) : p.onPlay(featured)} /></View><Pressable accessibilityRole="button" accessibilityLabel={`${p.favoriteIds.includes(featured.id)?'Remove':'Save'} favorite: ${featured.name}`} onPress={() => p.onFavorite(featured)} style={h.featureFavorite}><Icon name={p.favoriteIds.includes(featured.id)?'heart':'heart-outline'} color={colors.videoCopy} size={20} /></Pressable></View>
       </View>
       {!androidDesign && <View pointerEvents="none" style={h.featureArt}><MediaImage item={featured} style={{ flex: 1, borderRadius: 12 }} />{featured.kind === 'live' && <View style={h.live}><Text style={h.liveText}>LIVE</Text></View>}</View>}
     </View> : connected ? <PlainSection><H2 style={u.h2}>Your playlist is connected</H2><Text style={u.body}>Refresh to load the titles available from your provider.</Text><Button title="Try again" onPress={p.onRetry}/></PlainSection> : <PlainSection><Icon name="tv-outline" size={40} color={colors.secondary} /><H1 style={u.h1}>Your TV, beautifully lit.</H1><Text style={u.body}>Connect your playlist to start watching.</Text><Button title="Connect playlist" icon="add" onPress={p.onAdd} /><Button title="Explore demo" variant="secondary" onPress={p.onDemo} /></PlainSection>}
@@ -65,15 +65,15 @@ const h = themedStyles(() => ({
   search: { minHeight: 44, backgroundColor: colors.pale, borderRadius: 12, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 16, gap: 8 },
   avatar: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center' },
   chip: { minHeight: 44, borderRadius: 999, paddingHorizontal: 16, flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'center', borderWidth: 1, borderColor: colors.line, backgroundColor: colors.panel },
-  feature: { backgroundColor: '#0D4029', borderRadius: 16, minHeight: 194, overflow: 'hidden', flexDirection: 'row' },
+  feature: { backgroundColor: colors.featured, borderRadius: 16, minHeight: 194, overflow: 'hidden', flexDirection: 'row' },
   featureCopy: { flex: 1, padding: 16, gap: 8 }, featureArt: { width: '29%', marginVertical: 16, marginRight: 16, position: 'relative' },
-  featureTitle: { color: '#FFFFFF', fontFamily: 'Inter-800', fontWeight: '800', letterSpacing: -.6, fontSize: 23, lineHeight: 28 },
-  featureMeta: { color: '#D0E9DB', fontSize: 13, lineHeight: 19 }, kicker: { color: '#B9EAD1', fontSize: 10, fontWeight: '800', letterSpacing: .7 },
+  featureTitle: { color: colors.onVideo, fontFamily: 'Inter-800', fontWeight: '800', letterSpacing: -.6, fontSize: 23, lineHeight: 28 },
+  featureMeta: { color: colors.featuredCopy, fontSize: 13, lineHeight: 19 }, kicker: { color: colors.featuredKicker, fontSize: 10, fontWeight: '800', letterSpacing: .7 },
   featureFavorite: { minWidth: 44, height: 44, borderRadius: 999, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center' },
-  image: { backgroundColor: '#18201C', borderRadius: 12, overflow: 'hidden' },
-  track: { height: 3, backgroundColor: '#FFFFFF40', borderRadius: 999, overflow: 'hidden' }, progress: { height: 3, backgroundColor: '#1EC677', borderRadius: 999 },
+  image: { backgroundColor: colors.videoSurface, borderRadius: 12, overflow: 'hidden' },
+  track: { height: 3, backgroundColor: colors.line, borderRadius: 999, overflow: 'hidden' }, progress: { height: 3, backgroundColor: colors.link, borderRadius: 999 },
   channelList: { borderRadius: 16, borderWidth: 1, borderColor: colors.line, backgroundColor: colors.panel, overflow: 'hidden' },
   channel: { flexDirection: 'row', alignItems: 'center', gap: 8, padding: 16, minHeight: 72 },
   channelLogo: { width: 40, height: 40, borderRadius: 10, backgroundColor: colors.pale, alignItems: 'center', justifyContent: 'center' },
-  live: { backgroundColor: colors.live, paddingHorizontal: 8, paddingVertical: 8, borderRadius: 4, alignSelf: 'flex-start' }, liveText: { color: '#FFFFFF', fontSize: 9, fontWeight: '800' },
+  live: { backgroundColor: colors.live, paddingHorizontal: 8, paddingVertical: 8, borderRadius: 4, alignSelf: 'flex-start' }, liveText: { color: colors.onVideo, fontSize: 9, fontWeight: '800' },
 }));

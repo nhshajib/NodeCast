@@ -37,3 +37,18 @@ Phase checks and final browser screenshot/contrast results are recorded in `veri
 | H12 | Fixed | Home shows skeletons during loading, connected-empty refresh separately from disconnected setup, plus Try again on errors. |
 | H13 | Partly fixed | Responsive poster columns, 720pt readable content and tablet Home cards are implemented. Mini player uses safe-area plus platform tab-height fallback; SDK 58 native tabs do not expose a root-level measured bar-height hook. Actual native placement needs confirmation, especially iPad top tabs. |
 | H14 | Fixed in source; native Dynamic Type follow-up | Guide cells size with font scale; channel column shows full names instead of stream IDs (no channel-number field exists in the protected model). Chips/pills grow, series header scrolls with episodes, delete sheet expands to full height. |
+
+## Medium
+
+| Finding | Status | Implementation |
+| --- | --- | --- |
+| M1 | Fixed | Shared typography enforces 12pt phone / 14sp TV floors; splash signature is explicit 12pt. Dense chrome alone uses the allowed font multiplier cap. |
+| M2 | Fixed | Selection text/hearts/radios use link tones on light; progress tracks use line and fills use link; day segments include selected fill, check and state. Video/artwork colors are named fixed-contrast tokens. |
+| M3 | Fixed in source; native track follow-up | Current audio/subtitle rows expose radio state/checks; disabled IconButton uses disabled state/.4 opacity; export/import and organization modes expose selection; guide/advanced controls expose expansion. |
+| M4 | Fixed in source; native keyboard/autofill follow-up | Field allows caller overrides, surface-aware floating labels and announced inline errors. Provider, backup and PIN forms chain through refs and submit actions. Autofill metadata, required-field explanation/disabled Connect, password-length feedback, XMLTV reveal/URL keyboard and TV fullscreen-IME prevention are included. Unsaved native playlist sheets confirm discard. TV File explains picker requirements. |
+| M5 | Fixed | Library/episode skeletons, one Now & next spinner, guide loader text, episode retry, clear/show-all guide/TV actions, Home retry/manage actions, episode loading text and Measuring storage copy. |
+| M6 | Fixed | `formatting.ts` uses Intl.PluralRules for count labels; guide dates use locale formatting; player title uses tail ellipsis/flex; tools use Playback info; library refresh copy never shows an unexplained empty label. |
+| M7 | Fixed in source; native scrolling follow-up | Now line sits behind opaque cells; On now is text and part of the label. TV has a separate synchronized sticky ruler; focus updates preview/header without opening details. |
+| M8 | Fixed in source; native navigation follow-up | iPhone Home/Live/Guide/Library/Search tabs, native library search, reduced header actions, no duplicate Android Home nav chips, inherited native titles suppress duplicate body headings, guide settings pushes natively and pushed titles travel in route params. |
+| M9 | Fixed in source; native keys/focus follow-up | Shared TV track sheet holds chrome open; TV panels do not idle-close; video scrims protect chrome; mini scope receives media keys; Back navigates before closing mini playback; provider sheets trap focus; rail Search retains section. |
+| M10 | Fixed in source; remote follow-up | Chevron Back controls, fill/check selection, Menu/hold hint with per-item options, flexible library heading and grouped two-column settings. Light mode is retained with two-tone focus and fixed video scrims rather than hiding a working setting. |

@@ -1,3 +1,4 @@
+import {colors} from './theme';
 import { Text } from './Typography';
 import React, { useEffect, useRef, useState } from 'react';
 import { AccessibilityInfo, Animated, Easing, Image, StatusBar, StyleSheet, View } from 'react-native';
@@ -93,15 +94,15 @@ export default function StartupSplash({ ready, onFinish, nativeHandoff = true }:
   </Animated.View>;
 }
 const s = StyleSheet.create({
-  root: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: '#0D4029' },
+  root: { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 1000, backgroundColor: colors.featured },
   center: { flex: 1 },
   mark: { position: 'absolute', width: 200, height: 200, top: '50%', left: '50%', marginLeft: -100, marginTop: -100 },
   image: { width: 200, height: 200, borderRadius: 0 },
-  halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: '#1EC677' },
-  orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: '#EEEEE7' },
+  halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: colors.primary },
+  orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: colors.videoSecondary },
   copy: { position: 'absolute', top: '50%', marginTop: 48, left: 24, right: 24, alignItems: 'center', gap: 16 },
-  wordmark: { fontFamily: 'Inter-800', fontWeight: '800', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: '#EEEEE7' },
-  rule: { width: 28, height: 1, backgroundColor: '#1EC677', opacity: .7 },
-  tagline: { fontSize: 14, lineHeight: 21, letterSpacing: .5, color: '#D0E9DB' },
-  signature: { position: 'absolute', left: 20, right: 20, textAlign: 'center', color: '#B5C9BD', fontSize: 9, lineHeight: 16, letterSpacing: 2.4 },
+  wordmark: { fontFamily: 'Inter-800', fontWeight: '800', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: colors.videoSecondary },
+  rule: { width: 28, height: 1, backgroundColor: colors.primary, opacity: .7 },
+  tagline: { fontSize: 14, lineHeight: 21, letterSpacing: .5, color: colors.featuredCopy },
+  signature: { position: 'absolute', left: 20, right: 20, textAlign: 'center', color: colors.videoSignature, fontSize: 12, lineHeight: 16, letterSpacing: 2.4 },
 });

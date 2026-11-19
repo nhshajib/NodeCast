@@ -21,3 +21,20 @@ test('TV Back returns libraries to Home and requires two Home presses inside two
  assert.equal(tvBackAction({home:true,lastBack:300,now:2300}),'exit');
  assert.equal(tvBackAction({home:true,lastBack:300,now:2301}),'warn');
 });
+
+import {plural} from '../src/formatting.ts';
+import {providerFormProblem} from '../src/formValidation.ts';
+test('count labels handle zero, one, many, irregular words and fractional counts',()=>{
+ assert.equal(plural(0,'channel'),'0 channels');assert.equal(plural(1,'title'),'1 title');
+ assert.equal(plural(2,'profile'),'2 profiles');assert.equal(plural(2,'category','categories'),'2 categories');
+ assert.equal(plural(1.5,'title'),'1.5 titles');
+});
+test('provider form explains missing data, rejects unsupported URLs, and accepts each existing source',()=>{
+ const form={kind:'xtream',name:'Home',address:'https://provider.example',username:'example',password:'example'};
+ assert.equal(providerFormProblem(form,'xtream'),'');
+ assert.match(providerFormProblem({...form,password:''},'xtream'),/password/);
+ assert.match(providerFormProblem({...form,address:'file:///x'},'xtream'),/HTTP/);
+ assert.equal(providerFormProblem({...form,kind:'m3u',username:'',password:''},'m3u'),'');
+ assert.match(providerFormProblem(form,'file'),/Import/);
+ assert.equal(providerFormProblem({...form,localText:'#EXTM3U'},'file'),'');
+});

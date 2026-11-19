@@ -1,3 +1,4 @@
+import Headphones from 'lucide-react-native/icons/headphones';
 import React from 'react';
 import type { LucideIcon } from 'lucide-react-native';
 import ArrowLeft from 'lucide-react-native/icons/arrow-left';
@@ -76,7 +77,7 @@ const icons = {
  heart: Heart, 'heart-outline': Heart, 'cafe-outline': Coffee,
  'arrow-forward': ArrowRight, 'arrow-back': ArrowLeft, 'swap-horizontal-outline': ArrowLeftRight,
  'chevron-back': ChevronLeft, 'chevron-forward': ChevronRight, 'chevron-up': ChevronUp, 'chevron-down': ChevronDown,
- 'ellipsis-horizontal': MoreHorizontal, 'options-outline': SlidersHorizontal,
+ 'ellipsis-horizontal': MoreHorizontal, 'headset-outline': Headphones, 'options-outline': SlidersHorizontal,
  'color-palette-outline': Palette, 'shield-outline': Shield, 'shield-checkmark-outline': ShieldCheck,
  'lock-closed-outline': Lock, 'location-outline': MapPin, 'calendar-outline': Calendar,
  'time-outline': Clock, 'timer-outline': Timer, 'refresh-outline': RefreshCw,

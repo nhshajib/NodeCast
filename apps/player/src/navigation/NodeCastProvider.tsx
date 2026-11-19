@@ -95,6 +95,8 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const [playerFullscreen, setPlayerFullscreen] = useState(false);
   const [booting, setBooting] = useState(true);
   const [storageFailed, setStorageFailed] = useState(false);
+  const providerCloseAllowed=useRef(false);
+  const [providerDirty,setProviderDirty]=useState(false);
   const [message, setMessage] = useState<AppMessage | null>(null);
   useEffect(()=>{const delay=messageLifetime(message);if(delay===null)return;const timer=setTimeout(()=>setMessage(null),delay);return()=>clearTimeout(timer)},[message]);
   const [focused, setFocused] = useState<FocusView>('home');
@@ -129,6 +131,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const [episodeQueue, setEpisodeQueue] = useState<{ profile: string; series: Media; items: Media[] } | null>(null);
   const [episodes, setEpisodes] = useState<Media[]>([]);
   const [episodeLoading, setEpisodeLoading] = useState(false);
+  const [episodeRetry,setEpisodeRetry]=useState(0);
   const [episodeError, setEpisodeError] = useState('');
   const [sheetError, setSheetError] = useState('');
   const connection = useRef<AbortController | null>(null);
@@ -155,7 +158,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     const key = `p${++pageCounter}`;
     setPages(current => [...current, { key, page }]);
     pagesRef.current = [...pagesRef.current, { key, page }];
-    router.push({ pathname: isSheet(page.type) ? '/sheet/[type]' : '/page/[type]', params: { type: page.type, key } });
+    router.push({ pathname: isSheet(page.type) ? '/sheet/[type]' : '/page/[type]', params: { type: page.type, key, title:pageTitle(page) } });
   }, []);
   const back = useCallback(() => { if (router.canGoBack()) router.back(); }, []);
   const closeAll = useCallback(() => { if (pagesRef.current.length && router.canDismiss()) router.dismissAll(); }, []);
@@ -318,7 +321,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       .catch(error => { if (!controller.signal.aborted) setEpisodeError(error instanceof ProviderError ? error.message : 'Could not load episodes.'); })
       .finally(() => { if (!controller.signal.aborted) setEpisodeLoading(false); });
     return () => controller.abort();
-  }, [currentSeries, provider]);
+  }, [currentSeries, provider, episodeRetry]);
 
   async function saveChannelOptions(item: Media, value?: ChannelPlayback) {
     const owner = active?.id; if (!owner) throw new Error('Add a profile to save playback options.');
@@ -341,7 +344,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     void loadEpisodes(provider, series, controller.signal).then(items => { if (!controller.signal.aborted) setEpisodeQueue({ profile: active.id, series, items }); }).catch(() => {});
     return () => controller.abort();
   }, [playingSeriesId, active?.id, provider]);
-  function addProfile(profile?: Profile) { if (!family.ready) return; if (family.enabled && !family.unlocked) { family.request(); return; } if (storageFailed) { setMessage({text:'Saved profiles could not be read. Restart the app before adding or editing profiles to protect existing data.',tone:'error'}); return; } setConnectError(''); setSheetError(''); open({ type: 'provider', profile }); }
+  function addProfile(profile?: Profile) { providerCloseAllowed.current=false;setProviderDirty(false); if (!family.ready) return; if (family.enabled && !family.unlocked) { family.request(); return; } if (storageFailed) { setMessage({text:'Saved profiles could not be read. Restart the app before adding or editing profiles to protect existing data.',tone:'error'}); return; } setConnectError(''); setSheetError(''); open({ type: 'provider', profile }); }
   function closePlayer() { sleepTimer.clear(); launchGeneration.current++; setPlayerSession(null); setMinimized(false); setPlayerFullscreen(false); }
   function startPlayer(session: PlayerSession) {
     playerOwner.current = active?.id || 'demo'; setPlayerSession(session); setMinimized(false);
@@ -366,14 +369,11 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   }, [playerSession, playerFullscreen, minimized]);
   function browse(section: Section, category = 'All') {
     const reset = { search: '', category, scope: 'category' as const };
-    if (androidDesign) {
-      if (section === 'live') { setView('watch', { ...reset, section: 'live' }); goTab('live'); }
-      else { setView('library', { ...reset, source: section }); goTab('library'); }
-    } else if (section === 'live') { setView('live', reset); closeAll(); open({ type: 'browse', view: 'live' }); }
-    else { setView(section, reset); goTab(section); }
+    if(section==='live'){setView(androidDesign?'watch':'live',{...reset,section:'live'});goTab('live');}
+    else {setView('library',{...reset,source:section});goTab('library');}
   }
   function openSearch() { setView('search', { scope: 'all' }); if (androidDesign) open({ type: 'browse', view: 'search' }); else goTab('search'); }
-  function openFavorites() { if (androidDesign) { setView('library', { source: 'saved' }); goTab('library'); } else open({ type: 'browse', view: 'saved' }); }
+  function openFavorites(){setView('library',{source:'saved'});goTab('library');}
   function openSettings() { if (androidDesign) goTab('settings'); else open({ type: 'settings' }); }
   function openProfiles() { setSheetError(''); open({ type: 'profiles' }); }
   function goHome() { goTab('home'); }
@@ -404,6 +404,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       if (!sameProvider) { const empty = { profile: nextProfile.id, entries: [] as ViewingEntry[] }; activityRef.current = empty; setActivity(empty); }
       void writeCatalog(nextProfile.id, 'live', items).catch(() => {});
       haptic('success');
+      providerCloseAllowed.current=true;setProviderDirty(false);
       setDemo(false); setLibraryError(''); setConnecting(false); goHome();
     } catch (error) {
       if (!controller.signal.aborted) {
@@ -496,7 +497,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const preview = saved.length ? saved.slice(0, 6) : demo ? [...demoLibrary.filter(i => i.kind === 'movies'), ...demoLibrary.filter(i => i.kind === 'live')].slice(0, 6) : allItems.slice(0, 6);
   const guideChannels = useMemo(() => allItems.filter(item => item.kind === 'live' && !hiddenGroups.includes(item.group)), [allItems, hiddenGroups]);
   const authorize = () => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; };
-  const renderGuide = (scrollRef?: React.Ref<unknown>) => active ? <FullGuide listRef={scrollRef} onOpenProgramme={(item, programme) => open({ type: 'programme', item, programme })} onAuthorize={() => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; }} profile={active} channels={guideChannels} onPlay={item => { void launch(item); }} onSave={guide => updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === active.id ? { ...profile, guide } : profile) }))} /> : <Empty icon="grid-outline" title="Your TV guide" message="Connect a playlist, then add its guide source to see schedules."><Button title="Connect playlist" onPress={() => addProfile()} /></Empty>;
+  const renderGuide = (scrollRef?: React.Ref<unknown>,settingsOnly=false) => active ? <FullGuide settingsOnly={settingsOnly} onOpenSettings={()=>open({type:'guide-settings'})} onSettingsDone={back} listRef={scrollRef} onOpenProgramme={(item, programme) => open({ type: 'programme', item, programme })} onAuthorize={() => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; }} profile={active} channels={guideChannels} onPlay={item => { void launch(item); }} onSave={guide => updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === active.id ? { ...profile, guide } : profile) }))} /> : <Empty icon="grid-outline" title="Your TV guide" message="Connect a playlist, then add its guide source to see schedules."><Button title="Connect playlist" onPress={() => addProfile()} /></Empty>;
   const renderHome = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <HomeScreen scrollRef={scrollRef} active={active} demo={demo} profileCount={vault.profiles.length} loading={loading} liveCount={demo ? demoLibrary.filter(i => i.kind === 'live').length : cache.live?.length}
     favoriteIds={favorites} onFavorite={toggleFavorite} onCategory={group => browse('live', group)} liveChannels={allItems.filter(item => item.kind === 'live')} onSearch={openSearch} preview={preview} savedCount={saved.length} playerName={playerName} error={libraryError}
     onRetry={refreshLibrary} onAdd={() => addProfile()} onDemo={startDemo} onProfiles={openProfiles}
@@ -507,6 +508,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const renderSettings = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <ScrollView ref={scrollRef} contentContainerStyle={u.content} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
     <Text style={u.body}>Your players, playlists, and preferences.</Text>
     <Pressable accessibilityRole="button" accessibilityLabel={`Manage active profile, ${demo?"Demo library":active?.provider.name||"No active profile"}, ${vault.profiles.length} saved profiles, stored on this device`} onPress={openProfiles} style={({ pressed }) => [u.card, { backgroundColor: colors.panel, borderColor: colors.line, gap: 16 }, pressed && { opacity: .8 }]}><View style={u.row}><View style={[s.avatar, { backgroundColor: 'transparent', width: 32, height: 48 }]}><Icon name="layers-outline" color={colors.text} size={23} /></View><View style={{ flex: 1, gap: 8 }}><Text style={u.eyebrow}>{demo ? 'EXPLORING GLOWTV' : active ? 'ACTIVE PROFILE' : 'YOUR LIBRARY'}</Text><Text numberOfLines={2} style={u.label}>{demo ? 'Demo library' : active?.provider.name || 'Make it your own'}</Text><Text style={u.small}>{vault.profiles.length} saved {vault.profiles.length === 1 ? 'profile' : 'profiles'} · {Platform.OS === 'web' ? 'Preview session' : 'Stored on this device'}</Text></View><Icon name="chevron-forward" size={17} color={colors.link} /></View></Pressable>
+    <Button title="Add playlist" icon="add" variant="secondary" onPress={()=>addProfile()}/>
     <View style={s.settingsGroup}><SettingsRow icon="play-circle-outline" title="Default player" subtitle={playerName} onPress={() => open({ type: 'players' })} /><View style={u.divider} /><SettingsRow icon="options-outline" title="Library organization" subtitle="Categories, search, and favorites order" onPress={() => open({ type: 'organize', view: androidDesign ? 'watch' : 'live' })} /></View><Text accessibilityRole="header" style={u.eyebrow}>MAKE IT YOURS</Text><View style={s.settingsGroup}><SettingsRow icon="color-palette-outline" title="Appearance" subtitle="Light, dark or your device setting" onPress={() => open({ type: 'appearance' })} /><View style={u.divider} /><SettingsRow icon="shield-checkmark-outline" title="Family controls" subtitle="PIN and protected categories" onPress={() => open({ type: 'family' })} /></View><Text accessibilityRole="header" style={u.eyebrow}>ON THIS DEVICE</Text><View style={s.settingsGroup}><SettingsRow icon="swap-horizontal-outline" title="Backup & transfer" subtitle="Move profiles and settings to another device" onPress={() => open({ type: 'backup' })} /><View style={u.divider} /><SettingsRow icon="folder-outline" title="Library & storage" subtitle="Cache and viewing history" onPress={() => open({ type: 'storage' })} /><View style={u.divider} /><SettingsRow icon="home-outline" title="Home IP & connection" subtitle="Save or update your home connection" onPress={() => openHomeIP(false)} /><View style={u.divider} /><SettingsRow icon="lock-closed-outline" title="Privacy & storage" subtitle="What stays on your device" onPress={() => open({ type: 'privacy' })} /><View style={u.divider} /><SettingsRow icon="time-outline" title="Version history" subtitle={`What’s new · ${appVersion}`} onPress={() => open({ type: 'history' })} /></View>
     <View style={{ gap: 8 }}><Text accessibilityRole="header" style={u.eyebrow}>SUPPORT GLOWTV</Text><Pressable accessibilityRole="link" accessibilityLabel="Buy me a coffee" accessibilityHint="Opens the optional support website in your browser" onPress={() => { void Linking.openURL('https://buymeacoffee.com/hexorbd').catch(() => setMessage({text:'Couldn’t open the support page. You can visit buymeacoffee.com/hexorbd in your browser.',tone:'error'})); }} style={({ pressed }) => [u.card, { backgroundColor: colors.panel, borderColor: colors.line, opacity: pressed ? .8 : 1 }]}><View style={u.row}><View style={{ width: 32, height: 48, alignItems: 'center', justifyContent: 'center' }}><Icon name="cafe-outline" color={colors.text} size={23} /></View><View style={{ flex: 1, gap: 8 }}><Text style={[u.label, { color: colors.text }]}>Buy me a coffee</Text><Text style={[u.small, { color: colors.secondary }]}>Free to use. Optional support is appreciated.</Text></View><Icon name="open-outline" size={18} color={colors.secondary} /></View></Pressable></View>
     {demo && <Button title="Leave demo" variant="secondary" onPress={() => { setDemo(false); setCache({}); goHome(); }} />}
@@ -515,11 +517,11 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const browseTitle = (view: LibraryView) => view === 'saved' ? 'Favorites' : view === 'search' ? 'Search' : view === 'library' ? 'Library' : view === 'watch' || view === 'live' ? 'Live TV' : view === 'movies' ? 'Movies' : 'Series';
   function pageTitle(page: Page): string {
     switch (page.type) {
-      case 'provider': return page.profile ? 'Edit profile' : 'Add a profile';
+      case 'provider': return page.profile ? 'Edit playlist' : 'Add a playlist';
       case 'profiles': return 'Your playlists'; case 'players': return 'Playback'; case 'delete': return 'Remove profile';
       case 'series': case 'details': return page.item.name; case 'external': return 'Choose your player';
       case 'appearance': return 'Appearance'; case 'backup': return 'Backup & transfer'; case 'storage': return 'Library & storage';
-      case 'family': return 'Family controls'; case 'channel-options': return 'Channel playback'; case 'guide': return 'TV guide';
+      case 'family': return 'Family controls'; case 'channel-options': return 'Channel playback'; case 'guide': return 'TV guide'; case 'guide-settings': return 'Guide source';
       case 'organize': return 'Library options'; case 'home-ip': return 'Home IP setup'; case 'history': return 'Version history';
       case 'browse': return browseTitle(page.view); case 'settings': return 'Settings'; case 'programme': return page.programme.title; default: return 'Privacy & storage';
     }
@@ -537,6 +539,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       case 'history': return <VersionHistory />;
       case 'home-ip': return <HomeIPSetup onSave={baseline => finishHomeIP(baseline)} onSkip={() => finishHomeIP()} />;
       case 'guide': return active ? renderGuide() : null;
+      case 'guide-settings': return active?renderGuide(undefined,true):null;
       case 'organize': {
         const state = views[page.view]; const section = sectionOf(page.view, state);
         return <><LibraryOptions section={section} sort={active?.library?.sort?.[section] || 'provider'} refreshMinutes={active?.library?.refreshMinutes || 30}
@@ -546,13 +549,13 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
           onToggle={group => { if (demo) { setDemoHidden(current => current.includes(group) ? current.filter(item => item !== group) : [...current, group]); return; } saveProfile(profile => ({ ...profile, hiddenGroups: profile.hiddenGroups?.includes(group) ? profile.hiddenGroups.filter(item => item !== group) : [...(profile.hiddenGroups || []), group] }), 'Could not save category preferences.'); }}
           onMove={(id, direction) => { const move = (list: string[]) => { const next = [...list], index = next.indexOf(id), target = index + direction; if (index >= 0 && target >= 0 && target < next.length) [next[index], next[target]] = [next[target], next[index]]; return next; }; if (demo) { setDemoFavorites(move); return; } saveProfile(profile => ({ ...profile, favorites: move(profile.favorites) }), 'Could not save favorites order.'); }} />{!!sheetError && <Notice danger>{sheetError}</Notice>}</>;
       }
-      case 'provider': return <ProviderSheet key={page.profile?.id || 'new'} profile={page.profile} busy={connecting} error={connectError} onSave={(raw, profile) => { void connect(raw, profile); }} />;
+      case 'provider': return <ProviderSheet onDirtyChange={setProviderDirty} key={page.profile?.id || 'new'} profile={page.profile} busy={connecting} error={connectError} onSave={(raw, profile) => { void connect(raw, profile); }} />;
       case 'profiles': return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><Text style={u.body}>Switch profiles or add a new provider. Your favorites stay separate.</Text>{vault.profiles.map(profile => <View key={profile.id} style={[u.card, { borderWidth: 0, padding: 16 }]}><View style={u.between}><View style={{ flex: 1, gap: 8 }}><H2 style={u.h2}>{profile.provider.name}</H2><Text style={u.small}>{profile.provider.kind === 'xtream' ? 'Xtream Codes' : 'M3U playlist'}{active?.id === profile.id ? ' · Active' : ''}</Text></View><Icon name="server-outline" color={colors.link} /></View><Button title={active?.id === profile.id ? 'Reconnect profile' : 'Use this profile'} busy={connecting} onPress={() => { void connect(profile.provider, undefined, profile); }} /><View style={u.between}><Pressable accessibilityRole="button" disabled={connecting} accessibilityLabel={`Edit details for ${profile.provider.name}`} onPress={() => addProfile(profile)} style={s.textAction}><Text style={u.link}>Edit details</Text></Pressable><Pressable accessibilityRole="button" disabled={connecting} accessibilityLabel={`Remove ${profile.provider.name}`} onPress={() => { setSheetError(''); open({ type: 'delete', profile }); }} style={s.textAction}><Text style={[u.link, { color: colors.danger }]}>Remove</Text></Pressable></View></View>)}{!!sheetError && <Notice danger>{sheetError}</Notice>}{!vault.profiles.length && <Notice>No saved profiles yet. Add your first provider to make this space yours.</Notice>}<Button title="Add a profile" icon="add" disabled={connecting || vault.profiles.length >= 30} onPress={() => addProfile()} /><Text style={u.small}>{Platform.OS === 'web' ? 'Browser preview keeps profiles only for this running session. Use Expo Go for device persistence.' : 'Protected by iOS secure storage on this device. No account, password to remember, or cloud backup.'}</Text></ScrollView>;
       case 'players': return <PlaybackSettings choice={preferences.player} profile={active} compatibilityAvailable={compatibilityAvailable} error={sheetError} onPlayer={player => { haptic('selection'); void updatePreferences({ player }).catch(() => setSheetError('Could not save your player preference.')); }} onEngine={liveEngine => saveProfile(profile => ({ ...profile, liveEngine }), 'Could not save the playback engine.')} onFormat={liveFormat => saveProfile(profile => ({ ...profile, liveFormat }), 'Could not save the live format.')} />;
       case 'delete': return <View style={u.content}><Text style={u.body}>{page.profile.provider.name} and its saved favorites will be removed from this device. This does not cancel your IPTV subscription.</Text>{!!sheetError && <Notice danger>{sheetError}</Notice>}<Button title="Remove profile" variant="danger" busy={connecting} onPress={() => { void deleteSavedProfile(page.profile); }} /><Button title="Keep profile" variant="secondary" disabled={connecting} onPress={back} /></View>;
       case 'privacy': return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><H1 style={u.h1}>{'Private by design.\nSimple by choice.'}</H1><Button title="Clear this profile’s viewing history" variant="danger" disabled={!viewing.length} onPress={()=>confirmDestructive("Clear this profile’s viewing history","This deletes viewing history and resume positions for this profile. Saved playlists and favorites remain.",() => removeViewing())} /><View style={u.section}><H2 style={u.h2}>On this device</H2><Text style={u.body}>Server details, passwords, playlist links, and profile favorites use the device’s secure storage. Player preferences, viewing history, and your optional reference IP use local app storage. The browsing cache stores only titles and metadata, without provider passwords or stream URLs. There is no account or cloud sync.</Text></View><View style={u.section}><H2 style={u.h2}>When you connect</H2><Text style={u.body}>Your provider receives the details needed to load and play its content. Artwork loads from URLs supplied by your provider. Prefer HTTPS; HTTP is unencrypted.</Text></View><View style={u.section}><H2 style={u.h2}>The IP check</H2><Text style={u.body}>ipwho.is sees your public IP when you open Home or refresh. We show approximate city/country information, not GPS location. Neither an IP change nor an IP match verifies whether a VPN is on. No IPTV credentials are sent with IP lookups.</Text></View><View style={u.section}><H2 style={u.h2}>External players</H2><Text style={u.body}>Opening VLC or Infuse sends it the complete stream URL, which may include your provider credentials. Only choose apps you trust.</Text></View><Text style={u.small}>Browser preview keeps provider details in memory. Local profiles do not sync to other devices. There is no in-app cloud backup or account recovery. Secure storage availability and uninstall behavior depend on the platform and app build; do not rely on this app as your only copy of provider details. Secure storage does not protect data already visible on an unlocked device.</Text></ScrollView>;
       case 'channel-options': return <ChannelPlaybackOptions key={page.item.id} value={active?.channelPlayback?.[page.item.id]} onSave={value => saveChannelOptions(page.item, value)} />;
-      case 'series': return episodeLoading ? <View style={u.center}><ActivityIndicator color={colors.link} /><Text style={u.small}>Finding your episodes…</Text></View> : episodeError ? <Empty icon="alert-circle-outline" title="Couldn’t load episodes" message={episodeError} /> : <SeriesEpisodes series={page.item} seasonMemory={seasonMemory.current} seriesKey={`${active?.id}:${page.item.id}`} key={page.item.id} episodes={episodes.filter(item => contentAllowed(active, item, !family.enabled || family.unlocked))} history={viewing} onPlay={item => { void launch(item); }} onWatched={changeWatched} />;
+      case 'series': return episodeLoading ? <LibrarySkeleton label="Loading episodes"/> : episodeError ? <Empty icon="alert-circle-outline" title="Couldn’t load episodes" message={episodeError}><Button title="Try again" onPress={()=>{setEpisodeError('');setEpisodeRetry(value=>value+1)}}/></Empty> : <SeriesEpisodes series={page.item} seasonMemory={seasonMemory.current} seriesKey={`${active?.id}:${page.item.id}`} key={page.item.id} episodes={episodes.filter(item => contentAllowed(active, item, !family.enabled || family.unlocked))} history={viewing} onPlay={item => { void launch(item); }} onWatched={changeWatched} />;
       case 'details': {
         const resume = resumePosition(viewing.find(item => item.item.id === page.item.id));
         return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><View style={{ alignItems: 'center', paddingVertical: 24 }}><View style={{ width: 168, height: 232, borderRadius: 21, overflow: 'hidden' }}><Artwork item={page.item} poster /></View></View><View style={{ gap: 8 }}><H1 style={u.h1}>{page.item.name}</H1><View style={u.between}><Text style={u.body}>{page.item.group}{page.item.rating ? ` · ${page.item.rating}` : ''}</Text><Pressable accessibilityRole="button" accessibilityLabel={favorites.includes(page.item.id) ? 'Remove movie from favorites' : 'Save movie to favorites'} onPress={() => toggleFavorite(page.item)} style={{ minWidth: 44, minHeight: 44, alignItems: 'center', justifyContent: 'center' }}><Icon name={favorites.includes(page.item.id) ? 'heart' : 'heart-outline'} color={colors.link} /></Pressable></View></View><Button title={resume ? `Resume in GlowTV · ${timeLabel(resume)}` : 'Play movie'} icon="play" onPress={() => { void launch(page.item, false, resume ? 'internal' : 'default'); }} />{resume > 0 && <Pressable accessibilityRole="button" onPress={() => { void launch(page.item, true); }} style={[s.textAction, { alignSelf: 'center' }]}><Text style={u.link}>Start over</Text></Pressable>}<Button title="Choose another player" variant="secondary" onPress={() => { void launch(page.item, false, 'external'); }} /><View style={{ gap: 8 }}><Text style={u.label}>About this title</Text><Text style={u.body}>{page.item.description || 'No description was provided by this playlist.'}</Text></View><Text style={u.small}>{demo ? 'Public sample film · Demo library' : `From ${active?.provider.name || 'your playlist'}`}</Text></ScrollView>;
@@ -569,7 +572,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     onTracks={tracks => saveProfile(profile => ({ ...profile, tracks }), 'Could not save language preferences.', text=>setMessage({text,tone:'error'}))} onExternal={() => { const item = playerSession.item; closePlayer(); open({ type: 'external', item }); }} /> : null;
 
   return {
-    booting, family, message, setMessage, connected: !!provider || demo, active, demo, provider, vault,
+    booting, family, message, setMessage, providerDirty,setProviderDirty,providerCloseAllowed, connected: !!provider || demo, active, demo, provider, vault,
     welcome: !preferences.onboarded && !active && !demo && !pages.length,
     onboardStart: () => { void updatePreferences({ onboarded: true }).then(() => openHomeIP(true)).catch(() => setMessage({text:'Could not save preferences. Try again.',tone:'error'})); },
     onboardDemo: () => { void updatePreferences({ onboarded: true }).catch(() => setMessage({text:'Could not save preferences.',tone:'error'})); startDemo(); },

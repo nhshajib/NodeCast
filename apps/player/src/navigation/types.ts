@@ -14,7 +14,7 @@ export type ViewState = { search: string; category: string; section: Section; sc
 export type Page = { type: 'provider'; profile?: Profile } | { type: 'profiles' } | { type: 'players' } | { type: 'delete'; profile: Profile } |
   { type: 'series'; item: Media } | { type: 'details'; item: Media } | { type: 'external'; item: Media; preferred?: ExternalPlayer } |
   { type: 'appearance' } | { type: 'storage' } | { type: 'backup' } | { type: 'family' } | { type: 'channel-options'; item: Media } |
-  { type: 'privacy' } | { type: 'organize'; view: LibraryView } | { type: 'guide' } | { type: 'history' } | { type: 'home-ip' } |
+  { type: 'privacy' } | { type: 'organize'; view: LibraryView } | { type: 'guide' } | { type: 'guide-settings' } | { type: 'history' } | { type: 'home-ip' } |
   { type: 'browse'; view: LibraryView } | { type: 'settings' } | { type: 'programme'; item: Media; programme: GuideProgramme };
 export type PageEntry = { key: string; page: Page };
 export type PlayerSession = { item: Media; resumeAt?: number };

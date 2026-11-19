@@ -30,16 +30,23 @@ class TVRemoteController(private val activity: Activity) {
   private var cached = emptyList<View>()
   private var highlighted: View? = null
   private var indicator: LayerDrawable? = null
+  private var indicatedControl: View? = null
   private val scopeMounts = java.util.IdentityHashMap<View, Long>()
   private var mountSequence = 0L
   private var activeScope: View? = null
   private var scopeRoots = emptyList<View>()
   private val indicatorLayout = View.OnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
-    indicator?.setBounds(0,0,view.width,view.height)
+    indicatorBounds(view)
+  }
+  private fun indicatorBounds(container:View) {
+    val control=indicatedControl?:container
+    val bounds=Rect(0,0,control.width,control.height)
+    if(container!==control && container is ViewGroup){if(!inside(control,container))return;container.offsetDescendantRectToMyCoords(control,bounds)}
+    indicator?.bounds=bounds
   }
   private fun highlight(next: View?) {
     highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout);old.scaleX=1f;old.scaleY=1f }
-    highlighted=null;indicator=null
+    highlighted=null;indicator=null;indicatedControl=null
     if(next==null||next is EditText||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
     var target=next
     var parent=next.parent as? View
@@ -50,14 +57,15 @@ class TVRemoteController(private val activity: Activity) {
     }
     val dp=target.resources.displayMetrics.density
     val outline=Outline()
-    target.outlineProvider?.getOutline(target,outline)
-    val radius=if(outline.radius>0f)outline.radius else (target.background as? GradientDrawable)?.cornerRadius ?: 16*dp
+    next.outlineProvider?.getOutline(next,outline)
+    val fallback=if((nativeId(next)?.contains("button:")==true || nativeId(next)?.contains("playback-toggle")==true || nativeId(next)?.contains("category:")==true))next.height/2f else 16*dp
+    val radius=if(outline.radius>0f)outline.radius else (next.background as? GradientDrawable)?.cornerRadius ?: fallback
     fun line(color:Int,width:Float,corner:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=corner.coerceAtLeast(0f);setStroke((width*dp).toInt().coerceAtLeast(1),color) }
     // White remains visible on green; the night separator remains visible on white.
     val ring=LayerDrawable(arrayOf(line(Color.WHITE,3f,radius),line(Color.rgb(10,14,12),2f,radius-3*dp)))
     ring.setLayerInset(1,(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt())
     target.scaleX=1.05f;target.scaleY=1.05f
-    ring.setBounds(0,0,target.width,target.height);target.overlay.add(ring)
+    indicatedControl=next;indicator=ring;indicatorBounds(target);target.overlay.add(ring)
     target.addOnLayoutChangeListener(indicatorLayout);highlighted=target;indicator=ring
   }
   private val arrows = mapOf(KeyEvent.KEYCODE_DPAD_UP to View.FOCUS_UP, KeyEvent.KEYCODE_DPAD_DOWN to View.FOCUS_DOWN,
@@ -254,7 +262,7 @@ class TVRemoteController(private val activity: Activity) {
   }
   private fun inPlayer(view: View): Boolean {
     var node: View? = view
-    while (node != null) { if (nativeId(node)?.startsWith("tv-trap:player:")==true) return true; node=node.parent as? View }
+    while (node != null) { if (nativeId(node)?.startsWith("tv-trap:player:")==true || nativeId(node)?.startsWith("tv-scope:mini:")==true) return true; node=node.parent as? View }
     return false
   }
   fun dispatch(event: KeyEvent): Boolean {
