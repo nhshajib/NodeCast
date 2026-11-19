@@ -61,3 +61,15 @@ if(playerSource.includes(legacyDecoderAfter))playerSource=playerSource.replace(l
 if(playerSource.includes(decoderBefore))playerSource=playerSource.replace(decoderBefore,decoderAfter);
 else if(!playerSource.includes(decoderAfter))throw new Error('Review Android VLC virtual-codec compatibility patch');
 fs.writeFileSync(playerFile,playerSource);
+
+// A VLC instance owns its media players. Stop/release the child before its
+// owner; releasing the instance first can invalidate MP4 demux state while
+// the input thread is still running during a native view teardown.
+const releaseBefore=`        vlc?.release()
+        player?.release()`;
+const releaseAfter=`        player?.stop()
+        player?.release()
+        vlc?.release()`;
+if(playerSource.includes(releaseBefore))playerSource=playerSource.replace(releaseBefore,releaseAfter);
+else if(!playerSource.includes(releaseAfter))throw new Error('Review Android VLC child-before-owner teardown patch');
+fs.writeFileSync(playerFile,playerSource);
