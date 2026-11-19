@@ -61,4 +61,3 @@ if(playerSource.includes(legacyDecoderAfter))playerSource=playerSource.replace(l
 if(playerSource.includes(decoderBefore))playerSource=playerSource.replace(decoderBefore,decoderAfter);
 else if(!playerSource.includes(decoderAfter))throw new Error('Review Android VLC virtual-codec compatibility patch');
 fs.writeFileSync(playerFile,playerSource);
-

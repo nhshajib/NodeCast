@@ -30,6 +30,6 @@ def check(handler,baseline=False):
   status,headers,body=request();assert status==200 and body==VIDEO
   return {'rangeStatus':206,'rangeBytes':128,'partialSuffixOpenEndedInvalidHeadFullRequests':'passed','unchangedVideoSha256':hashlib.sha256(VIDEO).hexdigest()}
  finally:server.shutdown();server.server_close()
-old=subprocess.check_output(['git','show','HEAD:verification/glowtv/android-capture.py'],cwd=ROOT,text=True)
+old=subprocess.check_output(['git','show','79a02a87f2b518df2f5ba557ad2231ac666b35e2:verification/glowtv/android-capture.py'],cwd=ROOT,text=True)
 result={'before':check(load(old),baseline=True),'after':check(load((ROOT/'verification/glowtv/android-capture.py').read_text())),'scope':'Native-test transport only. Production APK, original media bytes and native pixel/process assertions remain unchanged.'}
 print(json.dumps(result,indent=2))
