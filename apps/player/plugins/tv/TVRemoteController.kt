@@ -50,7 +50,7 @@ class TVRemoteController(private val activity: Activity) {
     highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout);old.scaleX=1f;old.scaleY=1f }
     highlighted=null;indicator=null;indicatedControl=null
     if(next==null||next is EditText||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
-    var target=next
+    var target:View=next
     var parent=next.parent as? View
     while(parent!=null){
       if(nativeId(parent)?.startsWith("tv-focus-container:")==true){target=parent;break}
