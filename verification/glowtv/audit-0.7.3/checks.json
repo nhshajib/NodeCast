@@ -416,8 +416,8 @@
   "nativeBuildRequired": "Yes, for changed orientation configuration and existing TV native-controller code; no native module was added. No native builds or releases were produced.",
   "sourceDigest": "d748c65d1516860ab31a94b1c1b0f793272a3a2046644f5b24dbdd871c3b2631",
   "releaseSourceChecks": {
-    "source": "7cb5f25733eda05383192fd41b085bcc5c99385a",
-    "tests": 138,
+    "source": "16033c1e091eafd81a215935ad2270c76abd238d",
+    "tests": 139,
     "typecheck": true,
     "grid": true,
     "protectedScope": true,
@@ -428,6 +428,7 @@
     ],
     "browserRequiredCases": 14,
     "browserSupplementalTV": 2,
-    "nativeStatus": "Builds running; not yet verified"
+    "nativeStatus": "Builds running; not yet verified",
+    "hermesWithoutPluralRules": true
   }
 }
