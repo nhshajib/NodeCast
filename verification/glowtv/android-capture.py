@@ -238,7 +238,7 @@ try:
  else:click('Evening studio,')
  capture('guide')
  if TV:click('Close mini player');back();home()
- else:click('Close');home()
+ else:click('Done');home()
  click('Watch live')
  wait_for_native_video()
  if TV:find('Pause live TV',timeout=20)
@@ -268,20 +268,20 @@ try:
  if not TV:stop_phone_hierarchy()
  click('Back to library')
  if not TV:home()
- click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
- if not TV:home()
+ (click('Movies') if TV else (click('Library'),click('Movies')));find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
+ if not TV:click('Library')
  click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
- else:home();click('Search');fill('Search library','Evening');find('Evening studio',timeout=30)
+ else:click('Live');fill('Search library','Evening');find('Evening studio',timeout=30)
  capture('search')
- if not TV:back() # Android Search is a pushed page; return to its native tabs first.
+ # Android library search stays in the Live tab; native Settings remains available.
  click('Settings');capture('settings')
  checked=[]
- for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Set home IP reference'if TV else'Home IP & connection','Version history']:
+ for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Home IP reference'if TV else'Home IP & connection','Version history']:
   click(label,True);back();checked.append(label)
  if gesture_navigation:
-  home();click('Search');find('Search library')
-  adb('shell','input','keyevent','4');time.sleep(.8);find('GlowTV home')
+  click('Live');find('Search library');click('Settings');click('Appearance',True)
+  adb('shell','input','keyevent','4');time.sleep(.8);find('Appearance');home();find('GlowTV home')
   # Root Back must still leave the app normally, then navigation must work
   # after resume. This catches an accidentally recursive dispatcher bridge.
   adb('shell','input','keyevent','4');time.sleep(1)

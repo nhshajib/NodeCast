@@ -1,3 +1,4 @@
+import {MiniPlayerLayoutProvider,MiniPlayerSafeFrame,useMeasuredMiniPlayerBottom} from './MiniPlayerLayout';
 import {libraryTabView} from '../uiPolicy';
 import {detailRoute} from '../detailRoute';
 import {LibrarySkeleton} from '../Skeletons';
@@ -37,14 +38,15 @@ export function useHeaderOptions() {
 }
 
 // ── Root ─────────────────────────────────────────────────────────────────────
-export function RootNavigator() {
+export function RootNavigator(){return <MiniPlayerLayoutProvider><RootNavigatorContent/></MiniPlayerLayoutProvider>;}
+function RootNavigatorContent() {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const player = c.player;
   const insets=useSafeAreaInsets();
-  const tabBarHeight=Platform.OS==='ios'?(Platform.isPad?0:49):Platform.OS==='android'?80:49;
+  const miniLayout=useMeasuredMiniPlayerBottom();
   const blocked = !!(player.element && !player.minimized);
-  return <View style={{ flex: 1, backgroundColor: colors.bg }}>
+  return <View ref={miniLayout.root} onLayout={miniLayout.measure} style={{ flex: 1, backgroundColor: colors.bg }}>
     <StatusBar hidden={player.fullscreen && !!player.element} barStyle={blocked || isDarkTheme() ? 'light-content' : 'dark-content'} />
     <View style={{ flex: 1 }} pointerEvents={blocked ? 'none' : 'auto'} aria-hidden={blocked} accessibilityElementsHidden={blocked} importantForAccessibility={blocked ? 'no-hide-descendants' : 'auto'}>
       <Stack screenOptions={options}>
@@ -58,7 +60,7 @@ export function RootNavigator() {
       </Stack>
     </View>
     {player.element && <SafeAreaView edges={player.fullscreen || player.minimized ? [] : ['top', 'bottom', 'left', 'right']} accessibilityViewIsModal={!player.minimized} style={player.minimized
-      ? { position: 'absolute', right: 16, bottom: insets.bottom + tabBarHeight + 16, width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: colors.videoBlack }
+      ? { position: 'absolute', right: 16, bottom: miniLayout.bottom(insets.bottom), width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: colors.videoBlack }
       : { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 100, backgroundColor: colors.featured }}>
       {player.element}
       {player.minimized && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, flexDirection: 'row' }}><Pressable noFeedback accessibilityRole="button" accessibilityLabel={`Return to ${player.session?.item.name}`} onPress={player.restore} style={{ flex: 1 }} /><Pressable accessibilityRole="button" accessibilityLabel="Close mini player" onPress={player.close} style={{ width: 44, height: 44, backgroundColor: colors.videoControl, alignItems: 'center', justifyContent: 'center' }}><Icon name="close" color={colors.onVideo} /></Pressable></View>}
@@ -156,7 +158,7 @@ export function TabScreen({ tab }: { tab: string }) {
   useTabScrollToTop(tab === 'guide' ? `${tab}` : undefined, guideList);
   const content = view === 'home' ? c.renderHome(scroll) : view === 'settings' ? c.renderSettings(scroll) : view === 'guide' ? <View style={{ flex: 1 }}>{c.renderGuide(guideList)}</View>
     : isLibraryView(view) ? <LibraryScreen nativeSearch={Platform.OS==='ios'&&['live','library','search'].includes(tab)} view={view} tab={tab} /> : null;
-  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider></View></ScreenFocusProvider>;
+  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider><MiniPlayerSafeFrame owner={tab} focused={focused}/></View></ScreenFocusProvider>;
 }
 
 // ── Pages and sheets ─────────────────────────────────────────────────────────

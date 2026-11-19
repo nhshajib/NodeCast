@@ -10,3 +10,8 @@ export function libraryTabView(tab:string,android:boolean):'watch'|'live'|'libra
  if(tab==='live')return android?'watch':'live';
  return tab==='library'||tab==='search'?tab:null;
 }
+
+/** Window-coordinate measurements account for bottom bars, top tabs and rotation. */
+export function miniPlayerBottom(rootBottom:number|null,contentBottom:number|null,safeBottom:number):number {
+ return Math.max(safeBottom,rootBottom!==null&&contentBottom!==null?Math.max(0,rootBottom-contentBottom):0)+16;
+}

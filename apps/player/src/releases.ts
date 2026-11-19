@@ -1,5 +1,6 @@
-export const appVersion = '0.7.2';
+export const appVersion = '0.7.3';
 export const releases = [
+  {"version": "0.7.3", "date": "November 19, 2026", "title": "Clearer controls. Made for every screen.", "changes": ["iPad supports multitasking and rotation; mini-player placement follows measured native safe bounds and adaptive tab bars.", "iPhone adds a dedicated Live tab and shared Library, with native search bound to the matching list.", "TV adds stronger two-tone focus, focus restoration, Home-first Back, VOD seeking and provider-guide channel information.", "Readable guide cells and adaptive poster grids, larger TV text, safer confirmations and an Undo action for Continue watching.", "Accessible headings, complete media labels, selection states, inline validation and layouts that adapt to larger text.", "Existing profiles, playlists, encrypted backups, playback engines and navigation motion are retained."]},
   {version:'0.7.2',date:'November 18, 2026',title:'A consistent finish, on every screen.',changes:[
     'The 8px spacing grid now includes player controls, track menus, TV switches and guide cells.',
     'Provider catch-up indicators use Lucide icons; guide cells retain room for both schedule and title.',

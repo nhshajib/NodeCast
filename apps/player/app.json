@@ -2,12 +2,12 @@
   "expo": {
     "name": "GlowTV",
     "slug": "nodecast-iphone",
-    "version": "0.7.2",
+    "version": "0.7.3",
     "orientation": "default",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "buildNumber": "702",
+      "buildNumber": "703",
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
@@ -30,7 +30,7 @@
         "backgroundImage": "./assets/android-icon-background.png"
       },
       "predictiveBackGestureEnabled": true,
-      "versionCode": 702
+      "versionCode": 703
     },
     "web": {
       "favicon": "./assets/favicon.png"

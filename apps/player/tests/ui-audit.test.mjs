@@ -59,3 +59,12 @@ test('native library search and tab content share platform-specific view identit
   assert.equal(libraryTabView('home',android),null);
  }
 });
+
+import {miniPlayerBottom} from '../src/uiPolicy.ts';
+test('mini player clears measured native bars, top-tab tablets, rotations and pushed pages',()=>{
+ assert.equal(miniPlayerBottom(852,769,34),99);
+ assert.equal(miniPlayerBottom(1376,1342,34),50);
+ assert.equal(miniPlayerBottom(1032,1012,20),36);
+ assert.equal(miniPlayerBottom(852,null,34),50);
+ assert.equal(miniPlayerBottom(852,900,34),50);
+});
