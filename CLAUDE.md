@@ -18,6 +18,10 @@ The shared app lives in `apps/player/`; run app commands from that directory.
 - **The video player** (`src/BuiltInPlayer.tsx`, `src/Player.tsx`, `src/CompatibilityPlayer.tsx`) keeps a custom chrome over a persistent playback surface, so video survives navigation and the mini player.
 - **Fire TV / Android TV** (`android-tv/`) is driven by the D-pad. It keeps its rail, native focus ring (`plugins/tv/TVRemoteController.kt`) and `PageTransition`. Touch rules apply there only as visible pressed/select feedback; there are no haptics.
 
+## Design skills
+
+`.claude/skills/` holds the ui-ux-pro-max bundle (MIT, from nextlevelbuilder/ui-ux-pro-max-skill): ui-ux-pro-max, design, design-system, brand, ui-styling, banner-design and slides. Use them for visual guidance such as palettes, typography and style references. The rules above still take precedence: native navigation, the 44-point minimum, press feedback and the leaf-green theme in `apps/player/src/theme.tsx`. Ignore their web-only advice (Tailwind, shadcn/ui) for the React Native app, and don't run their Gemini image generators without asking.
+
 ## Checks before committing
 
 ```bash
