@@ -239,6 +239,14 @@ try:
   adb('shell','input','keyevent','127');time.sleep(1)
   assert adb('shell','pidof',package)==initial_pid,'Dedicated Pause changed the initial player process'
   capture('player-initial-media-key')
+  # Exercise the actual native INFO and channel keys, including Back on the
+  # focused overlay. All channels use an original local video fixture.
+  adb('shell','input','keyevent','165');find('On now ·');capture('player-info');adb('shell','input','keyevent','4')
+  adb('shell','input','keyevent','166');wait_for_native_video();adb('shell','input','keyevent','165')
+  root=h.dump();assert any(('Wild North · LIVE' in (n.get('text')or'')or'Quiet studio · LIVE' in (n.get('text')or''))for n in root.iter('node')),'Channel Up did not change the live channel'
+  adb('shell','input','keyevent','4');adb('shell','input','keyevent','167');wait_for_native_video();adb('shell','input','keyevent','165');find('Evening studio · LIVE');adb('shell','input','keyevent','4')
+  assert adb('shell','pidof',package)==initial_pid,'Remote INFO/channel keys changed the app process'
+  (OUT/'emulator-tv-live-keys.json').write_text(json.dumps({'info':True,'channelUpDown':True,'sameProcess':True,'physicalFireTV':False})+'\n')
   (OUT/'emulator-tv-initial-pause.json').write_text(json.dumps({'sameProcess':True,'remoteSelect':True,'dedicatedMediaKeys':True})+'\n')
   click('Back to library');home()
  click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Evening studio,',timeout=45)
