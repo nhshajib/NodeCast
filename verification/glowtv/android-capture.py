@@ -121,8 +121,10 @@ def touch_player(label,timeout=20):
  deadline=time.monotonic()+timeout
  while time.monotonic()<deadline:
   nodes=list(h.dump().iter('node'))
-  target=next((n for n in nodes if n.get('content-desc')==label and n.get('clickable')=='true'),None)
-  if target is None:target=next((n for n in nodes if n.get('content-desc')=='Show player controls' and n.get('clickable')=='true'),None)
+  # Android accessibility can retain Pause/Play nodes inside a pointer-disabled
+  # hidden chrome layer. Wake the overlay first, then fetch a fresh target.
+  target=next((n for n in nodes if n.get('content-desc')=='Show player controls' and n.get('clickable')=='true'),None)
+  if target is None:target=next((n for n in nodes if n.get('content-desc')==label and n.get('clickable')=='true'),None)
   if target is not None:
    b=list(map(int,__import__('re').findall(r'\d+',target.get('bounds',''))))
    if len(b)==4 and b[2]>b[0] and b[3]>b[1]:
@@ -192,12 +194,12 @@ try:
  if TV:
   # Isolate direct playback from guide-preview teardown. Both remote Select
   # and dedicated media keys must preserve the same decoded player process.
-  click('Watch live');wait_for_native_video()
+  click('Watch live');wait_for_native_video();find('Pause live TV',timeout=20)
   initial_pid=adb('shell','pidof',package)
   click('Pause live TV')
   assert adb('shell','pidof',package)==initial_pid,'Remote Select pause changed the initial player process'
   find('Play live TV',timeout=20);capture('player-initial-select')
-  adb('shell','input','keyevent','126');wait_for_native_video()
+  adb('shell','input','keyevent','126');wait_for_native_video();find('Pause live TV',timeout=20)
   adb('shell','input','keyevent','127');time.sleep(1)
   assert adb('shell','pidof',package)==initial_pid,'Dedicated Pause changed the initial player process'
   capture('player-initial-media-key')
@@ -211,6 +213,7 @@ try:
  else:click('Close');home()
  click('Watch live')
  wait_for_native_video()
+ if TV:find('Pause live TV',timeout=20)
  player_pid=adb('shell','pidof',package)
  if not TV:
   # Repeated real touch pauses exercise the native prop-update lifecycle.
