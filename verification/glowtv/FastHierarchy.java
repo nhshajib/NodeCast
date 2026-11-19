@@ -35,6 +35,7 @@ public final class FastHierarchy {
     xml.append("</node>");
   }
   public static void main(String[] args) throws Exception {
+    Looper.prepareMainLooper();
     HandlerThread thread = new HandlerThread("glowtv-test-hierarchy"); thread.start();
     UiAutomation automation = null;
     try {
