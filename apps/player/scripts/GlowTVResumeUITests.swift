@@ -139,8 +139,20 @@ final class GlowTVResumeUITests: XCTestCase {
     func fill(_ label: String, _ value: String, secure: Bool = false) {
       let field = secure ? app.secureTextFields[label] : app.textFields[label]
       XCTAssertTrue(field.waitForExistence(timeout: 15), app.debugDescription)
-      if !field.isHittable { app.scrollViews.firstMatch.swipeUp() }
-      field.tap()
+      // Native sheets retain Home's scroll view underneath. Scroll the form
+      // that contains this field, then require actual keyboard focus before
+      // typing. A keyboard left open by Username does not prove Password focus.
+      let form = app.scrollViews.containing(secure ? .secureTextField : .textField, identifier: label).firstMatch
+      let focusDeadline = Date().addingTimeInterval(15)
+      var focused = false
+      while Date() < focusDeadline {
+        if !field.isHittable && form.exists { form.swipeUp() }
+        if field.isHittable { field.tap() }
+        Thread.sleep(forTimeInterval: 0.5)
+        focused = (field.value(forKey: "hasKeyboardFocus") as? Bool) == true
+        if focused { break }
+      }
+      XCTAssertTrue(focused, "The foreground field did not acquire keyboard focus: \(label). \(app.debugDescription)")
       // Inject at a human pace so controlled inputs receive every native event.
       for character in value { field.typeText(String(character)) }
       if !secure { XCTAssertEqual(field.value as? String, value, "The entered field value was not retained") }
