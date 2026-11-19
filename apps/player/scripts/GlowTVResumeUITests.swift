@@ -165,6 +165,10 @@ final class GlowTVResumeUITests: XCTestCase {
     app.swipeUp()
     tapButton("Connect playlist", scroll: true)
     XCTAssertTrue(app.staticTexts["Evening studio"].firstMatch.waitForExistence(timeout: 30))
+    // Imported content can appear behind a sheet before UIKit finishes dismissal.
+    let sheetDeadline = Date().addingTimeInterval(15)
+    while app.staticTexts["Add a profile"].exists && Date() < sheetDeadline { Thread.sleep(forTimeInterval: 0.2) }
+    XCTAssertFalse(app.staticTexts["Add a profile"].exists, "The playlist sheet did not finish dismissing")
     capture("ios-home")
     element("navigation-tab-guide").tap()
     app.buttons["Add full TV guide"].tap()
