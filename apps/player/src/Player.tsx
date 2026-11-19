@@ -259,8 +259,8 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
       <Pressable accessibilityRole="button" accessibilityLabel="Audio and subtitles" onPress={() => setShowTracks(value => !value)} style={{ padding: 16 }}><Icon name="options-outline" color="#fff" /></Pressable>
       {!television && <Pressable accessibilityRole="button" accessibilityLabel={fullscreen ? 'Exit full screen' : 'Full screen'} onPress={() => fullscreen ? orientation.exit() : orientation.enter()} style={{padding:16}}><Icon name={fullscreen ? 'contract-outline' : 'expand-outline'} color="#fff" /></Pressable>}
       {nextEpisode && <Pressable testID="next-episode" accessibilityRole="button" accessibilityLabel={`Next episode: ${nextEpisode.item.group} · ${nextEpisode.item.name}`} accessibilityState={{ disabled: advancing, busy: advancing }} disabled={advancing} onPress={() => { void advanceEpisode(); }} style={{ maxWidth: television ? '38%' : '100%', minHeight: 54, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 18, backgroundColor: colors.primary, flexDirection: 'row', gap: 8, alignItems: 'center' }}>
-        {advancing ? <ActivityIndicator color={colors.text} /> : <Icon name="play-skip-forward" />}
-        <View style={{ flexShrink: 1, gap: 8 }}><Text style={{ color: colors.text, fontWeight: '700' }}>{advancing ? 'Opening next…' : 'Next episode'}</Text><Text numberOfLines={1} style={{ color: colors.text, fontSize: 11 }}>{nextEpisode.item.group} · {nextEpisode.item.name}</Text></View>
+        {advancing ? <ActivityIndicator color={colors.primaryText} /> : <Icon name="play-skip-forward" color={colors.primaryText} />}
+        <View style={{ flexShrink: 1, gap: 8 }}><Text style={{ color: colors.primaryText, fontWeight: '700' }}>{advancing ? 'Opening next…' : 'Next episode'}</Text><Text numberOfLines={1} style={{ color: colors.primaryText, fontSize: 11 }}>{nextEpisode.item.group} · {nextEpisode.item.name}</Text></View>
       </Pressable>}
     </ChromeLayer>
   </View>;

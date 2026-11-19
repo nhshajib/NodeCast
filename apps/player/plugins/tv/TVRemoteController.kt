@@ -1,6 +1,7 @@
 package __PACKAGE__
 
 import android.app.Activity
+import android.graphics.Outline
 import android.graphics.Rect
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -29,26 +30,42 @@ class TVRemoteController(private val activity: Activity) {
   private var cached = emptyList<View>()
   private var highlighted: View? = null
   private var indicator: LayerDrawable? = null
+  private val scopeMounts = java.util.IdentityHashMap<View, Long>()
+  private var mountSequence = 0L
+  private var activeScope: View? = null
+  private var scopeRoots = emptyList<View>()
   private val indicatorLayout = View.OnLayoutChangeListener { view, _, _, _, _, _, _, _, _ ->
     indicator?.setBounds(0,0,view.width,view.height)
   }
   private fun highlight(next: View?) {
     highlighted?.let { old -> indicator?.let { old.overlay.remove(it) };old.removeOnLayoutChangeListener(indicatorLayout);old.scaleX=1f;old.scaleY=1f }
     highlighted=null;indicator=null
-    if(next==null||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
-    val dp=next.resources.displayMetrics.density
-    fun line(color:String,width:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=12*dp;setStroke((width*dp).toInt().coerceAtLeast(1),Color.parseColor(color)) }
-    val ring=LayerDrawable(arrayOf(line("#1EC677",3f)))
-    next.scaleX=1.02f;next.scaleY=1.02f
-    ring.setBounds(0,0,next.width,next.height);next.overlay.add(ring)
-    next.addOnLayoutChangeListener(indicatorLayout);highlighted=next;indicator=ring
+    if(next==null||next is EditText||!actionable(next)||nativeId(next)=="tv-preferred:reveal-controls")return
+    var target=next
+    var parent=next.parent as? View
+    while(parent!=null){
+      if(nativeId(parent)?.startsWith("tv-focus-container:")==true){target=parent;break}
+      if(nativeId(parent)?.startsWith("tv-scope:")==true||nativeId(parent)?.startsWith("tv-trap:")==true)break
+      parent=parent.parent as? View
+    }
+    val dp=target.resources.displayMetrics.density
+    val outline=Outline()
+    target.outlineProvider?.getOutline(target,outline)
+    val radius=if(outline.radius>0f)outline.radius else (target.background as? GradientDrawable)?.cornerRadius ?: 16*dp
+    fun line(color:Int,width:Float,corner:Float)=GradientDrawable().apply { setColor(Color.TRANSPARENT);cornerRadius=corner.coerceAtLeast(0f);setStroke((width*dp).toInt().coerceAtLeast(1),color) }
+    // White remains visible on green; the night separator remains visible on white.
+    val ring=LayerDrawable(arrayOf(line(Color.WHITE,3f,radius),line(Color.rgb(10,14,12),2f,radius-3*dp)))
+    ring.setLayerInset(1,(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt())
+    target.scaleX=1.05f;target.scaleY=1.05f
+    ring.setBounds(0,0,target.width,target.height);target.overlay.add(ring)
+    target.addOnLayoutChangeListener(indicatorLayout);highlighted=target;indicator=ring
   }
   private val arrows = mapOf(KeyEvent.KEYCODE_DPAD_UP to View.FOCUS_UP, KeyEvent.KEYCODE_DPAD_DOWN to View.FOCUS_DOWN,
     KeyEvent.KEYCODE_DPAD_LEFT to View.FOCUS_LEFT, KeyEvent.KEYCODE_DPAD_RIGHT to View.FOCUS_RIGHT)
   init {
     root.viewTreeObserver.addOnGlobalFocusChangeListener { _, next ->
       highlight(next)
-      if (next != null && allowed(next)) nativeId(next)?.let { remembered[scope(next)] = it; if(remembered.size>300)remembered.remove(remembered.keys.first()) }
+      if (next != null && allowed(next)) nativeId(next)?.let { remembered[scope(next)] = focusId(it); if(remembered.size>300)remembered.remove(remembered.keys.first()) }
     }
     // Fabric can mount/reparent native views without an Android global-layout pass.
     // Repair invalid/hidden focus before drawing; reuse the bounded candidate cache.
@@ -71,6 +88,7 @@ class TVRemoteController(private val activity: Activity) {
       }
     }
   }
+  private fun focusId(id: String) = id.replace("tv-preferred:","tv-control:")
   private fun nativeId(view: View) = view.getTag(R.id.view_tag_native_id) as? String
   private fun scope(view: View): String {
     var node: View? = view
@@ -101,15 +119,21 @@ class TVRemoteController(private val activity: Activity) {
     val now=android.os.SystemClock.uptimeMillis()
     if(!dirty&&now-collectedAt<250)return cached.filter { it.isAttachedToWindow&&it.isEnabled&&it.isFocusable }
     dirty=false;collectedAt=now
+    val mounted=mutableListOf<View>()
     val views = mutableListOf<View>(); val occluders=mutableListOf<View>(); var trap: View? = null
     fun visit(view: View) {
       if (!view.isAttachedToWindow || view.visibility!=View.VISIBLE || view.alpha<=.01f || view.importantForAccessibility==View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) return
+      if (nativeId(view)?.startsWith("tv-scope:")==true || nativeId(view)?.startsWith("tv-trap:")==true) {
+        mounted.add(view)
+        if(!scopeMounts.containsKey(view))scopeMounts[view]=++mountSequence
+      }
       if (nativeId(view)?.startsWith("tv-trap:") == true) trap = view
       if (nativeId(view)?.startsWith("tv-scope:mini") == true) occluders.add(view)
       if (view.width>0&&view.height>0&&view.isEnabled&&view.isFocusable&&(view is com.facebook.react.views.view.ReactViewGroup&&view.isClickable||view is EditText&&view.keyListener!=null)) views.add(view)
       if (view is ViewGroup) for (i in 0 until view.childCount) visit(view.getChildAt(i))
     }
     visit(root)
+    scopeMounts.keys.retainAll(mounted.toSet());scopeRoots=mounted
     val active = trap
     cached = views.filter { view -> (active == null || inside(view,active)) && occluders.none { cover -> !inside(view,cover) && rect(cover).contains(rect(view).centerX(),rect(view).centerY()) } }
     return cached
@@ -135,11 +159,15 @@ class TVRemoteController(private val activity: Activity) {
   private fun ensureFocus(): List<View> {
     val choices = candidates()
     if (!root.hasWindowFocus()) return choices
-    if (choices.any { it === activity.currentFocus }) return choices
-    val shown = choices.filter { visible(it) }
-    val restored = choices.firstOrNull { nativeId(it) == remembered[scope(it)] }
-    val preferred = shown.firstOrNull { nativeId(it)?.startsWith("tv-preferred:") == true }
-    (restored ?: preferred ?: shown.firstOrNull())?.let { focus(it) }
+    val nonRail=scopeRoots.filter { nativeId(it)!="tv-scope:rail" && nativeId(it)?.startsWith("tv-scope:mini")!=true && choices.any { choice -> inside(choice,it) } }
+    val latest=nonRail.maxByOrNull { scopeMounts[it] ?: 0L }
+    val changed=latest!==activeScope;activeScope=latest
+    if(!changed && choices.any { it===activity.currentFocus })return choices
+    val scoped=if(latest!=null)choices.filter { inside(it,latest) } else choices
+    val shown=scoped.filter { visible(it) }
+    val restored=scoped.firstOrNull { nativeId(it)?.let(::focusId)==remembered[scope(it)] }
+    val preferred=shown.firstOrNull { nativeId(it)?.startsWith("tv-preferred:")==true }
+    (restored ?: preferred ?: shown.firstOrNull() ?: choices.firstOrNull { visible(it) })?.let { focus(it) }
     return choices
   }
   private fun scroller(view: View, horizontal: Boolean): View? {

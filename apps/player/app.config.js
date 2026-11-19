@@ -15,7 +15,7 @@ module.exports = () => {
       ...(tv ? { banner: './assets/tv-banner.png' } : {}),
     },
     plugins: [...base.plugins.filter(p => (Array.isArray(p) ? p[0] : p) !== 'expo-screen-orientation'),
-      ['expo-screen-orientation', { initialOrientation: tv ? 'LANDSCAPE' : 'PORTRAIT_UP' }],
+      ['expo-screen-orientation', { initialOrientation: tv ? 'LANDSCAPE' : 'DEFAULT' }],
       ['./plugins/withAndroidTarget', { tv }], ['./plugins/withTVRemote', { tv }], ['./plugins/withAndroidBackDispatch', { tv }]],
   };
 };

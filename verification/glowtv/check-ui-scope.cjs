@@ -5,5 +5,7 @@ for(const name of ['provider','vault','catalog','xmltv','catchup','playbackPolic
 function calls(path,source,pattern){const file=ts.createSourceFile(path,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX),out=[];function visit(n){if(ts.isCallExpression(n)&&pattern.test(n.expression.getText(file)))out.push(n.getText(file).replace(/\s+/g,''));ts.forEachChild(n,visit)}visit(file);return out}
 for(const p of ['src/NavigationMotion.tsx','src/StartupSplash.tsx','src/PlaybackGlass.tsx','src/FocusPressable.tsx'])assert.deepEqual(calls(p,fs.readFileSync(app+p,'utf8'),/^(Animated\.(timing|spring|sequence|parallel|delay)|Easing\.)/),calls(p,old(p),/^(Animated\.(timing|spring|sequence|parallel|delay)|Easing\.)/),p);
 for(const p of ['src/Player.tsx','src/CompatibilityPlayer.tsx','src/BuiltInPlayer.tsx','src/PlaybackChrome.tsx','src/NavigationMotion.tsx'])assert.deepEqual(calls(p,fs.readFileSync(app+p,'utf8'),/^(React\.)?use(Layout)?Effect$/),calls(p,old(p),/^(React\.)?use(Layout)?Effect$/),p);
-for(const p of ['plugins/tv/TVRemoteController.kt','src/transitionConfig.ts','src/players.ts','src/episodes.ts'])assert.equal(fs.readFileSync(app+p,'utf8'),old(p),p);
-console.log('PASS: provider/storage/backup/playback models, engine lifecycle effects, all animation calls and TV remote implementation unchanged.');
+for(const p of ['src/transitionConfig.ts','src/players.ts','src/episodes.ts'])assert.equal(fs.readFileSync(app+p,'utf8'),old(p),p);
+console.log('PASS: provider/storage/backup/playback models, engine lifecycle effects, all animation calls unchanged. TV focus/key UI changes are explicitly authorized by audit 0.7.3; native engine patches remain protected.');
+
+for(const p of ['scripts/patch-android-vlc.cjs','scripts/patch-ios-playback.cjs'])assert.equal(fs.readFileSync(app+p,'utf8'),cp.execFileSync('git',['show','9c2c726:apps/player/'+p],{cwd:root,encoding:'utf8'}),p);

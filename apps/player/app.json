@@ -20,8 +20,7 @@
           "infuse"
         ],
         "UIStatusBarStyle": "UIStatusBarStyleLightContent"
-      },
-      "requireFullScreen": true
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -65,7 +64,7 @@
       [
         "expo-screen-orientation",
         {
-          "initialOrientation": "PORTRAIT_UP"
+          "initialOrientation": "DEFAULT"
         }
       ],
       "./plugins/withIosSceneDelegate.js"

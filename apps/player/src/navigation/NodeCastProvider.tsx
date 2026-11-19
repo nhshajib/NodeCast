@@ -37,7 +37,7 @@ import PlaybackSettings from '../PlaybackSettings';
 import VersionHistory from '../VersionHistory';
 import HomeIPSetup from '../HomeIPSetup';
 import ProgrammeSheet from '../ProgrammeSheet';
-import * as ScreenOrientation from 'expo-screen-orientation';
+import { restoreOrientation } from '../restoreOrientation';
 import Pressable from '../FocusPressable';
 import { Button, Empty, Icon, Notice, colors, u } from '../ui';
 import type { IconName } from '../ui';
@@ -220,7 +220,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   useEffect(() => {
     if (!playerSession || minimized) {
       setPlayerFullscreen(false);
-      if (Platform.OS !== 'web') void ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP).catch(() => {});
+      if (Platform.OS !== 'web') void restoreOrientation().catch(() => {});
     }
   }, [playerSession?.item.id, minimized]);
   useEffect(() => {
@@ -353,7 +353,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   useEffect(() => {
     const listener = BackHandler.addEventListener('hardwareBackPress', () => {
       if (!playerSession || minimized) return false;
-      if (playerFullscreen) { setPlayerFullscreen(false); if (Platform.OS !== 'web') void ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP).catch(() => {}); }
+      if (playerFullscreen) { setPlayerFullscreen(false); if (Platform.OS !== 'web') void restoreOrientation().catch(() => {}); }
       else closePlayer();
       return true;
     });

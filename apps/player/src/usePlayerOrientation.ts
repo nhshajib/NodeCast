@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { isTVBuild } from './FocusPressable';
+import { restoreOrientation } from './restoreOrientation';
 import { Platform } from 'react-native';
 import * as Orientation from 'expo-screen-orientation';
 // A new video can mount before the previous video's asynchronous cleanup finishes.
@@ -17,7 +17,7 @@ export function usePlayerOrientation(onFullscreen: (value: boolean) => void) {
         // Next episode / engine handoff keeps the new player's current orientation.
         if (orientationOwner !== owner) return;
         orientationOwner = null;
-        await Orientation.lockAsync(isTVBuild ? Orientation.OrientationLock.LANDSCAPE : Orientation.OrientationLock.PORTRAIT_UP).catch(() => {});
+        await restoreOrientation().catch(() => {});
       });
     };
   }, []);
@@ -26,7 +26,7 @@ export function usePlayerOrientation(onFullscreen: (value: boolean) => void) {
       if (!alive.current) return;
       try {
         if (Platform.OS === 'web') { setNotice('Rotate your device manually if your browser cannot change orientation.'); return; }
-        await Orientation.lockAsync(landscape ? Orientation.OrientationLock.LANDSCAPE : (isTVBuild ? Orientation.OrientationLock.LANDSCAPE : Orientation.OrientationLock.PORTRAIT_UP));
+        if (landscape) await Orientation.lockAsync(Orientation.OrientationLock.LANDSCAPE); else await restoreOrientation();
         if (alive.current) setNotice('');
       } catch { if (alive.current) setNotice('Rotate your device manually. This device could not change orientation automatically.'); }
     });

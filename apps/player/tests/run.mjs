@@ -21,3 +21,5 @@ import "./catchup.test.mjs";
 import './tv-library.test.mjs';
 
 import './transitions.test.mjs';
+
+import './ui-audit.test.mjs';
