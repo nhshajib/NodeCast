@@ -66,6 +66,8 @@ def fill(label,value):
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
 class Handler(http.server.BaseHTTPRequestHandler):
+ protocol_version='HTTP/1.1'
+ def do_HEAD(self):self.do_GET()
  def log_message(self,*_):pass
  def do_GET(self):
   path=urlparse(self.path).path;action=parse_qs(urlparse(self.path).query).get('action',[''])[0];base='http://'+self.headers.get('Host','10.0.2.2:9090')
@@ -84,7 +86,23 @@ class Handler(http.server.BaseHTTPRequestHandler):
    elif action=='get_series_info':data={'episodes':{'1':[{'id':101,'title':'Evening light','episode_num':1,'container_extension':'mp4','info':{'movie_image':base+'/art.png'}},{'id':102,'title':'A quiet morning','episode_num':2,'container_extension':'mp4'}]}}
    elif action:data=[]
    body=json.dumps(data).encode();kind='application/json'
-  self.send_response(200);self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
+  status=200;content_range=None
+  if kind=='video/mp4' and self.headers.get('Range'):
+   # A real MP4 origin must report byte-range capability accurately. VLC uses
+   # it to select seekable demux behavior; the fixture previously ignored it.
+   import re
+   total=len(body);match=re.fullmatch(r'bytes=(\d*)-(\d*)',self.headers['Range'])
+   valid=bool(match and (match[1]or match[2]))
+   start=int(match[1])if valid and match[1]else max(0,total-int(match[2]))if valid else total
+   end=min(total-1,int(match[2]))if valid and match[1]and match[2]else total-1
+   if not valid or start>=total or start>end or (not match[1]and int(match[2])==0):
+    self.send_response(416);self.send_header('Content-Range',f'bytes */{total}');self.send_header('Content-Length','0');self.end_headers();return
+   status=206;content_range=f'bytes {start}-{end}/{total}';body=body[start:end+1]
+  self.send_response(status);self.send_header('Content-Type',kind);self.send_header('Content-Length',str(len(body)))
+  if kind=='video/mp4':self.send_header('Accept-Ranges','bytes')
+  if content_range:self.send_header('Content-Range',content_range)
+  self.end_headers()
+  if self.command!='HEAD':self.wfile.write(body)
 server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
 def capture(screen):
  time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));(OUT/f'emulator-design-{TARGET}-{screen}.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));print(f'Native {TARGET}: captured {screen}',flush=True)
