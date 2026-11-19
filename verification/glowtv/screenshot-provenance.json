@@ -6,7 +6,17 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-home.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394401670",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7",
+      "artifactId": 14474182519,
+      "version": "0.7.2",
+      "sha256": "5865de99ab6f7b3093dac9816b4366887c0ce38c48f4beed56c7598ecb401bca",
+      "uiRuntimeEquivalentTo": "4d5ac1b5cccc2526566314d27f1f381259b75a68",
+      "reason": "Use the verified fully dismissed Home capture instead of the later capture taken during playlist-sheet dismissal. The production app inputs are identical; only the UI-test helper differs.",
+      "nativeTests": "iPhone 2 passed, 0 failed in the source capture run; all final iPhone/iPad tests also passed."
+    }
   },
   {
     "platform": "ios",
@@ -15,7 +25,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-guide.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -24,7 +38,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-player.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -33,7 +51,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-movies.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -42,7 +64,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-series.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -51,7 +77,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-playlists.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -60,7 +90,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-search.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ios",
@@ -69,7 +103,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ios-settings.png",
     "width": 1320,
-    "height": 2868
+    "height": 2868,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -78,7 +116,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-home.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -87,7 +129,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-guide.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -96,7 +142,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-player.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -105,7 +155,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-movies.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -114,7 +168,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-series.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -123,7 +181,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-playlists.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -132,7 +194,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-search.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "ipad",
@@ -141,7 +207,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/ipad-settings.png",
     "width": 2064,
-    "height": 2752
+    "height": 2752,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    }
   },
   {
     "platform": "android",
@@ -150,7 +220,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-home.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -159,7 +233,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-guide.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -168,7 +246,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-player.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -177,7 +259,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-movies.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -186,7 +272,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-series.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -195,7 +285,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-playlists.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -204,7 +298,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-search.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "android",
@@ -213,7 +311,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/android-settings.png",
     "width": 1080,
-    "height": 1920
+    "height": 1920,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -222,7 +324,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-home.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -231,7 +337,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-guide.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -240,7 +350,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-player.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -249,7 +363,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-movies.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -258,7 +376,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-series.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -267,7 +389,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-playlists.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -276,7 +402,11 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-search.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   },
   {
     "platform": "tv",
@@ -285,6 +415,10 @@
     "usableForMarketing": true,
     "source": "verification/glowtv/native/tv-settings.png",
     "width": 1920,
-    "height": 1080
+    "height": 1080,
+    "captureEvidence": {
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7"
+    }
   }
 ]

@@ -1,0 +1,13 @@
+{
+  "before": {
+    "rangeStatus": 200,
+    "rangeBytes": 152338
+  },
+  "after": {
+    "rangeStatus": 206,
+    "rangeBytes": 128,
+    "partialSuffixOpenEndedInvalidHeadFullRequests": "passed",
+    "unchangedVideoSha256": "86bb66b9c5af498c4a743235335c088fcdfdeefc0de69389a045e32483e86337"
+  },
+  "scope": "Native-test transport only. Production APK, original media bytes and native pixel/process assertions remain unchanged."
+}

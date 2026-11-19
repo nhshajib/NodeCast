@@ -47,7 +47,10 @@ for screen,file in files.items():
 # alone must never qualify a black native video surface for the website.
 with Image.open(files['player'])as image:
  image=image.convert('RGB');width,height=image.size
- top,bottom=(.4,.44)if platform=='tv'else(.14,.16)
+ # The iPhone's safe-area-aware header overlaps the old .14-.16 probe.
+ # Sample the decoded scene above that header, retaining the same strict
+ # original-color test. Black video and green-only UI still fail.
+ top,bottom=(.4,.44)if platform=='tv'else(.09,.11)if platform=='ios'else(.14,.16)
  scene=list(image.crop((int(width*.2),int(height*top),int(width*.8),int(height*bottom))).get_flattened_data())
  dark=sum(14<r<24 and 48<g<59 and 37<b<47 for r,g,b in scene)/len(scene)
  assert dark>.5,f'No original dark scene background in {platform} player capture ({dark:.4f})'
@@ -65,4 +68,4 @@ if args.capture_source:result['captureSource']=args.capture_source
 if args.build_run:result['buildWorkflow']=f'https://github.com/nhshajib/NodeCast/actions/runs/{args.build_run}'
 (out/f'{label}-audit.json').write_text(json.dumps(result,indent=2)+'\n')
 (out/f'{label}-frame-audit.json').write_text(json.dumps({'workflow':workflow,'source':args.source,'capture':f'{label}-player.png','sha256':hashlib.sha256(files['player'].read_bytes()).hexdigest(),'greenVideoBandFraction':green,'darkSceneRegionFraction':dark,'result':'Both original scene colors are present in the native player capture','scope':'Native screenshot inspection; physical-device playback is separate.'},indent=2)+'\n')
-print(f'Imported all eight {platform} native captures from successful workflow {args.run}')
+print(f'Imported all eight {platform} native captures from passing {platform} UI results in workflow {args.run}')

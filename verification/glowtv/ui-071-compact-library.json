@@ -1,0 +1,16 @@
+{
+  "viewport": [
+    360,
+    640
+  ],
+  "title": {
+    "x": 24,
+    "y": 547.6875,
+    "width": 156,
+    "height": 17
+  },
+  "navigationTop": 592,
+  "titleFullyVisible": true,
+  "source": "07f9e7a2b2109bc9284b3b7d3f3b73ec63210a96",
+  "scope": "Browser Android preview at 360x640; independent native API 35 captures verify the actual APK."
+}

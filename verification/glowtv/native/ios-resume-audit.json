@@ -1,9 +1,8 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44004969792",
-  "source": "96bc32c14a93b1087a4ad226f1b092e83d1563c1",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+  "source": "4d5ac1b5cccc2526566314d27f1f381259b75a68",
   "device": "iPhone 17 Pro Max simulator, iOS 26.5",
   "coldStartResumeTest": "passed",
-  "durationSeconds": 257.393,
   "checks": [
     "six tab round trips",
     "background and return after 1, 15 and 60 seconds",
@@ -11,5 +10,6 @@
     "Home content remains visible and interactive"
   ],
   "designCaptureTest": "Passed with all eight native captures; see ios-audit.json",
-  "physicalDevice": false
+  "physicalDevice": false,
+  "suiteDurationSeconds": 897.531
 }

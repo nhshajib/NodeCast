@@ -64,8 +64,7 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
-    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed"
   },
   "ipad": {
     "savedFavoriteVisualState": "passed",
@@ -132,8 +131,7 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
-    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed"
   },
   "android": {
     "savedFavoriteVisualState": "passed",
@@ -200,8 +198,7 @@
     ],
     "screenshots": "home, guide, player, series",
     "scope": "React Native Web platform preview; not a native-device test",
-    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed",
-    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
+    "retainedCardThemeRoundTrip": "posters and rows, dark then light: passed"
   },
   "tv": {
     "savedFavoriteVisualState": "shared icon; remote audit separate",
@@ -255,7 +252,6 @@
       }
     ],
     "screenshots": "home, guide",
-    "scope": "React Native Web platform preview; not a native-device test",
-    "appSource": "5c461cb775b553e671547d41cb7dd210dfba9e97"
+    "scope": "React Native Web platform preview; not a native-device test"
   }
 }

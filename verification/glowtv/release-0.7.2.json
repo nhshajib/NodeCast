@@ -1,0 +1,219 @@
+{
+  "version": "0.7.2",
+  "status": "Published public testing releases",
+  "physicalDeviceTested": false,
+  "appTests": 130,
+  "appRuntimeScope": "UI audit: provider/storage/backup models, JS engine lifecycle effects, native transitions and TV remote handling preserved against 0.7.0. The native Android-only guard ignores unchanged PiP props. Production teardown/engine versions remain unchanged; native fixture HTTP range handling is corrected. Android-only compact poster header and PiP patch do not change iOS output.",
+  "audit": "docs/UI-UX-AUDIT-0.7.2.md",
+  "diff": "docs/UI-UX-0.7.2.patch",
+  "downloads": {
+    "ios": {
+      "file": "GlowTV-0.7.2-unsigned.ipa",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/GlowTV-0.7.2-unsigned.ipa",
+      "sha256": "59dd752d2e9ea866660ea4554854aa3d73231894d4b2a5f527daa27eca527244",
+      "bytes": 32951154,
+      "sourceCommit": "4d5ac1b5cccc2526566314d27f1f381259b75a68",
+      "buildRun": 44458856991,
+      "publishRun": 44467607165,
+      "verification": {
+        "physicalDeviceTested": false,
+        "devicePlatformArm64EmbeddedJSAndVLC": "passed",
+        "archiveIntegrityAndSha256": "passed",
+        "simulatorLaunchStayedOpen": "passed",
+        "iPhoneNativeUI": "2 tests passed",
+        "iPadNativeUI": "2 tests passed",
+        "nativeEightScreensPerDevice": "passed",
+        "nativeVideoPixels": "passed",
+        "identicalIOSRuntimeBetweenAuditAndDeviceBuild": "passed",
+        "typecheck": "passed",
+        "automatedTests": 130,
+        "scope": "ARM64 standalone device build validated; UI audits ran on iPhone and iPad simulators. Physical-device testing remains separate."
+      }
+    },
+    "android": {
+      "file": "GlowTV.apk",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk",
+      "sha256": "705bf846d9bd4e8b8e3f51ac865efbd4c872cc11377ac8210f57cf0bb6e87728",
+      "bytes": 241902421,
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7",
+      "buildRun": 44394394722,
+      "publishRun": 44472462569,
+      "verification": {
+        "physicalDeviceTested": false,
+        "releaseSignatureAndBundle": "passed",
+        "archiveIntegrityAndSha256": "passed",
+        "nativeEightScreensAndEightSettings": "passed",
+        "nativeVideoPixels": "passed",
+        "emulatorApi": 35,
+        "typecheck": "passed",
+        "automatedTests": 130,
+        "scope": "Exact signed APK on Android API 35 emulator; physical device and provider testing remains separate.",
+        "touchPauseResumeCycles": 6,
+        "pauseResumeSameProcessAndVideo": "passed",
+        "nativeBackAfterReopen": "passed"
+      }
+    },
+    "tv": {
+      "file": "GlowTV-TV.apk",
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk",
+      "sha256": "86dc845f3b03beb3437f158063d0c289d418ba7fadba6a0a40711a9c5ce559ba",
+      "bytes": 240384347,
+      "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7",
+      "buildRun": 44394394722,
+      "publishRun": 44472462569,
+      "verification": {
+        "physicalDeviceTested": false,
+        "releaseSignatureAndBundle": "passed",
+        "archiveIntegrityAndSha256": "passed",
+        "nativeEightScreensAndEightSettings": "passed",
+        "nativeVideoPixels": "passed",
+        "emulatorApi": 35,
+        "typecheck": "passed",
+        "automatedTests": 130,
+        "scope": "Exact signed APK on Android API 35 emulator; physical device and provider testing remains separate.",
+        "remoteOnlyNavigation": "passed"
+      }
+    }
+  },
+  "nativeUIAudits": {
+    "ios": {
+      "result": "Passed",
+      "passedTests": 2,
+      "failedTests": 0,
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "5277349A-B219-4ED4-853A-8AE666B9F5B1",
+        "deviceName": "iPhone 17 Pro Max",
+        "modelName": "iPhone 17 Pro Max",
+        "osBuildNumber": "23F77",
+        "osVersion": "26.5",
+        "platform": "iOS Simulator"
+      },
+      "scope": "Native simulator UI tests and captures; physical-device testing is separate.",
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "source": "4d5ac1b5cccc2526566314d27f1f381259b75a68",
+      "captureOverrides": {
+        "home": "ios-home-provenance.json"
+      }
+    },
+    "ipad": {
+      "result": "Passed",
+      "passedTests": 2,
+      "failedTests": 0,
+      "device": {
+        "architecture": "arm64",
+        "deviceId": "9F9B4A17-4195-40F0-8B46-728F6A6AA8EB",
+        "deviceName": "iPad Pro 13-inch (M5)",
+        "modelName": "iPad Pro 13-inch (M5)",
+        "osBuildNumber": "23F77",
+        "osVersion": "26.5",
+        "platform": "iOS Simulator"
+      },
+      "scope": "Native simulator UI tests and captures; physical-device testing is separate.",
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+      "source": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
+    },
+    "android": {
+      "platform": "mobile",
+      "native": true,
+      "input": "Android touch input",
+      "screens": [
+        "home",
+        "guide",
+        "player",
+        "movies",
+        "series",
+        "playlists",
+        "search",
+        "settings"
+      ],
+      "settingsDestinations": [
+        "Appearance",
+        "Family controls",
+        "Default player",
+        "Library organization",
+        "Backup & transfer",
+        "Library & storage",
+        "Home IP & connection",
+        "Version history"
+      ],
+      "actualVideoPixels": true,
+      "androidApi": "35",
+      "emulatorGpu": "swangle",
+      "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
+      "source": "874eadc94c024d9b884af83f131d88684d1835b7",
+      "captureSource": "798e68750c1909dc47252c2b59f362dfd77d8651",
+      "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394394722"
+    },
+    "tv": {
+      "platform": "tv",
+      "native": true,
+      "input": "D-pad, Select, Back and keyboard text only",
+      "screens": [
+        "home",
+        "guide",
+        "player",
+        "movies",
+        "series",
+        "playlists",
+        "search",
+        "settings"
+      ],
+      "settingsDestinations": [
+        "Appearance",
+        "Family controls",
+        "Playback",
+        "Library organization",
+        "Backup & transfer",
+        "Library & storage",
+        "Set home IP reference",
+        "Version history"
+      ],
+      "actualVideoPixels": true,
+      "androidApi": "35",
+      "emulatorGpu": "swangle",
+      "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
+      "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+      "source": "874eadc94c024d9b884af83f131d88684d1835b7",
+      "captureSource": "0e89ef79d34d2362caf6250395ad12f05773264c",
+      "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394394722",
+      "nativeJob": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833/job/135375410021",
+      "jobConclusion": "success",
+      "runScope": "The TV job passed. The failed phone job in this matrix run is not used as phone evidence."
+    }
+  },
+  "limits": [
+    "Native tests ran on simulators/emulators, not physical devices or real providers.",
+    "A non-seekable MP4 origin triggered a VLC crash in Android x86 emulation; final native tests use a range-capable seekable origin.",
+    "No native tvOS target is present."
+  ],
+  "website": {
+    "tests": 4,
+    "strictTypecheck": {
+      "files": 25,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 0
+    },
+    "staticPages": 23,
+    "viewports": [
+      360,
+      768,
+      1280,
+      1920
+    ],
+    "pageAudit": "verification/glowtv/website-audit.json",
+    "downloadLinks": "verification/glowtv/download-links-0.7.2.json",
+    "runtimeErrors": 0,
+    "axeViolations": 0,
+    "htmlErrors": 0,
+    "failedImageRequests": 0,
+    "freshLighthouseRun": false
+  },
+  "nativeScreenshots": 32,
+  "nativePlaybackProofs": [
+    "native/android-pause-resume.json",
+    "native/tv-initial-pause.json"
+  ]
+}

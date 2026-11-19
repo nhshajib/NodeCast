@@ -26,8 +26,11 @@
   "androidApi": "35",
   "emulatorGpu": "swangle",
   "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44144629229",
-  "source": "65d5f7a504fbb441ec57d15bb4419fe44b8afcea",
-  "captureSource": "f20695236500fbf83f219cef8b85f0aa993e1fb0",
-  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44141109196"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+  "source": "874eadc94c024d9b884af83f131d88684d1835b7",
+  "captureSource": "0e89ef79d34d2362caf6250395ad12f05773264c",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394394722",
+  "nativeJob": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833/job/135375410021",
+  "jobConclusion": "success",
+  "runScope": "The TV job passed. The failed phone job in this matrix run is not used as phone evidence."
 }

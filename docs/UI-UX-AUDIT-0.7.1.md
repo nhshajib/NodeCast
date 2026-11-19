@@ -108,3 +108,5 @@ Use `npm ci` in `apps/player` for the locked dependencies. If reproducing the or
 ## Verification
 
 Run `node verification/glowtv/check-ui-scope.cjs` from the repo root: it confirms provider/storage/guide/backup/playback models, engine lifecycle effects, animation calls and the TV remote implementation match 0.7.0. TypeScript and all 130 existing app tests pass. Browser screen/settings checks passed for iPhone, iPad, Android and TV, exercising both themes and small/large phone and TV viewports. Movie/settings screenshots require loaded content rather than a fixed-delay empty frame; these do not replace native device tests. Release build, native audit and download provenance are recorded in `verification/glowtv/release-0.7.1.json` when publication finishes. Real-device/provider playback remains a separate check.
+
+Historical UI candidate: the 0.7.1 IPA was published, but its Android candidates were superseded before publication. The completed grid, native exception, final builds and current verification are documented in [the 0.7.2 audit](UI-UX-AUDIT-0.7.2.md).

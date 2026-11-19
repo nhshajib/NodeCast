@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.0
+## Current published version: 0.7.2
 
-- [**Direct GitHub download — GlowTV-0.7.0-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/GlowTV-0.7.0-unsigned.ipa)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.0)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/SHA256SUMS.txt)
-- Published: 2026-11-18
+- [**Direct GitHub download — GlowTV-0.7.2-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/GlowTV-0.7.2-unsigned.ipa)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.2)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/SHA256SUMS.txt)
+- Published: 2026-11-19
 - Status: Public testing release
-- Size: 34,728,445 bytes (33.1 MiB)
+- Size: 32,951,154 bytes (31.4 MiB)
 - Minimum OS: iOS 16.4 or later
-- SHA-256: `1b079d9a203d10e1a01b3f26a5979c8125feee6af39b74a809c55236d1cc58b7`
+- SHA-256: `59dd752d2e9ea866660ea4554854aa3d73231894d4b2a5f527daa27eca527244`
 
 This is a published GlowTV binary.
 
@@ -24,11 +24,13 @@ This is a published GlowTV binary.
 - **Built for iPhone and iPad:** Watch in portrait or landscape. Compatible native playback supports AirPlay and picture-in-picture; availability depends on the stream and engine.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.0
+## What changed in 0.7.2
 
-- GlowTV branding, launcher icons, Inter typography and a leaf-green design system.
-- Warm iPhone and iPad surfaces, native tabs and sheets, a timeline guide and full-width portrait playback.
-- Existing playlists, profiles, playback engines, backups and transition settings remain compatible.
+- A calmer interface with consistent Lucide icons and an 8px spacing grid.
+- Consistent spacing extends to player controls, track menus, TV switches and guide cells.
+- Simpler information sections, clearer primary actions and fewer repeated controls.
+- Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.
+- Native navigation, existing profiles and playback behavior are retained.
 
 The IPA is unsigned. Sign it with Impactor and your own Apple account. Free Apple signing normally needs renewal every seven days. Keep the app installed when updating to retain profiles.
 

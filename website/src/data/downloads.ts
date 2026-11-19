@@ -14,11 +14,14 @@ export const features:Record<DownloadPlatform,string[][]>={
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
- if(version==='0.7.1')return [
+ if(version==='0.7.1'||version==='0.7.2')return [
   'A calmer interface with consistent Lucide icons and an 8px spacing grid.',
+  ...(version==='0.7.2'?['Consistent spacing extends to player controls, track menus, TV switches and guide cells.']:[]),
   'Simpler information sections, clearer primary actions and fewer repeated controls.',
   'Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.',
   platform==='tv'?'Remote focus and virtualized list measurements stay aligned with the updated spacing.':'Native navigation, existing profiles and playback behavior are retained.',
+  ...(platform==='ios'?[]:['Android keeps playback running through unchanged player settings.']),
+  ...(platform==='android'?['A compact movie and series header leaves more room for titles on small phones.']:[]),
  ];
  if(version==='0.7.0')return [
   'GlowTV branding, launcher icons, Inter typography and a leaf-green design system.',

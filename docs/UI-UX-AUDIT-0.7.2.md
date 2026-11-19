@@ -1,0 +1,141 @@
+# GlowTV UI audit — 0.7.2
+
+Baseline: the published 0.7.0 source, commit `5c1ce75`. Scope: existing iPhone/iPad, Android phone and Android TV/Fire TV UI. Native navigation, animation timings, remote implementation, provider/data models and player lifecycle effects are retained. Apple TV is not an existing target.
+
+## Findings and fixes
+
+| Requested check | Screen / component | Finding and change |
+| --- | --- | --- |
+| Decorative stripes on cards | Home, library, settings, guide and version cards | No purely decorative card stripes found. Keep actual playback progress, the guide's current-time indicator, focus rings and dividers: these communicate state. No invented issue or cosmetic replacement. |
+| Colored circles behind icons | All empty states (`ui.Empty`); Settings (`SettingsRow`, profile and support rows); Home avatar/favorite; Home IP intro; Playback defaults | Removed generic icon backplates and the extra empty-state tile. Use bare Lucide icons aligned to a stable column. Keep the supplied brand logo, provider artwork and contrast scrims on artwork/video controls. |
+| Emojis / text standing in for icons | TV library favorites; Appearance, Library options, provider tabs, guide filters, series seasons, backup tabs and player menus | No emoji headers found. Unicode heart/check/radio and catch-up glyphs and mixed icon families were present in controls. Replaced them with Lucide icons. Selected favorites use a filled heart, preserving a visible saved/unsaved distinction. OS-native tab bars use local 1×/2×/3× Lucide images rather than SF/Material glyphs; system back gestures and navigation remain native. |
+| Passive content wrapped in cards | Welcome hero, disconnected Home, Privacy sections, Home IP instructions, Network details, movie poster surround | Removed passive promotional/information card treatments. `PlainSection` (styled-components) or the neutral `u.section` expresses information through headings and spacing. Keep actionable settings groups, playable media, confirmation tasks and editable forms. |
+| Weak hierarchy | Home, Settings, Backup & transfer | Home's featured title and Play/Resume are the primary focus. Removed duplicate Browse/playlists/playback navigation beneath the library; native tabs, header and Settings retain those destinations. Settings has one active-profile entry instead of two links to the same profile destination. Backup's mode controls and optional support use secondary styling so the task's commit action is dominant. |
+| Non-semantic color | Settings support/profile, Network warnings, TV connection, Version history, default-player and library icons | Removed leftover purple, cream and brown UI accents and hard-coded light panels in dark mode. Memoized movie/poster and media-row components now subscribe to appearance changes, fixing retained light text colors after a dark-mode switch without remounting lists. Three color families: primary green, neutral, semantic red. Dark/light surface and contrast tones belong to those families. Green marks action/selection/focus/progress; red marks LIVE/errors/destructive actions. |
+| Off-grid spacing | Shared primitives; Home; guide cells/Now & next/program sheet; playlists; movies/episodes; player controls and track menus; TV switches; all settings; TV Home, connection, library and shell | Moved visual padding/margins/gaps to 8px multiples. The design token file defines 8/16/24/32/40/48/64. Type sizes, optical icon strokes, borders, safe-area values, video aspect ratios and system bar dimensions are not spacing tokens. TV list/grid measurements were updated with the changed visual row sizes so virtualization remains accurate. |
+| Clutter | Home, Welcome, Settings support, IP help, movie details | Removed duplicate navigation, decorative onboarding framing, duplicated settings entry, excess support copy and the movie poster's outer card. On Android poster libraries, source/count/refresh metadata share one row instead of repeated headings, giving the first movie title space on short phones; every filter and action remains. Kept provider error messages, privacy/credential disclosures, IP/VPN limitations and destructive-action confirmations. |
+
+## Before / after examples
+
+These show the recurring fix per category. The complete per-file, before/after implementation is in [UI-UX-0.7.2.patch](UI-UX-0.7.2.patch).
+
+Bare settings icons:
+
+```diff
+- rowIcon: { width: 40, height: 40, borderRadius: 14, backgroundColor: colors.pale }
+- <View style={s.rowIcon}><Icon name={icon} size={21} /></View>
++ <IconSlot><Icon name={icon} size={21} /></IconSlot>
+```
+
+Real icons in controls:
+
+```diff
+- <Text>{favoriteIds.has(item.id) ? '♥' : '♡'}</Text>
++ <Icon name={favoriteIds.has(item.id) ? 'heart' : 'heart-outline'} />
+- <Text>{choice === value ? '● ' : '○ '}{label}</Text>
++ <Icon name={choice === value ? 'radio-button-on' : 'radio-button-off'} />
++ <Text>{label}</Text>
+```
+
+Passive information:
+
+```diff
+- <View style={u.card}><Text style={u.h2}>On this device</Text>…</View>
++ <View style={u.section}><Text style={u.h2}>On this device</Text>…</View>
+- <View style={h.emptyFeature}>…</View>
++ <PlainSection>…<Button title="Connect playlist" … /></PlainSection>
+```
+
+Hierarchy and clutter:
+
+```diff
+- <SectionHeading title="Browse" />  // repeated native destinations
+- <SettingsRow title="Saved profiles" onPress={openProfiles} />
++ // Browse remains in tabs / See all. Profiles remain in the active-profile entry.
+- <Button title="Buy me a coffee" variant="mint" … />
++ <Button title="Buy me a coffee" variant="secondary" … />
+```
+
+Semantic, theme-safe color:
+
+```diff
+- { backgroundColor: '#EEEEE7', borderColor: '#EED9B7' }
+- { color: '#65523E' }
++ { backgroundColor: colors.panel, borderColor: colors.line }
++ { color: colors.secondary }
+- { borderColor: '#DED9F3' } // latest-version decoration
++ // Standard neutral card border; CURRENT text conveys version state.
+```
+
+Retained cards respond to appearance changes without remounting:
+
+```diff
+ const PosterItem = React.memo(function PosterItem(props) {
++  useThemeChoice();
+   return …;
+ });
+ const RowItem = React.memo(function RowItem(props) {
++  useThemeChoice();
+   return …;
+ });
+```
+
+The original retained title stayed `rgb(17, 22, 19)` after switching to dark. It now uses `rgb(232, 238, 234)` in dark and restores the original value in light. Poster and row checks passed on iPhone, iPad and Android previews.
+
+Grid and virtualization:
+
+```diff
+- content: { paddingHorizontal: 20, paddingTop: 12, gap: 24 }
++ content: { paddingHorizontal: space.md, paddingTop: space.sm, gap: 24 }
+- gap: 10, padding: 18
++ gap: 8, padding: 16
+- CHANNEL_ROW_HEIGHT=54; CHANNEL_ROW_GAP=6;
++ CHANNEL_ROW_HEIGHT=56; CHANNEL_ROW_GAP=8;
+- { length:228, offset:5+index*228 }
++ { length:232, offset:8+index*232 }
+```
+
+## Updated code and tokens
+
+- [Design tokens](../apps/player/src/designTokens.ts): grid, controls, radii and the three-family palette.
+- [Styled-components primitives](../apps/player/src/AuditPrimitives.tsx): `PlainSection` and `IconSlot`.
+- [Lucide adapter](../apps/player/src/icons.tsx): existing semantic call sites retained; direct subpath imports avoid importing the entire icon library.
+- [Shared React Native UI](../apps/player/src/ui.tsx), [theme](../apps/player/src/theme.tsx), [Home](../apps/player/src/HomeScreen.tsx), [settings rows](../apps/player/src/navigation/shared.tsx).
+- [Native tab icon generation](../verification/glowtv/generate-tab-icons.cjs). Native tab images include density variants and Lucide's license.
+
+Use `npm ci` in `apps/player` for the locked dependencies. If reproducing the original dependency addition: `npx expo install react-native-svg`, then `npm install lucide-react-native styled-components`. SVG is the only added native visual dependency; a new native build is required. No player engine/API/data migration is involved. Existing styles are retained outside audited components rather than introducing a global styling rewrite.
+
+## Verification
+
+Run `node verification/glowtv/check-ui-grid.cjs`: all 430 layout properties, including conditional branches, use 8px spacing. Negative half-size offsets that center splash artwork and the seek thumb remain geometry, not layout gaps. Run `node verification/glowtv/check-ui-scope.cjs` from the repo root: it confirms provider/storage/guide/backup/playback models, engine lifecycle effects, animation calls and the TV remote implementation match 0.7.0. TypeScript and all 130 existing app tests pass. Browser screen/settings checks passed for iPhone, iPad, Android and TV, exercising both themes and small/large phone and TV viewports. Movie/settings screenshots require loaded content rather than a fixed-delay empty frame; these do not replace native device tests. Release build, native audit and download provenance are recorded in `verification/glowtv/release-0.7.2.json`. Real-device/provider playback remains a separate check.
+
+Native automation waits for visible native tabs after Back, actual decoded video pixels before pausing, and wakes auto-hidden phone controls before asserting playback state. Its test-only native hierarchy reader avoids UIAutomator’s idle wait exceeding the unchanged four-second auto-hide timer. It does not change app animations, issue repeated Back/Play/Pause to force a pass, or accept a restarted process. All six touch pause/resume cycles and same-process checks remain required. Native build and capture source commits are recorded separately.
+
+## Native exception found during the final release audit
+
+While auditing repeated UI updates, the dependency's default `pictureInPicture=false` setter was found to mark the player for recreation even when its value was unchanged. The existing guarded patch now applies the same equality check already used for source/options. This avoids unnecessary decoder recreation from UI prop updates. The engine/library version, decoding configuration, JS lifecycle effects, playback features, identifiers and signing remain unchanged. This is the single native UI guard exception; it is not an engine migration. The guarded patch is idempotent.
+
+```diff
+-for (const declaration of [sourceDeclaration, optionsDeclaration]) {
++for (const declaration of [sourceDeclaration, optionsDeclaration, pictureInPictureDeclaration]) {
+   // Existing guarded replacement emits: if (field == value) return
+ }
+```
+
+The full patch includes the exact declarations in `scripts/patch-android-vlc.cjs`. The iPhone/iPad binary does not use this Android-only patch.
+
+The final guide cells reserve 56px for their schedule and title with 8px padding/gaps; TV rows with time labels reserve 80px. This avoids clipping after the grid change. Floating labels and conditional web-header insets also follow the grid. Artwork/provider colors and native system metrics remain content or system values.
+
+## Native test transport and remaining scope
+
+The synthetic MP4 origin originally ignored byte-range requests and did not implement HEAD. It now serves partial, suffix and open-ended ranges with correct 206/416 responses and content lengths. Independent HTTP requests verified these contracts against the same original media bytes. Native tests retain decoded-frame, same-process and remote-only assertions, and add direct Select/media-key pause checks before repeating guide-preview playback.
+
+A proposed native teardown change was reverted after checking VLC's upstream reference ownership; it did not resolve the observed emulator crash and was not justified as a UI change. Production teardown and the engine version remain unchanged. The only native UI guard is the unchanged-PiP-prop check described above. Non-seekable MP4 playback triggered a VLC crash in the Android x86 emulator during this investigation; the final native transport checks cover a seekable MP4 origin. Physical providers and hardware remain separate checks.
+
+## Published result
+
+All three 0.7.2 testing installers are public. The [release record](../verification/glowtv/release-0.7.2.json) and each edition's `build.json` retain the exact binary source, native-check source, build/publish run, size, minimum OS and SHA-256.
+
+Native iPhone and iPad tests each passed twice. The Android phone passed all eight screens and eight settings destinations, six real touch pause/resume cycles in the same process, original decoded frames, and navigation after reopening. The TV passed eight screens and settings destinations with only remote input, plus Select and dedicated media-key pause/resume before guide-preview replay. Separate positive phone/TV jobs are accepted only against the same compiled APK build; the publisher also verifies their native result bundles. A failed matrix job is never counted for that edition.
+
+The website includes all 32 refreshed native originals and optimized gallery derivatives. Its final build, page audit and published download checks are recorded alongside the release. The previous Lighthouse and official Schema.org responses are historical evidence, not fresh measurements of the current website. Physical-device and real-provider testing remain separate.

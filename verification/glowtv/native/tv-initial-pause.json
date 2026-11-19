@@ -1,0 +1,7 @@
+{
+  "sameProcess": true,
+  "remoteSelect": true,
+  "dedicatedMediaKeys": true,
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+  "source": "874eadc94c024d9b884af83f131d88684d1835b7"
+}

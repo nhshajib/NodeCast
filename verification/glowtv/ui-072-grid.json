@@ -1,0 +1,12 @@
+{
+  "source": "874eadc94c024d9b884af83f131d88684d1835b7",
+  "result": "passed",
+  "styleProperties": 430,
+  "gridPixels": 8,
+  "scope": "All layout padding, margin and gap numeric values in shared and TV TSX, including conditional branches. The AST check runs against actual source, not screenshots.",
+  "exceptions": [
+    "Negative half-size offsets center supplied splash artwork and the seek thumb; their geometry and animation calls are preserved.",
+    "OS safe-area values, text/icon metrics, borders, aspect ratios and time-axis geometry are not UI gaps."
+  ],
+  "command": "node verification/glowtv/check-ui-grid.cjs"
+}

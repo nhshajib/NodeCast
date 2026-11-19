@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.0
+## Current published version: 0.7.2
 
-- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk.sha256)
-- Published: 2026-11-18
+- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk.sha256)
+- Published: 2026-11-19
 - Status: Public testing release
-- Size: 238,272,181 bytes (227.2 MiB)
+- Size: 240,384,347 bytes (229.2 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `cd3c462569622763ad72e973f04e864355b58339f4bb157b7224ed1692cf1492`
+- SHA-256: `86dc845f3b03beb3437f158063d0c289d418ba7fadba6a0a40711a9c5ce559ba`
 
 This is a published GlowTV binary.
 
@@ -24,12 +24,14 @@ This is a published GlowTV binary.
 - **A lighter channel library:** Use the default text list, enable grid or logos when you want them, and organize each media library separately.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.0
+## What changed in 0.7.2
 
-- GlowTV branding, launcher icons, Inter typography and a leaf-green design system.
-- A dedicated TV icon rail, featured live-channel Home and compact guide with remote focus.
-- Existing playlists, profiles, playback engines, backups and transition settings remain compatible.
-- Repeated identical player updates keep the existing VLC decoder alive instead of restarting playback.
+- A calmer interface with consistent Lucide icons and an 8px spacing grid.
+- Consistent spacing extends to player controls, track menus, TV switches and guide cells.
+- Simpler information sections, clearer primary actions and fewer repeated controls.
+- Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.
+- Remote focus and virtualized list measurements stay aligned with the updated spacing.
+- Android keeps playback running through unchanged player settings.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

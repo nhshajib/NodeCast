@@ -4,7 +4,7 @@
   "failedTests": 0,
   "device": {
     "architecture": "arm64",
-    "deviceId": "4B0C3615-AC60-4C5E-BAB2-78EE93DB5774",
+    "deviceId": "9F9B4A17-4195-40F0-8B46-728F6A6AA8EB",
     "deviceName": "iPad Pro 13-inch (M5)",
     "modelName": "iPad Pro 13-inch (M5)",
     "osBuildNumber": "23F77",
@@ -12,6 +12,6 @@
     "platform": "iOS Simulator"
   },
   "scope": "Native simulator UI tests and captures; physical-device testing is separate.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44131878153",
-  "source": "581df18358181a5b531767ee6d57130e64bb2330"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44458856991",
+  "source": "4d5ac1b5cccc2526566314d27f1f381259b75a68"
 }

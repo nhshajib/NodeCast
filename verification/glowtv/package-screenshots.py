@@ -22,6 +22,12 @@ for platform in ['ios','ipad','android','tv']:
    usable=sum(r<50 and 150<g<230 and 70<b<160 for r,g,b in pixels)/(region.width*region.height)>.01
   item={'platform':platform,'screen':screen,'native':native.exists(),'usableForMarketing':usable,'source':str(capture.relative_to(ROOT)),'width':original[0],'height':original[1]}
   if not usable:item['limitation']='The iPad simulator snapshot has a black video surface. Keep this diagnostic capture out of marketing until a decoded-frame/device capture is verified.'
+  if native.exists():
+   audit_path=SOURCE/'native'/(platform+'-audit.json')
+   if audit_path.exists():
+    audit=json.loads(audit_path.read_text());item['captureEvidence']={'workflow':audit.get('workflow'),'sourceCommit':audit.get('source')}
+   override_path=SOURCE/'native'/(name+'-provenance.json')
+   if override_path.exists():item['captureEvidence']=json.loads(override_path.read_text())
   provenance.append(item)
   if usable:shutil.copyfile(capture,target/(name+'.png'))
   else:(target/(name+'.png')).unlink(missing_ok=True)

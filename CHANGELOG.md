@@ -1,5 +1,18 @@
 # GlowTV changes
 
+## 0.7.2 — November 19, 2026 · UI audit
+
+- Consistent Lucide icons with clear saved/unsaved favorite states.
+- An 8px layout grid, including player controls, track menus, TV switches, guide cells and floating labels, and three UI color families: primary green, neutral and semantic red.
+- Removed generic icon backplates, passive information cards and duplicate navigation; playable items and actionable settings retain cards.
+- Clearer Home hierarchy and less promotional/support clutter. Every existing destination and feature remains available.
+- Correct dark/light appearance changes for retained movie cards and media rows.
+- Existing transitions, animations, provider/storage models and JS player lifecycle effects retained.
+- Android native VLC now ignores unchanged picture-in-picture props, preventing unnecessary decoder recreation during UI updates.
+- Native release builds and screen audits passed. Physical-device/provider compatibility remains a separate check.
+- Refreshed native iPhone, iPad, Android and TV screenshots and direct website download metadata.
+- The complete screen-by-screen findings, code diffs and tokens are linked in [the UI audit](docs/UI-UX-AUDIT-0.7.2.md).
+
 ## GlowTV 0.7.0 — November 18, 2026 · Public testing release
 
 - Website downloads now link directly to each published IPA/APK, with platform features, version details, checksums and release notes. GlowTV 0.7.0 is published for iPhone/iPad, Android phone/tablet and Android TV/Fire TV.

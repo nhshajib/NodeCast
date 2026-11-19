@@ -1,6 +1,20 @@
 # iPhone version history
 
+## 0.7.2 — November 19, 2026 · UI audit
+
+- Consistent Lucide icons with clear saved/unsaved favorite states.
+- An 8px layout grid, including player controls, track menus, TV switches, guide cells and floating labels, and three UI color families: primary green, neutral and semantic red.
+- Removed generic icon backplates, passive information cards and duplicate navigation; playable items and actionable settings retain cards.
+- Clearer Home hierarchy and less promotional/support clutter. Every existing destination and feature remains available.
+- Correct dark/light appearance changes for retained movie cards and media rows.
+- Existing transitions, animations, provider/storage models and player lifecycle effects retained.
+- Native release builds and screen audits passed. Physical-device/provider compatibility remains a separate check.
+
 [← iPhone download & installation](README.md) · [All editions](../../../CHANGELOG.md)
+
+## 0.7.1 · November 18, 2026 · Public iPhone testing release
+
+- Initial Lucide icons, simplified Home/settings information and appearance fixes. Superseded by the complete 0.7.2 grid audit.
 
 ## 0.7.0 · November 18, 2026 · Public testing release
 

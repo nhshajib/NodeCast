@@ -1,9 +1,9 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44144629229",
-  "source": "65d5f7a504fbb441ec57d15bb4419fe44b8afcea",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
+  "source": "874eadc94c024d9b884af83f131d88684d1835b7",
   "capture": "tv-player.png",
-  "sha256": "df80deccc5ccd4b0a5915761b43d4bb0f1a744640b122ff4b104e5e84aa3e745",
-  "greenVideoBandFraction": 0.32902777777777775,
+  "sha256": "7a9c114882875a523824b00904897167a7bd22360456eeed4357fea41d9bc66a",
+  "greenVideoBandFraction": 0.32861111111111113,
   "darkSceneRegionFraction": 0.8064236111111112,
   "result": "Both original scene colors are present in the native player capture",
   "scope": "Native screenshot inspection; physical-device playback is separate."

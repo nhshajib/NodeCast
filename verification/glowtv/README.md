@@ -1,58 +1,49 @@
-# GlowTV audit and capture evidence
+# GlowTV 0.7.2 UI audit evidence
 
-The app remains one shared project under `apps/player/`. The Astro website is independent under `website/`. Original brand inputs and mockups were committed first, in `2a78952`; all 60 source brand files still match that commit byte for byte.
+The [screen-by-screen audit](../../docs/UI-UX-AUDIT-0.7.2.md) records findings for all eight requested categories, before/after examples and links to the updated React Native and styled-components code. The [complete code diff](../../docs/UI-UX-0.7.2.patch) uses published 0.7.0 (`5c1ce75`) as its baseline. The [design tokens](../../apps/player/src/designTokens.ts) define the 8px grid and primary-green, neutral and semantic-red color families.
 
-## Checks
+## Scope and automated checks
 
-- App TypeScript: pass. Regression suite: **130 passed**, none failed or skipped.
-- Design safety guard: original animation calls/timings, provider logic, storage models and playback policy match the previous source. Bundle IDs, URL scheme, backup formats and signing configuration remain unchanged.
-- Website strict TypeScript: zero errors, warnings or hints. Astro static production build: **23 pages**, zero build warnings.
-- Every generated page: axe WCAG 2.2 AA scan, HTML validation, runtime errors, image requests, internal links, metadata, canonical URLs and layout overflow checks at **360, 768, 1280 and 1920px**. See [website-audit.json](website-audit.json).
-- Lighthouse: mobile and desktop on every page. [Full per-page scores](LIGHTHOUSE.md), [JSON](lighthouse-scores.json). These are local production-output lab measurements, not live HTTPS or field INP measurements.
-- Structured data: all 23 current JSON-LD payloads exactly match saved successful official Schema.org responses, with zero errors and warnings. The custom 404 page received a fresh successful response after the service became available again. See [schema-validation.json](schema-validation.json) and the saved official responses in [schema/](schema/).
-- External repository, releases and issue links resolve. The custom domain's live HTTPS checks are blocked by connection access, and Pages is not configured. See [external-links.json](external-links.json) and [hosting setup](../../website/HOSTING.md).
+- App TypeScript and all **130 regression tests** pass.
+- [Grid guard](check-ui-grid.cjs): **430** padding, margin and gap properties pass, including conditional branches. Optical geometry, safe areas and native system metrics are excluded.
+- [Scope guard](check-ui-scope.cjs): provider, storage, guide, backup and playback models; JS engine lifecycle effects; animation calls; and TV remote handling match the 0.7.0 baseline.
+- [Browser audit](browser-audit.json): loaded screen and settings checks on iPhone, iPad, Android and TV, with both appearances and phone/TV viewport variants. Retained poster and row components respond to appearance changes without list remounts.
+- [HTTP fixture proof](ui-072-http-fixture.json): actual HEAD and byte-range responses use the same original video bytes. This changes only the test origin, not production provider APIs.
 
-## Native verification
+## Native builds and captures
 
-All three native editions build successfully. The final Android phone APK, including the five visible Material navigation labels, passes compilation, signature, package-ID and native-library checks in [44078474690](https://github.com/nhshajib/NodeCast/actions/runs/44078474690), from `b7bd9c2`. The TV APK passes those checks in [44009489980](https://github.com/nhshajib/NodeCast/actions/runs/44009489980), from `a591349`. The standalone iPhone device Release build passes in [44004969792](https://github.com/nhshajib/NodeCast/actions/runs/44004969792), from `96bc32c`. Its actual IPA was independently inspected: ARM64, original bundle identifier, iOS 16.4 minimum, iPhone/iPad device families, embedded JavaScript, compiled icons and VLC, with no test runner inside the app. See [device-build metadata](native/ios-build-audit.json).
+The [release record](release-0.7.2.json) links each public installer to its exact source, build workflow, native audit, SHA-256, file size and update identity. Native build and test-harness source commits are recorded separately.
 
-- **iPhone:** both native UI tests passed: six tab round trips, 1/15/60-second backgrounds, three cold relaunches, playlist import, EPG, decoded live video and all eight capture screens. [Result](native/ios-audit.json), [resume checks](native/ios-resume-audit.json), [decoded frame](native/ios-frame-audit.json).
-- **iPad:** both cold-start/resume and eight-screen native tests passed in the same Apple workflow. The harness targets UIKit's top tab labels on iPadOS. [Result](native/ipad-audit.json), [decoded frame](native/ipad-frame-audit.json).
-- **Android 11 phone:** the final APK passed the complete eight-screen and eight-settings native audit in [44081851830](https://github.com/nhshajib/NodeCast/actions/runs/44081851830). The first Guide tap is checked only after a verified import; text entry is asserted before submitting. All five tab labels are visible. [Result](native/android-audit.json), [decoded frame](native/android-frame-audit.json).
-- **TV / Android 11:** the rebuilt TV APK passed the full D-pad, Select, Back and keyboard-only audit in [44076804369](https://github.com/nhshajib/NodeCast/actions/runs/44076804369). It verifies provider import, EPG, actual live video, all eight capture screens and eight settings destinations. No touch input is allowed. This is the representative Fire TV-era lab runtime, not a physical Hisense test. [Result](native/tv-audit.json), [decoded frame](native/tv-frame-audit.json).
-- **Additional Android 15 x86 emulation:** both phone and TV pass complete native eight-screen/eight-settings audits with original decoded scene pixels. [Phone run 44105553364](https://github.com/nhshajib/NodeCast/actions/runs/44105553364) also checks gesture Back, Back keys, root exit and navigation after reopening, using the three-ABI APK built successfully in [44100211918](https://github.com/nhshajib/NodeCast/actions/runs/44100211918). [TV run 44096346926](https://github.com/nhshajib/NodeCast/actions/runs/44096346926) uses only remote input. The Goldfish decoder fix is confined to API 35+ Ranchu/Goldfish hardware; physical-device decoder settings remain unchanged. A native Android 13–15 phone Back bridge forwards the existing navigation path. [Compatibility explanation](ANDROID-15-EMULATOR.md), [phone result](native/android-api35-audit.json), [TV result](native/tv-api35-audit.json).
+- iPhone and iPad: two UI tests each pass in [44458856991](https://github.com/nhshajib/NodeCast/actions/runs/44458856991), covering native navigation, cold launch, suspension, import, guide and original decoded video. The same workflow builds the standalone ARM64 device IPA. [Archive inspection](native/ios-build-audit.json) verifies identity, minimum OS, embedded JavaScript/VLC, icon assets and absence of a test runner.
+- The selected iPhone Home capture comes from the earlier passing iPhone test on identical production UI inputs: [per-image provenance](native/ios-home-provenance.json). The later test caught that screen while its import sheet was still dismissing; it is not used for marketing.
+- Android phone and TV: final native audit and capture sources are recorded in [phone results](native/android-audit.json) and [TV results](native/tv-audit.json). The TV audit forbids touch input. Phone and TV jobs may pass in separate workflow runs against the exact same APK build; a failed job is never counted as evidence for its edition. The publisher verifies both positive job conclusions and their native result bundles, including phone pause/resume and TV Select/media-key proofs. Both require original scene pixels and all eight screens and settings destinations. Phone pause/resume must retain the same process; TV additionally exercises Select and dedicated media keys before guide-preview replay.
+- [Screenshot provenance](screenshot-provenance.json) records all 32 native originals and per-image workflow evidence. Website derivatives preserve actual app content; no replacement artwork or text is composited into a capture.
 
-All **32 native captures** have been refreshed: eight each for iPhone, iPad, Android phone and TV. Imports require positive test summaries, all eight images and original decoded scene pixels. Both the bright-green band and the original dark scene region are checked, so green UI controls cannot qualify as video. Historical and failed test bundles never qualify as a current pass. The original scene, artwork and invented channel names contain no broadcaster content or real IPTV credentials. No new public installer release is claimed.
+## Website checks
 
-## Necessary visual fixes and limits
+[Current website audit](website-audit.json) records the production output across 23 pages at 360, 768, 1280 and 1920px: HTML validation, axe, images, internal links, metadata, structured-data basics, runtime errors and overflow. Website strict TypeScript and static builds are checked separately.
 
-The native audit exposed duplicate Inter PostScript names, a launch-artwork callback that could stall the handoff, and an Android playlist sheet whose percentage height collapsed. Distinct font names, bounded launch callbacks and an anchored sheet fix these visual issues. Native UIKit headers and automatic form scroll/keyboard insets keep sheet controls hittable. The Android phone VLC view opts into native child layout within its portrait stage; decoder selection and playback policy are unchanged. The additional virtual-decoder selection and Android 13–15 native Back bridge are explained in the compatibility report. Normal screen animation timing, native navigation flow and player/data logic are retained. The tiny LIVE badge uses a slightly darker red to meet white-text contrast.
+[Lighthouse scores](LIGHTHOUSE.md), [official Schema.org responses](schema-validation.json) and [old external-link results](external-links.json) are **historical measurements**, not fresh scores for this UI release or the subsequently redesigned website. Do not use them as current performance, live HTTPS or field-INP claims. Downloads use release API metadata rather than invented sizes or hashes.
 
-Provider features and advanced connection controls remain available, so long setup forms scroll on short phones rather than hiding controls to reproduce the sample layout. Screens show the actual supplied library: Continue watching appears when history exists. The TV guide and hero preserve remote navigation and existing playback controls.
+## Limits and native exception
 
-There is no tvOS target in the current repository. Supplied Apple TV icons are retained for future work; no Apple TV binary, layered asset catalog or screenshot is claimed. Physical iPhone, Hisense Fire TV, hardware AirPlay/PiP, real provider reliability and physical 4K output still need device testing. Browser checks cannot establish those results.
+The only new native guard ignores an unchanged Android picture-in-picture property so a visual prop update does not schedule unnecessary decoder recreation. The existing engine version, teardown behavior, JS lifecycle, bundle/application identifiers and signing identities remain unchanged. A proposed teardown modification was investigated and reverted.
 
-No new public GlowTV release or store listing has been invented. Store links stay explicit pending labels; APK availability, sizes, hashes, minimum SDK and release dates activate from verified release metadata.
+A non-seekable MP4 test origin triggered a VLC crash in the Android x86 emulator; the final native transport checks cover a seekable origin with correct HTTP ranges. This is a known test-coverage limit, not a claim that every provider or codec works. Physical iPhone, Android phone, Hisense Fire TV, 4K output, hardware AirPlay/PiP and real provider testing remain separate. There is no native tvOS target, and no Apple TV build or physical-device test is claimed.
 
 ## Reproduce
 
 ```sh
-cd apps/player
-npm ci
-npm run typecheck
-npm test
-# Supply a checkout of the preceding design as NODECAST_BASELINE_DIR:
-NODECAST_BASELINE_DIR=/path/to/baseline node scripts/check-design.mjs
-
-cd ../../website
-npm ci
-npm run typecheck
-npm run build
-npx playwright install chromium
-npm run audit
-LH_MODE=mobile node scripts/lighthouse.mjs
-LH_MODE=desktop node scripts/lighthouse.mjs
-python3 scripts/schema-audit.py
+npm --prefix apps/player ci
+npm --prefix apps/player run typecheck
+npm --prefix apps/player test
+node verification/glowtv/check-ui-grid.cjs
+node verification/glowtv/check-ui-scope.cjs
+npm --prefix website ci
+npm --prefix website test
+npm --prefix website run typecheck
+npm --prefix website run build
+CHROMIUM_PATH=/usr/bin/chromium npm --prefix website run audit
 ```
 
-Use `CHROMIUM_PATH=/usr/bin/chromium` when running with the shared workspace's installed browser. `CAPTURE_ALL=1 npm run audit` saves every page at all four widths. Native audit workflows run independently from Metro; the release apps contain their own JavaScript bundle.
+Native audit workflows install the compiled apps with embedded JavaScript; Metro and Expo Go are not involved. The phone harness reads native accessibility nodes without UIAutomator's long idle wait, keeping the app's real animation and auto-hide timings unchanged.

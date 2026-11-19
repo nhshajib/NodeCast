@@ -1,0 +1,10 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394401670",
+  "sourceCommit": "874eadc94c024d9b884af83f131d88684d1835b7",
+  "artifactId": 14474182519,
+  "version": "0.7.2",
+  "sha256": "5865de99ab6f7b3093dac9816b4366887c0ce38c48f4beed56c7598ecb401bca",
+  "uiRuntimeEquivalentTo": "4d5ac1b5cccc2526566314d27f1f381259b75a68",
+  "reason": "Use the verified fully dismissed Home capture instead of the later capture taken during playlist-sheet dismissal. The production app inputs are identical; only the UI-test helper differs.",
+  "nativeTests": "iPhone 2 passed, 0 failed in the source capture run; all final iPhone/iPad tests also passed."
+}

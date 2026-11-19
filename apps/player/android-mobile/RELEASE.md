@@ -1,15 +1,17 @@
-# GlowTV 0.7.0 — Android phone and TV
+# GlowTV 0.7.2 — a calmer, clearer interface
 
-GlowTV has a new name, supplied launcher artwork, leaf-green styling and Inter typography. Android phones use dark surfaces, native navigation, checked filters and an Add playlist sheet. Android TV and Fire TV have a dedicated icon rail, featured live Home, compact guide and D-pad focus.
+[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2)
 
-- [Android phone and tablet APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV.apk)
-- [Android TV and Fire TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.0/GlowTV-TV.apk)
-- [Checksums and exact release metadata](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.0)
+- Consistent Lucide icons, including clear filled/outline favorite states and local native-tab assets.
+- An 8px layout grid; primary green, neutral and semantic-red color families, with theme-safe surfaces.
+- Bare settings/empty-state icons, plain information sections and fewer repeated Home/settings links.
+- Clearer playback, playlist and library selection controls; existing native navigation and animations retained.
+- Unchanged picture-in-picture props no longer schedule native decoder recreation during UI updates.
+- Android poster libraries keep the first title visible on short screens with a compact metadata header.
+- TV row and grid measurements remain aligned with the revised spacing for remote navigation and virtualization.
 
-Back navigation works after reopening the Android phone app. Identical source/options updates no longer restart VLC. Phone pause/resume passed six touch cycles in the same process with decoded video present. Both exact APKs passed eight-screen and eight-settings audits on Android API 35; TV used remote input only. Physical-device and provider-specific playback remain separate checks.
+Existing profiles, playlists, favorites, guide settings, encrypted backups, application identifiers, signing identity and player engines are retained. Install over the matching existing edition to keep local data. Both APKs include JavaScript and VLC; Expo Go and a running computer are not needed while watching.
 
-Existing application IDs, signing identity, profiles, playlists, favorites and encrypted backups are retained. Install over the matching existing edition to keep your local data. Playback settings remain over the video, and both APKs include their JavaScript and VLC: Expo Go and a running computer are not required.
+See the [screen-by-screen audit and before/after code](https://github.com/nhshajib/NodeCast/blob/main/docs/UI-UX-AUDIT-0.7.2.md), [design tokens](https://github.com/nhshajib/NodeCast/blob/main/apps/player/src/designTokens.ts) and each edition's `DOWNLOADS.md` for exact requirements, file size and SHA-256. Companion checksum files and release-metadata.json describe these exact builds.
 
-These are public testing APKs using the existing Android test signing identity, not store releases. Android does not require weekly signing renewal. GlowTV is a player only and provides no channels, playlists, content or subscriptions.
-
-[Phone setup](README.md) · [TV setup](../android-tv/README.md) · [Version history](../../../CHANGELOG.md)
+These are public testing APKs using the existing Android test signing identity. Native emulator checks are separate from physical Fire TV/phone and provider-specific playback testing. Store publication is pending. GlowTV is a player only and provides no channels, playlists, content or subscriptions.

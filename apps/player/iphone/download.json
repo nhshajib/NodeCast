@@ -1,17 +1,17 @@
 {
-  "version": "0.7.0",
-  "tag": "ios-v0.7.0",
-  "publishedAt": "2026-11-18T12:37:18Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.0",
+  "version": "0.7.2",
+  "tag": "ios-v0.7.2",
+  "publishedAt": "2026-11-19T05:48:02Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.2",
   "prerelease": true,
   "legacy": false,
-  "file": "GlowTV-0.7.0-unsigned.ipa",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/GlowTV-0.7.0-unsigned.ipa",
-  "size": 34728445,
-  "sha256": "1b079d9a203d10e1a01b3f26a5979c8125feee6af39b74a809c55236d1cc58b7",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.0/SHA256SUMS.txt",
+  "file": "GlowTV-0.7.2-unsigned.ipa",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/GlowTV-0.7.2-unsigned.ipa",
+  "size": 32951154,
+  "sha256": "59dd752d2e9ea866660ea4554854aa3d73231894d4b2a5f527daa27eca527244",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/SHA256SUMS.txt",
   "minimumOS": "iOS 16.4 or later",
-  "checkedAt": "2026-11-18T12:37:49.067Z",
+  "checkedAt": "2026-11-19T06:30:10.174Z",
   "edition": "ios",
   "features": [
     {
@@ -40,8 +40,10 @@
     }
   ],
   "changes": [
-    "GlowTV branding, launcher icons, Inter typography and a leaf-green design system.",
-    "Warm iPhone and iPad surfaces, native tabs and sheets, a timeline guide and full-width portrait playback.",
-    "Existing playlists, profiles, playback engines, backups and transition settings remain compatible."
+    "A calmer interface with consistent Lucide icons and an 8px spacing grid.",
+    "Consistent spacing extends to player controls, track menus, TV switches and guide cells.",
+    "Simpler information sections, clearer primary actions and fewer repeated controls.",
+    "Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.",
+    "Native navigation, existing profiles and playback behavior are retained."
   ]
 }
