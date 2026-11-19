@@ -20,6 +20,7 @@ const platforms = [
 <Layout title="GlowTV: IPTV Player for iPhone, Android & TV" description="Watch your M3U and Xtream Codes playlists with a clean TV guide on iPhone, Android and Fire TV. Free player download, no content sold or hosted." hero software faq>
 <section class="hero night" aria-labelledby="hero-title">
   <div class="hero-copy">
+    <img class="app-icon" src="/icon-192.png" alt="" width="192" height="192"/>
     <h1 id="hero-title">TV the way it should be</h1>
     <p class="hero-sub">A calm IPTV player for your own M3U and Xtream playlists, on iPhone, Android and the big screen.</p>
     <div class="hero-actions">
@@ -28,7 +29,7 @@ const platforms = [
     </div>
     <ul class="trust">{trustLine.map(item => <li><Icon name="check" size={16}/>{item}</li>)}</ul>
   </div>
-  <div class="devices">
+  <div class="devices" tabindex="0" role="region" aria-label="GlowTV on iPhone, TV and Android. On small screens, scroll sideways to see each one.">
     <div class="device-phone ios"><picture><source type="image/webp" srcset="/screenshots/ios-home-small.webp 360w, /screenshots/ios-home-medium.webp 480w, /screenshots/ios-home.webp 720w" sizes="(max-width: 640px) 96px, 196px"/><img src="/screenshots/ios-home.png" alt="GlowTV home screen on iPhone" width={size('ios').width} height={size('ios').height}/></picture></div>
     <div class="device-tv"><picture><source type="image/webp" srcset="/screenshots/tv-home-small.webp 480w, /screenshots/tv-home.webp 960w" sizes="(max-width: 640px) 88vw, 680px"/><img src="/screenshots/tv-home.png" alt="GlowTV home screen on Android TV with a featured live channel" width={size('tv').width} height={size('tv').height} fetchpriority="high"/></picture></div>
     <div class="device-phone android"><picture><source type="image/webp" srcset="/screenshots/android-home-small.webp 360w, /screenshots/android-home.webp 720w" sizes="(max-width: 640px) 96px, 196px"/><img src="/screenshots/android-home.png" alt="GlowTV home screen on an Android phone" width={size('android').width} height={size('android').height}/></picture></div>
