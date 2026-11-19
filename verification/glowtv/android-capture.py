@@ -80,7 +80,7 @@ def click(label,scroll=False):
 
 def fill(label,value):
  if TV:
-  if label=='Password':
+  if label in ['Password','XMLTV URL']:
    h.remote.activate(label);adb('shell','input','text',value);time.sleep(.3)
   else:h.text(label,value)
   return
@@ -93,7 +93,7 @@ def fill(label,value):
  entered=nodes[-1].get('text','')
  if nodes[-1].get('password')!='true':assert entered==value,f'Native field {label} did not retain the full synthetic value'
  elif entered:assert len(entered)==len(value),f'Native secure field {label} did not retain every character'
- if label!='Password':adb('shell','input','keyevent','66');time.sleep(.3)
+ if label not in ['Password','XMLTV URL']:adb('shell','input','keyevent','66');time.sleep(.3)
 
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
@@ -249,7 +249,10 @@ try:
   (OUT/'emulator-tv-live-keys.json').write_text(json.dumps({'info':True,'channelUpDown':True,'sameProcess':True,'physicalFireTV':False})+'\n')
   (OUT/'emulator-tv-initial-pause.json').write_text(json.dumps({'sameProcess':True,'remoteSelect':True,'dedicatedMediaKeys':True})+'\n')
   click('Back to library');home()
- click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Evening studio,',timeout=45)
+ click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml')
+ if TV:adb('shell','input','keyevent','66')
+ else:click('Save and refresh guide',True)
+ find('Evening studio,',timeout=45)
  if TV:click('Preview Evening studio');time.sleep(3)
  else:click('Evening studio,')
  capture('guide')
