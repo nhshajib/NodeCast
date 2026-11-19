@@ -10,6 +10,16 @@ if os.environ.get('GLOWTV_EMULATOR_DISABLE_CODEC2')=='true':
  # This changes only the disposable virtual device, never the installed app.
  adb('shell','setprop','debug.stagefright.ccodec','0')
  assert adb('shell','getprop','debug.stagefright.ccodec').strip()=='0'
+if not TV:
+ # Standard UIAutomator waits for idle longer than the auto-hide timeout.
+ # Read the actual native accessibility nodes immediately; no app setting,
+ # animation, accessibility mode or control timer is changed for this test.
+ adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
+ def fast_dump():
+  import xml.etree.ElementTree as ET
+  raw=adb('shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy')
+  return ET.fromstring(raw[raw.index('<?xml'):])
+ h.dump=fast_dump
 native_tab_taps=[]
 gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
 def click(label,scroll=False):
