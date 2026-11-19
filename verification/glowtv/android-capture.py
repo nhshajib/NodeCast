@@ -17,8 +17,19 @@ if not TV:
  adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
  import atexit,select
  hierarchy_log=open(OUT/'emulator-mobile-hierarchy-reader.log','w')
- hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
- atexit.register(hierarchy.terminate)
+ idle_dump=h.dump
+ hierarchy=None
+ def start_phone_hierarchy():
+  global hierarchy
+  hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
+  h.dump=fast_dump
+ def stop_phone_hierarchy():
+  h.dump=idle_dump
+  if hierarchy is not None and hierarchy.poll() is None:
+   hierarchy.stdin.close()
+   try:hierarchy.wait(timeout=3)
+   except subprocess.TimeoutExpired:hierarchy.terminate()
+ atexit.register(stop_phone_hierarchy)
  def fast_dump():
   import xml.etree.ElementTree as ET
   hierarchy.stdin.write('dump\n');hierarchy.stdin.flush()
@@ -27,7 +38,6 @@ if not TV:
    raw=hierarchy.stdout.readline()
    if not raw:raise RuntimeError('Native hierarchy reader exited: '+str(hierarchy.poll()))
    if raw.startswith('<?xml'):return ET.fromstring(raw)
- h.dump=fast_dump
 native_tab_taps=[]
 gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
 def click(label,scroll=False):
@@ -236,6 +246,7 @@ try:
  if not TV:
   # Repeated real touch pauses exercise the native prop-update lifecycle.
   # A matching source/options update must not recreate or crash the decoder.
+  start_phone_hierarchy()
   player_pid=adb('shell','pidof',package)
   for cycle in range(6):
    touch_player('Pause live TV');expect_phone_control('Play live TV')
@@ -254,6 +265,7 @@ try:
  region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
  frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(image),'-vf',region,'-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
  assert sum(frame[i+1]>150 and frame[i]<50 and 70<frame[i+2]<160 for i in range(0,len(frame),3))>len(frame)/12,'Native decoder did not render the original green test band'
+ if not TV:stop_phone_hierarchy()
  click('Back to library')
  if not TV:home()
  click('Movies');find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
