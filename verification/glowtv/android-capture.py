@@ -84,7 +84,8 @@ def fill(label,value):
    h.remote.activate(label);adb('shell','input','text',value);time.sleep(.3)
   else:h.text(label,value)
   return
- click(label,True)
+ focused=next((n for n in h.dump().iter('node')if n.get('class')=='android.widget.EditText'and n.get('content-desc')==label and n.get('focused')=='true'),None)
+ if focused is None:click(label,True)
  # Do not submit while ADB's burst keys are still queued in a controlled input.
  for character in value:
   adb('shell','input','text',character);time.sleep(.08)
@@ -94,6 +95,16 @@ def fill(label,value):
  if nodes[-1].get('password')!='true':assert entered==value,f'Native field {label} did not retain the full synthetic value'
  elif entered:assert len(entered)==len(value),f'Native secure field {label} did not retain every character'
  if label not in ['Password','XMLTV URL']:adb('shell','input','keyevent','66');time.sleep(.3)
+
+def dismiss_phone_keyboard():
+ if TV:return
+ state=adb('shell','dumpsys','input_method')
+ if 'mInputShown=true' in state:
+  adb('shell','input','keyevent','4')
+  deadline=time.monotonic()+10
+  while 'mInputShown=true' in adb('shell','dumpsys','input_method'):
+   if time.monotonic()>deadline:raise AssertionError('The native keyboard did not dismiss before the form action')
+   time.sleep(.2)
 
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
@@ -216,7 +227,7 @@ try:
  else:
   click('Get started');click('Not now',True)
  for label,value in [('Profile name','GlowTVDemo'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:fill(label,value)
- capture('playlists')
+ dismiss_phone_keyboard();capture('playlists')
  # The final Go key submits on TV; phone verifies the explicit Connect action.
  if TV:adb('shell','input','keyevent','66')
  else:click('Connect playlist',True)
@@ -251,7 +262,7 @@ try:
   click('Back to library');home()
  click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml')
  if TV:adb('shell','input','keyevent','66')
- else:click('Save and refresh guide',True)
+ else:dismiss_phone_keyboard();click('Save and refresh guide',True)
  find('Evening studio,',timeout=45)
  if TV:click('Preview Evening studio');time.sleep(3)
  else:click('Evening studio,')
