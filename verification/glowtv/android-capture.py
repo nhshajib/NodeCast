@@ -171,6 +171,20 @@ try:
  if TV:
   click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
  capture('home')
+ if TV:
+  # Isolate direct playback from guide-preview teardown. Both remote Select
+  # and dedicated media keys must preserve the same decoded player process.
+  click('Watch live');wait_for_native_video()
+  initial_pid=adb('shell','pidof',package)
+  click('Pause live TV')
+  assert adb('shell','pidof',package)==initial_pid,'Remote Select pause changed the initial player process'
+  find('Play live TV',timeout=20);capture('player-initial-select')
+  adb('shell','input','keyevent','126');wait_for_native_video()
+  adb('shell','input','keyevent','127');time.sleep(1)
+  assert adb('shell','pidof',package)==initial_pid,'Dedicated Pause changed the initial player process'
+  capture('player-initial-media-key')
+  (OUT/'emulator-tv-initial-pause.json').write_text(json.dumps({'sameProcess':True,'remoteSelect':True,'dedicatedMediaKeys':True})+'\n')
+  click('Back to library');home()
  click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Evening studio,',timeout=45)
  if TV:click('Preview Evening studio');time.sleep(3)
  else:click('Evening studio,')
