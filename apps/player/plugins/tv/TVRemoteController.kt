@@ -235,6 +235,9 @@ class TVRemoteController(private val activity: Activity) {
     return true
   }
   private fun menu(choices: List<View>) {
+    val item=activity.currentFocus
+    val itemId=item?.let { nativeId(it)?.let(::focusId) }.orEmpty()
+    if(item!=null && (itemId.startsWith("tv-control:tile:")||itemId.startsWith("tv-control:channel:"))){emit(item,"GlowTVItemOptions",itemId.substringAfter(":tile:",itemId.substringAfter(":channel:")));return}
     val focused=activity.currentFocus?.contentDescription?.toString().orEmpty()
     val channel=if(focused.startsWith("Play "))focused.removePrefix("Play ") else ""
     val target=choices.firstOrNull { channel.isNotEmpty()&&it.contentDescription?.toString()=="Playback options for $channel" }
@@ -242,7 +245,7 @@ class TVRemoteController(private val activity: Activity) {
       ?:choices.firstOrNull { it.contentDescription?.toString()=="Library options" }
     target?.performClick()
   }
-  private fun emit(view: View, name: String, key: Int) {
+  private fun emit(view: View, name: String, key: Any) {
     var context = view.context
     while (context !is ReactContext && context is ContextWrapper) context = context.baseContext
     if (context is ReactContext && context.hasActiveReactInstance()) {
@@ -261,9 +264,10 @@ class TVRemoteController(private val activity: Activity) {
     val select = event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_SELECT)
     val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)
     val menuKey=event.keyCode==KeyEvent.KEYCODE_MENU
+    val command=when(event.keyCode){KeyEvent.KEYCODE_CHANNEL_UP->"next";KeyEvent.KEYCODE_CHANNEL_DOWN->"previous";KeyEvent.KEYCODE_INFO->"info";KeyEvent.KEYCODE_GUIDE->"guide";else->null}
     if (wakingKey == event.keyCode) { if(event.action==KeyEvent.ACTION_UP)wakingKey=null; return true }
     val wakeKey = event.keyCode == KeyEvent.KEYCODE_BACK
-    if (direction == null && !select && !media && !menuKey && !wakeKey) return false
+    if (direction == null && !select && !media && !menuKey && !wakeKey && command==null) return false
     val profiled=activity.intent.getBooleanExtra("nodecastTvProfile",false)
     val began=if(profiled)System.nanoTime()else 0L
     val choices = ensureFocus()
@@ -271,12 +275,23 @@ class TVRemoteController(private val activity: Activity) {
     val owner = choices.firstOrNull { inPlayer(it) }
     val wake = choices.firstOrNull { nativeId(it)=="tv-preferred:reveal-controls" }
     if (owner != null) {
+      var player:View?=owner
+      while(player!=null && nativeId(player)?.startsWith("tv-trap:player:")!=true && nativeId(player)?.startsWith("tv-scope:mini:")!=true)player=player.parent as? View
+      val live=nativeId(player?:owner)?.endsWith(":live")==true
+      if(command!=null){if(event.action==KeyEvent.ACTION_UP)emit(owner,"GlowTVRemoteCommand",command);return true}
+      if(live && wake!=null && event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_UP,KeyEvent.KEYCODE_DPAD_DOWN)){
+        if(event.action==KeyEvent.ACTION_DOWN){wakingKey=event.keyCode;emit(owner,"GlowTVRemoteCommand",if(event.keyCode==KeyEvent.KEYCODE_DPAD_UP)"next"else"previous")};return true
+      }
+      if(!live && event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_LEFT,KeyEvent.KEYCODE_DPAD_RIGHT) && (wake!=null || nativeId(activity.currentFocus?:owner)=="tv-control:seek-video")){
+        if(event.action==KeyEvent.ACTION_DOWN){emit(owner,"NodeCastPlaybackActivity",event.keyCode);emit(owner,"GlowTVSeek",(if(event.keyCode==KeyEvent.KEYCODE_DPAD_LEFT)-10 else 10)*(1+event.repeatCount/4).coerceAtMost(6))};return true
+      }
       if (wake != null && !media && event.action==KeyEvent.ACTION_DOWN) {
         wakingKey=event.keyCode; wake.performClick(); return true
       }
       if (event.action==KeyEvent.ACTION_DOWN) emit(owner,"NodeCastPlaybackActivity",event.keyCode)
       if (media) { if(event.action==KeyEvent.ACTION_UP)emit(owner,"NodeCastPlaybackMedia",event.keyCode); return true }
     }
+    if(command!=null){if(event.action==KeyEvent.ACTION_UP)emit(choices.first(),"GlowTVRemoteCommand",command);return true}
     if (wakeKey) return false
     if(menuKey){if(event.action==KeyEvent.ACTION_UP)menu(choices);return true;}
     if (direction != null) { if (event.action == KeyEvent.ACTION_DOWN) { move(direction, choices);if(profiled)android.util.Log.d("NodeCastTVRemote","key_us=${(System.nanoTime()-began)/1000} candidates=${choices.size}") }; return true }

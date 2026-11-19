@@ -2,6 +2,8 @@ import BrandMark from '../BrandMark';
 import { Text } from '../Typography';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, Platform, ScrollView, StatusBar, View } from 'react-native';
+import { FullWindowOverlay } from 'react-native-screens';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
@@ -36,6 +38,8 @@ export function RootNavigator() {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const player = c.player;
+  const insets=useSafeAreaInsets();
+  const tabBarHeight=Platform.OS==='ios'?(Platform.isPad?0:49):Platform.OS==='android'?80:49;
   const blocked = !!(player.element && !player.minimized);
   return <View style={{ flex: 1, backgroundColor: colors.bg }}>
     <StatusBar hidden={player.fullscreen && !!player.element} barStyle={blocked || isDarkTheme() ? 'light-content' : 'dark-content'} />
@@ -51,11 +55,12 @@ export function RootNavigator() {
       </Stack>
     </View>
     {player.element && <SafeAreaView edges={player.fullscreen || player.minimized ? [] : ['top', 'bottom', 'left', 'right']} accessibilityViewIsModal={!player.minimized} style={player.minimized
-      ? { position: 'absolute', right: 16, bottom: 110, width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: '#000' }
+      ? { position: 'absolute', right: 16, bottom: insets.bottom + tabBarHeight + 16, width: 220, height: 124, zIndex: 100, borderRadius: 18, overflow: 'hidden', backgroundColor: '#000' }
       : { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 100, backgroundColor: '#0D4029' }}>
       {player.element}
       {player.minimized && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, flexDirection: 'row' }}><Pressable noFeedback accessibilityRole="button" accessibilityLabel={`Return to ${player.session?.item.name}`} onPress={player.restore} style={{ flex: 1 }} /><Pressable accessibilityRole="button" accessibilityLabel="Close mini player" onPress={player.close} style={{ width: 44, height: 44, backgroundColor: '#0D4029CC', alignItems: 'center', justifyContent: 'center' }}><Icon name="close" color="#fff" /></Pressable></View>}
     </SafeAreaView>}
+    <MessageBanner />
     {c.welcome && !c.booting && c.family.ready && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 50 }}><WelcomeScreen onStart={c.onboardStart} onDemo={c.onboardDemo} /></View>}
     {(c.booting || !c.family.ready) && <SafeAreaView style={[u.root, u.center, { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 60 }]}>
       {c.booting ? <><ActivityIndicator color={colors.link} /><Text style={u.small}>Making yourself at home…</Text></> : <><Text style={u.body}>{c.family.loadFailed ? 'Could not read family protection.' : 'Loading local protection…'}</Text>{c.family.loadFailed && <Button title="Open recovery options" onPress={c.family.request} />}<Text style={u.small}>If this stays here, restart the app before changing profiles.</Text></>}
@@ -127,9 +132,10 @@ export function TabStack({ tab }: { tab: string }) {
 }
 
 function MessageBanner() {
-  const c = useNodeCast();
+  const c = useNodeCast();const insets=useSafeAreaInsets();
   if (!c.message) return null;
-  return <View style={{ paddingHorizontal: 24, paddingBottom: 8 }}><Notice danger>{c.message}</Notice><Pressable onPress={() => c.setMessage('')} accessibilityRole="button" style={[s.textAction, { alignSelf: 'flex-end' }]}><Text style={u.link}>Dismiss</Text></Pressable></View>;
+  const banner=<View pointerEvents="box-none" style={{position:'absolute',top:insets.top,left:0,right:0,zIndex:300,paddingHorizontal:16}}><View style={[u.card,{maxWidth:720,width:'100%',alignSelf:'center'}]}><Notice danger={c.message.tone==='error'}>{c.message.text}</Notice><Pressable onPress={() => c.setMessage(null)} accessibilityRole="button" accessibilityLabel="Dismiss message" style={[s.textAction,{alignSelf:'flex-end'}]}><Text style={u.link}>Dismiss</Text></Pressable></View></View>;
+  return Platform.OS==='ios'?<FullWindowOverlay>{banner}</FullWindowOverlay>:banner;
 }
 
 /** Reports focus so the library loads what is on screen, and so off-screen work can pause. */
@@ -152,7 +158,7 @@ export function TabScreen({ tab }: { tab: string }) {
   useTabScrollToTop(tab === 'guide' ? `${tab}` : undefined, guideList);
   const content = view === 'home' ? c.renderHome(scroll) : view === 'settings' ? c.renderSettings(scroll) : view === 'guide' ? <View style={{ flex: 1 }}>{c.renderGuide(guideList)}</View>
     : isLibraryView(view) ? <LibraryScreen view={view} tab={tab} /> : null;
-  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}><MessageBanner />{content}</View></ScreenFocusProvider>;
+  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}>{content}</View></ScreenFocusProvider>;
 }
 
 // ── Pages and sheets ─────────────────────────────────────────────────────────
@@ -190,7 +196,7 @@ export function SheetScreen() {
   useThemeChoice();
   const { c, entry, busy } = usePage();
   const page = entry?.page;
-  const close = <Pressable accessibilityRole="button" accessibilityLabel="Close" disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>;
+  const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type === 'delete' ? 'Cancel' : 'Done'}</Text></Pressable>;
   const content = !entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />);
   return <FamilyChallengeHost active>
     <Stack.Screen options={{ gestureEnabled: !busy, ...(Platform.OS === 'ios' ? {

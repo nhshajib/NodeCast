@@ -10,3 +10,7 @@ export const palette = {
  neutral: { light: '#F7F6F1', white: '#FFFFFF', lightSurface: '#EEEEE7', lightBorder: '#D8DCD7', ink: '#111613', muted: '#646B67', night: '#0A0E0C', dark: '#0F1412', darkPanel: '#1B2420', darkSurface: '#18201C', darkBorder: '#3D4B43', onDark: '#E8EEEA', darkMuted: '#A3ADA7' },
  semantic: { red: '#B42320', onDark: '#FFB4AC', lightSurface: '#FBEAE8', darkSurface: '#392321', onRed: '#FFFFFF' },
 } as const;
+
+/** TV title-safe geometry is intentionally not a layout gap. */
+export const tvSafe = { h: 48, v: 27 } as const;
+export const tvType = { caption: 14, small: 16, body: 18, label: 18, button: 18, h2: 24, h1: 36 } as const;

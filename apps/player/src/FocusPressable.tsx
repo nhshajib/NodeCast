@@ -29,6 +29,6 @@ export default forwardRef<React.ComponentRef<typeof Pressable>, Props>(function 
     style={(state: PressableStateCallbackType) => [{ minHeight: 44, minWidth: 44 } as ViewStyle,
       !noFeedback && state.pressed && !disabled && pressedFeedback,
       typeof style === 'function' ? style(state) : style as StyleProp<ViewStyle>,
-      isTVBuild && focused && !disabled && { outlineWidth: 3, outlineStyle: 'solid', outlineColor: colors.accent, outlineOffset: -3, opacity: 1, transform: [{ scale: 1.02 }] },
+      isTVBuild && focused && !disabled && { outlineWidth: 3, outlineStyle: 'solid', outlineColor: colors.focusOuter, outlineOffset: 0, boxShadow: `inset 0 0 0 2px ${colors.focusInner}`, opacity: 1, transform: [{ scale: 1.05 }] },
       isTVBuild && !noFeedback && state.pressed && !disabled && tvSelect]} />;
 });

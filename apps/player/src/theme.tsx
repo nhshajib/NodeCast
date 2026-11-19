@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Appearance, Platform } from 'react-native';
-import { palette } from './designTokens';
+import { palette, tvType } from './designTokens';
 import type { TextStyle, ViewStyle, ImageStyle } from 'react-native';
 export type ThemeChoice = 'light' | 'dark' | 'system';
 export const androidDesign = Platform.OS === 'android' || process.env.EXPO_PUBLIC_DESIGN_PLATFORM === 'android';
 export const tvDesign = process.env.EXPO_PUBLIC_APP_VARIANT === 'tv' || Platform.isTV;
 export const defaultTheme: ThemeChoice = androidDesign || tvDesign ? 'dark' : 'light';
-const light: Record<'bg' | 'panel' | 'surface' | 'text' | 'secondary' | 'accent' | 'link' | 'mint' | 'pale' | 'line' | 'danger' | 'amber' | 'ink' | 'onAccent' | 'primary' | 'primaryText' | 'selected' | 'selectedText' | 'live' | 'featured' | 'dangerSurface', string> = { bg: palette.neutral.light, panel: palette.neutral.white, surface: palette.neutral.lightSurface, text: palette.neutral.ink, secondary: palette.neutral.muted, accent: palette.primary.action, link: palette.primary.link, mint: palette.primary.subtle, pale: palette.neutral.lightSurface, line: palette.neutral.lightBorder, danger: palette.semantic.red, amber: palette.neutral.muted, ink: palette.primary.ink, onAccent: palette.primary.ink, primary: palette.primary.action, primaryText: palette.primary.ink, selected: palette.primary.subtle, selectedText: palette.primary.ink, live: palette.semantic.red, featured: palette.primary.ink, dangerSurface: palette.semantic.lightSurface };
+const light: Record<'bg' | 'panel' | 'surface' | 'text' | 'secondary' | 'accent' | 'link' | 'mint' | 'pale' | 'line' | 'danger' | 'amber' | 'ink' | 'onAccent' | 'primary' | 'primaryText' | 'selected' | 'selectedText' | 'live' | 'featured' | 'dangerSurface' | 'onVideo' | 'videoTrack' | 'videoScrim' | 'videoBackdrop' | 'focusOuter' | 'focusInner', string> = { bg: palette.neutral.light, panel: palette.neutral.white, surface: palette.neutral.lightSurface, text: palette.neutral.ink, secondary: palette.neutral.muted, accent: palette.primary.action, link: palette.primary.link, mint: palette.primary.subtle, pale: palette.neutral.lightSurface, line: palette.neutral.lightBorder, danger: palette.semantic.red, amber: palette.neutral.muted, ink: palette.primary.ink, onAccent: palette.primary.ink, primary: palette.primary.action, primaryText: palette.primary.ink, selected: palette.primary.subtle, selectedText: palette.primary.ink, live: palette.semantic.red, featured: palette.primary.ink, focusOuter: palette.neutral.white, focusInner: palette.neutral.night, onVideo: palette.neutral.white, videoTrack: palette.neutral.darkBorder, videoScrim: palette.neutral.night+'D9', videoBackdrop: palette.neutral.night, dangerSurface: palette.semantic.lightSurface };
 const dark = { ...light, bg: tvDesign ? palette.neutral.night : palette.neutral.dark, panel: palette.neutral.darkPanel, surface: palette.neutral.darkSurface, text: palette.neutral.onDark, secondary: palette.neutral.darkMuted, link: palette.primary.onDark, mint: palette.primary.darkSubtle, pale: palette.neutral.darkSurface, line: palette.neutral.darkBorder, danger: palette.semantic.onDark, amber: palette.neutral.darkMuted, onAccent: palette.primary.onDark, selected: palette.primary.darkSubtle, selectedText: palette.primary.onDark, dangerSurface: palette.semantic.darkSurface };
 export const colors: typeof light = { ...(defaultTheme === 'dark' ? dark : light) };
 let darkMode = defaultTheme === 'dark';
@@ -31,6 +31,14 @@ export function themedStyles<T extends Record<string, ViewStyle | TextStyle | Im
   const refresh = () => {
     const next = factory();
     for (const key of Object.keys(styles)) if (!(key in next)) delete styles[key];
+    if (tvDesign) for (const [key, style] of Object.entries(next)) {
+      const text = style as TextStyle;
+      if (text.fontSize !== undefined) {
+        const size = key in tvType ? tvType[key as keyof typeof tvType] : Math.max(tvType.caption, text.fontSize);
+        Object.assign(text,{fontSize:size});
+        if (text.lineHeight !== undefined) Object.assign(text,{lineHeight:Math.max(text.lineHeight, Math.ceil(size * 1.35))});
+      }
+    }
     Object.assign(styles, next);
   };
   refresh();

@@ -1,3 +1,4 @@
+import {H2} from './ui';
 import { Text } from './Typography';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native';
@@ -30,7 +31,7 @@ export default function ProgrammeSheet({ profile, item, programme, onPlay, onAut
   }
   return <ScrollView contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 32 }}>
     <Text numberOfLines={1} style={u.eyebrow}>{item.name}</Text>
-    <Text style={u.h2}>{programme.title}</Text>
+    <H2 style={u.h2}>{programme.title}</H2>
     <Text style={u.small}>{new Date(programme.start).toLocaleDateString()} · {time(programme.start)} – {time(programme.end)}</Text>
     {!!programme.description && <Text style={u.body}>{programme.description}</Text>}
     <Text style={u.small}>{catchup.reason}</Text>

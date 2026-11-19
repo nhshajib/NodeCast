@@ -1,13 +1,14 @@
+import { useAnnouncement } from './accessibility';
 import { Text } from './Typography';
 import Pressable, {isTVBuild} from './FocusPressable';
 import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, TextInput, View } from 'react-native';
 import { AppIcon } from './icons';
 import type { IconName } from './icons';
-import { space, control } from './designTokens';
+import { space, control, tvType } from './designTokens';
 export type { IconName } from './icons';
 export { colors } from './theme';
-import { colors, themedStyles, isDarkTheme, androidDesign } from './theme';
+import { colors, themedStyles, isDarkTheme, androidDesign, tvDesign } from './theme';
 
 export function Icon({ name, size = 22, color = colors.text }: { name: IconName; size?: number; color?: string }) { return <AppIcon name={name} size={size} color={color} />; }
 export function Button({ title, onPress, variant = 'primary', busy = false, disabled = false, icon, accessibilityLabel, nativeID }: {
@@ -30,13 +31,17 @@ export function Field({ label, hideLabel=false, style, onFocus, onBlur, inputRef
   </View>;
 }
 export function Empty({ icon, title, message, children }: { icon: IconName; title: string; message: string; children?: React.ReactNode }) {
-  return <View style={u.empty}><View style={u.emptyIcon}><Icon name={icon} size={30} color={colors.link} /></View><Text style={[u.h2, { textAlign: 'center' }]}>{title}</Text><Text style={[u.body, { textAlign: 'center', maxWidth: 330 }]}>{message}</Text>{children}</View>;
+  return <View style={u.empty}><View style={u.emptyIcon}><Icon name={icon} size={30} color={colors.link} /></View><Text accessibilityRole="header" style={[u.h2, { textAlign: 'center' }]}>{title}</Text><Text style={[u.body, { textAlign: 'center', maxWidth: 330 }]}>{message}</Text>{children}</View>;
 }
+export function H1(props: React.ComponentProps<typeof Text>) {return <Text {...props} accessibilityRole="header" style={[u.h1,props.style]}/>;}
+export function H2(props: React.ComponentProps<typeof Text>) {return <Text {...props} accessibilityRole="header" style={[u.h2,props.style]}/>;}
 export function Notice({ children, danger = false }: { children: React.ReactNode; danger?: boolean }) {
-  return <View style={[u.notice, danger && { backgroundColor: colors.dangerSurface }]}><Text style={[u.small, danger && { color: colors.danger }]}>{children}</Text></View>;
+  const plain = React.Children.toArray(children).filter(child => typeof child === 'string' || typeof child === 'number').join(' ');
+  useAnnouncement(plain);
+  return <View accessibilityRole={danger?'alert':undefined} accessibilityLiveRegion={danger?'assertive':'polite'} style={[u.notice, danger && { backgroundColor: colors.dangerSurface }]}><Text style={[u.small, danger && { color: colors.danger }]}>{children}</Text></View>;
 }
 export function SectionHeading({ title, action, onAction }: { title: string; action?: string; onAction?: () => void }) {
-  return <View style={u.between}><Text style={u.h2}>{title}</Text>{action && <Pressable accessibilityRole="button" hitSlop={4} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 8 }} onPress={onAction}><Text style={u.link}>{action}</Text></Pressable>}</View>;
+  return <View style={u.between}><H2>{title}</H2>{action && <Pressable accessibilityRole="button" hitSlop={4} style={{ minHeight: 44, justifyContent: 'center', paddingLeft: 8 }} onPress={onAction}><Text style={u.link}>{action}</Text></Pressable>}</View>;
 }
 export const u = themedStyles(() => ({
   root: { flex: 1, backgroundColor: colors.bg }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 },
@@ -47,12 +52,12 @@ export const u = themedStyles(() => ({
   section: { gap: space.sm },
   card: { backgroundColor: colors.panel, borderRadius: 16, padding: 16, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, gap: space.sm },
   button: { minHeight: control.input, paddingVertical: space.sm, paddingHorizontal: space.md, backgroundColor: colors.primary, borderRadius: 999, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: space.xs },
-  buttonText: { fontSize: 15, color: colors.primaryText, fontWeight: '600', textAlign: 'center', flexShrink: 1 }, secondaryButton: { backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line },
+  buttonText: { fontSize: tvDesign ? tvType.button : 15, color: colors.primaryText, fontWeight: '600', textAlign: 'center', flexShrink: 1 }, secondaryButton: { backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line },
   iconButton: { width: control.touch, height: control.touch, borderRadius: 12, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center' },
-  input: { outlineWidth: 0, backgroundColor: colors.panel, borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 16, color: colors.text, fontSize: 16, minHeight: control.input },
-  fieldLabel: { fontSize: 13, fontWeight: '600', color: colors.text }, link: { color: colors.link, fontSize: 13, fontWeight: '700' },
+  input: { outlineWidth: 0, backgroundColor: colors.panel, borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 16, color: colors.text, fontSize: tvDesign?18:16, minHeight: control.input },
+  fieldLabel: { fontSize: tvDesign ? tvType.small : 13, fontWeight: '600', color: colors.text }, link: { color: colors.link, fontSize: tvDesign ? tvType.small : 13, fontWeight: '700' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: space.md, gap: 16 }, emptyIcon: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' },
   notice: { paddingVertical: space.xs, gap: space.xs }, divider: { height: 1, backgroundColor: colors.line },
   modalHeader: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 16 },
-  content: { paddingHorizontal: space.md, paddingTop: space.sm, paddingBottom: 128, gap: 24 }, errorText: { color: colors.danger, fontSize: 13, lineHeight: 20 },
+  content: { maxWidth: 720, alignSelf: 'center', width: '100%', paddingHorizontal: space.md, paddingTop: space.sm, paddingBottom: 128, gap: 24 }, errorText: { color: colors.danger, fontSize: 13, lineHeight: 20 },
 }));

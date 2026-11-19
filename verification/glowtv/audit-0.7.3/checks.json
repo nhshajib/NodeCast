@@ -12,6 +12,18 @@
       ],
       "grid": true,
       "protectedScope": true
+    },
+    "high": {
+      "npmCi": true,
+      "typecheck": true,
+      "tests": 133,
+      "exports": [
+        "ios/shared web",
+        "android phone web",
+        "tv web"
+      ],
+      "grid": true,
+      "protectedScope": true
     }
   },
   "nativeOnly": "Not verified: TV ring and remote flows, CH/INFO keys, iPad multitasking/rotation, screen-reader announcements, largest native Dynamic Type. No native builds requested."

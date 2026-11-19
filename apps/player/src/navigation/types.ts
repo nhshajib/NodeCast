@@ -21,6 +21,6 @@ export type PlayerSession = { item: Media; resumeAt?: number };
 
 /** Presented with `presentation: 'formSheet'` and these detents (fractions of the screen height). */
 export const sheetDetents: Partial<Record<Page['type'], number[]>> = {
-  provider: [0.75, 1], external: [0.55, 1], delete: [0.42], 'channel-options': [0.6, 1], programme: [0.45, 0.9],
+  provider: [0.75, 1], external: [0.55, 1], delete: [0.42, 1], 'channel-options': [0.6, 1], programme: [0.45, 0.9],
 };
 export const isSheet = (type: Page['type']) => type in sheetDetents;

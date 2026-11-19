@@ -1,6 +1,7 @@
+import {useAnnouncement} from '../accessibility';
 import { Text } from '../Typography';
 import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react';
-import { ActivityIndicator, FlatList, Keyboard, Platform, TextInput, View } from 'react-native';
+import { useWindowDimensions, ActivityIndicator, FlatList, Keyboard, Platform, TextInput, View } from 'react-native';
 import type { ListRenderItem } from 'react-native';
 import Pressable from '../FocusPressable';
 import RetainedList from '../RetainedList';
@@ -15,17 +16,17 @@ import { favoritesMode, sectionOf, sections, useNodeCast } from './NodeCastProvi
 import { useTabScrollToTop } from './scrollToTop';
 import type { LibraryView } from './types';
 
-const PosterItem = React.memo(function PosterItem({ item, favorite, onPlay, onFavorite }: { item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void }) {
+const PosterItem = React.memo(function PosterItem({ item, favorite, width, onPlay, onFavorite }: { width:number; item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void }) {
   useThemeChoice();
-  return <View style={{ flex: 1, maxWidth: '50%', marginBottom: 24, gap: 8 }}>
-    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
+  return <View style={{ width, maxWidth:width, marginBottom: 24, gap: 8 }}>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'LIVE, ':''}${item.group}`} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
     <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={{ position: 'absolute', right: 10, top: 10, width: 44, height: 44, borderRadius: 16, backgroundColor: colors.panel, alignItems: 'center', justifyContent: 'center' }}><Icon name={favorite ? 'heart' : 'heart-outline'} size={17} color={colors.link} /></Pressable>
   </View>;
 });
 const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFavorite, onOptions }: { item: Media; favorite: boolean; demo: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void; onOptions: (item: Media) => void }) {
   useThemeChoice();
   return <View style={s.mediaRow}>
-    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'LIVE, ':''}${item.group}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <View style={s.liveTag}><Text style={{ color: '#fff', fontSize: 8, fontWeight: '800', letterSpacing: .5 }}>LIVE</Text></View>}<Text numberOfLines={1} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
     {item.kind === 'live' && <Pressable accessibilityRole="button" accessibilityLabel={`Playback options for ${item.name}`} onPress={() => onOptions(item)} style={s.iconAction}><Icon name="ellipsis-horizontal" size={20} color={colors.secondary} /></Pressable>}
     <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={s.iconAction}><Icon name={favorite ? 'heart' : 'heart-outline'} size={21} color={favorite ? colors.accent : colors.secondary} /></Pressable>
   </View>;
@@ -35,6 +36,8 @@ const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFa
 export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: string }) {
   useThemeChoice();
   const c = useNodeCast();
+  const {width}=useWindowDimensions();
+  const numColumns=Math.max(2,Math.floor((width-2*16+16)/(150+16)));
   const state = c.views[view];
   const set = useCallback((patch: Partial<typeof state>) => c.setView(view, patch), [c.setView, view]);
   const list = useRef<FlatList<Media> | null>(null);
@@ -65,8 +68,8 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
   const onPlay = useCallback((item: Media) => play.current(item), []);
   const onFavorite = useCallback((item: Media) => favorite.current(item), []);
   const renderItem = useCallback<ListRenderItem<Media>>(({ item }) => posterLayout
-    ? <PosterItem item={item} favorite={favoriteSet.has(item.id)} onPlay={onPlay} onFavorite={onFavorite} />
-    : <RowItem item={item} favorite={favoriteSet.has(item.id)} demo={c.demo} onPlay={onPlay} onFavorite={onFavorite} onOptions={onOptions} />, [posterLayout, favoriteSet, c.demo, onPlay, onFavorite, onOptions]);
+    ? <PosterItem width={(width-48-(numColumns-1)*16)/numColumns} item={item} favorite={favoriteSet.has(item.id)} onPlay={onPlay} onFavorite={onFavorite} />
+    : <RowItem item={item} favorite={favoriteSet.has(item.id)} demo={c.demo} onPlay={onPlay} onFavorite={onFavorite} onOptions={onOptions} />, [posterLayout, favoriteSet, c.demo, onPlay, onFavorite, onOptions,width,numColumns]);
   const setSearch = (search: string) => set({ search });
   const subtitle = favorites ? 'Your personal collection' : c.demo ? 'Demo library' : c.active?.provider.name || 'Your playlists, beautifully organized';
   const updated = c.updatedAt[section];
@@ -74,6 +77,8 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
   // Keep source, count and refresh feedback together; filters and actions stay intact.
   const compactHeader = androidDesign && posterLayout;
   const refreshLabel = c.refreshing ? 'Updating library…' : c.libraryNotice || (updated ? `Updated ${new Date(updated).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}` : '');
+  useAnnouncement(searching?`${filtered.length} search results`:'');
+  useAnnouncement(refreshLabel);
   const countLabel = compactHeader ? `${filtered.length.toLocaleString()} ${filtered.length === 1 ? 'title' : 'titles'}` : '';
 
   return <View style={{ flex: 1, backgroundColor: colors.bg }}>
@@ -92,15 +97,15 @@ export default function LibraryScreen({ view, tab }: { view: LibraryView; tab?: 
       </View>
       {searching && <SearchScopeControl value={state.scope} onChange={scope => set({ scope })} includeHidden={state.hidden} onHidden={() => set({ hidden: !state.hidden })} favorites={favorites} />}
       {!searching && <FlatList horizontal style={{ flexGrow: 0, flexShrink: 0 }} data={groups} keyExtractor={group => group} showsHorizontalScrollIndicator={false} contentContainerStyle={s.categories} initialNumToRender={8} windowSize={5} scrollsToTop={false}
-        renderItem={({ item: group }) => <Pressable accessibilityRole="button" accessibilityState={{ selected: state.category === group }} onPress={() => set({ category: group, scope: 'category' })} style={[s.category, state.category === group && { backgroundColor: colors.selected }]}>{state.category === group && androidDesign && <Icon name="checkmark" size={16} color={colors.selectedText}/>}<Text numberOfLines={1} style={{ color: state.category === group ? colors.selectedText : colors.text, fontSize: 13, fontWeight: '600' }}>{group}</Text></Pressable>} />}
+        renderItem={({ item: group }) => <Pressable accessibilityRole="button" accessibilityState={{ selected: state.category === group }} onPress={() => set({ category: group, scope: 'category' })} style={[s.category, state.category === group && { backgroundColor: colors.selected }]}>{state.category === group && androidDesign && <Icon name="checkmark" size={16} color={colors.selectedText}/>}<Text numberOfLines={2} style={{ color: state.category === group ? colors.selectedText : colors.text, fontSize: 13, fontWeight: '600' }}>{group}</Text></Pressable>} />}
       {searching && <Text accessibilityLiveRegion="polite" style={[u.small, { paddingHorizontal: 24, paddingVertical: 8 }]}>{filtered.length} {filtered.length === 1 ? 'result' : 'results'} · {favorites ? 'Your favorites' : `${allMediaSearch ? 'All media' : sections.find(item => item.id === section)?.title}${state.scope === 'category' && state.category !== 'All' ? ` · ${state.category}` : ''}${includeHidden ? ' · Including hidden' : ''}`}</Text>}
       <View style={[u.between, { paddingHorizontal: 24, paddingBottom: 8, gap: 8 }]}>
         {c.provider && section === 'live' && (view === 'watch' || view === 'live') && <Pressable accessibilityRole="button" accessibilityLabel="Open TV guide" onPress={() => c.open({ type: 'guide' })} style={[u.row, s.textAction, { gap: 8, paddingLeft: 0 }]}><Icon name="calendar-outline" size={15} color={colors.link} /><Text style={u.link}>TV guide</Text></Pressable>}
-        <Text numberOfLines={compactHeader && !c.libraryNotice ? 2 : undefined} style={[u.small, { flex: 1 }]}>{compactHeader ? [countLabel, subtitle, refreshLabel].filter(Boolean).join(' · ') : refreshLabel}</Text>
+        <Text accessibilityLiveRegion="polite" numberOfLines={compactHeader && !c.libraryNotice ? 2 : undefined} style={[u.small, { flex: 1 }]}>{compactHeader ? [countLabel, subtitle, refreshLabel].filter(Boolean).join(' · ') : refreshLabel}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel="Refresh library" disabled={c.refreshing} onPress={c.refreshLibrary} style={s.iconAction}>{c.refreshing ? <ActivityIndicator size="small" color={colors.link} /> : <Icon name="refresh-outline" size={17} color={colors.secondary} />}</Pressable>
       </View>
       {c.loading ? <View style={u.center}><ActivityIndicator color={colors.link} /><Text style={u.small}>Bringing your library together…</Text></View> : c.libraryError ? <Empty icon="cloud-offline-outline" title="A little trouble connecting" message={c.libraryError}><Button title="Try again" onPress={c.refreshLibrary} /></Empty> : <RetainedList listRef={list} memory={c.scrollMemory} memoryKey={`${c.demo ? 'demo' : c.active?.id}:${view}:${filterKey}`} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"
-        key={`${view}:${posterLayout}`} numColumns={posterLayout ? 2 : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={filtered} keyExtractor={item => item.id}
+        key={`${view}:${posterLayout}:${numColumns}`} numColumns={posterLayout ? numColumns : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={filtered} keyExtractor={item => item.id}
         initialNumToRender={posterLayout ? 8 : 12} maxToRenderPerBatch={posterLayout ? 6 : 10} updateCellsBatchingPeriod={30} windowSize={11} removeClippedSubviews={Platform.OS === 'android'}
         contentContainerStyle={[{ paddingHorizontal: 24, paddingBottom: 112 }, !filtered.length && { flex: 1 }]}
         ListHeaderComponent={!compactHeader && filtered.length ? <View style={[u.between, { paddingBottom: 8 }]}><Text style={u.eyebrow}>{favorites ? 'SAVED FOR YOU' : 'YOUR LIBRARY'}</Text><Text style={u.small}>{filtered.length.toLocaleString()} {section === 'live' && !favorites ? 'channels' : 'titles'}</Text></View> : undefined}
