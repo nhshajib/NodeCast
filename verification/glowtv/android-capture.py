@@ -287,12 +287,11 @@ try:
   adb('shell','input','keyevent','4');time.sleep(1)
   assert not any(n.get('package')==package for n in h.dump().iter('node')),'Root Back did not leave the app'
   adb('shell','am','start','-W','-n',package+'/.MainActivity');find('GlowTV home',timeout=30)
-  click('Search');click('Search library')
-  # A cold reopen resets the query, so Search autofocuses and shows the IME.
-  # Submit/dismiss it before testing navigation Back; the first Back with the
-  # keyboard open correctly hides the IME and must not pop the Search route.
+  click('Live');click('Search library')
+  # Dismiss the real library search IME before returning to Home. The native
+  # Settings stack must still push and pop normally after process resume.
   adb('shell','input','keyevent','66');time.sleep(.5)
-  back();find('GlowTV home')
+  home();click('Settings');click('Appearance',True);back();find('Appearance');home();find('GlowTV home')
  result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'androidApi':adb('shell','getprop','ro.build.version.sdk').strip(),'emulatorGpu':os.environ.get('GLOWTV_EMULATOR_GPU','unspecified'),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
  (OUT/f'emulator-design-{TARGET}-result.json').write_text(json.dumps(result,indent=2)+'\n')
 except Exception:

@@ -35,7 +35,7 @@ Phase checks and final browser screenshot/contrast results are recorded in `veri
 | H10 | Fixed in source; screen-reader follow-up | `Notice`, announcement hook, H1/H2 components, library search/refresh announcements, PIN errors and player failures; settings group headers; backup results scroll into view. |
 | H11 | Fixed | Settings/profile/network/version/media/episode/guide labels include visible metadata and state. Daily, Follow device and native sheet Done/Cancel labels match visible copy. |
 | H12 | Fixed | Home shows skeletons during loading, connected-empty refresh separately from disconnected setup, plus Try again on errors. |
-| H13 | Partly fixed | Responsive poster columns, 720pt readable content and tablet Home cards are implemented. Mini player uses safe-area plus platform tab-height fallback; SDK 58 native tabs do not expose a root-level measured bar-height hook. Actual native placement needs confirmation, especially iPad top tabs. |
+| H13 | Fixed in source; native placement pending | Responsive poster columns, 720pt readable content and tablet Home cards are implemented. MiniPlayerLayout measures the native Screens safe content frame, including interface insets, and subtracts it from the root frame. No fixed tab-height assumption remains. The native iPhone/iPad UI audit now checks mini-player geometry. |
 | H14 | Fixed in source; native Dynamic Type follow-up | Guide cells size with font scale; channel column shows full names instead of stream IDs (no channel-number field exists in the protected model). Chips/pills grow, series header scrolls with episodes, delete sheet expands to full height. |
 
 ## Medium
@@ -124,7 +124,7 @@ The current RN Web version ignores native `accessibilityState`; `FocusPressable.
 
 ## Remaining limitations and next native pass
 
-- H13 remains partial: the mini player uses safe-area plus a platform tab-height fallback, rather than a measured NativeTabs bar height. Check iPad top tabs and phone tab placement on-device.
+- H13 follow-up: measured native interface insets replace the fixed tab-height fallback. Native geometry assertions cover the mini player; physical-device placement remains a follow-up.
 - A new native build is required for the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers, signing and versions are unchanged.
 - Verify the two-tone TV ring on green/dark/light surfaces, scope and row restoration, every D-pad Back flow, Menu/hold, CH+/−, hidden-controls seeking, INFO/GUIDE and mini-player media keys on Fire TV and Android TV.
 - Verify iPad Split View, Slide Over/Stage Manager and all rotations, including closing landscape playback; phones must return to portrait.
@@ -138,6 +138,6 @@ Additional TV-density review: poster width is capped at 160dp; the grid header s
 - Critical, High, Medium and Low phase checks passed. Final run: `npm ci`, typecheck, 137 passing tests, three cache-cleared web exports, the 8px grid guard (456 properties) and the protected-scope guard.
 - Browser: 14 required cases plus 2 supplemental TV-density cases, 316 screenshots, zero recorded page errors or document-width overflows. Both themes and doubled phone/tablet text were exercised. Backup modes were switched and their ARIA selection asserted; search results and stable detail-route IDs were asserted.
 - Contrast: 36 recorded checks passed (4.5:1 for text; 3:1 for graphical state). See [checks.json](../verification/glowtv/audit-0.7.3/checks.json), [contrast.json](../verification/glowtv/audit-0.7.3/contrast.json) and [verification output](../verification/glowtv/audit-0.7.3/verification.txt). These are scoped token/surface checks, not a guarantee for arbitrary provider artwork or video frames.
-- Browser previews cannot validate native playback, TV keys/focus rings, iPad multitasking/rotation, screen-reader announcements or largest native Dynamic Type. H13 remains partial as described above.
+- Browser previews cannot validate native playback, TV keys/focus rings, iPad multitasking/rotation, screen-reader announcements or largest native Dynamic Type. H13 native placement is covered by the release audit assertions; physical-device confirmation is still required.
 
 Native Live search routing: `uiPolicy.ts` supplies one shared platform-to-view mapping for both the tab body and its native search callback. iPhone uses the dedicated live view; Android retains its watch view. A regression test covers this contract so native search cannot silently update a different list.
