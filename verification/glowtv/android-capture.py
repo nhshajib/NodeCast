@@ -15,10 +15,18 @@ if not TV:
  # Read the actual native accessibility nodes immediately; no app setting,
  # animation, accessibility mode or control timer is changed for this test.
  adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
+ import atexit,select
+ hierarchy_log=open(OUT/'emulator-mobile-hierarchy-reader.log','w')
+ hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
+ atexit.register(hierarchy.terminate)
  def fast_dump():
   import xml.etree.ElementTree as ET
-  raw=adb('shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy')
-  return ET.fromstring(raw[raw.index('<?xml'):])
+  hierarchy.stdin.write('dump\n');hierarchy.stdin.flush()
+  while True:
+   if not select.select([hierarchy.stdout],[],[],15)[0]:raise RuntimeError('Native hierarchy reader did not respond')
+   raw=hierarchy.stdout.readline()
+   if not raw:raise RuntimeError('Native hierarchy reader exited: '+str(hierarchy.poll()))
+   if raw.startswith('<?xml'):return ET.fromstring(raw)
  h.dump=fast_dump
 native_tab_taps=[]
 gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
@@ -235,6 +243,7 @@ try:
    wait_for_native_video(timeout=10)
    touch_player('Play live TV');expect_phone_control('Pause live TV')
    assert adb('shell','pidof',package)==player_pid,'Player process changed while resuming'
+   print(f'Native phone: touch pause/resume cycle {cycle+1} passed in the same process',flush=True)
   (OUT/'emulator-mobile-pause-resume.json').write_text(json.dumps({'cycles':6,'sameProcess':True,'originalVideoPixels':True})+'\n')
  if TV:adb('shell','input','keyevent','127')
  else:touch_player('Pause live TV');expect_phone_control('Play live TV')

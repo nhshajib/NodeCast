@@ -49,11 +49,16 @@ public final class FastHierarchy {
       AccessibilityServiceInfo info=automation.getServiceInfo();
       info.flags |= AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS;
       automation.setServiceInfo(info);
+      boolean server=args.length>0 && "--server".equals(args[0]);
+      java.io.BufferedReader commands=new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
+      do {
+      if(server && commands.readLine()==null)break;
       AccessibilityNodeInfo root=null;
       for(int i=0;i<20 && root==null;i++){root=automation.getRootInActiveWindow();if(root==null)Thread.sleep(50);}
       if(root==null)throw new IllegalStateException("No active native window");
       StringBuilder xml=new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><hierarchy>");
-      node(xml,root);xml.append("</hierarchy>");System.out.println(xml);
+      node(xml,root);xml.append("</hierarchy>");System.out.println(xml);System.out.flush();
+      } while(server);
     } finally {if(automation!=null)UiAutomation.class.getDeclaredMethod("disconnect").invoke(automation);thread.quitSafely();}
   }
 }
