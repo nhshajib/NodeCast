@@ -1,5 +1,15 @@
 # Android TV version history
 
+## 0.7.3 — November 19, 2026 · Accessibility and navigation
+
+- Responsive iPad layouts and tablet orientation policy, clearer guide text and accessible forms.
+- Visible TV focus, restored channel position, consistent Back behavior and remote playback controls.
+- Confirmations, undo for recent items, accessible status messages and clearer loading states.
+- Mini-player placement measures native interface insets instead of assuming a fixed tab-bar height.
+- Existing identifiers, signing identity, profiles, playback engines and transition settings are retained.
+- Native build and device verification results are recorded separately; source changes alone do not verify physical hardware.
+
+
 ## 0.7.2 — November 19, 2026 · UI audit
 
 - Consistent Lucide icons with clear saved/unsaved favorite states.
