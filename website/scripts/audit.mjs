@@ -34,7 +34,10 @@ try{
  const interactions=await browser.newContext({viewport:{width:360,height:900},reducedMotion:'reduce'});const home=await interactions.newPage();await home.goto(origin+'/');
  const summary=home.locator('details summary').first();await summary.focus();await home.keyboard.press('Enter');assert(await summary.evaluate(el=>el.parentElement.open),'FAQ must open from the keyboard');
  const gallery=home.locator('.gallery').first();await gallery.scrollIntoViewIfNeeded();await gallery.focus();await home.keyboard.press('ArrowRight');await home.waitForTimeout(250);assert(await gallery.evaluate(el=>el.scrollLeft>0),'Gallery must scroll from the keyboard');
- assert.equal(await home.locator('.photo-card').first().evaluate(el=>getComputedStyle(el).animationName),'none','Reduced motion must disable floating cards');await interactions.close();
+ const tvTab=home.getByRole('tab',{name:'TV'});await tvTab.click();assert.equal(await tvTab.getAttribute('aria-selected'),'true','Gallery tab must select');assert(await home.locator('#screenshots-panel-tv').isVisible(),'TV screenshots must show');await tvTab.press('ArrowLeft');assert.equal(await home.getByRole('tab',{name:'Android'}).getAttribute('aria-selected'),'true','Arrow keys must move between gallery tabs');
+ const next=home.locator('[data-next]');const visible=home.locator('#screenshots-panel-android .gallery');await next.click();await home.waitForTimeout(400);assert(await visible.evaluate(el=>el.scrollLeft>0),'Next button must scroll the gallery');
+ assert.deepEqual(await home.evaluate(()=>[...document.querySelectorAll('a,button,summary,input')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.height&&(r.width<24||r.height<24)&&getComputedStyle(e).visibility!=='hidden'}).map(e=>e.textContent?.trim()||e.getAttribute('aria-label'))),[],'Pointer targets must be at least 24px');
+ assert.equal(await home.evaluate(()=>document.body.innerText.match(/\[[A-Z_]{5,}\]/g)),null,'No placeholder text on the page');await interactions.close();
  for(const [userAgent,target] of [['Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)','/download/iphone/'],['Mozilla/5.0 (Linux; Android 11)','/download/android/'],['Mozilla/5.0 (Linux; Android 11; AFTMM)','/download/tv/']]){const c=await browser.newContext({userAgent});const p=await c.newPage();await p.goto(origin+'/');assert.equal(await p.locator('[data-platform-download]').first().getAttribute('href'),target);await c.close();}
  const downloads=JSON.parse(await fs.readFile('src/data/release.json','utf8')).platforms;
  const downloadContext=await browser.newContext();const downloadPage=await downloadContext.newPage();
@@ -50,6 +53,6 @@ try{
  await downloadPage.goto(origin+'/download/');
  for(const item of Object.values(downloads))if(item)assert(await downloadPage.locator(`.direct-download-card a[href="${item.url}"]`).count()===1,'Download index must link every edition');
  await downloadContext.close();
- report.interactions=['Per-edition direct download links, features, checksums and legacy notices','FAQ keyboard toggle','gallery arrow-key scrolling','reduced motion','iPhone, Android and Fire TV download detection'];
+ report.interactions=['Per-edition direct download links, features, checksums and legacy notices','FAQ keyboard toggle','gallery arrow-key scrolling, tabs and previous/next buttons','24px pointer targets on home','no visible placeholders','iPhone, Android and Fire TV download detection'];
  report.externalLinks=[...external];assert.deepEqual(report.errors,[],'See audit-results/pages.json');
 }finally{await fs.writeFile(path.join(output,'pages.json'),JSON.stringify(report,null,2)+'\n');await browser.close();server.close();}

@@ -10,15 +10,26 @@ export const faqs = [
  ['Does a different public IP prove my VPN is connected?', 'No. GlowTV can compare your public IP with a home reference. A changed address is not proof of a VPN or a secure connection.'],
  ['Can I cast to another screen?', 'Compatible native playback on iOS supports AirPlay and picture-in-picture. Availability depends on the stream and playback engine. Chromecast is not currently supported.'],
 ];
-export const features = [
- ['A guide that makes sense', 'Browse live channels beside their XMLTV schedules. See what is on now and plan what to watch next.'],
- ['Movies and series, together', 'Keep provider movies, seasons and episodes in one library, with progress and a next-episode action.'],
- ['Catch up when you can', 'Open completed programmes when your provider includes an eligible catch-up archive.'],
- ['Your favorites, close by', 'Save the channels and titles you return to. Pick up your recent viewing without searching again.'],
- ['Room for every playlist', 'Keep separate M3U, file and Xtream profiles, then switch between them without entering details again.'],
- ['Made for the remote', 'A dedicated TV layout, readable rows and clear D-pad focus help you watch comfortably from the sofa.'],
- ['No account needed', 'Profiles stay on your device. Encrypted export and import help you bring your settings to a new one.'],
+export const features: [string, string, string][] = [
+ ['guide', 'A guide that makes sense', 'Browse live channels beside their XMLTV schedules. See what is on now and plan what to watch next.'],
+ ['library', 'Movies and series, together', 'Keep provider movies, seasons and episodes in one library, with progress and a next-episode action.'],
+ ['catchup', 'Catch up when you can', 'Open completed programmes when your provider includes an eligible catch-up archive.'],
+ ['heart', 'Your favorites, close by', 'Save the channels and titles you return to. Pick up your recent viewing without searching again.'],
+ ['profiles', 'Room for every playlist', 'Keep separate M3U, file and Xtream profiles, then switch between them without entering details again.'],
+ ['remote', 'Made for the remote', 'A dedicated TV layout, readable rows and clear D-pad focus help you watch comfortably from the sofa.'],
 ];
+/** Shown under the hero. No account is needed: profiles stay on the device. */
+export const trustLine = ['Free and open source', 'No account needed', 'You bring the playlist'];
+/**
+ * Store listings. Leave a value empty until the listing is live: pages then say the app
+ * is not in that store yet instead of showing a placeholder. See HOSTING.md.
+ */
+export const stores = { appStore: '', playStore: '', amazonAppstore: '', downloaderCode: '' };
+/** Google Search Console HTML verification token. Empty: no verification tag is rendered. */
+export const searchConsoleToken = '';
+/** Readable names for URL segments in breadcrumbs and BreadcrumbList data. */
+const crumbNames: Record<string, string> = { iphone: 'iPhone', android: 'Android', tv: 'TV', 'android-tv': 'Android TV', 'fire-tv': 'Fire TV', 'apple-tv': 'Apple TV', faq: 'FAQ', 'add-m3u-playlist': 'Add an M3U playlist', 'xtream-codes-login': 'Xtream Codes login', 'tv-guide-epg': 'TV guide (EPG)', 'fix-buffering': 'Fix buffering', '404.html': 'Page not found' };
+export function crumbName(segment: string) { return crumbNames[segment] ?? segment.charAt(0).toUpperCase() + segment.slice(1).replaceAll('-', ' '); }
 export const screens = ['home','guide','player','movies','series','playlists','search','settings'];
 export const screenLabel: Record<string,string> = {home:'Home and your playlist',guide:'TV guide and programme details',player:'Live player and controls',movies:'Movie library',series:'Series details and episodes',playlists:'Add a playlist',search:'Search your library',settings:'Settings and profiles'};
 export const platformLabel: Record<string,string> = {ios:'iPhone',android:'Android',tv:'Android TV and Fire TV'};

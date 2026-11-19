@@ -5,5 +5,6 @@ try{
  const files=await fs.readdir(new URL('web/',source));
  for(const name of files){if(name==='head-snippet.html')continue;await fs.copyFile(new URL('web/'+name,source),new URL('../public/'+name,import.meta.url));}
  await fs.copyFile(new URL('logo/glowtv-logo-light-bg.svg',source),new URL('../public/logo.svg',import.meta.url));
+ await fs.copyFile(new URL('logo/glowtv-logo-dark-bg.svg',source),new URL('../public/logo-dark.svg',import.meta.url));
  await fs.copyFile(new URL('logo/glowtv-mark.svg',source),new URL('../public/mark.svg',import.meta.url));
 }catch(error){if(error.code!=='ENOENT')throw error;/* Local asset copies keep a standalone website checkout buildable. */}

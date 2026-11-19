@@ -93,7 +93,7 @@
     "description": "Follow the GlowTV iPhone and iPad installation guide. Check App Store availability, learn the expected steps and understand personal IPA signing.",
     "intro": "Download the published iPhone and iPad IPA, then sign it with your own Apple account using Impactor. App Store availability is pending.",
     "kind": "guide",
-    "notice": "[APP_STORE_URL] — awaiting a published listing. Existing personal IPA installation needs signing; a seven-day free certificate must be refreshed. An unsigned IPA cannot be installed by tapping it.",
+    "notice": "GlowTV isn’t in the App Store yet. Install the IPA from GitHub and sign it with your own Apple account. A free Apple certificate lasts seven days and then needs refreshing. Tapping an unsigned IPA won’t install it.",
     "steps": [
       {
         "title": "Download the iPhone IPA",
@@ -164,7 +164,7 @@
     "description": "Set up GlowTV on Android TV or Google TV with a store-first installation guide. Find the sideloading fallback and learn where official APKs belong.",
     "intro": "Use the Play Store when GlowTV has a published TV listing. Until then, a verified TV APK is the fallback once a release is available.",
     "kind": "guide",
-    "notice": "[PLAY_STORE_URL] — TV store listing pending. Choose the TV APK rather than the phone APK.",
+    "notice": "GlowTV isn’t in Google Play for TV yet. Install the TV APK from GitHub. Choose the TV APK, not the phone APK.",
     "steps": [
       {
         "title": "Check the TV download page",
@@ -231,7 +231,7 @@
     "description": "Check the current GlowTV Apple TV status and learn how installation will work through the App Store. Do not install an iPhone IPA on your Apple TV.",
     "intro": "There is no tvOS build in the current project. The supplied Apple TV artwork is prepared for future work; the iPhone IPA is not compatible.",
     "kind": "guide",
-    "notice": "[APP_STORE_URL] — Apple TV availability pending. These are future App Store instructions, not an available download.",
+    "notice": "There is no Apple TV version yet. These steps describe how installation will work once GlowTV is in the App Store for Apple TV; nothing can be downloaded today.",
     "steps": [
       {
         "title": "Check Apple TV availability",

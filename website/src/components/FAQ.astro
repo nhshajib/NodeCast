@@ -1,4 +1,5 @@
 ---
 import {faqs} from '../data/site';
+import Icon from './Icon.astro';
 ---
-<section class="section faq"><p class="eyebrow">A few useful answers</p><h2>Before you settle in.</h2>{faqs.map(([q,a])=><details><summary>{q}<span aria-hidden="true">+</span></summary><p>{a}</p></details>)}<a class="text-link" href="/support/">More help in the support center ↗</a></section>
+<section class="section faq" aria-labelledby="faq-title"><div class="section-head"><h2 id="faq-title">Before you settle in</h2></div>{faqs.map(([q,a])=><details><summary>{q}<Icon name="plus" size={22}/></summary><p>{a}</p></details>)}<a class="text-link" href="/support/">More help in the support center <Icon name="arrow-right" size={16}/></a></section>

@@ -1,6 +1,33 @@
 ---
 import {screenshotSize} from '../data/screenshots';
 import {screens,screenLabel,platformLabel} from '../data/site';
-const {platform='ios',id='screenshots',title='A little look around'}=Astro.props;
+import Icon from './Icon.astro';
+/** `tabs` shows iPhone, Android and TV tabs (home page); otherwise one platform's screens. */
+const {platform='ios',id='screenshots',title='A little look around',tabs=false}=Astro.props as {platform?:string;id?:string;title?:string;tabs?:boolean};
+const platforms=tabs?['ios','android','tv']:[platform];
+const tabName:Record<string,string>={ios:'iPhone',android:'Android',tv:'TV'};
 ---
-<section class="section gallery-section" aria-labelledby={id}><div class="section-heading"><div><p class="eyebrow">Made for {platformLabel[platform]}</p><h2 id={id}>{title}</h2></div><p>Swipe, scroll or use the arrow keys.</p></div><div class:list={['gallery',platform==='tv'&&'tv-gallery']} tabindex="0" role="region" aria-label={`${platformLabel[platform]} screenshot gallery`}>{screens.map(screen=><figure><a href={`/screenshots/${platform}-${screen}.png`} aria-label={`Open full screenshot: ${screenLabel[screen]} on ${platformLabel[platform]}`}><picture><source type="image/webp" srcset={`/screenshots/${platform}-${screen}-small.webp 360w, /screenshots/${platform}-${screen}.webp ${screenshotSize(platform,screen).width}w`} sizes={platform==='tv'?'(max-width: 600px) 85vw, 600px':'(max-width: 600px) 72vw, 260px'}/><img src={`/screenshots/${platform}-${screen}.png`} alt={`GlowTV ${screenLabel[screen].toLowerCase()} on ${platformLabel[platform]}, using original demo content`} width={screenshotSize(platform,screen).width} height={screenshotSize(platform,screen).height} style={`aspect-ratio:${screenshotSize(platform,screen).width}/${screenshotSize(platform,screen).height}`} loading="lazy" decoding="async"/></picture></a><figcaption>{screenLabel[screen]}</figcaption></figure>)}</div></section>
+<section class="section gallery-section" aria-labelledby={id} data-gallery>
+ <div class="gallery-head">
+  <div class="section-head"><h2 id={id}>{title}</h2><p>{tabs?'Real screens from each version, using original demo content.':`Real ${platformLabel[platform]} screens, using original demo content.`}</p></div>
+  <div class="gallery-controls"><button type="button" data-prev aria-label="Previous screenshots"><Icon name="chevron-left" size={22}/></button><button type="button" data-next aria-label="Next screenshots"><Icon name="chevron-right" size={22}/></button></div>
+ </div>
+ {tabs&&<div class="tabs" role="tablist" aria-label="Choose a device">{platforms.map((p,i)=><button type="button" role="tab" id={`${id}-tab-${p}`} aria-controls={`${id}-panel-${p}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1}>{tabName[p]}</button>)}</div>}
+ {platforms.map((p,i)=><div id={`${id}-panel-${p}`} role={tabs?'tabpanel':undefined} aria-labelledby={tabs?`${id}-tab-${p}`:undefined} hidden={i>0}>
+  <div class:list={['gallery',p==='tv'&&'tv-gallery']} tabindex="0" role="region" aria-label={`${platformLabel[p]} screenshots. Use the arrow keys or the previous and next buttons to scroll.`}>{screens.map(screen=><figure><a href={`/screenshots/${p}-${screen}.png`} aria-label={`Open full screenshot: ${screenLabel[screen]} on ${platformLabel[p]}`}><picture><source type="image/webp" srcset={`/screenshots/${p}-${screen}-small.webp 360w, /screenshots/${p}-${screen}.webp ${screenshotSize(p,screen).width}w`} sizes={p==='tv'?'(max-width: 640px) 82vw, 560px':'(max-width: 640px) 200px, 240px'}/><img src={`/screenshots/${p}-${screen}.png`} alt={`GlowTV ${screenLabel[screen].toLowerCase()} on ${platformLabel[p]}, using original demo content`} width={screenshotSize(p,screen).width} height={screenshotSize(p,screen).height} style={`aspect-ratio:${screenshotSize(p,screen).width}/${screenshotSize(p,screen).height}`} loading="lazy" decoding="async"/></picture></a><figcaption>{screenLabel[screen]}</figcaption></figure>)}</div>
+ </div>)}
+</section>
+<script>
+for(const section of document.querySelectorAll<HTMLElement>('[data-gallery]')){
+ const tabs=[...section.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+ const current=()=>[...section.querySelectorAll<HTMLElement>('.gallery')].find(g=>!g.closest('[hidden]'));
+ const prev=section.querySelector<HTMLButtonElement>('[data-prev]'),next=section.querySelector<HTMLButtonElement>('[data-next]');
+ const update=()=>{const g=current();if(!g||!prev||!next)return;prev.disabled=g.scrollLeft<=4;next.disabled=g.scrollLeft+g.clientWidth>=g.scrollWidth-4;};
+ const step=(direction:number)=>{const g=current();if(!g)return;g.scrollBy({left:direction*Math.max(g.clientWidth*0.8,240),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};
+ prev?.addEventListener('click',()=>step(-1));next?.addEventListener('click',()=>step(1));
+ for(const g of section.querySelectorAll<HTMLElement>('.gallery'))g.addEventListener('scroll',update,{passive:true});
+ const select=(tab:HTMLButtonElement,focus=false)=>{for(const t of tabs){const on=t===tab;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;const panel=document.getElementById(t.getAttribute('aria-controls')||'');if(panel)panel.hidden=!on;}if(focus)tab.focus();update();};
+ tabs.forEach((tab,i)=>{tab.addEventListener('click',()=>select(tab));tab.addEventListener('keydown',e=>{const k=e.key;let n=-1;if(k==='ArrowRight')n=(i+1)%tabs.length;else if(k==='ArrowLeft')n=(i-1+tabs.length)%tabs.length;else if(k==='Home')n=0;else if(k==='End')n=tabs.length-1;if(n>=0){e.preventDefault();select(tabs[n],true);}});});
+ update();addEventListener('resize',update,{passive:true});
+}
+</script>

@@ -35,14 +35,16 @@ Leave `GITHUB_PAGES_ENABLED` unset for Vercel. Website tests, build, accessibili
 
 ## Pending values
 
-- `[APP_STORE_URL]`: verified iOS listing; a separate tvOS listing is required once an Apple TV target exists.
-- `[PLAY_STORE_URL]`: verified phone / TV listings, when published.
-- `[AMAZON_URL]`: verified Amazon listing.
-- `[DOWNLOADER_CODE]`: assigned official TV download code.
-- `[GSC_TOKEN]`: Google Search Console HTML verification token.
-- `[ANALYTICS_DOMAIN]`, `[ANALYTICS_SCRIPT_URL]`: optional privacy-friendly analytics configuration. Analytics is disabled until configured and documented in the privacy policy.
+Store listings and the Search Console token live in `src/data/site.ts` (`stores` and `searchConsoleToken`). Leave a value empty until it is real:
 
-Unavailable store labels are plain text, not broken anchors. Download buttons use verified public GitHub assets, with testing releases clearly labeled and each platform selected independently. Draft releases and build artifacts are never presented as public downloads.
+- `stores.appStore`: verified iOS listing URL. A separate tvOS listing is needed once an Apple TV target exists.
+- `stores.playStore`: verified phone and TV listing URL.
+- `stores.amazonAppstore`: verified Amazon Appstore listing URL.
+- `stores.downloaderCode`: the assigned Downloader code for the TV APK.
+- `searchConsoleToken`: Google Search Console HTML verification token. No verification tag is rendered while it is empty.
+- `[ANALYTICS_DOMAIN]`, `[ANALYTICS_SCRIPT_URL]`: optional privacy-friendly analytics, noted in an HTML comment in `src/layouts/Layout.astro`. Analytics stays off until it is configured and documented in the privacy policy.
+
+While a store value is empty, the download page says GlowTV isn't in that store yet and points to the GitHub download. Nothing shows a placeholder or a broken link. The site audit (`npm run audit`) fails if bracketed placeholder text appears on the home page. Download buttons use verified public GitHub assets, testing releases are labelled, and each platform is selected independently. Draft releases and build artifacts are never shown as public downloads.
 
 ## Release metadata
 
