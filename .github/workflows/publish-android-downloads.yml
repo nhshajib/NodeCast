@@ -6,8 +6,11 @@ on:
         description: Successful Android phone and TV build run ID
         required: true
       check_run:
-        description: Successful both-editions native design audit using those APKs
+        description: Native design audit with a successful phone job using those APKs
         required: true
+      tv_check_run:
+        description: Optional separate run with a successful TV design job on the same APK build
+        required: false
       source_sha:
         description: Full source commit built by the build run
         required: true
@@ -28,6 +31,7 @@ jobs:
       BUILD_RUN: ${{ inputs.build_run }}
       CHECK_RUN: ${{ inputs.check_run }}
       SOURCE_SHA: ${{ inputs.source_sha }}
+      TV_CHECK_RUN: ${{ inputs.tv_check_run || inputs.check_run }}
       MAKE_PUBLIC: ${{ inputs.make_public }}
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -43,14 +47,53 @@ jobs:
           set -euo pipefail
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN" > /tmp/glowtv-build.json
           gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CHECK_RUN" > /tmp/glowtv-check.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$TV_CHECK_RUN" > /tmp/glowtv-tv-check.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$CHECK_RUN/jobs" > /tmp/glowtv-phone-jobs.json
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$TV_CHECK_RUN/jobs" > /tmp/glowtv-tv-jobs.json
           python3 - <<'PY'
           import json,os,re
           build=json.load(open('/tmp/glowtv-build.json'));check=json.load(open('/tmp/glowtv-check.json'))
           assert re.fullmatch('[a-f0-9]{40}',os.environ['SOURCE_SHA'])
           assert build['head_sha']==os.environ['SOURCE_SHA'] and build['conclusion']=='success'
           assert build['path']=='.github/workflows/apps-release.yml'
-          assert check['conclusion']=='success' and check['path']=='.github/workflows/android-smoke.yml'
-          assert f"Check both design - APK {os.environ['BUILD_RUN']} - API 35"==check['display_title']
+          # Matrix editions can pass in separate runs. Require each exact job,
+          # APK build and native result bundle; never accept a failed edition.
+          for edition,runfile,jobsfile in [('mobile','check','phone'),('tv','tv-check','tv')]:
+              run=json.load(open(f'/tmp/glowtv-{runfile}.json'))
+              assert run['status']=='completed' and run['path']=='.github/workflows/android-smoke.yml'
+              titles=[f"Check {target} design - APK {os.environ['BUILD_RUN']} - API 35" for target in ['both',edition]]
+              assert run['display_title'] in titles
+              jobs=json.load(open(f'/tmp/glowtv-{jobsfile}-jobs.json'))['jobs']
+              matching=[j for j in jobs if j['name']==f'smoke ({edition})']
+              assert len(matching)==1 and matching[0]['conclusion']=='success',f'{edition} native audit did not pass'
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: GlowTV-Android-mobile-emulator-check
+          path: apps/player/native-check/mobile
+          run-id: ${{ inputs.check_run }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: GlowTV-Android-tv-emulator-check
+          path: apps/player/native-check/tv
+          run-id: ${{ inputs.tv_check_run || inputs.check_run }}
+          github-token: ${{ github.token }}
+      - name: Require native screen, settings and playback proofs
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          for edition in ['mobile','tv']:
+              root=Path('native-check')/edition
+              result=json.loads((root/f'emulator-design-{edition}-result.json').read_text())
+              assert result['native'] and result['actualVideoPixels'] and str(result['androidApi'])=='35'
+              assert set(result['screens'])=={'home','guide','player','movies','series','playlists','search','settings'}
+              assert len(set(result['settingsDestinations']))==8
+          phone=json.loads(Path('native-check/mobile/emulator-mobile-pause-resume.json').read_text())
+          assert phone['cycles']==6 and phone['sameProcess'] and phone['originalVideoPixels']
+          tv=json.loads(Path('native-check/tv/emulator-tv-initial-pause.json').read_text())
+          assert tv['sameProcess'] and tv['remoteSelect'] and tv['dedicatedMediaKeys']
           PY
       - uses: actions/download-artifact@v4
         with:
