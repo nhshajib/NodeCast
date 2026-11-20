@@ -1,6 +1,6 @@
-import {H2} from './ui';
+import {H2,NativeHeaderTitle} from './ui';
 import { Text } from './Typography';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { ScrollView } from 'react-native';
 import { catchupAvailability, catchupMedia } from './catchup';
 import { loadServerTimeZone } from './provider';
@@ -11,6 +11,7 @@ import { Button, Notice, u } from './ui';
 
 /** Programme details in a native form sheet (phones). Drag it down, or past the top detent, with a finger. */
 export default function ProgrammeSheet({ profile, item, programme, onPlay, onAuthorize }: { profile: Profile; item: Media; programme: GuideProgramme; onPlay: (item: Media) => void; onAuthorize?: () => boolean }) {
+  const nativeTitle=useContext(NativeHeaderTitle);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const request = useRef<AbortController | null>(null);
@@ -29,9 +30,9 @@ export default function ProgrammeSheet({ profile, item, programme, onPlay, onAut
     } catch (e) { if (!controller.signal.aborted) setError(e instanceof Error ? e.message : 'Could not open provider catch-up.'); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
-  return <ScrollView contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 32 }}>
+  return <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 32 }}>
     <Text numberOfLines={1} style={u.eyebrow}>{item.name}</Text>
-    <H2 style={u.h2}>{programme.title}</H2>
+    {!nativeTitle&&<H2 style={u.h2}>{programme.title}</H2>}
     <Text style={u.small}>{new Date(programme.start).toLocaleDateString()} · {time(programme.start)} – {time(programme.end)}</Text>
     {!!programme.description && <Text style={u.body}>{programme.description}</Text>}
     <Text style={u.small}>{catchup.reason}</Text>
