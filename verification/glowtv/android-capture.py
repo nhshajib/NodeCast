@@ -42,19 +42,22 @@ native_tab_taps=[]
 gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
 def click(label,scroll=False):
  if not TV and label=='Connect playlist':
-  # The native sheet covers the tab bar. The shared legacy helper excludes
-  # that lower region and can select Home's duplicate action underneath it.
-  # Target the foreground form's visible button; never tap an underlying tab
-  # or retry an import to make the test pass.
-  candidates=[]
-  for n in h.dump().iter('node'):
-   b=list(map(int,__import__('re').findall(r'\d+',n.get('bounds',''))))
-   if n.get('content-desc')==label and n.get('clickable')=='true' and len(b)==4 and 0<=b[1]<b[3]<=h.height and b[2]>b[0]:candidates.append((n,b))
-  assert candidates,'The presented playlist form has no visible Connect action'
-  node,b=max(candidates,key=lambda item:item[1][1])
-  (OUT/'emulator-mobile-submit-target.json').write_text(json.dumps(dict(node.attrib),indent=2)+'\n')
-  x,y=str((b[0]+b[2])//2),str((b[1]+b[3])//2)
-  adb('shell','input','swipe',x,y,x,y,'100');time.sleep(.5);return
+  # Native sheets retain Home underneath. Select the last (foreground) form
+  # action, and scroll that sheet if needed; never fall back to Home's action.
+  deadline=time.monotonic()+20
+  while time.monotonic()<deadline:
+   candidates=[]
+   for n in h.dump().iter('node'):
+    b=list(map(int,__import__('re').findall(r'-?\d+',n.get('bounds',''))))
+    if n.get('content-desc')==label and n.get('clickable')=='true' and len(b)==4:candidates.append((n,b))
+   assert len(candidates)>=2,'The foreground playlist form has no Connect action'
+   node,b=candidates[-1]
+   if 0<=b[1]<b[3]<=h.height and b[2]>b[0]:
+    (OUT/'emulator-mobile-submit-target.json').write_text(json.dumps(dict(node.attrib),indent=2)+'\n')
+    x,y=str((b[0]+b[2])//2),str((b[1]+b[3])//2)
+    adb('shell','input','swipe',x,y,x,y,'100');time.sleep(.5);return
+   adb('shell','input','swipe',str(h.width//2),str(int(h.height*.75)),str(h.width//2),str(int(h.height*.35)),'350');time.sleep(.3)
+  raise AssertionError('The foreground Connect action could not be scrolled into view')
  native_keys={'Home':'home','Live':'live','Guide':'guide','Library':'library','Settings':'settings'}
  if not TV and label in native_keys:
   # Native Material widgets use a real down/up gesture. ADB's zero-duration
