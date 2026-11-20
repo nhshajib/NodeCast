@@ -160,9 +160,10 @@ export function TabScreen({ tab }: { tab: string }) {
   const content = view === 'home' ? c.renderHome(scroll) : view === 'settings' ? c.renderSettings(scroll) : view === 'guide' ? <View style={{ flex: 1 }}>{c.renderGuide(guideList)}</View>
     : isLibraryView(view) ? <LibraryScreen nativeSearch={Platform.OS==='ios'&&['live','library','search'].includes(tab)} view={view} tab={tab} /> : null;
   const body=<View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider><MiniPlayerSafeFrame owner={tab} focused={focused}/></View>;
-  // Non-scrolling filters also need UIKit's header/search/tab insets. A list's
-  // automatic adjustment cannot protect siblings drawn above the list.
-  return <ScreenFocusProvider value={focused}>{Platform.OS==='ios'?<NativeScreenSafeAreaView edges={{top:true,bottom:true,left:true,right:true}} style={{backgroundColor:colors.bg}}>{body}</NativeScreenSafeAreaView>:body}</ScreenFocusProvider>;
+  // Native search headers are translucent: inset their fixed filter siblings.
+  // Ordinary stack headers already position Home/Guide below the bar; adding
+  // another top inset there creates a second header-sized blank area.
+  return <ScreenFocusProvider value={focused}>{Platform.OS==='ios'?<NativeScreenSafeAreaView edges={{top:isLibraryView(view),bottom:true,left:true,right:true}} style={{backgroundColor:colors.bg}}>{body}</NativeScreenSafeAreaView>:body}</ScreenFocusProvider>;
 }
 
 // ── Pages and sheets ─────────────────────────────────────────────────────────

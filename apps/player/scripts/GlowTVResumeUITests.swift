@@ -111,6 +111,11 @@ final class GlowTVResumeUITests: XCTestCase {
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
     let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in content.exists && content.isHittable }, object: nil)
     XCTAssertEqual(XCTWaiter.wait(for: [visible], timeout: 15), .completed, "Home content is present but invisible after returning: \(app.debugDescription)")
+    let heading = app.staticTexts["Watch"].firstMatch
+    if heading.exists, let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
+      XCTAssertGreaterThanOrEqual(heading.frame.minY, header.frame.maxY - 2, "Home must clear the native header")
+      XCTAssertLessThanOrEqual(heading.frame.minY, header.frame.maxY + 80, "Home must not apply the native header inset twice")
+    }
   }
   func testColdStartsAndBackgroundResumeKeepHomeVisible() {
     continueAfterFailure = false
@@ -191,6 +196,11 @@ final class GlowTVResumeUITests: XCTestCase {
     if save.exists && save.isEnabled { save.tap() }
     let program = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@ AND NOT label CONTAINS %@", "Evening studio,", "No matching guide ID")).firstMatch
     XCTAssertTrue(program.waitForExistence(timeout: 30), app.debugDescription)
+    let filters = app.buttons["Guide filters and settings"]
+    if filters.exists, let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
+      XCTAssertGreaterThanOrEqual(filters.frame.minY, header.frame.maxY - 2, "Guide controls must clear the native header")
+      XCTAssertLessThanOrEqual(filters.frame.minY, header.frame.maxY + 48, "Guide must not apply the native header inset twice")
+    }
     program.tap()
     capture("ios-guide")
     tapButton("Watch live")
