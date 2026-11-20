@@ -215,7 +215,9 @@ export function SheetScreen() {
     }) }} />
     {/* UIKit owns the sheet header and its hit testing. Keep scrolling content
         separate so the native sheet never coerces it over the Done control. */}
-    <NativeHeaderTitle.Provider value>{content}</NativeHeaderTitle.Provider>
+    {/* Android form sheets do not draw the UIKit-style stack title. Keep the
+        task's content heading there; UIKit and web already show a header. */}
+    <NativeHeaderTitle.Provider value={Platform.OS!=='android'}>{content}</NativeHeaderTitle.Provider>
   </FamilyChallengeHost>;
 }
 
