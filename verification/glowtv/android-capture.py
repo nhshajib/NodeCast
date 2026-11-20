@@ -311,7 +311,9 @@ try:
  for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Home IP reference'if TV else'Home IP & connection','Version history']:
   click(label,True);back();checked.append(label)
  if gesture_navigation:
-  click('Live');find('Search library');click('Settings');click('Appearance',True)
+  # Retap the active native Settings tab to return from its retained scroll
+  # position to the first group, exercising the app's scroll-to-top behavior.
+  click('Live');find('Search library');click('Settings');click('Settings');click('Appearance',True)
   adb('shell','input','keyevent','4');time.sleep(.8);find('Appearance');home();find('GlowTV home')
   # Root Back must still leave the app normally, then navigation must work
   # after resume. This catches an accidentally recursive dispatcher bridge.
@@ -322,7 +324,7 @@ try:
   # Dismiss the real library search IME before returning to Home. The native
   # Settings stack must still push and pop normally after process resume.
   adb('shell','input','keyevent','66');time.sleep(.5)
-  home();click('Settings');click('Appearance',True);back();find('Appearance');home();find('GlowTV home')
+  home();click('Settings');click('Settings');click('Appearance',True);back();find('Appearance');home();find('GlowTV home')
  result={'platform':TARGET,'native':True,'input':'D-pad, Select, Back and keyboard text only'if TV else'Android touch input','screens':['home','guide','player','movies','series','playlists','search','settings'],'settingsDestinations':checked,'actualVideoPixels':bool(frame),'androidApi':adb('shell','getprop','ro.build.version.sdk').strip(),'emulatorGpu':os.environ.get('GLOWTV_EMULATOR_GPU','unspecified'),'scope':'Android emulator; physical Fire TV and iPhone hardware are separate checks.'}
  (OUT/f'emulator-design-{TARGET}-result.json').write_text(json.dumps(result,indent=2)+'\n')
 except Exception:
