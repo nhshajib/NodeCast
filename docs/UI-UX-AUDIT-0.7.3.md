@@ -125,7 +125,7 @@ The current RN Web version ignores native `accessibilityState`; `FocusPressable.
 ## Remaining limitations and next native pass
 
 - H13 follow-up: measured native interface insets replace the fixed tab-height fallback. Native geometry assertions cover the mini player; physical-device placement remains a follow-up.
-- A new native build is required for the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers, signing and versions are unchanged.
+- A new native build is required for the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers and signing are unchanged. The audit phase kept the existing version; the subsequently authorized release uses 0.7.3 (703).
 - Verify the two-tone TV ring on green/dark/light surfaces, scope and row restoration, every D-pad Back flow, Menu/hold, CH+/−, hidden-controls seeking, INFO/GUIDE and mini-player media keys on Fire TV and Android TV.
 - Verify iPad Split View, Slide Over/Stage Manager and all rotations, including closing landscape playback; phones must return to portrait.
 - Verify VoiceOver/TalkBack announcements, largest native Dynamic Type, form keyboard chaining/autofill/discard protection, and native cold detail/series links against the secure saved catalogue.
@@ -141,3 +141,7 @@ Additional TV-density review: poster width is capped at 160dp; the grid header s
 - Browser previews cannot validate native playback, TV keys/focus rings, iPad multitasking/rotation, screen-reader announcements or largest native Dynamic Type. H13 native placement is covered by the release audit assertions; physical-device confirmation is still required.
 
 Native Live search routing: `uiPolicy.ts` supplies one shared platform-to-view mapping for both the tab body and its native search callback. iPhone uses the dedicated live view; Android retains its watch view. A regression test covers this contract so native search cannot silently update a different list.
+
+## Native release follow-up
+
+The user subsequently authorized compiling and publishing the packages and updating the website. Release progress, native-only findings, corrections and run links are recorded in [the 0.7.3 release verification](../verification/glowtv/release-0.7.3/BUILD-STATUS.md). Native captures exposed iOS fixed controls beneath the search header and Android TV Back bypassing JS. Both are corrected in source and are being rebuilt; no pending native check is claimed as passed.

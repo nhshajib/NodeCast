@@ -1,23 +1,25 @@
 # GlowTV 0.7.3 release verification
 
-Build source: `7cb5f25733eda05383192fd41b085bcc5c99385a`.
+Current build source: `8cc4d8fc69ed2bb01e1028baf96a134f124377a7`.
 
-- [Corrected Android phone and TV builds](https://github.com/nhshajib/NodeCast/actions/runs/44633698018), source `c6d9f45f7bd5a3b117bfe0a95e888502150e4a92`.
-- The first Android run compiled the phone APK; TV found a nullable Kotlin focus-target variable. The correction explicitly types the non-null target and retains the focus behavior.
-- [Preliminary native phone audit](https://github.com/nhshajib/NodeCast/actions/runs/44633792554) uses the first phone APK to catch UI-test issues while the final builds run.
-- [iPhone/iPad native audit and ARM64 IPA build](https://github.com/nhshajib/NodeCast/actions/runs/44631335671).
+- [Android phone and TV builds](https://github.com/nhshajib/NodeCast/actions/runs/44739839074).
+- [iPhone/iPad native audits and ARM64 IPA build](https://github.com/nhshajib/NodeCast/actions/runs/44739843826).
 
-The build and native audit results are pending. No new download has been published yet. Existing website links remain on the last verified public release.
+These runs are pending. No 0.7.3 download is public; website links remain on the last verified release. Native packages must pass the release gates before publication.
 
-Source checks: TypeScript, 138 tests, all three Expo web exports, spacing grid and protected-source checks passed. Website: 4 tests, Astro check/build and all-page accessibility/HTML/link audit passed. Fresh native captures will replace the previous release screenshots only after successful native audits.
+## Completed source and website checks
 
-Physical-device follow-ups remain required: Fire TV remote/IME behavior, iPad multitasking/rotation, VoiceOver/TalkBack and the largest native Dynamic Type. Emulator results must not be presented as physical-device results.
+TypeScript, 139 tests, the 8px grid and protected-source checks pass. The protected guard confirms unchanged provider/storage/guide/backup models, player-engine patches, playback lifecycle effects and transition definitions. All three web exports pass. Website tests, Astro check/build, all-page accessibility/HTML/link checks and 46 Lighthouse measurements passed. See [Lighthouse scores](../LIGHTHOUSE.md).
 
-## Native findings during release preparation
+## Findings caught by native testing
 
-The preliminary phone emulator audit caught a launch-time Hermes exception: the count formatter constructed `Intl.PluralRules` unconditionally. The formatter now guards its availability and uses English singular/plural fallback rules. A subprocess test reproduces an engine without that constructor; 139 tests pass. New native builds use source `16033c1e091eafd81a215935ad2270c76abd238d`:
+- Fixed a nullable Kotlin focus target that prevented the TV build from compiling.
+- Fixed a cold-launch Hermes exception from an unavailable `Intl.PluralRules` constructor. A subprocess regression test reproduces its absence.
+- iPhone Home survived tab changes, background intervals and cold relaunches. Native playback and measured mini-player placement also reached and passed their assertions. The Library screen then exposed filters under UIKit's search header. The tab root now uses native safe-area insets for fixed controls as well as lists; the test checks their geometry.
+- TV native video, remote Select, media keys and INFO were exercised. Back then left the Activity on Android 15 instead of reaching the JavaScript handler. The remote controller now routes Back through ReactActivity once, preserving native IME and dialog handling. [Before-fix capture](diagnostics/tv-activity-exited-before-fix.png).
+- Corrected harness-only problems: exact rail labels instead of matching Home-IP controls; D-pad scrolling to off-screen rail actions; Select to reveal hidden controls; UIKit tab-role queries; native keyboard-aware field entry and system Back to dismiss Android sheets.
+- Retried an emulator SDK image download that ended with premature EOF; it did not reach the app.
 
-- Android: https://github.com/nhshajib/NodeCast/actions/runs/44635308909
-- iPhone/iPad and IPA: https://github.com/nhshajib/NodeCast/actions/runs/44635313388
+## Remaining native verification
 
-The superseded packages are not published. The homepage platform-detection label no longer expands after hydration; the measured layout shift is zero. Fresh all-page mobile/desktop Lighthouse reports meet 95+ across all categories; see [the scores](../LIGHTHOUSE.md).
+The current rebuilt packages must complete all eight screens and settings checks, decoded video assertions and native iPhone/iPad tests. Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/TalkBack, and maximum Dynamic Type still require physical-device review. Emulator or browser results do not certify these behaviors.
