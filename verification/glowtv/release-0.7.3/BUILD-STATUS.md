@@ -23,3 +23,11 @@ TypeScript, 139 tests, the 8px grid and protected-source checks pass. The protec
 ## Remaining native verification
 
 The current rebuilt packages must complete all eight screens and settings checks, decoded video assertions and native iPhone/iPad tests. Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/TalkBack, and maximum Dynamic Type still require physical-device review. Emulator or browser results do not certify these behaviors.
+
+## Current access blocker — November 20
+
+The APK build at run 44739839074 passed for both editions. Phone run 44742115948 captured all eight screens and traversed all eight settings destinations, with six pause/resume cycles and decoded video in the same process. Its additional re-open test stopped after Settings retained its scroll position; the local harness now re-taps Settings to exercise scroll-to-top before opening Appearance.
+
+Three follow-up commits are saved locally: the Settings retap test, an Android-native-sheet task heading, and compact 8px Android form spacing with foreground-only Connect targeting. TypeScript, 139 tests, all three exports, the grid and protected scope pass for these changes.
+
+The workspace GitHub CLI token now returns HTTP 401 (Bad credentials). Connected GitHub tools can read existing run results, but do not expose workflow dispatch or release publication. The user has been asked to refresh workspace repository access, without sharing a token in chat. Local changes are preserved; no unverified 0.7.3 release or website download link has been published. The iPhone run continues independently.
