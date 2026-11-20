@@ -227,6 +227,16 @@ class TVRemoteController(private val activity: Activity) {
   }
   private fun move(direction: Int, choices: List<View>): Boolean {
     val from = activity.currentFocus ?: return true
+    // Right leaves the rail for the active screen, rather than geometrically
+    // choosing another rail icon while its labels expand/collapse. Restoring
+    // the remembered row also scrolls a virtualized list back to that item.
+    if(direction==View.FOCUS_RIGHT && scope(from)=="tv-scope:rail"){
+      val content=choices.filter { scope(it)!="tv-scope:rail" && (activeScope==null || inside(it,activeScope!!)) }
+      val target=content.firstOrNull { nativeId(it)?.let(::focusId)==remembered[scope(it)] }
+        ?:content.firstOrNull { visible(it)&&nativeId(it)?.startsWith("tv-preferred:")==true }
+        ?:content.firstOrNull { visible(it) }
+      if(target!=null){focus(target);return true}
+    }
     val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
     val positive = direction == View.FOCUS_RIGHT || direction == View.FOCUS_DOWN
     val a = rect(from); val scroll = scroller(from, horizontal)
