@@ -31,3 +31,15 @@ The APK build at run 44739839074 passed for both editions. Phone run 44742115948
 Three follow-up commits are saved locally: the Settings retap test, an Android-native-sheet task heading, and compact 8px Android form spacing with foreground-only Connect targeting. TypeScript, 139 tests, all three exports, the grid and protected scope pass for these changes.
 
 The workspace GitHub CLI token now returns HTTP 401 (Bad credentials). Connected GitHub tools can read existing run results, but do not expose workflow dispatch or release publication. The user has been asked to refresh workspace repository access, without sharing a token in chat. Local changes are preserved; no unverified 0.7.3 release or website download link has been published. The iPhone run continues independently.
+
+## Access restored and final native follow-up
+
+GitHub CLI authentication and repository push/admin access were verified after the user refreshed access. All saved commits have been pushed.
+
+Current package source is `5a9a0484d6a3f18c2ea3fbfbc4e7a195c36665d7`:
+- Android: https://github.com/nhshajib/NodeCast/actions/runs/44752201174
+- iPhone/iPad and IPA: https://github.com/nhshajib/NodeCast/actions/runs/44752206397
+
+The preceding run passed both iPhone tests and the iPad design test. Its iPad cold/resume test reported a visible Home control that was not hittable. The iOS measurement probe now uses noninteractive, accessibility-hidden RN views and measures the already inset tab body rather than nesting a native safe-area view. The modern Android Back dispatcher bridge, previously limited to phones, now also applies to TV on API 33–35. Legacy TV key handling remains in the remote controller. D-pad tests enter content with Right and recompute geometry after each key.
+
+These corrections retain all player lifecycle effects, engines, data models and transitions. TypeScript, 139 tests, spacing/scope guards and all three exports pass. New native results are pending. No 0.7.3 release has been published yet.
