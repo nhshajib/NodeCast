@@ -16,8 +16,8 @@ export function MiniPlayerSafeFrame({owner,focused}:{owner:string;focused:boolea
  const measure=useCallback(()=>{if(focused)child.current?.measureInWindow((_x,y,_width,h)=>{if(active.current&&h>0)report(owner,y+h)})},[focused,owner,report]);
  useEffect(()=>{if(focused){const token=requestAnimationFrame(measure);return()=>cancelAnimationFrame(token)}report(owner,null)},[focused,width,height,measure,owner,report]);
  useEffect(()=>()=>report(owner,null),[owner,report]);
- const content=<View collapsable={false} ref={child} onLayout={measure} style={{flex:1}}/>;
- return <View pointerEvents="none" accessible={false} importantForAccessibility="no-hide-descendants" style={{position:'absolute',top:0,left:0,right:0,bottom:0}}>{Platform.OS==='web'?content:<NativeSafeAreaView style={{flex:1}} edges={{bottom:true}} insetType="all">{content}</NativeSafeAreaView>}</View>;
+ const content=<View pointerEvents="none" accessibilityElementsHidden collapsable={false} ref={child} onLayout={measure} style={{flex:1}}/>;
+ return <View collapsable={false} pointerEvents="none" accessibilityElementsHidden accessible={false} importantForAccessibility="no-hide-descendants" style={{position:'absolute',top:0,left:0,right:0,bottom:0}}>{Platform.OS!=='android'?content:<NativeSafeAreaView pointerEvents="none" accessibilityElementsHidden style={{flex:1}} edges={{bottom:true}} insetType="all">{content}</NativeSafeAreaView>}</View>;
 }
 export function useMeasuredMiniPlayerBottom(){
  const {frame}=useContext(Layout);const root=useRef<React.ComponentRef<typeof View>>(null);const [bottom,setBottom]=useState<number|null>(null);const {width,height}=useWindowDimensions();

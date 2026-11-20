@@ -4,8 +4,7 @@ const { withMainActivity } = require('expo/config-plugins');
 // Back enabled, Android 13–15 otherwise finish the Activity before native-stack
 // receives Back. Bridge the same existing RN dispatch on those runtimes only.
 // No navigator, route, animation option or TV remote handler is replaced.
-module.exports = (config, { tv = false } = {}) => {
-  if (tv) return config;
+module.exports = config => {
   if (require('react-native/package.json').version !== '0.88.0') {
     throw new Error('Review the Android Back dispatcher bridge for this React Native version.');
   }

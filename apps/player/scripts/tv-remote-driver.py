@@ -43,6 +43,8 @@ def focus(label,timeout=100):
   root=tree();nodes=actions(root);current=focused(root)
   if label!='Show player controls' and current is not None and name(current)=='Show player controls':key(23);continue
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
+  if current is not None and name(current) in RAIL_LABELS and label not in RAIL_LABELS:
+   key(22);continue
   if current is not None and goals:
    goal=nodes[goals[0]]
    if name(current)==name(goal) and bounds(current)==bounds(goal):return current
