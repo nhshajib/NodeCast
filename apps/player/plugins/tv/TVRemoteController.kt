@@ -151,8 +151,14 @@ class TVRemoteController(private val activity: Activity) {
     return cached
   }
   private fun rect(view: View): Rect {
-    val position = IntArray(2); view.getLocationOnScreen(position)
-    return Rect(position[0], position[1], position[0] + view.width, position[1] + view.height)
+    // Focus scale is decoration, not layout. getLocationOnScreen includes its
+    // transformed origin while width/height remain unscaled, moving the center
+    // and making same-column rail items look like Right/Left destinations.
+    val bounds=Rect(0,0,view.width,view.height)
+    if(view!==root && root is ViewGroup)(root as ViewGroup).offsetDescendantRectToMyCoords(view,bounds)
+    val origin=IntArray(2);root.getLocationOnScreen(origin)
+    bounds.offset(origin[0],origin[1])
+    return bounds
   }
   private fun visible(view: View): Boolean { val r = Rect(); return view.getGlobalVisibleRect(r) && r.width() > 8 && r.height() > 8 }
   private fun focus(view: View) {
