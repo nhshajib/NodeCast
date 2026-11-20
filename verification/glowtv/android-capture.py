@@ -253,6 +253,7 @@ try:
   # Exercise the actual native INFO and channel keys, including Back on the
   # focused overlay. All channels use an original local video fixture.
   adb('shell','input','keyevent','165');find('On now · No programme information available');capture('player-info');adb('shell','input','keyevent','4')
+  find('Play live TV',timeout=20);wait_for_native_video(timeout=10)
   adb('shell','input','keyevent','166');wait_for_native_video();adb('shell','input','keyevent','165')
   root=h.dump();assert any(('Wild North · LIVE' in (n.get('text')or'')or'Quiet studio · LIVE' in (n.get('text')or''))for n in root.iter('node')),'Channel Up did not change the live channel'
   adb('shell','input','keyevent','4');adb('shell','input','keyevent','167');wait_for_native_video();adb('shell','input','keyevent','165');find('Evening studio · LIVE');adb('shell','input','keyevent','4')
