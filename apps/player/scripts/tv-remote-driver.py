@@ -38,9 +38,10 @@ def route(nodes,start,goal):
 def focused(root):return next((n for n in root.iter('node') if n.get('focused')=='true'),None)
 def key(code):adb('shell','input','keyevent',code);time.sleep(.15)
 def focus(label,timeout=100):
- end=time.monotonic()+timeout;seen=collections.Counter();scan=20
+ end=time.monotonic()+timeout;seen=collections.Counter();scan=20;history=[]
  while time.monotonic()<end:
   root=tree();nodes=actions(root);current=focused(root)
+  history.append({"focus":name(current)if current is not None else None,"bounds":bounds(current)if current is not None else None})
   if label!='Show player controls' and current is not None and name(current)=='Show player controls':key(23);continue
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
   if current is not None and name(current) in RAIL_LABELS and label not in RAIL_LABELS:
@@ -54,7 +55,7 @@ def focus(label,timeout=100):
   path=route(nodes,i,goals[0]) if goals else []
   signature=(name(nodes[i]),tuple(bounds(nodes[i])),tuple(name(n) for n in nodes));seen[signature]+=1
   if path and seen[signature]<3:
-   for direction in path[:3]:key(direction)
+   for direction in path[:1]:key(direction)
    continue
   elif goals:
    a,b=bounds(nodes[i]),bounds(nodes[goals[0]]);dx=b[0]+b[2]-a[0]-a[2];dy=b[1]+b[3]-a[1]-a[3];direction=(22 if dx>0 else 21) if abs(dx)>abs(dy) else (20 if dy>0 else 19)
@@ -69,7 +70,7 @@ def focus(label,timeout=100):
     a=bounds(nodes[i]);direction=22 if a[2]<480 and current_name in RAIL_LABELS else scan
     if seen[signature]>2:scan=19 if scan==20 else 20;direction=scan
   key(direction)
- raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None))
+ raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None)+'; recent focus='+repr(history[-20:]))
 def activate(label,timeout=100):
  n=focus(label,timeout);assert match(n,label);key(23);visited.append(label);print('Remote Select: '+label,flush=True)
 def fill(label,value):
