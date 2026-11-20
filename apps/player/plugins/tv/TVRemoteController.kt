@@ -14,6 +14,7 @@ import android.widget.EditText
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
 import com.facebook.react.R
+import com.facebook.react.ReactActivity
 import com.facebook.react.bridge.ReactContext
 import com.facebook.react.modules.core.DeviceEventManagerModule
 import android.content.ContextWrapper
@@ -272,6 +273,16 @@ class TVRemoteController(private val activity: Activity) {
   fun dispatch(event: KeyEvent): Boolean {
     // Native IMEs and native dialogs retain their own key handling.
     if (activity.currentFocus is EditText && imeVisible()) return false
+    // Route each remote Back through RN exactly once. Android's predictive
+    // dispatcher can otherwise finish the Activity before JS sees the key.
+    val reactActivity=activity as? ReactActivity
+    if(event.keyCode==KeyEvent.KEYCODE_BACK && reactActivity!=null && root.hasWindowFocus()){
+      if(event.action==KeyEvent.ACTION_UP && !event.isCanceled){
+        @Suppress("DEPRECATION")
+        reactActivity.onBackPressed()
+      }
+      return true
+    }
     val direction = arrows[event.keyCode]
     val select = event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_CENTER, KeyEvent.KEYCODE_ENTER, KeyEvent.KEYCODE_NUMPAD_ENTER, KeyEvent.KEYCODE_BUTTON_A, KeyEvent.KEYCODE_BUTTON_SELECT)
     val media = event.keyCode in listOf(KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE, KeyEvent.KEYCODE_MEDIA_PLAY, KeyEvent.KEYCODE_MEDIA_PAUSE, KeyEvent.KEYCODE_MEDIA_FAST_FORWARD, KeyEvent.KEYCODE_MEDIA_REWIND, KeyEvent.KEYCODE_MEDIA_STOP)

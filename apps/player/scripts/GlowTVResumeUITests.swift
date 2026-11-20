@@ -33,6 +33,16 @@ final class GlowTVResumeUITests: XCTestCase {
     capture("failure-button-" + label)
     XCTFail("No visible button: \(label). \(app.debugDescription)")
   }
+  private func tapLibrarySegment(_ label: String) {
+    // RN's tab role is an accessible Other on UIKit, not a Button.
+    let control = app.otherElements.matching(NSPredicate(format: "label == %@", label)).firstMatch
+    XCTAssertTrue(control.waitForExistence(timeout: 15), app.debugDescription)
+    XCTAssertTrue(control.isHittable, "Library segment is covered by native chrome: \(label)")
+    if let bar = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists }) {
+      XCTAssertGreaterThanOrEqual(control.frame.minY, bar.frame.maxY, "Library filters overlap the native search header")
+    }
+    control.tap()
+  }
   // A playing-state event can precede the simulator's first decoded frame.
   // The original fixture has a leaf-green video band, absent from player chrome.
   private func waitForOriginalVideoFrame() {
@@ -200,10 +210,10 @@ final class GlowTVResumeUITests: XCTestCase {
     mini.tap()
     tapButton("Back to library")
     element("navigation-tab-library").tap()
-    tapButton("Movies")
+    tapLibrarySegment("Movies")
     XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Open Tidewater,")).firstMatch.waitForExistence(timeout: 30))
     capture("ios-movies")
-    tapButton("Series")
+    tapLibrarySegment("Series")
     let series = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Open Tidewater Stories,")).firstMatch
     XCTAssertTrue(series.waitForExistence(timeout: 30))
     series.tap()

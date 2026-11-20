@@ -268,7 +268,7 @@ try:
  else:click('Evening studio,')
  capture('guide')
  if TV:click('Close mini player');back();home()
- else:click('Done');home()
+ else:back();home()
  click('Watch live')
  wait_for_native_video()
  if TV:find('Pause live TV',timeout=20)

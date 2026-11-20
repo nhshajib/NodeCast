@@ -7,6 +7,7 @@ import { Text } from '../Typography';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, StatusBar, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
+import {SafeAreaView as NativeScreenSafeAreaView} from 'react-native-screens/experimental';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove, useNavigation } from 'expo-router';
@@ -158,7 +159,10 @@ export function TabScreen({ tab }: { tab: string }) {
   useTabScrollToTop(tab === 'guide' ? `${tab}` : undefined, guideList);
   const content = view === 'home' ? c.renderHome(scroll) : view === 'settings' ? c.renderSettings(scroll) : view === 'guide' ? <View style={{ flex: 1 }}>{c.renderGuide(guideList)}</View>
     : isLibraryView(view) ? <LibraryScreen nativeSearch={Platform.OS==='ios'&&['live','library','search'].includes(tab)} view={view} tab={tab} /> : null;
-  return <ScreenFocusProvider value={focused}><View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider><MiniPlayerSafeFrame owner={tab} focused={focused}/></View></ScreenFocusProvider>;
+  const body=<View style={{ flex: 1, backgroundColor: colors.bg }}><NativeHeaderTitle.Provider value={tab==='guide'}>{content}</NativeHeaderTitle.Provider><MiniPlayerSafeFrame owner={tab} focused={focused}/></View>;
+  // Non-scrolling filters also need UIKit's header/search/tab insets. A list's
+  // automatic adjustment cannot protect siblings drawn above the list.
+  return <ScreenFocusProvider value={focused}>{Platform.OS==='ios'?<NativeScreenSafeAreaView edges={{top:true,bottom:true,left:true,right:true}} style={{backgroundColor:colors.bg}}>{body}</NativeScreenSafeAreaView>:body}</ScreenFocusProvider>;
 }
 
 // ── Pages and sheets ─────────────────────────────────────────────────────────
