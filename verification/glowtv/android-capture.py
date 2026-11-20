@@ -108,6 +108,7 @@ def dismiss_phone_keyboard():
   while 'mInputShown=true' in adb('shell','dumpsys','input_method'):
    if time.monotonic()>deadline:raise AssertionError('The native keyboard did not dismiss before the form action')
    time.sleep(.2)
+  time.sleep(.4)
 
 CHANNELS=[('demo','Evening studio'),('demo2','Wild North'),('demo3','Quiet studio')]
 stamp=lambda v:time.strftime('%Y%m%d%H%M%S +0000',time.gmtime(v))
@@ -154,6 +155,7 @@ def capture(screen):
  time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));(OUT/f'emulator-design-{TARGET}-{screen}.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));print(f'Native {TARGET}: captured {screen}',flush=True)
 def home():click('Home')
 def back():
+ if not TV:dismiss_phone_keyboard()
  if TV:click('Back')
  elif gesture_navigation:
   # Exercise the system's actual predictive-back gesture on gesture-nav AVDs.
