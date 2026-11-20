@@ -15,8 +15,10 @@ export const features:Record<DownloadPlatform,string[][]>={
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
  if(version==='0.7.3')return [
+  'Native startup handles devices whose JavaScript runtime omits plural-rule support.',
   'Clearer control states, accessible messages and confirmations for destructive actions.',
   'Responsive tablet layouts, readable text and improved guide navigation.',
+  ...(platform==='ios'?['Fixed controls respect the native header, search bar and adaptive tab-bar insets.']:platform==='tv'?['Remote Back reaches app handlers before the Android system can exit the activity.']:[]),
   platform==='tv'?'More visible remote focus, restored library focus, consistent Back behavior and on-screen playback controls.':'Five focused library tabs, native sheets and measured mini-player placement above navigation.',
   'Existing playlists, profiles, playback engines and transitions are retained.',
  ];
