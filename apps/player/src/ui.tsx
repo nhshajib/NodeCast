@@ -22,13 +22,16 @@ export function Button({ title, onPress, variant = 'primary', busy = false, disa
 export function IconButton({ name, label, onPress, disabled, dark = false, nativeID, expanded }: { nativeID?: string; expanded?: boolean; name: IconName; label: string; onPress: () => void; disabled?: boolean; dark?: boolean }) {
   return <Pressable nativeID={nativeID} accessibilityRole="button" accessibilityLabel={label} disabled={disabled} accessibilityState={{disabled:!!disabled,expanded}} onPress={onPress} style={({ pressed }) => [u.iconButton, disabled && {opacity:.4}, dark && { backgroundColor: colors.videoSurface }, pressed && { opacity: .6 }]}><Icon name={name} color={dark ? colors.onVideo : colors.text} /></Pressable>;
 }
-export function Field({ label, hideLabel=false, style, onFocus, onBlur, inputRef, error, surfaceColor=colors.panel, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean; inputRef?: React.Ref<React.ComponentRef<typeof TextInput>>; error?:string; surfaceColor?:string }) {
+export function Field({ label, hideLabel=false, style, onFocus, onBlur, inputRef, error, surfaceColor=colors.panel, trailing, ...props }: React.ComponentProps<typeof TextInput> & { label: string; hideLabel?:boolean; inputRef?: React.Ref<React.ComponentRef<typeof TextInput>>; error?:string; surfaceColor?:string; trailing?:React.ReactNode }) {
   const {fontScale}=useWindowDimensions();
   const [focused, setFocused] = useState(false);
   const floating = androidDesign && !hideLabel && fontScale <= 1.3;
   return <View style={{ gap: hideLabel || floating ? 0 : 8, paddingTop: floating ? 8 : 0 }}>
     {!hideLabel && <Text pointerEvents="none" style={[u.fieldLabel, floating && { position: 'absolute', left: 12, top: 0, paddingHorizontal: 8, backgroundColor: surfaceColor, zIndex: 1, fontSize: 12, color: focused ? colors.link : colors.secondary }]}>{label}</Text>}
-    <TextInput autoCapitalize="none" autoCorrect={false} disableFullscreenUI={isTVBuild} {...props} ref={inputRef} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} placeholderTextColor={colors.secondary} style={[u.input, floating && { borderRadius: 12, backgroundColor: surfaceColor }, !!error && {borderColor:colors.danger}, focused && { borderColor: error?colors.danger:colors.link, borderWidth:isTVBuild?3:2 }, props.editable === false && { opacity: .65 }, style, Platform.OS==='web'&&{fontSize:(tvDesign?18:16)*fontScale}]} />
+    <View>
+     <TextInput autoCapitalize="none" autoCorrect={false} disableFullscreenUI={isTVBuild} {...props} ref={inputRef} nativeID={props.nativeID||(isTVBuild?`tv-field:${label}`:undefined)} accessibilityLabel={props.accessibilityLabel || label} onFocus={event => { setFocused(true); onFocus?.(event); }} onBlur={event => { setFocused(false); onBlur?.(event); }} placeholderTextColor={colors.secondary} style={[u.input, floating && { borderRadius: 12, backgroundColor: surfaceColor }, !!error && {borderColor:colors.danger}, focused && { borderColor: error?colors.danger:colors.link, borderWidth:isTVBuild?3:2 }, props.editable === false && { opacity: .65 }, !!trailing && { paddingRight: 56 }, style, Platform.OS==='web'&&{fontSize:(tvDesign?18:16)*fontScale}]} />     {!!trailing&&<View style={{position:'absolute',right:0,top:0,bottom:0,justifyContent:'center'}}>{trailing}</View>}
+    </View>
+
     {!!error&&<Notice danger>{error}</Notice>}
   </View>;
 }

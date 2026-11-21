@@ -65,9 +65,11 @@ import X from 'lucide-react-native/icons/x';
 import Plus from 'lucide-react-native/icons/plus';
 import Captions from 'lucide-react-native/icons/captions';
 import Clock from 'lucide-react-native/icons/clock';
+import Eye from 'lucide-react-native/icons/eye';
+import EyeOff from 'lucide-react-native/icons/eye-off';
 /** Keep existing semantic names/call sites; every rendered application icon is Lucide. */
 const icons = {
- add: Plus, close: X, 'close-circle': CircleX, 'close-circle-outline': CircleX,
+ add: Plus, close: X, 'eye-outline': Eye, 'eye-off-outline': EyeOff, 'close-circle': CircleX, 'close-circle-outline': CircleX,
  home: House, 'home-outline': House, tv: Tv, 'tv-outline': Tv,
  film: Film, 'film-outline': Film, albums: Layers, 'albums-outline': Layers,
  library: Library, 'library-outline': Library, grid: Grid2X2, 'grid-outline': Grid2X2,

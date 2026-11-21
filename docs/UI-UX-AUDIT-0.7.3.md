@@ -151,3 +151,20 @@ The user subsequently authorized compiling and publishing the packages and updat
 [Release verification and known limitation](../verification/glowtv/release-0.7.3/BUILD-STATUS.md) records every package source, build, audit and publication. [Screenshot provenance](../verification/glowtv/screenshot-provenance.json) covers all 32 native captures, copied to `store-assets/` and optimized for the website. The native after galleries are [iPhone](../verification/glowtv/native/ios-home.png), [iPad](../verification/glowtv/native/ipad-home.png), [Android](../verification/glowtv/native/android-home.png) and [TV](../verification/glowtv/native/tv-home.png). Each folder also contains Guide, Player, Movies, Series, Add playlist, Search and Settings images under the same platform prefix.
 
 A single Android 11 SwANGLE run aborted in VLC MediaCodec surface creation during channel switching; the exact same APK passed with SwiftShader. No engine or decoding-policy change was made. Hardware Fire TV playback, every remote key, iPad multitasking/rotation, VoiceOver/TalkBack and largest Dynamic Type remain explicit device follow-ups.
+
+## Follow-up audit (ui-ux-pro-max + design skills)
+
+Fixed in source after reviewing the 0.7.3 native captures and the website:
+
+- **Phone guide:** the filter button now shares the row with the day picker instead of sitting alone. The selected day's check mark sits inline with its label. Channel cells show the channel logo when there is one, never two-letter initials. Rows are shorter (programme cells 80 pt, growing with Dynamic Type), so more channels fit.
+- **TV guide:** no initials badge; the stray horizontal scroll indicator under the ruler is hidden on TV.
+- **TV posters:** the title and group no longer touch, or clip at, the tile edge when focused (16 px inset).
+- **Type sizes:**
+  - TV: "Updated", connection location and "• LIVE" raised from 11 to 14.
+  - Phone: LIVE badges raised from 8–9 to 11, the featured kicker from 10 to 12, and the version "CURRENT" tag from 9 to 11.
+- **Add-playlist sheet:**
+  - The password field has an inline eye toggle (44 pt), replacing the full-width "Show password" button.
+  - The sheet's bottom padding includes the safe-area inset, so the footer clears Android's gesture bar.
+- **Website (phone):** the hero screenshot strip no longer tilts and enlarges the iPhone shot. `.device-phone.ios` outranked the phone rule. Shots now sit level at one height, like an App Store preview row.
+
+Still needs a device: D-pad pass on Fire TV / Android TV (`scripts/tv-remote-driver.py`), and the six feel tests on iPhone and Android.

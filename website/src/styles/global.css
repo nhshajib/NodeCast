@@ -355,6 +355,10 @@ footer nav a:hover{text-decoration:underline}
  .device-phone,.download-shot,.download-shot.center{width:58vw;max-width:240px;border-radius:22px}
  .device-tv,.download-stage.tv .download-shot{width:84vw;border-radius:14px;border-width:.5px}
  .devices{order:0}
+ .device-phone.ios,.device-phone.android{transform:none}
+ .devices{align-items:center}
+ .devices .device-phone{width:auto;height:min(52vh,400px)}
+ .devices .device-phone img{width:auto;height:100%}
  .device-tv{order:1}.device-phone.android{order:2}
  .download-stage{margin-bottom:0}
  .page-hero.has-stage + .content{padding-top:24px}
