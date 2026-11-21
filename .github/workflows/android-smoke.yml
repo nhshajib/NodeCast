@@ -125,9 +125,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: GlowTV-Android-*
+          path: apps/player/verified-apks
+          run-id: ${{ inputs.build_run || github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
       - name: Confirm both APKs and checksums are attached, then publish
         env:
           GH_TOKEN: ${{ github.token }}
+          GLOWTV_ANDROID_SIGNING_CERT_SHA256: ${{ vars.GLOWTV_ANDROID_SIGNING_CERT_SHA256 }}
         shell: bash
         run: |
           set -euo pipefail
@@ -136,5 +143,15 @@ jobs:
           ASSETS=$(gh release view "$TAG" --json assets --jq '.assets[].name')
           for NAME in "GlowTV.apk" "GlowTV.apk.sha256" "GlowTV-TV.apk" "GlowTV-TV.apk.sha256" "release-metadata.json"; do
             grep -qx "$NAME" <<<"$ASSETS" || { echo "Missing $NAME on $TAG"; exit 1; }
+          done
+          # Bind publication to the exact checked APKs, not just matching filenames.
+          BUILD_TOOLS=$(find "$ANDROID_HOME/build-tools" -mindepth 1 -maxdepth 1 -type d | sort -V | tail -1)
+          mkdir -p /tmp/glowtv-attached
+          gh release download "$TAG" --pattern '*.apk' --dir /tmp/glowtv-attached
+          for NAME in GlowTV.apk GlowTV-TV.apk; do
+            CHECKED=$(find verified-apks -name "$NAME")
+            test -n "$CHECKED"
+            cmp "$CHECKED" "/tmp/glowtv-attached/$NAME"
+            python3 scripts/android_release_signing.py verify "$BUILD_TOOLS" "$CHECKED"
           done
           gh release edit "$TAG" --draft=false --prerelease=false --latest

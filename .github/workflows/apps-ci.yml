@@ -38,5 +38,7 @@ jobs:
         run: npm run typecheck
       - name: Regression tests
         run: npm test
+      - name: Android release signing policy
+        run: python3 -m unittest discover -s scripts -p test_android_release_signing.py -v
       - name: Bundle web
         run: npx expo export --platform web --output-dir /tmp/nodecast-web

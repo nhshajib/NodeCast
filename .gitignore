@@ -17,3 +17,10 @@ __pycache__/
 /apps/player/ios/
 website/.astro/
 website/audit-results/
+
+# Private Android release-signing material must never be committed.
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.keystore.base64

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-11-21T14:45:44.678Z",
+  "checkedAt": "2026-11-21T16:47:34.665Z",
   "platforms": {
     "ios": {
       "assetId": 775640092,
@@ -8,7 +8,7 @@
       "tag": "ios-v0.7.4",
       "publishedAt": "2026-11-21T13:15:55Z",
       "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4",
-      "prerelease": true,
+      "prerelease": false,
       "legacy": false,
       "file": "GlowTV-0.7.4-unsigned.ipa",
       "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/GlowTV-0.7.4-unsigned.ipa",
@@ -19,7 +19,7 @@
     },
     "android": {
       "assetId": 774313727,
-      "downloadCount": 1,
+      "downloadCount": 3,
       "version": "0.7.4",
       "tag": "glowtv-v0.7.4",
       "publishedAt": "2026-11-21T03:26:13Z",
@@ -50,5 +50,5 @@
       "minimumOS": "Android API 24 or later"
     }
   },
-  "verification": "Public GitHub release API, including per-file download_count"
+  "verification": "Public GitHub release metadata"
 }

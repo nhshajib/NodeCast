@@ -103,5 +103,5 @@ jobs:
           gh release upload "$TAG" "existing-ipa/GlowTV-${VERSION}-unsigned.ipa" existing-ipa/SHA256SUMS.txt existing-ipa/INSTALL.txt existing-ipa/release-metadata.json --clobber
           if [ "$MAKE_PUBLIC" = true ]; then
             # Published only after provenance, archive and checksum checks above have passed.
-            gh release edit "$TAG" --draft=false --prerelease=false
+            gh release edit "$TAG" --draft=false --prerelease=false --latest=false
           fi
