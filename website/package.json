@@ -9,7 +9,7 @@
     "preview": "astro preview --host 0.0.0.0",
     "audit": "node scripts/audit.mjs",
     "typecheck": "astro check",
-    "test": "node --test scripts/release-selection.test.mjs"
+    "test": "node --test scripts/release-selection.test.mjs scripts/download-counts.test.mjs"
   },
   "dependencies": {
     "astro": "^6.0.0"

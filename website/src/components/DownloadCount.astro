@@ -1,0 +1,50 @@
+---
+import type {DownloadRelease} from '../data/release';
+import {downloadCount} from '../lib/download-counts.mjs';
+import Icon from './Icon.astro';
+const {item,checkedAt}=Astro.props as {item:DownloadRelease;checkedAt:string};
+const count=downloadCount(item.downloadCount);
+const date=new Date(checkedAt);
+---
+<div class="download-activity" data-download-count data-asset-id={item.assetId} data-asset-url={item.url}>
+ <p class="download-activity-value"><Icon name="download" size={18}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · v{item.version}</span></p>
+ <p class="download-activity-note">File downloads, not unique users or installs. <time data-count-date datetime={checkedAt}>Checked {Number.isNaN(date.valueOf())?'at build time':date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}.</time></p>
+</div>
+<script>
+ import {assetDownloadCount,cachedDownloadCount} from '../lib/download-counts.mjs';
+ for(const element of document.querySelectorAll<HTMLElement>('[data-download-count]')){
+  const id=Number(element.dataset.assetId),url=element.dataset.assetUrl;
+  if(!Number.isSafeInteger(id)||id<=0||!url)continue;
+  const key=`glowtv.github-downloads.v1:${id}`;
+  const show=(count:number,checkedAt:number)=>{
+   const value=element.querySelector('[data-count-value]'),time=element.querySelector('time');
+   const label=`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`;
+   if(value&&value.textContent!==label)value.textContent=label;
+   if(time){const date=new Date(checkedAt);time.dateTime=date.toISOString();time.textContent=`Checked ${date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric'})}.`;}
+  };
+  let cached:null|{url:string;count:number;checkedAt:number}=null;
+  try{cached=JSON.parse(sessionStorage.getItem(key)||'null');}catch{/* Storage can be disabled. The server-rendered count still works. */}
+  const saved=cachedDownloadCount(cached,url,Date.now());
+  if(saved!==null&&cached){show(saved,cached.checkedAt);continue;}
+  const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),5000);
+  void fetch(`https://api.github.com/repos/nhshajib/NodeCast/releases/assets/${id}`,{headers:{Accept:'application/vnd.github+json'},credentials:'omit',referrerPolicy:'no-referrer',signal:controller.signal})
+   .then(async response=>{
+    if(!response.ok)return;
+    const count=assetDownloadCount(await response.json(),url,id);if(count===null)return;
+    const checkedAt=Date.now();show(count,checkedAt);
+    try{sessionStorage.setItem(key,JSON.stringify({url,count,checkedAt}));}catch{/* Optional cache; never replace unavailable data with a made-up count. */}
+   }).catch(()=>{/* Offline, blocked or rate-limited: retain the dated build snapshot. */}).finally(()=>clearTimeout(timeout));
+ }
+</script>
+<style>
+ .download-activity{margin:16px auto 0;max-width:680px;min-width:0;text-align:center}
+ .download-activity-value{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:0 auto;color:var(--on-night-muted);font-size:14px;line-height:1.5}
+ .download-activity-value strong{color:var(--on-night);font-weight:600;font-variant-numeric:tabular-nums}
+ .download-activity-note{font-size:12px;line-height:1.6;margin:4px auto 0;color:var(--on-night-muted);overflow-wrap:anywhere}
+ @media(max-width:640px){
+  .download-activity{margin:12px 0 0;text-align:left}
+  .download-activity-value{justify-content:flex-start;color:var(--ios-secondary,var(--muted));font-size:14px}
+  .download-activity-value strong{color:var(--ios-label,var(--ink))}
+  .download-activity-note{margin-left:0;color:var(--ios-secondary,var(--muted))}
+ }
+</style>

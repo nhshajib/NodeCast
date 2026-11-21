@@ -425,7 +425,7 @@
       ],
       [
         "Website and analytics",
-        "This website has no analytics enabled by default and no advertising trackers. GitHub Pages and your network provider may process technical connection logs. An analytics service must be documented here before it is enabled."
+        "This website has no analytics enabled by default and no advertising trackers. The hosting provider may process technical connection logs. Download pages request public GitHub release metadata to show file-download counts; GitHub receives normal connection information, including your IP address. Counts are cached in browser session storage for up to five minutes, using a public release-file ID rather than a visitor identifier. No playlist details or IPTV credentials are sent. An analytics service must be documented here before it is enabled."
       ],
       [
         "Deletion and contact",

@@ -3,6 +3,7 @@ import {screenshotSize} from '../data/screenshots';
 import Layout from '../layouts/Layout.astro';
 import Gallery from '../components/Gallery.astro';
 import FAQ from '../components/FAQ.astro';
+import CommunityFeedback from '../components/CommunityFeedback.astro';
 import Icon from '../components/Icon.astro';
 import {features, trustLine} from '../data/site';
 const size = (platform: string) => screenshotSize(platform, 'home');
@@ -60,5 +61,6 @@ const platforms = [
 </section>
 
 <Gallery tabs/>
+<CommunityFeedback/>
 <FAQ/>
 </Layout>

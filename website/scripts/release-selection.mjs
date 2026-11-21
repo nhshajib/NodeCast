@@ -1,3 +1,4 @@
+import {downloadCount} from '../src/lib/download-counts.mjs';
 const root='https://github.com/nhshajib/NodeCast';
 const patterns={ios:/^(?:NodeCast|GlowTV)(?:-[\d.]+)?-unsigned\.ipa$|^GlowTV\.ipa$/,android:/^NodeCast-mobile-[\d.]+\.apk$|^GlowTV\.apk$/,tv:/^NodeCast-tv-[\d.]+\.apk$|^GlowTV-TV\.apk$/};
 export function selectDownloads(releases,snapshot){
@@ -15,7 +16,7 @@ export function selectDownloads(releases,snapshot){
   const checksum=release.assets.find(a=>a.name===asset.name+'.sha256'||a.name==='SHA256SUMS.txt');
   const saved=snapshot.platforms?.[platform];
   const same=saved?.url===expected&&saved?.sha256===asset.digest.slice(7)&&saved?.size===asset.size;
-  platforms[platform]={version:release.tag_name.match(/\d+\.\d+\.\d+$/)[0],tag:release.tag_name,publishedAt:release.published_at,source:`${root}/releases/tag/${release.tag_name}`,prerelease:!!release.prerelease,legacy:asset.name.startsWith('NodeCast'),file:asset.name,url:expected,size:asset.size,sha256:asset.digest.slice(7),checksumUrl:checksum?.browser_download_url?.startsWith(`${root}/releases/download/${release.tag_name}/`)?checksum.browser_download_url:null,minimumOS:same?saved.minimumOS:null};
+  platforms[platform]={assetId:Number.isSafeInteger(asset.id)&&asset.id>0?asset.id:null,downloadCount:downloadCount(asset.download_count),version:release.tag_name.match(/\d+\.\d+\.\d+$/)[0],tag:release.tag_name,publishedAt:release.published_at,source:`${root}/releases/tag/${release.tag_name}`,prerelease:!!release.prerelease,legacy:asset.name.startsWith('NodeCast'),file:asset.name,url:expected,size:asset.size,sha256:asset.digest.slice(7),checksumUrl:checksum?.browser_download_url?.startsWith(`${root}/releases/download/${release.tag_name}/`)?checksum.browser_download_url:null,minimumOS:same?saved.minimumOS:null};
   break;
  }
  return platforms;

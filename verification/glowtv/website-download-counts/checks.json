@@ -1,0 +1,78 @@
+{
+  "tests": {
+    "passed": 8,
+    "failed": 0
+  },
+  "astro": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "siteAudit": "27 pages passed; see audit.json",
+  "downloadCounterChecks": [
+    "exact public release asset ID and URL",
+    "real zero distinguished from unavailable",
+    "5-minute session cache",
+    "429 retains dated snapshot",
+    "large count wrapping at 360,393,412,768,1280px"
+  ],
+  "lighthouse": [
+    {
+      "route": "/",
+      "mode": "mobile",
+      "scores": {
+        "performance": 96,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcp": 1956.6405999999997,
+      "cls": 0,
+      "tbt": 213,
+      "bytes": 296101
+    },
+    {
+      "route": "/download/iphone/",
+      "mode": "mobile",
+      "scores": {
+        "performance": 98,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcp": 1809.6639999999998,
+      "cls": 0,
+      "tbt": 133,
+      "bytes": 189050
+    },
+    {
+      "route": "/download/android/",
+      "mode": "mobile",
+      "scores": {
+        "performance": 99,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcp": 1806.5642000000003,
+      "cls": 0,
+      "tbt": 0,
+      "bytes": 183959
+    },
+    {
+      "route": "/download/tv/",
+      "mode": "mobile",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "lcp": 1055.3233,
+      "cls": 0,
+      "tbt": 37,
+      "bytes": 198814
+    }
+  ],
+  "testData": "Large synthetic count used only in automated tests. Committed screenshots use actual release snapshot counts.",
+  "feedback": "User-supplied quotes, attributed to GlowTV team; two marked excerpts; no numeric aggregate or review schema."
+}
