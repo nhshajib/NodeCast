@@ -139,12 +139,12 @@ jobs:
 
           Both APKs include JavaScript and VLC and work without Expo Go or a computer. SHA-256 files and release-metadata.json describe these exact builds. Original application IDs and signing certificates were verified. Native emulator audits passed for both editions; physical-device/provider compatibility still depends on the device and stream.
 
-          These are public testing APKs using the existing Android test signing identity, not Play Store or Amazon Appstore releases. GlowTV provides no channels, playlists or subscriptions. See the repository CHANGELOG.md and apps/player/android-mobile or apps/player/android-tv for installation and version details.
+          These are direct-download APKs, not Play Store or Amazon Appstore releases. GlowTV provides no channels, playlists or subscriptions. See the repository CHANGELOG.md and apps/player/android-mobile or apps/player/android-tv for installation and version details.
           NOTES
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --target "$SOURCE_SHA" --draft --prerelease --title "GlowTV ${VERSION} — Android phone and TV" --notes-file /tmp/glowtv-android-notes.md
+            gh release create "$TAG" --target "$SOURCE_SHA" --draft --title "GlowTV ${VERSION} — Android phone and TV" --notes-file /tmp/glowtv-android-notes.md
           fi
           test "$(gh release view "$TAG" --json isDraft --jq .isDraft)" = true
           gh release edit "$TAG" --notes-file /tmp/glowtv-android-notes.md
           gh release upload "$TAG" apks/*/*.apk apks/*/*.sha256 apks/release-metadata.json --clobber
-          if [ "$MAKE_PUBLIC" = true ]; then gh release edit "$TAG" --draft=false; fi
+          if [ "$MAKE_PUBLIC" = true ]; then gh release edit "$TAG" --draft=false --prerelease=false; fi

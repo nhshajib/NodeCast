@@ -137,4 +137,4 @@ jobs:
           for NAME in "GlowTV.apk" "GlowTV.apk.sha256" "GlowTV-TV.apk" "GlowTV-TV.apk.sha256" "release-metadata.json"; do
             grep -qx "$NAME" <<<"$ASSETS" || { echo "Missing $NAME on $TAG"; exit 1; }
           done
-          gh release edit "$TAG" --draft=false
+          gh release edit "$TAG" --draft=false --prerelease=false --latest

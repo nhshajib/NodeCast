@@ -97,7 +97,7 @@ jobs:
         with:
           pattern: GlowTV-Android-*
           path: apps/player/apks
-      - name: Publish Android testing release
+      - name: Publish Android release (draft until emulator checks pass)
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -106,7 +106,7 @@ jobs:
           VERSION=$(node -p "require('./package.json').version")
           TAG="glowtv-v${VERSION}"
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --target "$GITHUB_SHA" --draft --title "GlowTV ${VERSION} — Android phone and TV testing" --notes-file android-mobile/RELEASE.md
+            gh release create "$TAG" --target "$GITHUB_SHA" --draft --title "GlowTV ${VERSION} — Android phone and TV" --notes-file android-mobile/RELEASE.md
           fi
           python3 scripts/release-metadata.py apks
           for FILE in apks/*/*.apk apks/*/*.sha256 apks/release-metadata.json; do
