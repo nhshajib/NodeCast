@@ -31,10 +31,10 @@ def find(label, timeout=15, scroll=False):
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))
   nav_top=height
-  if width<height and label not in ['Home','Library','Favorites','Settings']:
+  if width<height and label not in ['Home','Live','Guide','Library','Search','Favorites','Settings']:
    for candidate in root.iter('node'):
     box=list(map(int,re.findall(r'\d+',candidate.get('bounds',''))))
-    if candidate.get('content-desc') in ['Home','Library','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:
+    if candidate.get('content-desc') in ['Home','Live','Guide','Library','Search','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:
      parent=parents.get(candidate);outer=list(map(int,re.findall(r'\d+',parent.get('bounds','')))) if parent is not None else []
      top=outer[1] if len(outer)==4 and outer[3]-outer[1]<height*.3 else box[1]
      nav_top=min(nav_top,top)
@@ -262,7 +262,9 @@ def main():
   text('Server address','http://10.0.2.2:9090')
   text('Username','example')
   text('Password','example')
-  click('Connect playlist',True)
+  # The password field's Go key submits the form (returnKeyType="go"), so the
+  # form may already have closed. Only press Connect if it is still on screen.
+  if any((n.get('content-desc') or '')=='Connect playlist' for n in dump().iter('node')):click('Connect playlist',True)
   time.sleep(4);OUT.joinpath('emulator-tv-home.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));click('Live TV')
   if REMOTE and suite=='library':
    audit_library(remote,counts)
