@@ -2,7 +2,7 @@
   {
     "path": "download",
     "title": "Download GlowTV for iPhone, Android and TV",
-    "h1": "Your screen. Your GlowTV.",
+    "h1": "Your screen. Your GlowTV",
     "description": "Find the right GlowTV IPTV player for your iPhone, Android phone or television. Check release availability, requirements and installation help here.",
     "intro": "Choose the player made for your device. Bring your own playlist; GlowTV does not include content.",
     "cards": [
@@ -27,7 +27,7 @@
   {
     "path": "download/iphone",
     "title": "GlowTV for iPhone and iPad: IPTV Player",
-    "h1": "A little more at home on iPhone.",
+    "h1": "A little more at home on iPhone",
     "description": "Explore GlowTV for iPhone and iPad: your playlists, favorites, movies and XMLTV guide in one player. Read availability and installation details here.",
     "intro": "Your playlists, in a calm iOS interface. Use the built-in player or choose a compatible external player.",
     "kind": "platform",
@@ -36,7 +36,7 @@
   {
     "path": "download/android",
     "title": "GlowTV for Android: IPTV Player APK",
-    "h1": "Your library, in its best light.",
+    "h1": "Your library, in its best light",
     "description": "Download the GlowTV IPTV player APK for Android when the release is available. Check requirements, screenshots and safe installation guidance here.",
     "intro": "A dark interface that gives your content room to breathe. Connect your M3U playlist or Xtream account and keep your favorites close.",
     "kind": "platform",
@@ -45,7 +45,7 @@
   {
     "path": "download/tv",
     "title": "GlowTV for TV: Android TV, Fire TV, Apple TV",
-    "h1": "The sofa is calling.",
+    "h1": "The sofa is calling",
     "description": "Explore GlowTV for Android TV and Fire TV, with a remote-first guide and clear focus. Check APK availability and the current Apple TV status here.",
     "intro": "A dedicated layout for Android TV, Google TV and Fire TV. Every core action is designed for a remote.",
     "kind": "platform",
@@ -54,7 +54,7 @@
   {
     "path": "install",
     "title": "How to Install GlowTV on Any Device",
-    "h1": "A few steps from your sofa.",
+    "h1": "A few steps from your sofa",
     "description": "Install GlowTV on your phone or television with practical device guides. Find Android APK steps, Fire TV setup and honest store availability notes.",
     "intro": "Choose your device for installation instructions. Store routes stay clearly marked until the app listings are published.",
     "kind": "install-index",
@@ -89,7 +89,7 @@
   {
     "path": "install/iphone",
     "title": "Install GlowTV on iPhone and iPad",
-    "h1": "Settle in on iPhone.",
+    "h1": "Settle in on iPhone",
     "description": "Follow the GlowTV iPhone and iPad installation guide. Check App Store availability, learn the expected steps and understand personal IPA signing.",
     "intro": "Download the published iPhone and iPad IPA, then sign it with your own Apple account using Impactor. App Store availability is pending.",
     "kind": "guide",
@@ -130,7 +130,7 @@
   {
     "path": "install/android",
     "title": "Install the GlowTV APK on Android",
-    "h1": "Make room for a better player.",
+    "h1": "Make room for a better player",
     "description": "Install the GlowTV APK on your Android phone using the official release. Learn source permissions, file installation and how to verify the download.",
     "intro": "Download only from glowtv.app or the project’s GitHub Releases. Keep your existing app installed when updating to preserve local profiles.",
     "kind": "guide",
@@ -160,7 +160,7 @@
   {
     "path": "install/android-tv",
     "title": "Install GlowTV on Android TV and Google TV",
-    "h1": "Made for the remote.",
+    "h1": "Made for the remote",
     "description": "Set up GlowTV on Android TV or Google TV with a store-first installation guide. Find the sideloading fallback and learn where official APKs belong.",
     "intro": "Use the Play Store when GlowTV has a published TV listing. Until then, a verified TV APK is the fallback once a release is available.",
     "kind": "guide",
@@ -192,7 +192,7 @@
   {
     "path": "install/fire-tv",
     "title": "Install GlowTV on Fire TV and Firestick",
-    "h1": "A brighter evening on Fire TV.",
+    "h1": "A brighter evening on Fire TV",
     "description": "Install GlowTV on Fire TV or Firestick with Downloader and the official TV APK. Learn source permissions, release availability and remote setup.",
     "intro": "Use the Android TV / Fire TV edition. The phone APK is not designed for your remote.",
     "kind": "guide",
@@ -229,7 +229,7 @@
   {
     "path": "install/apple-tv",
     "title": "Install GlowTV on Apple TV",
-    "h1": "Apple TV is a future chapter.",
+    "h1": "Apple TV is a future chapter",
     "description": "Check the current GlowTV Apple TV status and learn how installation will work through the App Store. Do not install an iPhone IPA on your Apple TV.",
     "intro": "There is no tvOS build in the current project. The supplied Apple TV artwork is prepared for future work; the iPhone IPA is not compatible.",
     "kind": "guide",
@@ -255,7 +255,7 @@
   {
     "path": "support",
     "title": "GlowTV Support: Help With Playlists and Playback",
-    "h1": "Let’s get you watching.",
+    "h1": "Let’s get you watching",
     "description": "Get help with GlowTV: adding M3U or Xtream playlists, loading the TV guide, fixing buffering or no sound, and installing on iPhone, Android and Fire TV.",
     "intro": "Start with the guide that fits what you see. Never include passwords, full playlist links or provider tokens in a public bug report.",
     "kind": "support",
@@ -264,7 +264,7 @@
   {
     "path": "support/faq",
     "title": "GlowTV FAQ: IPTV Player Questions Answered",
-    "h1": "Good questions. Clear answers.",
+    "h1": "Good questions. Clear answers",
     "description": "Answers about GlowTV: supported playlists, M3U and Xtream Codes, the TV guide, catch-up, devices, privacy, updates and what the player does not include.",
     "intro": "GlowTV is a free player for the content you bring. Here is what to expect before you add your first playlist.",
     "kind": "faq",
@@ -273,7 +273,7 @@
   {
     "path": "guides/add-m3u-playlist",
     "title": "How to Add an M3U Playlist in GlowTV",
-    "h1": "Your playlist starts here.",
+    "h1": "Your playlist starts here",
     "description": "Add an M3U or M3U8 playlist link to GlowTV, or import a local file. Learn which URL to use and what to check when your provider returns an error.",
     "intro": "Use the channel playlist supplied by your provider. A single-video HLS manifest is not a channel list.",
     "kind": "guide",
@@ -303,7 +303,7 @@
   {
     "path": "guides/xtream-codes-login",
     "title": "How to Log In with Xtream Codes in GlowTV",
-    "h1": "One login. Your own library.",
+    "h1": "One login. Your own library",
     "description": "Connect GlowTV to your Xtream Codes provider with a server address, username and password. Learn safe setup and how to troubleshoot login errors.",
     "intro": "Use the details from your content provider. This is a provider login, not a GlowTV account.",
     "kind": "guide",
@@ -333,7 +333,7 @@
   {
     "path": "guides/tv-guide-epg",
     "title": "How to Load the TV Guide (EPG) in GlowTV",
-    "h1": "Know what’s on. And what’s next.",
+    "h1": "Know what’s on. And what’s next",
     "description": "Load an XMLTV TV guide in GlowTV and match schedules to your playlist. Check channel IDs, refresh settings and provider-supported catch-up details.",
     "intro": "Programme schedules come from your provider’s XMLTV feed. The player cannot invent missing listings.",
     "kind": "guide",
@@ -363,7 +363,7 @@
   {
     "path": "guides/fix-buffering",
     "title": "How to Fix IPTV Buffering and Freezing in GlowTV",
-    "h1": "A calmer path back to play.",
+    "h1": "A calmer path back to play",
     "description": "Stop IPTV buffering and freezing in GlowTV. Check your connection, switch playback engine, lower stream quality and rule out provider limits step by step.",
     "intro": "Try one change at a time. A player cannot fix an overloaded provider or an unavailable stream.",
     "kind": "guide",
@@ -399,7 +399,7 @@
   {
     "path": "changelog",
     "title": "GlowTV Changelog: Release Notes and Updates",
-    "h1": "A little brighter with every update.",
+    "h1": "A little brighter with every update",
     "description": "Every GlowTV release for iPhone, Android and TV, with what changed in each version. Subscribe to the RSS feed to hear about new updates first.",
     "intro": "This design and rebrand is in development. Existing published binaries keep their original release names until a verified GlowTV build is published.",
     "kind": "changelog",
@@ -408,7 +408,7 @@
   {
     "path": "privacy",
     "title": "Privacy Policy | GlowTV IPTV Player",
-    "h1": "Your profiles stay yours.",
+    "h1": "Your profiles stay yours",
     "description": "How GlowTV handles your data: playlists and logins stay on your device, no account is required and nothing is sold. Read the full privacy policy.",
     "intro": "No GlowTV account is required. This policy describes the current app and this static website.",
     "kind": "article",
@@ -439,7 +439,7 @@
   {
     "path": "terms",
     "title": "Terms of Use | GlowTV IPTV Player",
-    "h1": "A player for the content you bring.",
+    "h1": "A player for the content you bring",
     "description": "The terms for using GlowTV, a free IPTV player. You bring your own legally obtained playlists; GlowTV provides no channels, content or subscriptions.",
     "intro": "By using GlowTV, you agree to use it only with content and services you are entitled to access.",
     "kind": "article",
@@ -466,7 +466,7 @@
   {
     "path": "legal",
     "title": "Legal, Licenses and Copyright | GlowTV",
-    "h1": "Clear about what we do.",
+    "h1": "Clear about what we do",
     "description": "GlowTV licensing, open-source notices and copyright information. GlowTV is a player only and does not host, sell or distribute any TV content.",
     "intro": "GlowTV is independent software. A player does not grant rights to the content you open with it.",
     "kind": "article",
@@ -493,7 +493,7 @@
   {
     "path": "guides",
     "title": "GlowTV Guides: Playlists, TV Guide and Playback",
-    "h1": "A helpful place to start.",
+    "h1": "A helpful place to start",
     "description": "Find practical GlowTV guides for adding an M3U playlist, using Xtream Codes, loading an XMLTV TV guide and fixing playback interruptions on your device.",
     "intro": "Bring your playlist, connect your guide and make yourself comfortable. These practical steps cover the most useful setup tasks.",
     "kind": "guide-index",
@@ -575,7 +575,7 @@
   {
     "path": "guides/catch-up-tv",
     "title": "How to Watch Catch-up TV in GlowTV",
-    "h1": "Missed it? Catch up.",
+    "h1": "Missed it? Catch up",
     "description": "Watch programmes that already aired with catch-up TV in GlowTV. See which providers support it, how to find catch-up in the TV guide and fix common issues.",
     "intro": "Catch-up plays programmes after they air, when your provider keeps an archive for that channel.",
     "kind": "guide",
@@ -606,7 +606,7 @@
   {
     "path": "guides/parental-controls",
     "title": "Parental Controls in GlowTV: Set a Family PIN",
-    "h1": "A family PIN for shared screens.",
+    "h1": "A family PIN for shared screens",
     "description": "Set up parental controls in GlowTV with a six-digit family PIN. Protect categories, lock content on shared TVs and phones, and reset a forgotten PIN.",
     "intro": "Family controls hide the categories you choose until someone enters the PIN.",
     "kind": "guide",
@@ -637,7 +637,7 @@
   {
     "path": "guides/backup-and-restore",
     "title": "Back Up and Restore Your GlowTV Playlists and Settings",
-    "h1": "Move your setup, safely.",
+    "h1": "Move your setup, safely",
     "description": "Create an encrypted GlowTV backup of your playlists, profiles and settings, then restore it on a new phone or TV. Step-by-step export and import guide.",
     "intro": "Backups are encrypted with a password you choose and stay in your control.",
     "kind": "guide",
