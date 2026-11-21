@@ -164,7 +164,7 @@
     "description": "Set up GlowTV on Android TV or Google TV with a store-first installation guide. Find the sideloading fallback and learn where official APKs belong.",
     "intro": "Use the Play Store when GlowTV has a published TV listing. Until then, a verified TV APK is the fallback once a release is available.",
     "kind": "guide",
-    "notice": "GlowTV isn’t in Google Play for TV yet. Install the TV APK from GitHub. Choose the TV APK, not the phone APK.",
+    "notice": "GlowTV isn’t in Google Play for TV yet. Install the TV APK with Downloader code 1853486, or from the official TV download page. Choose the TV APK, not the phone APK.",
     "steps": [
       {
         "title": "Check the TV download page",
@@ -177,16 +177,17 @@
         "result": "You have the versioned TV APK, rather than the phone APK."
       },
       {
-        "title": "Use the official APK as a fallback",
-        "text": "Transfer the downloaded TV APK using your trusted file-transfer app. Open it with a TV file manager.",
-        "result": "The TV asks whether this file manager may install unknown apps."
+        "title": "Or use Downloader code 1853486",
+        "text": "Install Downloader by AFTVnews from Google Play on your TV, open it, enter 1853486 and select Go. Choose Download TV APK on the page that opens. Otherwise, transfer the downloaded TV APK with a trusted file-transfer app and open it with a TV file manager.",
+        "result": "The official GlowTV TV APK is downloaded on your TV."
       },
       {
         "title": "Allow the source and install",
         "text": "Allow installs for that file manager only, then confirm Install. Return the permission to off after installation if you do not need it.",
         "result": "The TV player launches with a remote-friendly interface."
       }
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "install/fire-tv",
@@ -195,7 +196,7 @@
     "description": "Install GlowTV on Fire TV or Firestick with Downloader and the official TV APK. Learn source permissions, release availability and remote setup.",
     "intro": "Use the Android TV / Fire TV edition. The phone APK is not designed for your remote.",
     "kind": "guide",
-    "notice": "No Downloader code or Amazon listing is published yet. Use the official TV download page to get the direct GitHub TV APK.",
+    "notice": "Downloader code: 1853486. It opens the official GlowTV TV download page, which always links to the newest TV APK. GlowTV is not in the Amazon Appstore yet.",
     "steps": [
       {
         "title": "Install Downloader",
@@ -213,8 +214,8 @@
         "result": "Downloader can open the Android package installer."
       },
       {
-        "title": "Open the official TV download",
-        "text": "Enter https://glowtv.app/download/tv/ in Downloader, then select Download TV APK. The button opens the direct GitHub download. A short Downloader code has not been assigned.",
+        "title": "Enter Downloader code 1853486",
+        "text": "Open Downloader, select the address box, enter 1853486 and select Go. The official GlowTV TV download page opens; select Download TV APK. You can also type https://glowtv.app/download/tv/ instead of the code.",
         "result": "The versioned TV APK downloads from the official GitHub Release."
       },
       {
@@ -222,7 +223,8 @@
         "text": "Confirm Install, then Open. You may delete the downloaded installer file afterwards.",
         "result": "You can navigate the app with the D-pad and Select button."
       }
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "install/apple-tv",

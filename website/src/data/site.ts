@@ -24,7 +24,7 @@ export const trustLine = ['Free and open source', 'No account needed', 'You brin
  * Store listings. Leave a value empty until the listing is live: pages then say the app
  * is not in that store yet instead of showing a placeholder. See HOSTING.md.
  */
-export const stores = { appStore: '', playStore: '', amazonAppstore: '', downloaderCode: '' };
+export const stores = { appStore: '', playStore: '', amazonAppstore: '', downloaderCode: '1853486' };
 /** Google Search Console HTML verification token. Empty: no verification tag is rendered. */
 export const searchConsoleToken = '';
 /** Readable names for URL segments in breadcrumbs and BreadcrumbList data. */
