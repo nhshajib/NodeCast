@@ -1,0 +1,31 @@
+Run: https://github.com/nhshajib/NodeCast/actions/runs/44851619375
+APK build: 44849613228
+Source: f1f48f6621904741c42337b29d215f26ed6ae777
+Android API 30 x86_64, SwANGLE graphics.
+The same APK passed with SwiftShader in run 44852270604. Physical-device codec compatibility is not certified.
+
+11-21 01:46:08.480  5100  7519 E VLC-std : ../../modules/codec/omxil/mediacodec.c:1043: int CreateSurface(decoder_t *, vlc_decoder_device *, AWindowHandler *, _Bool): assertion "p_sys->video.p_surface" failed
+--------- beginning of crash
+11-21 01:46:08.480  5100  7700 F libc    : ../../modules/codec/omxil/mediacodec.c:1043: int CreateSurface(decoder_t *, vlc_decoder_device *, AWindowHandler *, _Bool): assertion "p_sys->video.p_surface" failed
+11-21 01:46:08.481  5100  7700 F libc    : Fatal signal 6 (SIGABRT), code -1 (SI_QUEUE) in tid 7700 (VlcObject), pid 5100 (jib.nodecast.tv)
+11-21 01:46:08.532  5100  5157 I ReactNativeJNI: instanceHandle is null, event of type topBlur will be dropped
+11-21 01:46:08.576  7706  7706 I crash_dump64: obtaining output fd from tombstoned, type: kDebuggerdTombstone
+11-21 01:46:08.590   278   278 I tombstoned: received crash request for pid 7700
+11-21 01:46:08.604  7706  7706 I crash_dump64: performing dump of process 5100 (target tid = 7700)
+11-21 01:46:08.626  7706  7706 F DEBUG   : *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+11-21 01:46:08.626  7706  7706 F DEBUG   : Build fingerprint: 'google/sdk_gphone_x86_64/generic_x86_64_arm64:11/RSR1.240422.006/12134477:userdebug/dev-keys'
+11-21 01:46:08.626  7706  7706 F DEBUG   : Revision: '0'
+11-21 01:46:08.626  7706  7706 F DEBUG   : ABI: 'x86_64'
+11-21 01:46:08.626  7706  7706 F DEBUG   : Timestamp: 2026-11-21 01:46:08+0000
+11-21 01:46:08.626  7706  7706 F DEBUG   : pid: 5100, tid: 7700, name: VlcObject  >>> com.nhshajib.nodecast.tv <<<
+11-21 01:46:08.626  7706  7706 F DEBUG   : uid: 10167
+11-21 01:46:08.626  7706  7706 F DEBUG   : signal 6 (SIGABRT), code -1 (SI_QUEUE), fault addr --------
+11-21 01:46:08.626  7706  7706 F DEBUG   : Abort message: '../../modules/codec/omxil/mediacodec.c:1043: int CreateSurface(decoder_t *, vlc_decoder_device *, AWindowHandler *, _Bool): assertion "p_sys->video.p_surface" failed'
+11-21 01:46:08.626  7706  7706 F DEBUG   :     rax 0000000000000000  rbx 00000000000013ec  rcx 000078e39aa5a298  rdx 0000000000000006
+11-21 01:46:08.626  7706  7706 F DEBUG   :     r8  0000000000000413  r9  0000000000000413  r10 000078dee2a7d230  r11 0000000000000246
+11-21 01:46:08.626  7706  7706 F DEBUG   :     r12 000078e287a94f70  r13 000078e177d89bf8  r14 000078dee2a7d228  r15 0000000000001e14
+11-21 01:46:08.626  7706  7706 F DEBUG   :     rdi 00000000000013ec  rsi 0000000000001e14
+11-21 01:46:08.626  7706  7706 F DEBUG   :     rbp 000078dee2a7d370  rsp 000078dee2a7d218  rip 000078e39aa5a298
+11-21 01:46:08.651  7706  7706 F DEBUG   : backtrace:
+11-21 01:46:08.651  7706  7706 F DEBUG   :       #00 pc 000000000005a298  /apex/com.android.runtime/lib64/bionic/libc.so (syscall+24) (BuildId: edf0af8d613e7bdf6a416ec8f4edeb0d)
+11-21 01:46:08.651  7706  7706 F DEBUG   :       #01 pc 000000000005d202  /apex/com.android.runtime/lib64/bionic/libc.so (abort+194) (BuildId: edf0af8d613e7bdf6a416ec8f4edeb0d)

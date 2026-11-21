@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.2
+## Current published version: 0.7.3
 
-- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk.sha256)
-- Published: 2026-11-19
+- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk.sha256)
+- Published: 2026-11-21
 - Status: Public testing release
-- Size: 240,384,347 bytes (229.2 MiB)
+- Size: 240,424,191 bytes (229.3 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `86dc845f3b03beb3437f158063d0c289d418ba7fadba6a0a40711a9c5ce559ba`
+- SHA-256: `9d8a6a4cb1a312293fd78f6a7400f688d44a30613590ef4f687b18b862e8150b`
 
 This is a published GlowTV binary.
 
@@ -24,14 +24,14 @@ This is a published GlowTV binary.
 - **A lighter channel library:** Use the default text list, enable grid or logos when you want them, and organize each media library separately.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.2
+## What changed in 0.7.3
 
-- A calmer interface with consistent Lucide icons and an 8px spacing grid.
-- Consistent spacing extends to player controls, track menus, TV switches and guide cells.
-- Simpler information sections, clearer primary actions and fewer repeated controls.
-- Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.
-- Remote focus and virtualized list measurements stay aligned with the updated spacing.
-- Android keeps playback running through unchanged player settings.
+- Native startup handles devices whose JavaScript runtime omits plural-rule support.
+- Clearer control states, accessible messages and confirmations for destructive actions.
+- Responsive tablet layouts, readable text and improved guide navigation.
+- Remote Back reaches app handlers; entering a library restores focus without reflowing the poster grid.
+- More visible remote focus, restored library focus, consistent Back behavior and on-screen playback controls.
+- Existing playlists, profiles, playback engines and transitions are retained.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

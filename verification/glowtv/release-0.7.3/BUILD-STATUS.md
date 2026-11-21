@@ -1,45 +1,40 @@
 # GlowTV 0.7.3 release verification
 
-Current build source: `8cc4d8fc69ed2bb01e1028baf96a134f124377a7`.
+## Published packages and native audits
 
-- [Android phone and TV builds](https://github.com/nhshajib/NodeCast/actions/runs/44739839074).
-- [iPhone/iPad native audits and ARM64 IPA build](https://github.com/nhshajib/NodeCast/actions/runs/44739843826).
+All three **0.7.3 / build 703** packages are public. [Public download checks](public-downloads.json) confirm HTTP 200 for each file. Version, size, SHA-256 and minimum OS match the actual published assets and their generated release metadata.
 
-These runs are pending. No 0.7.3 download is public; website links remain on the last verified release. Native packages must pass the release gates before publication.
+| Edition | Package build / source | Native verification | Publication |
+| --- | --- | --- | --- |
+| iPhone / iPad | [44761996308](https://github.com/nhshajib/NodeCast/actions/runs/44761996308), `f81da181dd8632b9f04a56e23294b79f29db935e` | Both devices: 2 passed, 0 failed; all eight screens, cold launches, background/resume, decoded video and mini-player geometry | [Verified publication](https://github.com/nhshajib/NodeCast/actions/runs/44848750921), [IPA release](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.3) |
+| Android phone | [44849613228](https://github.com/nhshajib/NodeCast/actions/runs/44849613228), `f1f48f6621904741c42337b29d215f26ed6ae777` | [API 35 audit](https://github.com/nhshajib/NodeCast/actions/runs/44851008761): eight screens/settings, six same-process pause/resume cycles and Back after reopening | [Verified draft/upload](https://github.com/nhshajib/NodeCast/actions/runs/44852360755), [public APKs](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3) |
+| Android TV / Fire TV | Same Android build/source | [API 35](https://github.com/nhshajib/NodeCast/actions/runs/44851615852), [API 30 / SwiftShader](https://github.com/nhshajib/NodeCast/actions/runs/44852270604): remote-only navigation, eight screens/settings, decoded frames, Select/media pause, INFO, CH+/− and Back | Same verified upload; made public after the additional API 30 audit passed |
+
+Native Android capture harness: `10944540f93997b581eeb768f40f403b2d828c72`. Gallery images come from the exact final packages. The API 30 frame is retained as additional evidence. Local IPA archive, ARM64, embedded JS, original bundle ID, four tablet orientations, multitasking configuration and published checksum match are recorded in [ios-package.json](ios-package.json).
+
+The final Android-only profile-storage wording and TV fixes do not change iOS runtime behavior. No native module was added; original package IDs and signing configuration are retained. All 32 store/gallery captures use the original synthetic fixture, without real channels or copyrighted programmes.
 
 ## Completed source and website checks
 
-TypeScript, 139 tests, the 8px grid and protected-source checks pass. The protected guard confirms unchanged provider/storage/guide/backup models, player-engine patches, playback lifecycle effects and transition definitions. All three web exports pass. Website tests, Astro check/build, all-page accessibility/HTML/link checks and 46 Lighthouse measurements passed. See [Lighthouse scores](../LIGHTHOUSE.md).
+TypeScript, 139 tests, the 8px grid (457 properties) and protected-source checks pass. The protected guard confirms unchanged provider/storage/guide/backup models, player-engine patches, playback lifecycle effects and transition definitions. All three web exports pass. Website tests, Astro check/build, all-page accessibility/HTML/link checks and 46 Lighthouse measurements passed. See [Lighthouse scores](../LIGHTHOUSE.md). Fresh screenshots and generated public-release metadata are included in the final website audit.
 
 ## Findings caught by native testing
 
-- Fixed a nullable Kotlin focus target that prevented the TV build from compiling.
+- Fixed a nullable Kotlin focus target that prevented TV compilation.
 - Fixed a cold-launch Hermes exception from an unavailable `Intl.PluralRules` constructor. A subprocess regression test reproduces its absence.
-- iPhone Home survived tab changes, background intervals and cold relaunches. Native playback and measured mini-player placement also reached and passed their assertions. The Library screen then exposed filters under UIKit's search header. The tab root now uses native safe-area insets for fixed controls as well as lists; the test checks their geometry.
-- TV native video, remote Select, media keys and INFO were exercised. Back then left the Activity on Android 15 instead of reaching the JavaScript handler. The remote controller now routes Back through ReactActivity once, preserving native IME and dialog handling. [Before-fix capture](diagnostics/tv-activity-exited-before-fix.png).
-- Corrected harness-only problems: exact rail labels instead of matching Home-IP controls; D-pad scrolling to off-screen rail actions; Select to reveal hidden controls; UIKit tab-role queries; native keyboard-aware field entry and system Back to dismiss Android sheets.
-- Retried an emulator SDK image download that ended with premature EOF; it did not reach the app.
+- Native iPhone captures exposed filters under the native search header. The tab root now respects native safe-area insets for fixed controls as well as lists, with geometry assertions.
+- The mini-player measurement probe is noninteractive and accessibility-hidden. iOS measures its already inset body without another native safe-area view.
+- Android 13–15 predictive Back bypassed the legacy TV key handler. The existing modern Back dispatcher bridge now also applies to TV, retaining legacy key handling and native IME behavior.
+- Focus scale changed screen-space origins without changing widths, making same-column rail buttons look like Right targets. D-pad geometry now uses stable descendant layout bounds, including scrolling, without changing focus animation.
+- Android native sheets retain their content heading where UIKit-style header titles are unavailable; compact form spacing remains on the 8px grid.
+- iOS ordinary headers already inset Home and Guide; only translucent search tabs receive an additional top inset. Native geometry assertions catch duplicate header spacing. Programme sheets use automatic native insets and do not repeat the sheet title.
+- The TV rail expands over a fixed-width slot instead of resizing and remounting the poster grid; Right restores active content focus.
+- Harness corrections preserve real assertions: foreground-sheet Connect targeting, no duplicate Go submission, keyboard dismissal before page Back, UIKit tab-role queries, native tab retap scrolling and fresh D-pad geometry after each key.
 
-## Remaining native verification
+## Android 11 virtual-codec diagnostic
 
-The current rebuilt packages must complete all eight screens and settings checks, decoded video assertions and native iPhone/iPad tests. Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/TalkBack, and maximum Dynamic Type still require physical-device review. Emulator or browser results do not certify these behaviors.
+Final-APK API 30 run [44851619375](https://github.com/nhshajib/NodeCast/actions/runs/44851619375) reached decoded playback, Select pause, dedicated media keys and INFO, then aborted inside VLC MediaCodec `CreateSurface` during Channel Up (`p_sys->video.p_surface`). The prior API 30 audit of the same TV UI had passed. This is retained as a native failure, not reclassified as a passed test; [crash excerpt](diagnostics/tv-api30-mediacodec.txt). The same APK then passed the full audit with the existing SwiftShader emulator graphics backend in run [44852270604](https://github.com/nhshajib/NodeCast/actions/runs/44852270604). This comparison does not establish that physical hardware can never encounter a codec issue. The app's engine patches, decoding policy and lifecycle effects remain unchanged.
 
-## Current access blocker — November 20
+## Physical-device follow-up
 
-The APK build at run 44739839074 passed for both editions. Phone run 44742115948 captured all eight screens and traversed all eight settings destinations, with six pause/resume cycles and decoded video in the same process. Its additional re-open test stopped after Settings retained its scroll position; the local harness now re-taps Settings to exercise scroll-to-top before opening Appearance.
-
-Three follow-up commits are saved locally: the Settings retap test, an Android-native-sheet task heading, and compact 8px Android form spacing with foreground-only Connect targeting. TypeScript, 139 tests, all three exports, the grid and protected scope pass for these changes.
-
-The workspace GitHub CLI token now returns HTTP 401 (Bad credentials). Connected GitHub tools can read existing run results, but do not expose workflow dispatch or release publication. The user has been asked to refresh workspace repository access, without sharing a token in chat. Local changes are preserved; no unverified 0.7.3 release or website download link has been published. The iPhone run continues independently.
-
-## Access restored and final native follow-up
-
-GitHub CLI authentication and repository push/admin access were verified after the user refreshed access. All saved commits have been pushed.
-
-Current package source is `5a9a0484d6a3f18c2ea3fbfbc4e7a195c36665d7`:
-- Android: https://github.com/nhshajib/NodeCast/actions/runs/44752201174
-- iPhone/iPad and IPA: https://github.com/nhshajib/NodeCast/actions/runs/44752206397
-
-The preceding run passed both iPhone tests and the iPad design test. Its iPad cold/resume test reported a visible Home control that was not hittable. The iOS measurement probe now uses noninteractive, accessibility-hidden RN views and measures the already inset tab body rather than nesting a native safe-area view. The modern Android Back dispatcher bridge, previously limited to phones, now also applies to TV on API 33–35. Legacy TV key handling remains in the remote controller. D-pad tests enter content with Right and recompute geometry after each key.
-
-These corrections retain all player lifecycle effects, engines, data models and transitions. TypeScript, 139 tests, spacing/scope guards and all three exports pass. New native results are pending. No 0.7.3 release has been published yet.
+Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/TalkBack, maximum Dynamic Type, native casting/PiP and real-provider compatibility still require device review. Emulator and browser results do not certify these behaviors. No native module was added; identifiers and signing are unchanged.

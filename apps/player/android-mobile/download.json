@@ -1,17 +1,17 @@
 {
-  "version": "0.7.2",
-  "tag": "glowtv-android-v0.7.2",
-  "publishedAt": "2026-11-19T06:29:40Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2",
+  "version": "0.7.3",
+  "tag": "glowtv-android-v0.7.3",
+  "publishedAt": "2026-11-21T01:55:21Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3",
   "prerelease": true,
   "legacy": false,
   "file": "GlowTV.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk",
-  "size": 241902421,
-  "sha256": "705bf846d9bd4e8b8e3f51ac865efbd4c872cc11377ac8210f57cf0bb6e87728",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk.sha256",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk",
+  "size": 241943349,
+  "sha256": "e7c6a45ab5fbda88d4009555adb403ea348f72defb21363f63b95474a58366a7",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk.sha256",
   "minimumOS": "Android API 24 or later",
-  "checkedAt": "2026-11-19T06:30:10.174Z",
+  "checkedAt": "2026-11-21T01:55:27.732Z",
   "edition": "android",
   "features": [
     {
@@ -40,12 +40,10 @@
     }
   ],
   "changes": [
-    "A calmer interface with consistent Lucide icons and an 8px spacing grid.",
-    "Consistent spacing extends to player controls, track menus, TV switches and guide cells.",
-    "Simpler information sections, clearer primary actions and fewer repeated controls.",
-    "Theme-safe neutral surfaces with green actions and meaningful LIVE/error indicators.",
-    "Native navigation, existing profiles and playback behavior are retained.",
-    "Android keeps playback running through unchanged player settings.",
-    "A compact movie and series header leaves more room for titles on small phones."
+    "Native startup handles devices whose JavaScript runtime omits plural-rule support.",
+    "Clearer control states, accessible messages and confirmations for destructive actions.",
+    "Responsive tablet layouts, readable text and improved guide navigation.",
+    "Five focused library tabs, native sheets and measured mini-player placement above navigation.",
+    "Existing playlists, profiles, playback engines and transitions are retained."
   ]
 }

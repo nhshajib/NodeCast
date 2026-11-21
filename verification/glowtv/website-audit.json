@@ -1,5 +1,5 @@
 {
-  "time": "2026-11-19T23:00:30.212Z",
+  "time": "2026-11-21T01:56:21.505Z",
   "origin": "local production Astro output",
   "pages": [
     {
@@ -483,16 +483,16 @@
   ],
   "externalLinks": [
     "https://github.com/nhshajib/NodeCast",
-    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/GlowTV-0.7.2-unsigned.ipa",
-    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk",
-    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk",
-    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.2/SHA256SUMS.txt",
-    "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.2",
+    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.3/GlowTV-0.7.3-unsigned.ipa",
+    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk",
+    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk",
+    "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.3/SHA256SUMS.txt",
+    "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.3",
     "https://github.com/nhshajib/NodeCast/blob/main/apps/player/iphone/CHANGELOG.md",
-    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk.sha256",
-    "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2",
+    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk.sha256",
+    "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3",
     "https://github.com/nhshajib/NodeCast/blob/main/apps/player/android-mobile/CHANGELOG.md",
-    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk.sha256",
+    "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk.sha256",
     "https://github.com/nhshajib/NodeCast/blob/main/apps/player/android-tv/CHANGELOG.md",
     "https://github.com/nhshajib/NodeCast/issues/new?template=problem.yml",
     "https://github.com/nhshajib/NodeCast/releases"

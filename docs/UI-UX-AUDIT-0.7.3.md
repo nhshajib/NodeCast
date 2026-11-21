@@ -1,6 +1,6 @@
 # GlowTV UI/UX audit — 0.7.3 work branch
 
-Scope: app UI only. No version bump, release, website edit, signing change, native module addition or engine/data-model migration. Native builds are deliberately deferred. Baseline native screenshots are [iPhone](../verification/glowtv/audit-0.7.3/before/ios.jpg), [iPad](../verification/glowtv/audit-0.7.3/before/ipad.jpg), [Android](../verification/glowtv/audit-0.7.3/before/android.jpg), [TV](../verification/glowtv/audit-0.7.3/before/tv.jpg).
+Initial audit scope: app UI only. The user subsequently authorized version 0.7.3 packages, publication and the website update. No signing change, native module addition or engine/data-model migration was made. Native release results are recorded separately below. Baseline native screenshots are [iPhone](../verification/glowtv/audit-0.7.3/before/ios.jpg), [iPad](../verification/glowtv/audit-0.7.3/before/ipad.jpg), [Android](../verification/glowtv/audit-0.7.3/before/android.jpg), [TV](../verification/glowtv/audit-0.7.3/before/tv.jpg).
 
 ## Scope-check reconciliation
 
@@ -10,14 +10,14 @@ The prior guard required the entire TV remote controller to equal 0.7.0. C3/C4 a
 
 | Finding | Status | Implementation |
 | --- | --- | --- |
-| C1 | Fixed in source; native verification pending | `app.json`, `app.config.js`, `orientationPolicy.ts`, `restoreOrientation.ts`, `usePlayerOrientation.ts`, `navigation/NodeCastProvider.tsx`: multitasking allowed, hardware iPad/tablet restores unlocked orientation; phones restore portrait; player landscape remains. No `expo-device` dependency added. |
+| C1 | Fixed in source; physical-device follow-up | `app.json`, `app.config.js`, `orientationPolicy.ts`, `restoreOrientation.ts`, `usePlayerOrientation.ts`, `navigation/NodeCastProvider.tsx`: multitasking allowed, hardware iPad/tablet restores unlocked orientation; phones restore portrait; player landscape remains. No `expo-device` dependency added. |
 | C2 | Fixed | `Player.tsx`: next-episode icon, spinner, title/subtitle use `primaryText`; `LibraryOptions.tsx`: selected segments use selected/selectedText tokens. |
-| C3 | Fixed in source; native verification pending | `TVRemoteController.kt`: two-tone ring, 1.05 scale, outline/background radius, no EditText ring; TV rows/tiles draw on unclipped containers. |
-| C4 | Fixed in source; native verification pending | Scoped rail; controller prioritizes latest non-rail scope and normalized stable remembered control IDs; library reads saved focused item; first category/search/action controls have preferred IDs. |
+| C3 | Fixed in source; physical-device follow-up | `TVRemoteController.kt`: two-tone ring, 1.05 scale, outline/background radius, no EditText ring; TV rows/tiles draw on unclipped containers. |
+| C4 | Fixed in source; physical-device follow-up | Scoped rail; controller prioritizes latest non-rail scope and normalized stable remembered control IDs; library reads saved focused item; first category/search/action controls have preferred IDs. |
 
 ## Verification
 
-Phase checks and final browser screenshot/contrast results are recorded in `verification/glowtv/audit-0.7.3/checks.json`. Native focus rings, real D-pad/key flows, iPad multitasking/rotation, VoiceOver/TalkBack and maximum Dynamic Type require a future native build and physical-device testing. They are not claimed as verified by web exports.
+Phase checks and final browser screenshot/contrast results are recorded in `verification/glowtv/audit-0.7.3/checks.json`. Native focus rings, real D-pad/key flows, iPad multitasking/rotation, VoiceOver/TalkBack and maximum Dynamic Type have separate native emulator/simulator evidence below. Physical-device behavior is not claimed as verified by web exports.
 
 ## High
 
@@ -35,7 +35,7 @@ Phase checks and final browser screenshot/contrast results are recorded in `veri
 | H10 | Fixed in source; screen-reader follow-up | `Notice`, announcement hook, H1/H2 components, library search/refresh announcements, PIN errors and player failures; settings group headers; backup results scroll into view. |
 | H11 | Fixed | Settings/profile/network/version/media/episode/guide labels include visible metadata and state. Daily, Follow device and native sheet Done/Cancel labels match visible copy. |
 | H12 | Fixed | Home shows skeletons during loading, connected-empty refresh separately from disconnected setup, plus Try again on errors. |
-| H13 | Fixed in source; native placement pending | Responsive poster columns, 720pt readable content and tablet Home cards are implemented. MiniPlayerLayout measures the native Screens safe content frame, including interface insets, and subtracts it from the root frame. No fixed tab-height assumption remains. The native iPhone/iPad UI audit now checks mini-player geometry. |
+| H13 | Fixed; iPhone/iPad simulator geometry passed | Responsive poster columns, 720pt readable content and tablet Home cards are implemented. MiniPlayerLayout measures the native Screens safe content frame, including interface insets, and subtracts it from the root frame. No fixed tab-height assumption remains. The native iPhone/iPad UI audit now checks mini-player geometry. |
 | H14 | Fixed in source; native Dynamic Type follow-up | Guide cells size with font scale; channel column shows full names instead of stream IDs (no channel-number field exists in the protected model). Chips/pills grow, series header scrolls with episodes, delete sheet expands to full height. |
 
 ## Medium
@@ -47,7 +47,7 @@ Phase checks and final browser screenshot/contrast results are recorded in `veri
 | M3 | Fixed in source; native track follow-up | Current audio/subtitle rows expose radio state/checks; disabled IconButton uses disabled state/.4 opacity; export/import and organization modes expose selection; guide/advanced controls expose expansion. |
 | M4 | Fixed in source; native keyboard/autofill follow-up | Field allows caller overrides, surface-aware floating labels and announced inline errors. Provider, backup and PIN forms chain through refs and submit actions. Autofill metadata, required-field explanation/disabled Connect, password-length feedback, XMLTV reveal/URL keyboard and TV fullscreen-IME prevention are included. Unsaved native playlist sheets confirm discard. TV File explains picker requirements. |
 | M5 | Fixed | Library/episode skeletons, one Now & next spinner, guide loader text, episode retry, clear/show-all guide/TV actions, Home retry/manage actions, episode loading text and Measuring storage copy. |
-| M6 | Fixed | `formatting.ts` uses Intl.PluralRules for count labels; guide dates use locale formatting; player title uses tail ellipsis/flex; tools use Playback info; library refresh copy never shows an unexplained empty label. |
+| M6 | Fixed | `formatting.ts` uses English Intl.PluralRules when available, with the same English fallback on Hermes runtimes without that constructor; guide dates use locale formatting; player title uses tail ellipsis/flex; tools use Playback info; library refresh copy never shows an unexplained empty label. |
 | M7 | Fixed in source; native scrolling follow-up | Now line sits behind opaque cells; On now is text and part of the label. TV has a separate synchronized sticky ruler; focus updates preview/header without opening details. |
 | M8 | Fixed in source; native navigation follow-up | iPhone Home/Live/Guide/Library/Search tabs, native library search, reduced header actions, no duplicate Android Home nav chips, inherited native titles suppress duplicate body headings, guide settings pushes natively and pushed titles travel in route params. |
 | M9 | Fixed in source; native keys/focus follow-up | Shared TV track sheet holds chrome open; TV panels do not idle-close; video scrims protect chrome; mini scope receives media keys; Back navigates before closing mini playback; provider sheets trap focus; rail Search retains section. |
@@ -125,7 +125,7 @@ The current RN Web version ignores native `accessibilityState`; `FocusPressable.
 ## Remaining limitations and next native pass
 
 - H13 follow-up: measured native interface insets replace the fixed tab-height fallback. Native geometry assertions cover the mini player; physical-device placement remains a follow-up.
-- A new native build is required for the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers and signing are unchanged. The audit phase kept the existing version; the subsequently authorized release uses 0.7.3 (703).
+- The published 0.7.3 (703) packages include the existing TV Kotlin controller and orientation configuration changes. No native module was added; identifiers and signing are unchanged. The initial audit phase kept the existing version until the user authorized compilation and publication.
 - Verify the two-tone TV ring on green/dark/light surfaces, scope and row restoration, every D-pad Back flow, Menu/hold, CH+/−, hidden-controls seeking, INFO/GUIDE and mini-player media keys on Fire TV and Android TV.
 - Verify iPad Split View, Slide Over/Stage Manager and all rotations, including closing landscape playback; phones must return to portrait.
 - Verify VoiceOver/TalkBack announcements, largest native Dynamic Type, form keyboard chaining/autofill/discard protection, and native cold detail/series links against the secure saved catalogue.
@@ -135,7 +135,7 @@ Additional TV-density review: poster width is capped at 160dp; the grid header s
 
 ## Completed verification results
 
-- Critical, High, Medium and Low phase checks passed. Final run: `npm ci`, typecheck, 137 passing tests, three cache-cleared web exports, the 8px grid guard (456 properties) and the protected-scope guard.
+- Critical, High, Medium and Low phase checks passed. Final run: `npm ci`, typecheck, 139 passing tests, three cache-cleared web exports, the 8px grid guard (457 properties) and the protected-scope guard.
 - Browser: 14 required cases plus 2 supplemental TV-density cases, 316 screenshots, zero recorded page errors or document-width overflows. Both themes and doubled phone/tablet text were exercised. Backup modes were switched and their ARIA selection asserted; search results and stable detail-route IDs were asserted.
 - Contrast: 36 recorded checks passed (4.5:1 for text; 3:1 for graphical state). See [checks.json](../verification/glowtv/audit-0.7.3/checks.json), [contrast.json](../verification/glowtv/audit-0.7.3/contrast.json) and [verification output](../verification/glowtv/audit-0.7.3/verification.txt). These are scoped token/surface checks, not a guarantee for arbitrary provider artwork or video frames.
 - Browser previews cannot validate native playback, TV keys/focus rings, iPad multitasking/rotation, screen-reader announcements or largest native Dynamic Type. H13 native placement is covered by the release audit assertions; physical-device confirmation is still required.
@@ -144,4 +144,10 @@ Native Live search routing: `uiPolicy.ts` supplies one shared platform-to-view m
 
 ## Native release follow-up
 
-The user subsequently authorized compiling and publishing the packages and updating the website. Release progress, native-only findings, corrections and run links are recorded in [the 0.7.3 release verification](../verification/glowtv/release-0.7.3/BUILD-STATUS.md). Native captures exposed iOS fixed controls beneath the search header and Android TV Back bypassing JS. Both are corrected in source and are being rebuilt; no pending native check is claimed as passed.
+The user subsequently authorized compiling and publishing the packages and updating the website. Release progress, native-only findings, corrections and run links are recorded in [the 0.7.3 release verification](../verification/glowtv/release-0.7.3/BUILD-STATUS.md). Native captures exposed iOS fixed controls beneath the search header and Android TV Back bypassing JS. Both are corrected in source. All final packages are published: iPhone/iPad native suites and exact-APK Android phone/API 35 TV audits passed, as did the additional Android 11 TV audit with SwiftShader graphics. The earlier Android 11 MediaCodec failure is retained in the release report. Physical-device checks remain separate.
+
+### Final native screenshots and release results
+
+[Release verification and known limitation](../verification/glowtv/release-0.7.3/BUILD-STATUS.md) records every package source, build, audit and publication. [Screenshot provenance](../verification/glowtv/screenshot-provenance.json) covers all 32 native captures, copied to `store-assets/` and optimized for the website. The native after galleries are [iPhone](../verification/glowtv/native/ios-home.png), [iPad](../verification/glowtv/native/ipad-home.png), [Android](../verification/glowtv/native/android-home.png) and [TV](../verification/glowtv/native/tv-home.png). Each folder also contains Guide, Player, Movies, Series, Add playlist, Search and Settings images under the same platform prefix.
+
+A single Android 11 SwANGLE run aborted in VLC MediaCodec surface creation during channel switching; the exact same APK passed with SwiftShader. No engine or decoding-policy change was made. Hardware Fire TV playback, every remote key, iPad multitasking/rotation, VoiceOver/TalkBack and largest Dynamic Type remain explicit device follow-ups.

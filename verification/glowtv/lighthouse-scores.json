@@ -2,17 +2,17 @@
   {
     "route": "/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:03:36.493Z",
+    "measuredAt": "2026-11-21T01:57:11.859Z",
     "scores": {
-      "performance": 95,
+      "performance": 99,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1959.2268,
+    "lcp": 1958.4404999999997,
     "cls": 0,
-    "tbt": 221,
-    "bytes": 294484,
+    "tbt": 27,
+    "bytes": 287787,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -24,7 +24,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 213\u00a0KiB"
+        "displayValue": "Est savings of 206\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -41,16 +41,11 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0,
-        "displayValue": "Est savings of 75\u00a0KiB"
+        "displayValue": "Est savings of 72\u00a0KiB"
       },
       {
         "id": "lcp-discovery-insight",
         "title": "LCP request discovery",
-        "score": 0
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
         "score": 0
       }
     ]
@@ -58,17 +53,17 @@
   {
     "route": "/download/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:03:45.273Z",
+    "measuredAt": "2026-11-21T01:57:18.990Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1355.4964,
+    "lcp": 1357.266,
     "cls": 0,
-    "tbt": 51,
-    "bytes": 146907,
+    "tbt": 0,
+    "bytes": 143595,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -80,7 +75,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 96\u00a0KiB"
+        "displayValue": "Est savings of 93\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -92,7 +87,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 67\u00a0KiB"
+        "displayValue": "Est savings of 64\u00a0KiB"
       },
       {
         "id": "lcp-discovery-insight",
@@ -104,17 +99,17 @@
   {
     "route": "/download/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:03:51.855Z",
+    "measuredAt": "2026-11-21T01:57:25.094Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1658.9859999999999,
+    "lcp": 1657.9778999999999,
     "cls": 0,
-    "tbt": 60,
-    "bytes": 178176,
+    "tbt": 0,
+    "bytes": 175665,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -126,7 +121,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 110\u00a0KiB"
+        "displayValue": "Est savings of 108\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -144,17 +139,17 @@
   {
     "route": "/download/android/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:03:58.564Z",
+    "measuredAt": "2026-11-21T01:57:31.700Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1655.945,
+    "lcp": 1654.0720000000001,
     "cls": 0,
-    "tbt": 33.999999999999886,
-    "bytes": 170365,
+    "tbt": 0,
+    "bytes": 171420,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -166,7 +161,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 102\u00a0KiB"
+        "displayValue": "Est savings of 104\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -184,17 +179,17 @@
   {
     "route": "/download/tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:05.296Z",
+    "measuredAt": "2026-11-21T01:57:38.018Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1035.58365,
+    "lcp": 913.73325,
     "cls": 0,
-    "tbt": 15.5,
-    "bytes": 183516,
+    "tbt": 18,
+    "bytes": 186390,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -206,7 +201,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 115\u00a0KiB"
+        "displayValue": "Est savings of 118\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -218,7 +213,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 13\u00a0KiB"
+        "displayValue": "Est savings of 12\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -230,16 +225,16 @@
   {
     "route": "/install/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:12.210Z",
+    "measuredAt": "2026-11-21T01:24:24.856Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 902.65865,
+    "lcp": 902.7883,
     "cls": 0,
-    "tbt": 4,
+    "tbt": 0,
     "bytes": 64762,
     "failedAudits": [
       {
@@ -265,16 +260,16 @@
   {
     "route": "/install/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:18.332Z",
+    "measuredAt": "2026-11-21T01:24:30.928Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 906.7082,
+    "lcp": 907.3904,
     "cls": 0,
-    "tbt": 0,
+    "tbt": 90,
     "bytes": 69903,
     "failedAudits": [
       {
@@ -294,20 +289,25 @@
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 31\u00a0KiB"
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
       }
     ]
   },
   {
     "route": "/install/android/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:24.784Z",
+    "measuredAt": "2026-11-21T01:24:37.208Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1355.6797,
+    "lcp": 1354.4293000000002,
     "cls": 0,
     "tbt": 0,
     "bytes": 68422,
@@ -340,14 +340,14 @@
   {
     "route": "/install/android-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:31.017Z",
+    "measuredAt": "2026-11-21T01:24:43.354Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1277.9386,
+    "lcp": 1281.8924,
     "cls": 0,
     "tbt": 0,
     "bytes": 68705,
@@ -374,22 +374,27 @@
         "id": "lcp-discovery-insight",
         "title": "LCP request discovery",
         "score": 0
+      },
+      {
+        "id": "network-dependency-tree-insight",
+        "title": "Network dependency tree",
+        "score": 0
       }
     ]
   },
   {
     "route": "/install/fire-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:37.301Z",
+    "measuredAt": "2026-11-21T01:24:49.475Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1580.4522000000002,
+    "lcp": 1429.7145,
     "cls": 0,
-    "tbt": 11,
+    "tbt": 3,
     "bytes": 82165,
     "failedAudits": [
       {
@@ -420,16 +425,16 @@
   {
     "route": "/install/apple-tv/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:43.550Z",
+    "measuredAt": "2026-11-21T01:24:55.632Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1358.9834999999998,
+    "lcp": 1354.1113,
     "cls": 0,
-    "tbt": 16,
+    "tbt": 0,
     "bytes": 67284,
     "failedAudits": [
       {
@@ -460,16 +465,16 @@
   {
     "route": "/support/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:49.769Z",
+    "measuredAt": "2026-11-21T01:25:01.686Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 966.7087,
+    "lcp": 941.71,
     "cls": 0,
-    "tbt": 6.5,
+    "tbt": 0,
     "bytes": 82485,
     "failedAudits": [
       {
@@ -500,16 +505,16 @@
   {
     "route": "/support/faq/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:04:56.104Z",
+    "measuredAt": "2026-11-21T01:25:07.853Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 914.23515,
+    "lcp": 912.9213,
     "cls": 0,
-    "tbt": 4.5,
+    "tbt": 0,
     "bytes": 69079,
     "failedAudits": [
       {
@@ -535,14 +540,14 @@
   {
     "route": "/guides/add-m3u-playlist/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:02.255Z",
+    "measuredAt": "2026-11-21T01:25:13.769Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1356.9045207398544,
+    "lcp": 1352.6709,
     "cls": 0,
     "tbt": 0,
     "bytes": 68414,
@@ -575,16 +580,16 @@
   {
     "route": "/guides/xtream-codes-login/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:08.677Z",
+    "measuredAt": "2026-11-21T01:25:19.829Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1360.8603000000003,
+    "lcp": 1355.4002999999998,
     "cls": 0,
-    "tbt": 79.00000000000011,
+    "tbt": 0,
     "bytes": 68367,
     "failedAudits": [
       {
@@ -615,16 +620,16 @@
   {
     "route": "/guides/tv-guide-epg/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:15.091Z",
+    "measuredAt": "2026-11-21T01:25:25.909Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1285.7321000000002,
+    "lcp": 1352.8723,
     "cls": 0,
-    "tbt": 0,
+    "tbt": 10,
     "bytes": 68291,
     "failedAudits": [
       {
@@ -655,16 +660,16 @@
   {
     "route": "/guides/fix-buffering/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:21.477Z",
+    "measuredAt": "2026-11-21T01:25:32.253Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 1353.246,
+    "lcp": 1354.4247,
     "cls": 0,
-    "tbt": 57,
+    "tbt": 28,
     "bytes": 69021,
     "failedAudits": [
       {
@@ -695,16 +700,16 @@
   {
     "route": "/changelog/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:27.803Z",
+    "measuredAt": "2026-11-21T01:57:44.460Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 948.805,
+    "lcp": 904.40205,
     "cls": 0,
-    "tbt": 30.999999999999886,
+    "tbt": 35,
     "bytes": 65249,
     "failedAudits": [
       {
@@ -730,16 +735,16 @@
   {
     "route": "/privacy/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:34.151Z",
+    "measuredAt": "2026-11-21T01:25:44.479Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 922.53985,
+    "lcp": 902.28305,
     "cls": 0,
-    "tbt": 28,
+    "tbt": 54,
     "bytes": 64349,
     "failedAudits": [
       {
@@ -765,16 +770,16 @@
   {
     "route": "/terms/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:40.418Z",
+    "measuredAt": "2026-11-21T01:25:50.509Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 953.6185,
+    "lcp": 925.10155,
     "cls": 0,
-    "tbt": 75.5,
+    "tbt": 40.49999999999994,
     "bytes": 63956,
     "failedAudits": [
       {
@@ -800,16 +805,16 @@
   {
     "route": "/legal/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:05:46.766Z",
+    "measuredAt": "2026-11-21T01:25:56.702Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 950.6084,
+    "lcp": 901.169,
     "cls": 0,
-    "tbt": 0,
+    "tbt": 6,
     "bytes": 64115,
     "failedAudits": [
       {
@@ -829,27 +834,22 @@
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 29\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
       }
     ]
   },
   {
     "route": "/guides/",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:07:55.798Z",
+    "measuredAt": "2026-11-21T01:26:02.745Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 927.378,
+    "lcp": 902.64205,
     "cls": 0,
-    "tbt": 12.500000000000057,
+    "tbt": 30,
     "bytes": 64417,
     "failedAudits": [
       {
@@ -875,16 +875,16 @@
   {
     "route": "/404.html",
     "mode": "mobile",
-    "measuredAt": "2026-11-19T23:06:00.979Z",
+    "measuredAt": "2026-11-21T01:26:08.674Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 752.2974,
+    "lcp": 754.3945,
     "cls": 0,
-    "tbt": 0,
+    "tbt": 46,
     "bytes": 62416,
     "failedAudits": [
       {
@@ -910,17 +910,17 @@
   {
     "route": "/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:03:36.233Z",
+    "measuredAt": "2026-11-21T01:57:55.440Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 420.4885,
+    "lcp": 411.54445000000004,
     "cls": 0.01467766057429408,
     "tbt": 0,
-    "bytes": 320860,
+    "bytes": 314163,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -932,7 +932,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0,
-        "displayValue": "Est savings of 238\u00a0KiB"
+        "displayValue": "Est savings of 232\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -941,15 +941,10 @@
         "displayValue": "Est savings of 49\u00a0KiB"
       },
       {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
-      },
-      {
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 59\u00a0KiB"
+        "displayValue": "Est savings of 56\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -961,17 +956,17 @@
   {
     "route": "/download/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:03:45.915Z",
+    "measuredAt": "2026-11-21T01:58:02.872Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 251.4678,
+    "lcp": 247.7074,
     "cls": 0,
     "tbt": 0,
-    "bytes": 173283,
+    "bytes": 169971,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -983,7 +978,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 122\u00a0KiB"
+        "displayValue": "Est savings of 119\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -995,7 +990,7 @@
         "id": "image-delivery-insight",
         "title": "Improve image delivery",
         "score": 0.5,
-        "displayValue": "Est savings of 76\u00a0KiB"
+        "displayValue": "Est savings of 72\u00a0KiB"
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1007,17 +1002,17 @@
   {
     "route": "/download/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:03:52.691Z",
+    "measuredAt": "2026-11-21T01:58:09.223Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 254.8544,
+    "lcp": 249.9192,
     "cls": 0.008528402902196424,
     "tbt": 0,
-    "bytes": 204552,
+    "bytes": 202041,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1029,7 +1024,7 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 136\u00a0KiB"
+        "displayValue": "Est savings of 134\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
@@ -1052,17 +1047,17 @@
   {
     "route": "/download/android/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:00.295Z",
+    "measuredAt": "2026-11-21T01:58:16.065Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 268.29044999999996,
+    "lcp": 250.2379,
     "cls": 0.001495944418478814,
     "tbt": 0,
-    "bytes": 196741,
+    "bytes": 197796,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1074,18 +1069,13 @@
         "id": "cache-insight",
         "title": "Use efficient cache lifetimes",
         "score": 0.5,
-        "displayValue": "Est savings of 128\u00a0KiB"
+        "displayValue": "Est savings of 129\u00a0KiB"
       },
       {
         "id": "document-latency-insight",
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 42\u00a0KiB"
-      },
-      {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
       },
       {
         "id": "network-dependency-tree-insight",
@@ -1097,17 +1087,17 @@
   {
     "route": "/download/tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:07.579Z",
+    "measuredAt": "2026-11-21T01:58:22.947Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 371.55044999999996,
+    "lcp": 368.07494999999994,
     "cls": 0.002194560991325987,
     "tbt": 0,
-    "bytes": 196422,
+    "bytes": 196334,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -1148,14 +1138,14 @@
   {
     "route": "/install/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:14.696Z",
+    "measuredAt": "2026-11-21T01:26:53.162Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 257.65215,
+    "lcp": 250.1542,
     "cls": 0.0001575916788212678,
     "tbt": 0,
     "bytes": 91138,
@@ -1188,14 +1178,14 @@
   {
     "route": "/install/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:20.952Z",
+    "measuredAt": "2026-11-21T01:26:59.164Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 368.0213,
+    "lcp": 370.2904,
     "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 96279,
@@ -1233,14 +1223,14 @@
   {
     "route": "/install/android/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:27.701Z",
+    "measuredAt": "2026-11-21T01:27:05.468Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 265.91020000000003,
+    "lcp": 254.68915,
     "cls": 0.0005576681729716888,
     "tbt": 0,
     "bytes": 94798,
@@ -1273,14 +1263,14 @@
   {
     "route": "/install/android-tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:34.078Z",
+    "measuredAt": "2026-11-21T01:27:11.575Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 364.62030000000004,
+    "lcp": 366.8946,
     "cls": 0.0001575916788212678,
     "tbt": 0,
     "bytes": 95081,
@@ -1318,14 +1308,14 @@
   {
     "route": "/install/fire-tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:40.506Z",
+    "measuredAt": "2026-11-21T01:27:17.750Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 255.06365,
+    "lcp": 255.00895,
     "cls": 0.0002063700555992793,
     "tbt": 0,
     "bytes": 95553,
@@ -1358,14 +1348,14 @@
   {
     "route": "/install/apple-tv/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:46.825Z",
+    "measuredAt": "2026-11-21T01:27:23.948Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 249.22185,
+    "lcp": 251.8903,
     "cls": 0.004988135982603625,
     "tbt": 0,
     "bytes": 93660,
@@ -1398,14 +1388,14 @@
   {
     "route": "/support/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:53.109Z",
+    "measuredAt": "2026-11-21T01:27:30.072Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 255.01305,
+    "lcp": 253.29035,
     "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 95873,
@@ -1438,14 +1428,14 @@
   {
     "route": "/support/faq/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:04:59.581Z",
+    "measuredAt": "2026-11-21T01:27:36.220Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 253.2615,
+    "lcp": 249.0607,
     "cls": 0.0001575916788212678,
     "tbt": 0,
     "bytes": 95455,
@@ -1478,15 +1468,15 @@
   {
     "route": "/guides/add-m3u-playlist/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:05.887Z",
+    "measuredAt": "2026-11-21T01:27:42.232Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 365.5697,
-    "cls": 0.001197280033056934,
+    "lcp": 363.79,
+    "cls": 0,
     "tbt": 0,
     "bytes": 94790,
     "failedAudits": [
@@ -1523,14 +1513,14 @@
   {
     "route": "/guides/xtream-codes-login/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:12.170Z",
+    "measuredAt": "2026-11-21T01:27:48.282Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 251.44225,
+    "lcp": 252.06875,
     "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 94743,
@@ -1563,15 +1553,15 @@
   {
     "route": "/guides/tv-guide-epg/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:18.576Z",
+    "measuredAt": "2026-11-21T01:27:54.418Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 252.53705,
-    "cls": 0.0001575916788212678,
+    "lcp": 247.90855,
+    "cls": 0,
     "tbt": 0,
     "bytes": 94667,
     "failedAudits": [
@@ -1603,14 +1593,14 @@
   {
     "route": "/guides/fix-buffering/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:24.910Z",
+    "measuredAt": "2026-11-21T01:28:00.687Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 255.00275,
+    "lcp": 257.9536,
     "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 95397,
@@ -1643,15 +1633,15 @@
   {
     "route": "/changelog/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:31.402Z",
+    "measuredAt": "2026-11-21T01:58:29.710Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 246.87815,
-    "cls": 0,
+    "lcp": 253.674,
+    "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 100668,
     "failedAudits": [
@@ -1683,14 +1673,14 @@
   {
     "route": "/privacy/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:37.556Z",
+    "measuredAt": "2026-11-21T01:28:12.937Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 250.57915,
+    "lcp": 252.08165,
     "cls": 0.0001894852328684292,
     "tbt": 0,
     "bytes": 90725,
@@ -1723,15 +1713,15 @@
   {
     "route": "/terms/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:43.776Z",
+    "measuredAt": "2026-11-21T01:28:18.962Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 249.05485,
-    "cls": 0.00027622774902158817,
+    "lcp": 247.176,
+    "cls": 0,
     "tbt": 0,
     "bytes": 90332,
     "failedAudits": [
@@ -1763,15 +1753,15 @@
   {
     "route": "/legal/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:05:50.166Z",
+    "measuredAt": "2026-11-21T01:28:25.322Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 244.94095,
-    "cls": 0,
+    "lcp": 251.5888,
+    "cls": 5.129375992178078e-05,
     "tbt": 0,
     "bytes": 90491,
     "failedAudits": [
@@ -1803,15 +1793,15 @@
   {
     "route": "/guides/",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:06:00.193Z",
+    "measuredAt": "2026-11-21T01:28:31.284Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 281.4407,
-    "cls": 5.129375992178078e-05,
+    "lcp": 245.3828,
+    "cls": 0,
     "tbt": 0,
     "bytes": 90793,
     "failedAudits": [
@@ -1834,11 +1824,6 @@
         "displayValue": "Est savings of 29\u00a0KiB"
       },
       {
-        "id": "forced-reflow-insight",
-        "title": "Forced reflow",
-        "score": 0
-      },
-      {
         "id": "network-dependency-tree-insight",
         "title": "Network dependency tree",
         "score": 0
@@ -1848,15 +1833,15 @@
   {
     "route": "/404.html",
     "mode": "desktop",
-    "measuredAt": "2026-11-19T23:06:06.716Z",
+    "measuredAt": "2026-11-21T01:28:37.256Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 213.3329,
-    "cls": 0.0001213400772343201,
+    "lcp": 209.8111933255144,
+    "cls": 0.00010967046630392383,
     "tbt": 0,
     "bytes": 97835,
     "failedAudits": [

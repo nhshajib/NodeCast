@@ -9,3 +9,7 @@ Phase phase4 checks passed
 ℹ skipped 0
 ℹ todo 0
 ℹ duration_ms 929.052342
+
+
+Release follow-up (November 21, 2026):
+TypeScript passed. All 139 tests passed (0 failures). All three cache-cleared web exports passed. Grid guard: 457 properties passed. Protected model, engine/lifecycle and transition scope passed. Native package and publication provenance: ../release-0.7.3/BUILD-STATUS.md.

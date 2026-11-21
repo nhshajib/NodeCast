@@ -1,0 +1,20 @@
+[
+  {
+    "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.3/GlowTV-0.7.3-unsigned.ipa",
+    "status": 200,
+    "sha256": "269445664effb0bdf2d114ecceca89805953a729251f48f6f23fb6d2efcb8d2d",
+    "size": 32976590
+  },
+  {
+    "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk",
+    "status": 200,
+    "sha256": "e7c6a45ab5fbda88d4009555adb403ea348f72defb21363f63b95474a58366a7",
+    "size": 241943349
+  },
+  {
+    "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk",
+    "status": 200,
+    "sha256": "9d8a6a4cb1a312293fd78f6a7400f688d44a30613590ef4f687b18b862e8150b",
+    "size": 240424191
+  }
+]

@@ -26,8 +26,8 @@
   "androidApi": "35",
   "emulatorGpu": "swangle",
   "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44471467620",
-  "source": "874eadc94c024d9b884af83f131d88684d1835b7",
-  "captureSource": "798e68750c1909dc47252c2b59f362dfd77d8651",
-  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394394722"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44851008761",
+  "source": "f1f48f6621904741c42337b29d215f26ed6ae777",
+  "captureSource": "10944540f93997b581eeb768f40f403b2d828c72",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44849613228"
 }

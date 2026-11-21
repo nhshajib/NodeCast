@@ -19,18 +19,15 @@
     "Library organization",
     "Backup & transfer",
     "Library & storage",
-    "Set home IP reference",
+    "Home IP reference",
     "Version history"
   ],
   "actualVideoPixels": true,
   "androidApi": "35",
   "emulatorGpu": "swangle",
   "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833",
-  "source": "874eadc94c024d9b884af83f131d88684d1835b7",
-  "captureSource": "0e89ef79d34d2362caf6250395ad12f05773264c",
-  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44394394722",
-  "nativeJob": "https://github.com/nhshajib/NodeCast/actions/runs/44469549833/job/135375410021",
-  "jobConclusion": "success",
-  "runScope": "The TV job passed. The failed phone job in this matrix run is not used as phone evidence."
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44851615852",
+  "source": "f1f48f6621904741c42337b29d215f26ed6ae777",
+  "captureSource": "10944540f93997b581eeb768f40f403b2d828c72",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44849613228"
 }

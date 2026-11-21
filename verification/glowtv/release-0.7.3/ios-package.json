@@ -1,0 +1,23 @@
+{
+  "version": "0.7.3",
+  "build": "703",
+  "displayName": "GlowTV",
+  "bundleIdentifier": "com.nhshajib.nodecast",
+  "platform": "iphoneos",
+  "architecture": "arm64",
+  "minimumOS": "16.4",
+  "iPadSupportedOrientations": [
+    "UIInterfaceOrientationPortrait",
+    "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft",
+    "UIInterfaceOrientationLandscapeRight"
+  ],
+  "requiresFullScreen": false,
+  "embeddedJS": true,
+  "archiveIntegrity": "passed",
+  "size": 32976590,
+  "sha256": "269445664effb0bdf2d114ecceca89805953a729251f48f6f23fb6d2efcb8d2d",
+  "buildRun": 44761996308,
+  "nativeCheckArtifact": 14647982261,
+  "scope": "Archive and simulator validation; physical-device multitasking, rotation, accessibility and signing remain device checks."
+}

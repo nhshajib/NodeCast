@@ -3,7 +3,8 @@
 ## 0.7.3 — November 19, 2026 · Accessibility and navigation
 
 - Fixed native startup on Hermes runtimes without Intl.PluralRules.
-- iPhone fixed controls respect native search/header insets; TV remote Back reaches React Native handlers consistently.
+- iPhone fixed controls respect native search/header insets without duplicate space on Home and Guide; programme details stay below their native sheet title.
+- TV remote Back reaches React Native handlers consistently. The expanding rail preserves content width and restores focus without remounting poster grids.
 
 - Responsive iPad layouts and tablet orientation policy, clearer guide text and accessible forms.
 - Visible TV focus, restored channel position, consistent Back behavior and remote playback controls.

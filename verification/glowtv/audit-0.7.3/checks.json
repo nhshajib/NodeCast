@@ -52,26 +52,25 @@
     }
   },
   "nativeOnly": [
-    "Not verified: native TV ring, D-pad restoration/navigation and IME flows",
-    "Not verified: CH+/\u2212, INFO/GUIDE and media keys on Fire TV/Android TV",
-    "Not verified: iPad multitasking and rotation",
-    "Not verified: VoiceOver/TalkBack announcements and maximum native Dynamic Type",
-    "Not verified: native cold detail-link restoration from secure vault/cache",
-    "Not verified: exact native mini-player position relative to NativeTabs"
+    "Physical Fire TV/Android TV focus, input/IME, all media/guide keys and VOD seeking require device review; API 35 emulator walkthrough passed.",
+    "Physical iPad multitasking, Stage Manager and rotation require review; archive enables all four tablet orientations and does not require full screen.",
+    "VoiceOver/TalkBack and maximum native Dynamic Type require device review.",
+    "Native cold detail-link restoration from the secure catalogue is not exercised by the current UI suite.",
+    "Mini-player geometry passed on iPhone/iPad simulators; physical-device placement remains separate."
   ],
   "finalExports": {
     "ios": {
       "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js": "80e3ab02b3bac22608cdf29a2e3cc1270616a695bbe479f7f500941e8d2bbe41",
-      "/_expo/static/js/web/__common-5b65e4ed9edb74d6352b189a760584f8.js": "9fbcc5607b44493cd18370c4c31f62c427a9369039d9a08d59f48725d0731bf3",
-      "/_expo/static/js/web/index-200d74d4398e8bd643bd3e7d9dfcf1dc.js": "1341361c98f845a7b4ac6d9eaa3d081364290c5cdc16b7d1aea38b541b98b8f5"
+      "/_expo/static/js/web/__common-3727cd900c3d24ce51cf084eade54d55.js": "2ccae0b85d83e43d6638c7a6a7b928bc40ef5d5cd83663dc7f270732c988a646",
+      "/_expo/static/js/web/index-7b71616b75e6c849f79e8ff5ec9f3ad9.js": "0038c134539e163e459fa8008f58a93ba46a5c981133aef9324b4cfc22f8f520"
     },
     "android": {
       "/_expo/static/js/web/__expo-metro-runtime-8c088df87a31e4e6accd81c554ec290d.js": "80e3ab02b3bac22608cdf29a2e3cc1270616a695bbe479f7f500941e8d2bbe41",
-      "/_expo/static/js/web/__common-6181c329d9185f56ee1959925f937dfa.js": "c02134e38518c73203f06012adbbc32141564128a7a34ca921b36009f4940133",
-      "/_expo/static/js/web/index-200d74d4398e8bd643bd3e7d9dfcf1dc.js": "1341361c98f845a7b4ac6d9eaa3d081364290c5cdc16b7d1aea38b541b98b8f5"
+      "/_expo/static/js/web/__common-dbcb904bfdf9eafc99268c7ec786b602.js": "ad4ec0d3bc48d1519ca8168d569d33b223d40f7d0892bbe357e4624db4fb9a12",
+      "/_expo/static/js/web/index-7b71616b75e6c849f79e8ff5ec9f3ad9.js": "0038c134539e163e459fa8008f58a93ba46a5c981133aef9324b4cfc22f8f520"
     },
     "tv": {
-      "/_expo/static/js/web/index-e41c82891ce0cfba96aaacb06aad38e0.js": "c6b8414c5a27d624288e9aaffc3c7251e20c93768691b0771cb7eeb131c28724"
+      "/_expo/static/js/web/index-c5cb9ebedd7ae07771c46683751f9e60.js": "b81f0862cb2a0b9c578e0ab3ea1a9f64d390bd61f68957eed3cf641ba5d0dc44"
     }
   },
   "browser": {
@@ -413,10 +412,10 @@
       }
     ]
   },
-  "nativeBuildRequired": "Yes, for changed orientation configuration and existing TV native-controller code; no native module was added. No native builds or releases were produced.",
+  "nativeBuildRequired": "Native configuration changes are included in 0.7.3 builds. No native module was added. See ../release-0.7.3/BUILD-STATUS.md for exact package and audit provenance.",
   "sourceDigest": "d748c65d1516860ab31a94b1c1b0f793272a3a2046644f5b24dbdd871c3b2631",
   "releaseSourceChecks": {
-    "source": "16033c1e091eafd81a215935ad2270c76abd238d",
+    "source": "f1f48f6621904741c42337b29d215f26ed6ae777",
     "tests": 139,
     "typecheck": true,
     "grid": true,
@@ -428,7 +427,16 @@
     ],
     "browserRequiredCases": 14,
     "browserSupplementalTV": 2,
-    "nativeStatus": "Builds running; not yet verified",
+    "nativeStatus": "Exact iOS and Android packages passed required native audits; all three releases are public. Android 11 virtual-codec failure and alternate-backend pass are documented separately.",
     "hermesWithoutPluralRules": true
+  },
+  "nativeEvidence": {
+    "ios": 44761996308,
+    "androidBuild": 44849613228,
+    "androidPhone": 44851008761,
+    "tvApi35": 44851615852,
+    "tvApi30": 44852270604,
+    "tvApi30FailedComparison": 44851619375,
+    "scope": "Simulators/emulators, not physical-device certification"
   }
 }

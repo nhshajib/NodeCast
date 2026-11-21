@@ -47,10 +47,11 @@ for screen,file in files.items():
 # alone must never qualify a black native video surface for the website.
 with Image.open(files['player'])as image:
  image=image.convert('RGB');width,height=image.size
- # The iPhone's safe-area-aware header overlaps the old .14-.16 probe.
- # Sample the decoded scene above that header, retaining the same strict
- # original-color test. Black video and green-only UI still fail.
- top,bottom=(.4,.44)if platform=='tv'else(.09,.11)if platform=='ios'else(.14,.16)
+ # Phone top scrims darken the upper scene and the native header
+ # overlaps .14-.16. Inspect the original dark scene immediately above the
+ # green video band, beneath the scrim/header. Keep both strict color
+ # assertions: a black surface or green-only UI must still fail.
+ top,bottom=(.4,.44)if platform=='tv'else(.22,.23)if platform=='ios'else(.23,.24)if platform=='android'else(.14,.16)
  scene=list(image.crop((int(width*.2),int(height*top),int(width*.8),int(height*bottom))).get_flattened_data())
  dark=sum(14<r<24 and 48<g<59 and 37<b<47 for r,g,b in scene)/len(scene)
  assert dark>.5,f'No original dark scene background in {platform} player capture ({dark:.4f})'
@@ -62,7 +63,10 @@ if args.evidence_only:
  assert platform in ('android','tv') and result.get('androidApi'), 'Additional API evidence requires Android results'
 label=f'{platform}-api{result["androidApi"]}'if args.evidence_only else platform
 for screen,file in files.items():
- if not args.evidence_only or screen=='player':shutil.copyfile(file,out/f'{label}-{screen}.png')
+ if not args.evidence_only or screen=='player':
+  shutil.copyfile(file,out/f'{label}-{screen}.png')
+  # A complete new run supersedes any one-off provenance override for the old image.
+  (out/f'{label}-{screen}-provenance.json').unlink(missing_ok=True)
 result.update(workflow=workflow,source=args.source)
 if args.capture_source:result['captureSource']=args.capture_source
 if args.build_run:result['buildWorkflow']=f'https://github.com/nhshajib/NodeCast/actions/runs/{args.build_run}'
