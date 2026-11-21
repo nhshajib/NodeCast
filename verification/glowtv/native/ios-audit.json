@@ -4,7 +4,7 @@
   "failedTests": 0,
   "device": {
     "architecture": "arm64",
-    "deviceId": "5277349A-B219-4ED4-853A-8AE666B9F5B1",
+    "deviceId": "E6B648E8-C8CD-4F4C-A3A9-600B2C5C4D24",
     "deviceName": "iPhone 17 Pro Max",
     "modelName": "iPhone 17 Pro Max",
     "osBuildNumber": "23F77",
@@ -12,6 +12,6 @@
     "platform": "iOS Simulator"
   },
   "scope": "Native simulator UI tests and captures; physical-device testing is separate.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44761996308",
-  "source": "f81da181dd8632b9f04a56e23294b79f29db935e"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44861113578",
+  "source": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb"
 }

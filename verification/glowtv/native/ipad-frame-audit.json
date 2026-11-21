@@ -1,8 +1,8 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44761996308",
-  "source": "f81da181dd8632b9f04a56e23294b79f29db935e",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44861113578",
+  "source": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
   "capture": "ipad-player.png",
-  "sha256": "283e6fd3f95b6a0eee7fb6b3bfe0dd2414f3c412bf694f3e355021c5807200f6",
+  "sha256": "bdc8f3e311c948110557c8253d7166b70181848e182fa349936e9a7384c2e565",
   "greenVideoBandFraction": 0.13280516431924883,
   "darkSceneRegionFraction": 0.8057817888326363,
   "result": "Both original scene colors are present in the native player capture",

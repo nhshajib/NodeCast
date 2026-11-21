@@ -45,6 +45,8 @@ const platforms = [
   </div>
 </section>
 
+<Gallery tabs/>
+
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="section-head"><h2 id="features-title">Everything in its place</h2><p>Less time looking, more time watching. GlowTV keeps your channels, guide and library tidy on every screen.</p></div>
   <div class="feature-grid">{features.map(([icon, title, body]) => <article class="feature-card"><Icon name={icon} size={32}/><h3>{title}</h3><p>{body}</p></article>)}</div>
@@ -62,6 +64,5 @@ const platforms = [
   <div class="platform-grid">{platforms.map(([slug, platform, title, text, look]) => <a class="platform-card" href={`/download/${slug}/`}><div class:list={['mini-device', look]}><img src={`/screenshots/${platform}-home.webp`} alt="" width={size(platform).width} height={size(platform).height} loading="lazy" decoding="async"/></div><h3>{title}</h3><p>{text}</p><span class="more">Get it for {title} <Icon name="arrow-right" size={16}/></span></a>)}</div>
 </section>
 
-<Gallery tabs/>
 <FAQ/>
 </Layout>

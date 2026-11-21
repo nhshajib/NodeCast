@@ -362,6 +362,7 @@ footer nav a:hover{text-decoration:underline}
  .devices .device-phone img{width:auto;height:100%}
  .device-tv{order:1}.device-phone.android{order:2}
  .download-stage{margin-bottom:0}
+ .download-stage .download-shot:last-child,.download-stage .download-shot:first-child{transform:none}
  .page-hero.has-stage + .content{padding-top:24px}
 
  /* Formats as an iOS section with filled chips. */
