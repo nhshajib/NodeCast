@@ -155,6 +155,21 @@ class Handler(http.server.BaseHTTPRequestHandler):
 server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
 def capture(screen):
  time.sleep(.7);(OUT/f'emulator-design-{TARGET}-{screen}.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));(OUT/f'emulator-design-{TARGET}-{screen}.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(h.dump(),encoding='unicode'));print(f'Native {TARGET}: captured {screen}',flush=True)
+def wait_tv_text(labels, present=True, timeout=20):
+ # Remote events and React updates are asynchronous. A decoded frame can still
+ # belong to the previous channel; require the actual native UI state too.
+ deadline=time.monotonic()+timeout
+ while time.monotonic()<deadline:
+  root=h.dump()
+  texts={(n.get('text')or'').strip() for n in root.iter('node')} | {(n.get('content-desc')or'').strip() for n in root.iter('node')}
+  found=any(label in texts for label in labels)
+  if found==present:return
+  if present and any(n.get('content-desc')=='Show player controls' and n.get('focused')=='true' for n in root.iter('node')):h.remote.key(23)
+  time.sleep(.15)
+ raise AssertionError(f'TV UI did not settle: {labels}, present={present}')
+def close_tv_info():
+ adb('shell','input','keyevent','4')
+ wait_tv_text(['On now · No programme information available'],present=False)
 def home():click('Home')
 def back():
  if not TV:dismiss_phone_keyboard()
@@ -260,15 +275,16 @@ try:
   capture('player-initial-media-key')
   # Exercise the actual native INFO and channel keys, including Back on the
   # focused overlay. All channels use an original local video fixture.
-  adb('shell','input','keyevent','165');find('On now · No programme information available');capture('player-info');adb('shell','input','keyevent','4')
+  adb('shell','input','keyevent','165');find('On now · No programme information available');capture('player-info');close_tv_info()
   find('Play live TV',timeout=20);wait_for_native_video(timeout=10)
-  adb('shell','input','keyevent','166');wait_for_native_video();adb('shell','input','keyevent','165')
+  adb('shell','input','keyevent','166');wait_tv_text(['Wild North','Quiet studio']);wait_for_native_video();adb('shell','input','keyevent','165')
+  wait_tv_text(['Wild North · LIVE','Quiet studio · LIVE'])
   root=h.dump();assert any(('Wild North · LIVE' in (n.get('text')or'')or'Quiet studio · LIVE' in (n.get('text')or''))for n in root.iter('node')),'Channel Up did not change the live channel'
-  adb('shell','input','keyevent','4');adb('shell','input','keyevent','167');wait_for_native_video();adb('shell','input','keyevent','165');find('Evening studio · LIVE');adb('shell','input','keyevent','4')
+  close_tv_info();adb('shell','input','keyevent','167');wait_tv_text(['Evening studio']);wait_for_native_video();adb('shell','input','keyevent','165');find('Evening studio · LIVE');close_tv_info()
   assert adb('shell','pidof',package)==initial_pid,'Remote INFO/channel keys changed the app process'
   (OUT/'emulator-tv-live-keys.json').write_text(json.dumps({'info':True,'channelUpDown':True,'sameProcess':True,'physicalFireTV':False})+'\n')
   (OUT/'emulator-tv-initial-pause.json').write_text(json.dumps({'sameProcess':True,'remoteSelect':True,'dedicatedMediaKeys':True})+'\n')
-  click('Back to library');home()
+  click('Back to library');wait_tv_text(['Home']);home()
  click('TV guide' if TV else 'Guide');click('Add full TV guide');fill('XMLTV URL','http://10.0.2.2:9090/guide.xml')
  if TV:adb('shell','input','keyevent','66')
  else:dismiss_phone_keyboard();click('Save and refresh guide',True)
