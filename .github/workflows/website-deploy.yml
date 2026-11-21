@@ -56,3 +56,31 @@ jobs:
       - uses: actions/configure-pages@v5
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  indexnow:
+    # Tell IndexNow search engines (Bing, Yandex, Seznam, Naver) about every sitemap URL
+    # once Vercel serves this commit. Google does not use IndexNow; submit the sitemap
+    # in Search Console instead.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      INDEXNOW_KEY: 043ceaf64c6d1ac1c9f6b9bdcf3e9c35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for the live site to serve this build
+        run: |
+          for i in $(seq 1 40); do
+            if curl -fsSL "https://glowtv.app/$INDEXNOW_KEY.txt" | grep -qx "$INDEXNOW_KEY"; then echo "Key is live"; exit 0; fi
+            sleep 15
+          done
+          echo "::warning::The IndexNow key file is not live yet; skipping the ping."; exit 0
+      - name: Submit sitemap URLs to IndexNow
+        run: |
+          URLS=$(curl -fsSL https://glowtv.app/sitemap.xml | grep -o '<loc>[^<]*</loc>' | sed 's/<[^>]*>//g' | jq -R . | jq -s .) || { echo "::warning::Could not read the live sitemap"; exit 0; }
+          jq -n --arg key "$INDEXNOW_KEY" --argjson urls "$URLS" '{host:"glowtv.app",key:$key,keyLocation:("https://glowtv.app/"+$key+".txt"),urlList:$urls}' > body.json
+          CODE=$(curl -s -o response.txt -w '%{http_code}' -H 'Content-Type: application/json; charset=utf-8' --data @body.json https://api.indexnow.org/indexnow)
+          echo "IndexNow responded $CODE for $(jq '.urlList|length' body.json) URLs"; cat response.txt || true
+          case "$CODE" in 200|202) ;; *) echo "::warning::IndexNow returned $CODE";; esac

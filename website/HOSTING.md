@@ -51,3 +51,15 @@ While a store value is empty, the download page says GlowTV isn't in that store 
 `apps-release.yml` produces `GlowTV.apk` and `GlowTV-TV.apk` with checksums as build artifacts. A version tag or the manual `create_draft` option attaches APKs and `release-metadata.json` to a draft GitHub Release. Manual validation builds default to artifacts only. Verify the draft before publishing. The website build selects the newest published release for each edition, including labeled public testing releases, and accepts downloads only when GitHub provides the matching asset URL, size and SHA-256 digest. Trigger the website workflow after publishing a release to refresh availability. This avoids hand-entered release versions, dates or checksums.
 
 The website selects published assets independently for iPhone, Android phone and TV, using pinned tag-specific URLs instead of `/releases/latest/download/` (GitHub latest excludes testing releases and may refer to another platform). File sizes, dates and digests come from the GitHub release API. A checked public-release snapshot supports offline builds and Vercel builds when GitHub rate limits requests. Minimum OS is shown only when verified for the identical asset. Refresh `website/src/data/downloads-snapshot.json` from verified public metadata when publishing, then run `node scripts/sync-download-folders.mjs` from the root to refresh each platform’s `download.json`, `DOWNLOADS.md` and README links.
+
+## Search indexing
+
+- **Sitemap:** `https://glowtv.app/sitemap.xml` is generated from `src/data/pages.json` at build time and is listed in `robots.txt`. A page's `<lastmod>` comes from its `updated` field. Set it to the date you actually change that page's content, and leave it out otherwise.
+- **Canonical host:** every canonical, sitemap URL and structured-data URL uses the apex `https://glowtv.app/`. Vercel must serve the apex directly. If the apex redirects to `www`, every sitemap URL is a redirect and Google reports the pages as "Page with redirect" instead of indexing them. In **Vercel → Project Settings → Domains**, attach `glowtv.app` to Production with no redirect, and set `www.glowtv.app` to redirect to `glowtv.app`.
+- **Google Search Console:**
+  1. Add the URL-prefix property `https://glowtv.app/` and choose the HTML tag method.
+  2. Put the token in `searchConsoleToken` in `src/data/site.ts` and push.
+  3. Once verified, submit `sitemap.xml` under **Sitemaps**.
+  4. Use **URL Inspection → Request indexing** for the home, download and guide pages.
+- **IndexNow (Bing, Yandex, Seznam, Naver):** `website-deploy.yml` waits for the live key file `/<key>.txt`, then submits every sitemap URL on each push to `main`. Keep the key file in `public/` and the `INDEXNOW_KEY` value in the workflow in sync. Bing Webmaster Tools can also import the site directly from Search Console.
+- **The 404 page** is `noindex, follow` and has no canonical.

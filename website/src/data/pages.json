@@ -252,19 +252,21 @@
   },
   {
     "path": "support",
-    "title": "GlowTV Support and Help Center",
+    "title": "GlowTV Support: Help With Playlists and Playback",
     "h1": "Let’s get you watching.",
-    "description": "Get help with GlowTV playlists, EPG schedules, buffering, sound and playback. Search practical guides or report a problem with your device details.",
+    "description": "Get help with GlowTV: adding M3U or Xtream playlists, loading the TV guide, fixing buffering or no sound, and installing on iPhone, Android and Fire TV.",
     "intro": "Start with the guide that fits what you see. Never include passwords, full playlist links or provider tokens in a public bug report.",
-    "kind": "support"
+    "kind": "support",
+    "updated": "2026-11-21"
   },
   {
     "path": "support/faq",
-    "title": "GlowTV FAQ",
+    "title": "GlowTV FAQ: IPTV Player Questions Answered",
     "h1": "Good questions. Clear answers.",
-    "description": "Find clear answers about GlowTV playlists, pricing, privacy, catch-up, TV guides and casting. Learn what the player supports before you connect.",
+    "description": "Answers about GlowTV: supported playlists, M3U and Xtream Codes, the TV guide, catch-up, devices, privacy, updates and what the player does not include.",
     "intro": "GlowTV is a free player for the content you bring. Here is what to expect before you add your first playlist.",
-    "kind": "faq"
+    "kind": "faq",
+    "updated": "2026-11-21"
   },
   {
     "path": "guides/add-m3u-playlist",
@@ -358,9 +360,9 @@
   },
   {
     "path": "guides/fix-buffering",
-    "title": "How to Fix Buffering in GlowTV",
+    "title": "How to Fix IPTV Buffering and Freezing in GlowTV",
     "h1": "A calmer path back to play.",
-    "description": "Troubleshoot IPTV buffering in GlowTV by checking your network, provider limits, live format and playback engine without sharing private credentials.",
+    "description": "Stop IPTV buffering and freezing in GlowTV. Check your connection, switch playback engine, lower stream quality and rule out provider limits step by step.",
     "intro": "Try one change at a time. A player cannot fix an overloaded provider or an unavailable stream.",
     "kind": "guide",
     "steps": [
@@ -389,21 +391,23 @@
         "text": "Include app version, device model, OS version, playback engine and whether other channels work. Remove all URLs, credentials and tokens.",
         "result": "Support can reproduce the symptom without receiving your account details."
       }
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "changelog",
-    "title": "What's New in GlowTV",
+    "title": "GlowTV Changelog: Release Notes and Updates",
     "h1": "A little brighter with every update.",
-    "description": "Read the latest GlowTV development changes, including the new name, platform design and website. Check published release information before updating.",
+    "description": "Every GlowTV release for iPhone, Android and TV, with what changed in each version. Subscribe to the RSS feed to hear about new updates first.",
     "intro": "This design and rebrand is in development. Existing published binaries keep their original release names until a verified GlowTV build is published.",
-    "kind": "changelog"
+    "kind": "changelog",
+    "updated": "2026-11-21"
   },
   {
     "path": "privacy",
-    "title": "GlowTV Privacy",
+    "title": "Privacy Policy | GlowTV IPTV Player",
     "h1": "Your profiles stay yours.",
-    "description": "Learn how GlowTV stores provider profiles, settings and encrypted backups on your device, and how network checks contact external service providers.",
+    "description": "How GlowTV handles your data: playlists and logins stay on your device, no account is required and nothing is sold. Read the full privacy policy.",
     "intro": "No GlowTV account is required. This policy describes the current app and this static website.",
     "kind": "article",
     "sections": [
@@ -427,13 +431,14 @@
         "Deletion and contact",
         "Remove a profile in the app to remove it from this device. Remove your exported backup files separately. Ask privacy questions at support@glowtv.app."
       ]
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "terms",
-    "title": "GlowTV Terms",
+    "title": "Terms of Use | GlowTV IPTV Player",
     "h1": "A player for the content you bring.",
-    "description": "Read the terms for using GlowTV, a free open-source media player. Understand your responsibility for playlists, provider access and permitted content.",
+    "description": "The terms for using GlowTV, a free IPTV player. You bring your own legally obtained playlists; GlowTV provides no channels, content or subscriptions.",
     "intro": "By using GlowTV, you agree to use it only with content and services you are entitled to access.",
     "kind": "article",
     "sections": [
@@ -453,13 +458,14 @@
         "Support",
         "For app issues, include your device, OS and app version. Never post provider passwords or complete playlist URLs in public issues. Contact support@glowtv.app."
       ]
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "legal",
-    "title": "GlowTV Legal and Copyright",
+    "title": "Legal, Licenses and Copyright | GlowTV",
     "h1": "Clear about what we do.",
-    "description": "Read GlowTV’s content disclaimer, open-source license and copyright information. See how demo artwork and third-party website photography are credited.",
+    "description": "GlowTV licensing, open-source notices and copyright information. GlowTV is a player only and does not host, sell or distribute any TV content.",
     "intro": "GlowTV is independent software. A player does not grant rights to the content you open with it.",
     "kind": "article",
     "sections": [
@@ -479,7 +485,8 @@
         "Copyright enquiries",
         "Send specific copyright enquiries to support@glowtv.app. Include the material and its location. Do not send account credentials."
       ]
-    ]
+    ],
+    "updated": "2026-11-21"
   },
   {
     "path": "guides",
@@ -508,7 +515,152 @@
         "fix-buffering",
         "Fix buffering",
         "Check your network and playback setup."
+      ],
+      [
+        "m3u-vs-xtream-codes",
+        "M3U or Xtream Codes?",
+        "Compare the two login types."
+      ],
+      [
+        "catch-up-tv",
+        "Watch catch-up TV",
+        "Play programmes after they air."
+      ],
+      [
+        "parental-controls",
+        "Set a family PIN",
+        "Protect categories on shared devices."
+      ],
+      [
+        "backup-and-restore",
+        "Back up and restore",
+        "Move your setup to a new device."
       ]
+    ],
+    "updated": "2026-11-21"
+  },
+  {
+    "path": "guides/m3u-vs-xtream-codes",
+    "title": "M3U vs Xtream Codes: Which IPTV Login Should You Use?",
+    "h1": "M3U or Xtream Codes?",
+    "description": "M3U links and Xtream Codes logins both load your IPTV provider's channels. Compare how each works, what you get and which to choose in GlowTV.",
+    "intro": "Most providers offer both. They load the same subscription in different ways, and GlowTV supports each.",
+    "kind": "article",
+    "updated": "2026-11-21",
+    "sections": [
+      [
+        "What an M3U playlist is",
+        "An M3U (or M3U8) playlist is a text file or link that lists channel names and stream addresses. You paste the link or import the file, and GlowTV reads the channels from it. Some M3U links also point to an XMLTV guide."
+      ],
+      [
+        "What Xtream Codes is",
+        "Xtream Codes is a login made of a server address, a username and a password. Instead of one long file, GlowTV asks the provider's server for live channels, movies and series separately, which usually loads faster on large subscriptions."
+      ],
+      [
+        "Which one to choose",
+        "Choose Xtream Codes when your provider offers it: you get live TV, movies and series in organized libraries, and catch-up where the provider supports it. Choose M3U when you only have a link or file, or when you want a hand-picked channel list."
+      ],
+      [
+        "Can you use both",
+        "Yes. GlowTV keeps separate profiles, so you can add an M3U playlist and an Xtream login side by side and switch between them. Use the same subscription only as your provider's connection limits allow."
+      ],
+      [
+        "Keep your details safe",
+        "Your link and login are saved only on your device. Never share them publicly: anyone with them can use your subscription. GlowTV does not provide playlists, channels or subscriptions."
+      ]
+    ]
+  },
+  {
+    "path": "guides/catch-up-tv",
+    "title": "How to Watch Catch-up TV in GlowTV",
+    "h1": "Missed it? Catch up.",
+    "description": "Watch programmes that already aired with catch-up TV in GlowTV. See which providers support it, how to find catch-up in the TV guide and fix common issues.",
+    "intro": "Catch-up plays programmes after they air, when your provider keeps an archive for that channel.",
+    "kind": "guide",
+    "updated": "2026-11-21",
+    "steps": [
+      {
+        "title": "Use a provider with catch-up",
+        "text": "Catch-up comes from your provider, not from GlowTV. It is usually available with Xtream Codes logins on channels the provider marks as archived.",
+        "result": "You know whether your subscription can play past programmes."
+      },
+      {
+        "title": "Load the TV guide",
+        "text": "Open the Guide tab. If it is empty, add your provider's XMLTV guide first so programmes have times.",
+        "result": "Channels show their schedule on a timeline."
+      },
+      {
+        "title": "Find a past programme",
+        "text": "Scroll the guide back to an earlier time or day and choose a programme that has already finished. Programmes with an archive show a catch-up indicator.",
+        "result": "The programme details open."
+      },
+      {
+        "title": "Watch catch-up",
+        "text": "Choose Watch catch-up. If it does not start, the archive may have expired or the channel may not keep one; try a more recent programme.",
+        "result": "The programme plays from the start, with normal seek controls."
+      }
+    ]
+  },
+  {
+    "path": "guides/parental-controls",
+    "title": "Parental Controls in GlowTV: Set a Family PIN",
+    "h1": "A family PIN for shared screens.",
+    "description": "Set up parental controls in GlowTV with a six-digit family PIN. Protect categories, lock content on shared TVs and phones, and reset a forgotten PIN.",
+    "intro": "Family controls hide the categories you choose until someone enters the PIN.",
+    "kind": "guide",
+    "updated": "2026-11-21",
+    "steps": [
+      {
+        "title": "Open family controls",
+        "text": "Go to Settings, then Family controls.",
+        "result": "You see the option to set a family PIN."
+      },
+      {
+        "title": "Set a six-digit PIN",
+        "text": "Enter a new six-digit PIN, confirm it and choose Set family PIN. Pick a PIN that children are unlikely to guess.",
+        "result": "Family controls are on for this device."
+      },
+      {
+        "title": "Protect categories",
+        "text": "Search for a category and turn on protection for each one you want to restrict. Settings and playlist changes also ask for the PIN.",
+        "result": "Protected categories are hidden while family controls are locked."
+      },
+      {
+        "title": "Lock and unlock",
+        "text": "Choose Lock protected content now when you hand the device over. Enter the PIN to unlock. If you forget it, you can reset saved profiles from the unlock screen.",
+        "result": "Protected content stays hidden until the PIN is entered."
+      }
+    ]
+  },
+  {
+    "path": "guides/backup-and-restore",
+    "title": "Back Up and Restore Your GlowTV Playlists and Settings",
+    "h1": "Move your setup, safely.",
+    "description": "Create an encrypted GlowTV backup of your playlists, profiles and settings, then restore it on a new phone or TV. Step-by-step export and import guide.",
+    "intro": "Backups are encrypted with a password you choose and stay in your control.",
+    "kind": "guide",
+    "updated": "2026-11-21",
+    "steps": [
+      {
+        "title": "Create an encrypted backup",
+        "text": "Go to Settings and choose Create encrypted backup. Enter a backup password and confirm it. You can also include viewing history and progress.",
+        "result": "GlowTV prepares a backup file protected by your password."
+      },
+      {
+        "title": "Export the file",
+        "text": "Choose Export backup and save the file somewhere you control, such as your files app or cloud storage.",
+        "result": "You have a backup you can move to another device."
+      },
+      {
+        "title": "Import on the new device",
+        "text": "Install GlowTV on the new device, open Settings and choose Import backup, then Choose backup file.",
+        "result": "GlowTV asks for the backup password."
+      },
+      {
+        "title": "Unlock and review",
+        "text": "Enter the backup password, review what will be restored and confirm. Keep the password safe: without it, the backup cannot be opened.",
+        "result": "Your playlists, profiles and settings are restored."
+      }
     ]
   }
 ]
