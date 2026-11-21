@@ -38,3 +38,9 @@ Final-APK API 30 run [44851619375](https://github.com/nhshajib/NodeCast/actions/
 ## Physical-device follow-up
 
 Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/TalkBack, maximum Dynamic Type, native casting/PiP and real-provider compatibility still require device review. Emulator and browser results do not certify these behaviors. No native module was added; identifiers and signing are unchanged.
+
+## Live website and hosting follow-up
+
+The live download pages show 0.7.3, matching public file checksums. All three Home screenshot files match the optimized native source bytes. HTTPS, robots and sitemap are reachable; see [live-site.json](live-site.json).
+
+Vercel currently redirects the apex host to `www`, while source canonicals use the apex. Repository/GitHub access cannot change that existing Vercel project-level domain rule. In **Vercel → Project Settings → Domains**, connect `glowtv.app` directly to **Production** (no redirect), then redirect `www.glowtv.app` to `glowtv.app`. No DNS or MX changes are needed for this existing connected-domain setup. An app-level reverse redirect would risk a loop and was removed. Downloads and the updated website work through the current redirect.

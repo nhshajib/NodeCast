@@ -1,0 +1,54 @@
+{
+  "time": "2026-11-21T02:01:30.090655+00:00",
+  "site": "https://glowtv.app",
+  "checks": [
+    {
+      "url": "https://glowtv.app/download/iphone/",
+      "version": "0.7.3",
+      "downloadAndChecksumMatch": true
+    },
+    {
+      "url": "https://glowtv.app/download/android/",
+      "version": "0.7.3",
+      "downloadAndChecksumMatch": true
+    },
+    {
+      "url": "https://glowtv.app/download/tv/",
+      "version": "0.7.3",
+      "downloadAndChecksumMatch": true
+    },
+    {
+      "screenshot": "ios-home.webp",
+      "matchesVerifiedNativeCapture": true,
+      "sha256": "f734682c8a2312ae3f2695b1f39089ad36faca56b4eeb9e7834c51ee1335420f"
+    },
+    {
+      "screenshot": "android-home.webp",
+      "matchesVerifiedNativeCapture": true,
+      "sha256": "8f02971b87ec54d5589b1ef429f05d950be84a3ba60bf7eee4e8a5da59261e9e"
+    },
+    {
+      "screenshot": "tv-home.webp",
+      "matchesVerifiedNativeCapture": true,
+      "sha256": "e4747e281be90dd0dcc2e96987caa636cd17182ba8f90fadbd3d29f7fbb4268d"
+    },
+    {
+      "url": "https://glowtv.app/robots.txt",
+      "reachable": true
+    },
+    {
+      "url": "https://glowtv.app/sitemap.xml",
+      "reachable": true
+    },
+    {
+      "wwwResult": "200 https://www.glowtv.app/"
+    }
+  ],
+  "scope": "Live HTTPS pages, exact public release links/checksums, native screenshot byte identity and discovery files. Performance scores are separate local production Lighthouse measurements.",
+  "canonicalHostFollowUp": {
+    "status": "needs Vercel project access",
+    "observed": "https://glowtv.app/ returns 308 to https://www.glowtv.app/; www serves the updated site",
+    "required": "In Vercel Project Settings > Domains, connect glowtv.app to Production without a redirect, then redirect www.glowtv.app to glowtv.app. Keep existing DNS/MX records.",
+    "sourceConfig": "App-level redirect removed to avoid a loop with the existing project-level apex-to-www redirect."
+  }
+}
