@@ -9,12 +9,16 @@ on:
         type: choice
         default: both
         options: [both, mobile, tv]
+      reuse_build_run:
+        description: Optional successful APK build to re-sign; compilation inputs must match exactly
+        required: false
       create_draft:
         description: Attach verified APKs to a draft GitHub Release
         type: boolean
         default: false
 permissions:
   contents: read
+  actions: read
 jobs:
   build:
     defaults:
@@ -64,9 +68,52 @@ jobs:
       - run: npm run typecheck && npm test
       - name: Signing policy regression tests
         run: python3 -m unittest discover -s scripts -p test_android_release_signing.py -v
+      - name: Verify reusable compilation inputs
+        if: inputs.reuse_build_run != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REUSE_BUILD_RUN: ${{ inputs.reuse_build_run }}
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$REUSE_BUILD_RUN" > /tmp/glowtv-reused-run.json
+          COMPILED_SHA=$(python3 -c 'import json; r=json.load(open("/tmp/glowtv-reused-run.json")); assert r["conclusion"]=="success" and r["path"]==".github/workflows/apps-release.yml"; print(r["head_sha"])')
+          git fetch --no-tags --depth=1 origin "$COMPILED_SHA"
+          git diff --relative --name-only "$COMPILED_SHA" "$GITHUB_SHA" -- . > /tmp/glowtv-reused-changes.txt
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          # Only documentation, download records, signing and smoke-test code can
+          # differ. Every other app file is a compilation input and must match.
+          allowed_scripts={'scripts/android_release_signing.py','scripts/test_android_release_signing.py','scripts/android-mobile-features-smoke.py','scripts/android-tv-playback-smoke.py'}
+          allowed_records={f'{folder}/{file}' for folder in ['android-mobile','android-tv','iphone'] for file in ['build.json','download.json']}
+          changes=Path('/tmp/glowtv-reused-changes.txt').read_text().splitlines()
+          changed=[p for p in changes if not p.endswith('.md') and p not in allowed_scripts and p not in allowed_records]
+          assert not changed,f'Compilation inputs changed; perform a full build: {changed}'
+          PYCODE
+          printf '{"compiledSourceCommit":"%s","reusedBuildRun":"%s","signingSourceCommit":"%s"}\n' "$COMPILED_SHA" "$REUSE_BUILD_RUN" "$GITHUB_SHA" > "android-${NODECAST_TARGET}/build-provenance.json"
+      - uses: actions/download-artifact@v4
+        if: inputs.reuse_build_run != ''
+        with:
+          name: GlowTV-Android-${{ matrix.target }}
+          path: apps/player/reused-apk
+          run-id: ${{ inputs.reuse_build_run }}
+          github-token: ${{ github.token }}
+      - name: Validate and stage reusable APK
+        if: inputs.reuse_build_run != ''
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,os,shutil
+          from pathlib import Path
+          filename='GlowTV-TV.apk' if os.environ['NODECAST_TARGET']=='tv' else 'GlowTV.apk'
+          apk=Path('reused-apk')/filename
+          assert hashlib.sha256(apk.read_bytes()).hexdigest()==apk.with_name(filename+'.sha256').read_text().split()[0]
+          target=Path('android/app/build/outputs/apk/release/app-release.apk')
+          target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(apk,target)
+          PYCODE
       - name: Generate Android project
+        if: inputs.reuse_build_run == ''
         run: npx expo prebuild --platform android --no-install
       - name: Compile standalone release including VLC
+        if: inputs.reuse_build_run == ''
         working-directory: apps/player/android
         run: ./gradlew assembleRelease --no-daemon --max-workers=2 --stacktrace '-Dorg.gradle.jvmargs=-Xmx3g -XX:MaxMetaspaceSize=1g -XX:+HeapDumpOnOutOfMemoryError' -PreactNativeArchitectures=armeabi-v7a,arm64-v8a,x86_64
       - name: Sign and validate APK
@@ -94,6 +141,7 @@ jobs:
             apps/player/android-${{ matrix.target }}/*.apk
             apps/player/android-${{ matrix.target }}/*.sha256
             apps/player/android-${{ matrix.target }}/apk-manifest.txt
+            apps/player/android-${{ matrix.target }}/build-provenance.json
           if-no-files-found: error
           retention-days: 30
           compression-level: 0
