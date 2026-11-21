@@ -20,7 +20,7 @@ The shared app lives in `apps/player/`; run app commands from that directory.
 
 ## Design skills
 
-`.claude/skills/` holds the ui-ux-pro-max bundle (MIT, from nextlevelbuilder/ui-ux-pro-max-skill): ui-ux-pro-max, design, design-system, brand, ui-styling, banner-design and slides. Use them for visual guidance such as palettes, typography and style references. The rules above still take precedence: native navigation, the 44-point minimum, press feedback and the leaf-green theme in `apps/player/src/theme.tsx`. Ignore their web-only advice (Tailwind, shadcn/ui) for the React Native app, and don't run their Gemini image generators without asking.
+`.claude/skills/` holds the ui-ux-pro-max bundle (MIT, from nextlevelbuilder/ui-ux-pro-max-skill): ui-ux-pro-max, design, design-system, brand, ui-styling, banner-design and slides. It also holds unslop (CC BY 4.0, by Damir Sokolovsky, from heydamir/unslop; keep its credit), which polishes screens that look AI-generated. Use them for visual guidance such as palettes, typography and style references. The rules above still take precedence: native navigation, the 44-point minimum, press feedback and the leaf-green theme in `apps/player/src/theme.tsx`. Ignore their web-only advice (Tailwind, shadcn/ui) for the React Native app, and don't run their Gemini image generators without asking.
 
 ## Checks before committing
 
