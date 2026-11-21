@@ -260,17 +260,17 @@
   {
     "route": "/install/iphone/",
     "mode": "mobile",
-    "measuredAt": "2026-11-21T01:24:30.928Z",
+    "measuredAt": "2026-11-21T02:06:40.975Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 907.3904,
+    "lcp": 930.5542,
     "cls": 0,
-    "tbt": 90,
-    "bytes": 69903,
+    "tbt": 0,
+    "bytes": 69952,
     "failedAudits": [
       {
         "id": "unused-css-rules",
@@ -289,11 +289,6 @@
         "title": "Document request latency",
         "score": 0.5,
         "displayValue": "Est savings of 31\u00a0KiB"
-      },
-      {
-        "id": "network-dependency-tree-insight",
-        "title": "Network dependency tree",
-        "score": 0
       }
     ]
   },
@@ -1178,17 +1173,17 @@
   {
     "route": "/install/iphone/",
     "mode": "desktop",
-    "measuredAt": "2026-11-21T01:26:59.164Z",
+    "measuredAt": "2026-11-21T02:06:51.960Z",
     "scores": {
       "performance": 100,
       "accessibility": 100,
       "best-practices": 100,
       "seo": 100
     },
-    "lcp": 370.2904,
+    "lcp": 369.76379999999995,
     "cls": 5.129375992178078e-05,
     "tbt": 0,
-    "bytes": 96279,
+    "bytes": 96328,
     "failedAudits": [
       {
         "id": "unused-css-rules",

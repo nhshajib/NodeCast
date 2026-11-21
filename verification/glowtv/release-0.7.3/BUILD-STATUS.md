@@ -44,3 +44,11 @@ Physical Fire TV input/IME behavior, iPad multitasking and rotation, VoiceOver/T
 The live download pages show 0.7.3, matching public file checksums. All three Home screenshot files match the optimized native source bytes. HTTPS, robots and sitemap are reachable; see [live-site.json](live-site.json).
 
 Vercel currently redirects the apex host to `www`, while source canonicals use the apex. Repository/GitHub access cannot change that existing Vercel project-level domain rule. In **Vercel → Project Settings → Domains**, connect `glowtv.app` directly to **Production** (no redirect), then redirect `www.glowtv.app` to `glowtv.app`. No DNS or MX changes are needed for this existing connected-domain setup. An app-level reverse redirect would risk a loop and was removed. Downloads and the updated website work through the current redirect.
+
+## Final main-branch checks
+
+- [App CI / 139 tests and web bundle](https://github.com/nhshajib/NodeCast/actions/runs/44853389873): passed.
+- [Final website CI](https://github.com/nhshajib/NodeCast/actions/runs/44854199298): passed, including every generated page and accessibility audit.
+- CI’s newer browser exposed an unbreakable installation URL at 360px; guide content now wraps long URLs and permits grid children to shrink. The full audit passed in both the system browser and Playwright 1.65.1.
+- All 46 Lighthouse measurements meet the target; minimum performance 99, accessibility/best practices/SEO 100. The corrected iPhone install page scores 100 in every category on mobile and desktop.
+- Existing GitHub Actions Node-20 deprecation annotations remain in the untouched workflows; Astro check itself reports zero errors and warnings.
