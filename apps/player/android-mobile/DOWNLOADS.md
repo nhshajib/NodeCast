@@ -2,11 +2,11 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.3
+## Current published version: 0.7.4
 
-- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk.sha256)
+- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk.sha256)
 - Published: 2026-11-21
 - Status: Public testing release
 - Size: 241,943,349 bytes (230.7 MiB)
@@ -24,12 +24,11 @@ This is a published GlowTV binary.
 - **Playback your way:** Adjust playback over the video, choose supported player options and set a sleep timer.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.3
+## What changed in 0.7.4
 
-- Native startup handles devices whose JavaScript runtime omits plural-rule support.
-- Clearer control states, accessible messages and confirmations for destructive actions.
-- Responsive tablet layouts, readable text and improved guide navigation.
-- Five focused library tabs, native sheets and measured mini-player placement above navigation.
+- A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.
+- An inline show/hide password button; the Add playlist sheet clears the gesture bar.
+- Easier-to-read LIVE badges and small labels.
 - Existing playlists, profiles, playback engines and transitions are retained.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.

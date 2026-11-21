@@ -1,17 +1,17 @@
 {
-  "version": "0.7.3",
-  "tag": "ios-v0.7.3",
-  "publishedAt": "2026-11-21T01:12:51Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.3",
+  "version": "0.7.4",
+  "tag": "ios-v0.7.4",
+  "publishedAt": "2026-11-21T13:15:55Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4",
   "prerelease": true,
   "legacy": false,
-  "file": "GlowTV-0.7.3-unsigned.ipa",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.3/GlowTV-0.7.3-unsigned.ipa",
-  "size": 32976590,
-  "sha256": "269445664effb0bdf2d114ecceca89805953a729251f48f6f23fb6d2efcb8d2d",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.3/SHA256SUMS.txt",
+  "file": "GlowTV-0.7.4-unsigned.ipa",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/GlowTV-0.7.4-unsigned.ipa",
+  "size": 32978024,
+  "sha256": "8e73e26184da53970584abe3c03a4cbcb0c7b7ea0680f66a6fb11dab50ccf091",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/SHA256SUMS.txt",
   "minimumOS": "iOS 16.4 or later",
-  "checkedAt": "2026-11-21T01:55:27.732Z",
+  "checkedAt": "2026-11-21T13:30:00.000Z",
   "edition": "ios",
   "features": [
     {
@@ -24,7 +24,7 @@
     },
     {
       "title": "Movies and series",
-      "description": "Browse your provider’s library, choose seasons and continue with the next episode."
+      "description": "Browse your provider\u2019s library, choose seasons and continue with the next episode."
     },
     {
       "title": "Favorites and history",

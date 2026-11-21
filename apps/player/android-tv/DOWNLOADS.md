@@ -2,11 +2,11 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.3
+## Current published version: 0.7.4
 
-- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV-TV.apk.sha256)
+- [**Direct GitHub download — GlowTV-TV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk.sha256)
 - Published: 2026-11-21
 - Status: Public testing release
 - Size: 240,424,191 bytes (229.3 MiB)
@@ -24,14 +24,12 @@ This is a published GlowTV binary.
 - **A lighter channel library:** Use the default text list, enable grid or logos when you want them, and organize each media library separately.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.3
+## What changed in 0.7.4
 
-- Native startup handles devices whose JavaScript runtime omits plural-rule support.
-- Clearer control states, accessible messages and confirmations for destructive actions.
-- Responsive tablet layouts, readable text and improved guide navigation.
-- Remote Back reaches app handlers; entering a library restores focus without reflowing the poster grid.
-- More visible remote focus, restored library focus, consistent Back behavior and on-screen playback controls.
-- Existing playlists, profiles, playback engines and transitions are retained.
+- Focused movie and series titles no longer clip at the tile edge.
+- Larger labels for update time, connection location and LIVE.
+- The guide shows channel logos instead of initials, without a stray scroll indicator.
+- Existing playlists, profiles, playback engines and remote navigation are retained.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

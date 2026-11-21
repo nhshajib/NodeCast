@@ -3,11 +3,11 @@
 **Your TV, beautifully lit.**
 
 <!-- direct-download:start -->
-## Download 0.7.3
+## Download 0.7.4
 
-[**Download Android APK directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.3/GlowTV.apk) · [Features, size and checksum](DOWNLOADS.md) · [0.7.3 release notes](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.3)
+[**Download Android APK directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk) · [Features, size and checksum](DOWNLOADS.md) · [0.7.4 release notes](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
 
-This is the published GlowTV 0.7.3 testing release.
+This is the published GlowTV 0.7.4 testing release.
 <!-- direct-download:end -->
 
 [Download availability](https://glowtv.app/download/android/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)
@@ -16,6 +16,6 @@ Use the phone edition on touch devices. Download the current published APK using
 
 GlowTV is a player only. Add your own legally obtained M3U link, playlist file or Xtream account. No channels, subscriptions or content are provided.
 
-GlowTV 0.7.3 is available from the verified GitHub download above. Existing identifiers, signing identity and local profiles are preserved. Earlier project releases remain available in GitHub Releases.
+GlowTV 0.7.4 is available from the verified GitHub download above. Existing identifiers, signing identity and local profiles are preserved. Earlier project releases remain available in GitHub Releases.
 
 Profiles, favorites, EPG, catch-up where supported, playback settings, encrypted backups and family controls use the shared [app project](../). Existing identifiers and signing configuration are retained for update compatibility. [Screenshot provenance](../../../store-assets/README.md).
