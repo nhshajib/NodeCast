@@ -27,9 +27,9 @@ def expected_certificate():
 
 
 def verify_report(report, expected):
-    certificates = re.findall(r'^(?:Signer #[0-9]+|V[0-9]+ Signer):? certificate SHA-256 digest: ([a-fA-F0-9]{64})$', report, re.M)
+    certificates = re.findall(r'^(?:Signer #[0-9]+|V[0-9]+(?:\.[0-9]+)? Signer):? certificate SHA-256 digest: ([a-fA-F0-9]{64})$', report, re.M)
     if not certificates or {fingerprint(c) for c in certificates} != {fingerprint(expected)}:
-        raise ValueError('APK signing certificate does not match the owner-pinned release certificate')
+        raise ValueError('APK signing certificate does not match the owner-pinned release certificate; reported public certificate lines: ' + repr([line for line in report.splitlines() if 'certificate SHA-256 digest:' in line]))
     if re.search(r'certificate DN:.*CN=Android Debug', report, re.I):
         raise ValueError('Android debug signing is not allowed for stable releases')
 

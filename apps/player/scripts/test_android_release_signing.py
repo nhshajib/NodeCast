@@ -25,6 +25,16 @@ class SigningTests(unittest.TestCase):
             with self.subTest(report=report), self.assertRaises(ValueError):
                 verify_report(report, 'ab' * 32)
 
+    def test_build_tools_37_versioned_signature_schemes(self):
+        # Captured Build Tools 37 format: "V3.0 Signer: certificate ...".
+        for scheme in ['V2', 'V3.0', 'V3.1', 'V4']:
+            with self.subTest(scheme=scheme):
+                verify_report(f'{scheme} Signer: certificate SHA-256 digest: ' + 'ab' * 32, 'ab' * 32)
+                with self.assertRaises(ValueError):
+                    verify_report(f'{scheme} Signer: certificate SHA-256 digest: ' + 'cd' * 32, 'ab' * 32)
+        with self.assertRaises(ValueError):
+            verify_report('V3.0 Signer: certificate SHA-256 digest: ' + 'ab' * 32 + '\nV3.1 Signer: certificate SHA-256 digest: ' + 'cd' * 32, 'ab' * 32)
+
     def test_rejects_debug_certificate(self):
         with self.assertRaises(ValueError):
             verify_report('Signer #1: certificate SHA-256 digest: ' + 'ab' * 32 + '\nSigner #1: certificate DN: CN=Android Debug, O=Android', 'ab' * 32)
