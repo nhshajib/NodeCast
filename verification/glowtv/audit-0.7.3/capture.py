@@ -89,6 +89,11 @@ def run():
        btn(page,re.compile(r'^Play Tidewater,')).click();page.wait_for_timeout(600);capture('vod-player');btn(page,'Back to library').click()
       if device=='tv':btn(page,'Series').click()
       else:page.get_by_role('tab',name='Series',exact=True).click()
+      if device=='tv':
+       # Move focus into content, as D-pad Right does natively. The expanded
+       # rail overlays content until it loses focus; do not force a click
+       # through that overlay or skip actual hit testing.
+       btn(page,re.compile(r'^Open Tidewater Stories')).focus();page.wait_for_timeout(200)
       btn(page,re.compile(r'^Open Tidewater Stories')).click();btn(page,'Start series').wait_for(timeout=20000);capture('series');btn(page,'Start series').click();page.wait_for_timeout(600);capture('episode-player');btn(page,'Back to library').click();back(page,device=='tv')
       def settings():
        if device=='android':page.get_by_test_id('navigation-tab-settings').click()

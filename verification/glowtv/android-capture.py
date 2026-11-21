@@ -10,7 +10,7 @@ if os.environ.get('GLOWTV_EMULATOR_DISABLE_CODEC2')=='true':
  # This changes only the disposable virtual device, never the installed app.
  adb('shell','setprop','debug.stagefright.ccodec','0')
  assert adb('shell','getprop','debug.stagefright.ccodec').strip()=='0'
-if not TV:
+if True:
  # Standard UIAutomator waits for idle longer than the auto-hide timeout.
  # Read the actual native accessibility nodes immediately; no app setting,
  # animation, accessibility mode or control timer is changed for this test.
@@ -18,13 +18,16 @@ if not TV:
  import atexit,select
  hierarchy_log=open(OUT/'emulator-mobile-hierarchy-reader.log','w')
  idle_dump=h.dump
+ idle_remote_tree=h.remote.tree if TV else None
  hierarchy=None
  def start_phone_hierarchy():
   global hierarchy
   hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
   h.dump=fast_dump
+  if TV:h.remote.tree=fast_dump
  def stop_phone_hierarchy():
   h.dump=idle_dump
+  if TV:h.remote.tree=idle_remote_tree
   if hierarchy is not None and hierarchy.poll() is None:
    hierarchy.stdin.close()
    try:hierarchy.wait(timeout=3)
@@ -244,6 +247,7 @@ try:
   click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
  capture('home')
  if TV:
+  start_phone_hierarchy()
   # Isolate direct playback from guide-preview teardown. Both remote Select
   # and dedicated media keys must preserve the same decoded player process.
   click('Watch live');wait_for_native_video();find('Pause live TV',timeout=20)
