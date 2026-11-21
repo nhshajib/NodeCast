@@ -7,7 +7,7 @@ const count=downloadCount(item.downloadCount);
 const date=new Date(checkedAt);
 ---
 <div class="download-activity" data-download-count data-asset-id={item.assetId} data-asset-url={item.url}>
- <p class="download-activity-value"><Icon name="download" size={18}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · v{item.version}</span></p>
+ <p class="download-activity-value"><Icon name="download" size={24}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · v{item.version}</span></p>
  <p class="download-activity-note">File downloads, not unique users or installs. <time data-count-date datetime={checkedAt}>Checked {Number.isNaN(date.valueOf())?'at build time':date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}.</time></p>
 </div>
 <script>
@@ -37,14 +37,15 @@ const date=new Date(checkedAt);
  }
 </script>
 <style>
- .download-activity{margin:16px auto 0;max-width:680px;min-width:0;text-align:center}
- .download-activity-value{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:4px 8px;margin:0 auto;color:var(--on-night-muted);font-size:14px;line-height:1.5}
- .download-activity-value strong{color:var(--on-night);font-weight:600;font-variant-numeric:tabular-nums}
- .download-activity-note{font-size:12px;line-height:1.6;margin:4px auto 0;color:var(--on-night-muted);overflow-wrap:anywhere}
+ .download-activity{margin:24px auto 0;padding:24px;max-width:680px;min-width:0;text-align:center;background:var(--night-2);border:1px solid var(--night-line);border-radius:16px}
+ .download-activity-value{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:0 auto;color:var(--on-night-muted);font-size:14px;line-height:1.5}
+ .download-activity-value strong{color:var(--on-night);font-size:32px;line-height:1.2;letter-spacing:-.6px;font-weight:800;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;min-width:0}
+ .download-activity-value>span{flex-basis:100%;font-weight:600}
+ .download-activity-note{font-size:12px;line-height:1.6;margin:12px auto 0;color:var(--on-night-muted);overflow-wrap:anywhere}
  @media(max-width:640px){
-  .download-activity{margin:12px 0 0;text-align:left}
+  .download-activity{margin:16px 0 0;padding:20px;text-align:left;background:var(--surface);border-color:var(--line)}
   .download-activity-value{justify-content:flex-start;color:var(--ios-secondary,var(--muted));font-size:14px}
-  .download-activity-value strong{color:var(--ios-label,var(--ink))}
+  .download-activity-value strong{color:var(--ios-label,var(--ink));font-size:28px}
   .download-activity-note{margin-left:0;color:var(--ios-secondary,var(--muted))}
  }
 </style>

@@ -13,7 +13,8 @@
     "real zero distinguished from unavailable",
     "5-minute session cache",
     "429 retains dated snapshot",
-    "large count wrapping at 360,393,412,768,1280px"
+    "large count wrapping at 360,393,412,768,1280px",
+    "28 px mobile and 32 px desktop totals, contrasting panel, verified computed styles"
   ],
   "lighthouse": [
     {
@@ -74,5 +75,5 @@
     }
   ],
   "testData": "Large synthetic count used only in automated tests. Committed screenshots use actual release snapshot counts.",
-  "feedback": "User-supplied quotes, attributed to GlowTV team; two marked excerpts; no numeric aggregate or review schema."
+  "feedback": "User-supplied reviews collected from users across social media platforms, per site owner. Homepage section appears before setup steps; two marked excerpts; no numeric aggregate."
 }

@@ -50,6 +50,8 @@ const platforms = [
   <div class="feature-grid">{features.map(([icon, title, body]) => <article class="feature-card"><Icon name={icon} size={32}/><h3>{title}</h3><p>{body}</p></article>)}</div>
 </section>
 
+<CommunityFeedback/>
+
 <section class="section" aria-labelledby="steps-title">
   <div class="section-head"><h2 id="steps-title">Three steps, then play</h2></div>
   <ol class="steps">{steps.map(([title, text, url, link], i) => <li class="step"><span class="step-number" aria-hidden="true">{i + 1}</span><h3>{title}</h3><p>{text}</p><a class="text-link" href={url}>{link} <Icon name="arrow-right" size={16}/></a></li>)}</ol>
@@ -61,6 +63,5 @@ const platforms = [
 </section>
 
 <Gallery tabs/>
-<CommunityFeedback/>
 <FAQ/>
 </Layout>

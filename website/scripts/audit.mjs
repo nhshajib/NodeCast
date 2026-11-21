@@ -51,6 +51,11 @@ try{
  assert.deepEqual(await home.evaluate(()=>[...document.querySelectorAll('a,button,summary,input')].filter(e=>{const r=e.getBoundingClientRect();return r.width&&r.height&&(r.width<24||r.height<24)&&getComputedStyle(e).visibility!=='hidden'}).map(e=>e.textContent?.trim()||e.getAttribute('aria-label'))),[],'Pointer targets must be at least 24px');
  assert.equal(await home.evaluate(()=>document.body.innerText.match(/\[[A-Z_]{5,}\]/g)),null,'No placeholder text on the page');await interactions.close();
  for(const [userAgent,target] of [['Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)','/download/iphone/'],['Mozilla/5.0 (Linux; Android 11)','/download/android/'],['Mozilla/5.0 (Linux; Android 11; AFTMM)','/download/tv/']]){const c=await auditContext({userAgent});const p=await c.newPage();await p.goto(origin+'/');assert.equal(await p.locator('[data-platform-download]').first().getAttribute('href'),target);assert.equal(await p.locator('.hero [data-label]').innerText(),'Get GlowTV','Platform detection must not resize the hero label');assert((await p.locator('.hero [data-platform-download]').getAttribute('aria-label')).startsWith('Get GlowTV for '),'Platform destination needs an accessible label');await c.close();}
+ const homeFeedbackContext=await auditContext({viewport:{width:393,height:852}});const homeFeedback=await homeFeedbackContext.newPage();await homeFeedback.goto(origin+'/');
+ assert.equal(await homeFeedback.locator('.community-feedback figure').count(),9,'Homepage contains every user testimonial');
+ assert((await homeFeedback.locator('.feedback-context').innerText()).includes('collected from GlowTV users across social media platforms'),'Accurate social feedback attribution');
+ assert(await homeFeedback.locator('.community-feedback').evaluate(el=>Boolean(el.compareDocumentPosition(document.querySelector('#steps-title'))&Node.DOCUMENT_POSITION_FOLLOWING)),'Homepage testimonials appear before installation steps');
+ await homeFeedbackContext.close();
  const downloads=JSON.parse(await fs.readFile('src/data/release.json','utf8')).platforms;
  const downloadContext=await auditContext();const downloadPage=await downloadContext.newPage();
  for(const [edition,item]of Object.entries(downloads)){
@@ -62,6 +67,8 @@ try{
   assert(await downloadPage.locator('.download-features article').count()>=6,'Platform features: '+edition);
   const counter=downloadPage.locator('[data-download-count]');
   assert.equal(await counter.count(),1,'One file counter per platform');
+  for(const width of [393,1280]){await downloadPage.setViewportSize({width,height:900});assert(await counter.locator('[data-count-value]').evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=28),'Download total is prominent on mobile and desktop');}
+
   assert.equal(await counter.getAttribute('data-asset-url'),item.url,'Counter belongs to the actual download');
   assert((await counter.innerText()).includes('not unique users or installs'),'Counter must explain its scope');
   const feedback=downloadPage.locator('.community-feedback');
