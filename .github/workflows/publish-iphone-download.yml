@@ -45,7 +45,7 @@ jobs:
           set -euo pipefail
           if [ -n "$INPUT_SHA256" ]; then echo "EXPECTED_SHA256=$INPUT_SHA256" >> "$GITHUB_ENV"; exit 0; fi
           JOB=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$BUILD_RUN/jobs" --jq '.jobs[] | select(.name == "Unsigned iPhone Release IPA") | .id')
-          DIGEST=$(gh api "repos/$GITHUB_REPOSITORY/actions/jobs/$JOB/logs" | grep -o '"sha256": "[0-9a-f]\{64\}"' | tail -1 | grep -o '[0-9a-f]\{64\}')
+          DIGEST=$(curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/actions/jobs/$JOB/logs" | grep -o '"sha256": "[0-9a-f]\{64\}"' | tail -1 | grep -o '[0-9a-f]\{64\}')
           test -n "$DIGEST"
           echo "EXPECTED_SHA256=$DIGEST" >> "$GITHUB_ENV"
       - name: Verify build provenance
