@@ -14,6 +14,12 @@ export const features:Record<DownloadPlatform,string[][]>={
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
+ if(version==='0.7.4')return [
+  'A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.',
+  platform==='tv'?'Focused poster titles no longer clip, and small labels are larger on the big screen.':'An inline show/hide password button and sheets that clear the gesture bar.',
+  'Easier-to-read LIVE badges and small labels.',
+  'Existing playlists, profiles, playback engines and transitions are retained.',
+ ];
  if(version==='0.7.3')return [
   'Native startup handles devices whose JavaScript runtime omits plural-rule support.',
   'Clearer control states, accessible messages and confirmations for destructive actions.',

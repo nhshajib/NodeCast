@@ -1,5 +1,13 @@
 # GlowTV changes
 
+## 0.7.4 — November 21, 2026 · Audit follow-up
+
+- Guide: filter button beside the day picker, inline selected-day check, channel logos instead of initials, shorter rows.
+- TV: focused poster titles no longer clip; small TV labels raised to 14; no stray scroll indicator in the guide.
+- Inline show/hide password toggle; Add-playlist sheet respects the bottom safe area.
+- Larger LIVE badges and small labels on phone.
+- Existing identifiers, signing identity, profiles, playback engines and transitions are retained.
+
 ## 0.7.3 — November 19, 2026 · Accessibility and navigation
 
 - Fixed native startup on Hermes runtimes without Intl.PluralRules.
