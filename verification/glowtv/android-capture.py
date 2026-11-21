@@ -10,37 +10,36 @@ if os.environ.get('GLOWTV_EMULATOR_DISABLE_CODEC2')=='true':
  # This changes only the disposable virtual device, never the installed app.
  adb('shell','setprop','debug.stagefright.ccodec','0')
  assert adb('shell','getprop','debug.stagefright.ccodec').strip()=='0'
-if True:
- # Standard UIAutomator waits for idle longer than the auto-hide timeout.
- # Read the actual native accessibility nodes immediately; no app setting,
- # animation, accessibility mode or control timer is changed for this test.
- adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
- import atexit,select
- hierarchy_log=open(OUT/'emulator-mobile-hierarchy-reader.log','w')
- idle_dump=h.dump
- idle_remote_tree=h.remote.tree if TV else None
- hierarchy=None
- def start_phone_hierarchy():
-  global hierarchy
-  hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
-  h.dump=fast_dump
-  if TV:h.remote.tree=fast_dump
- def stop_phone_hierarchy():
-  h.dump=idle_dump
-  if TV:h.remote.tree=idle_remote_tree
-  if hierarchy is not None and hierarchy.poll() is None:
-   hierarchy.stdin.close()
-   try:hierarchy.wait(timeout=3)
-   except subprocess.TimeoutExpired:hierarchy.terminate()
- atexit.register(stop_phone_hierarchy)
- def fast_dump():
-  import xml.etree.ElementTree as ET
-  hierarchy.stdin.write('dump\n');hierarchy.stdin.flush()
-  while True:
-   if not select.select([hierarchy.stdout],[],[],15)[0]:raise RuntimeError('Native hierarchy reader did not respond')
-   raw=hierarchy.stdout.readline()
-   if not raw:raise RuntimeError('Native hierarchy reader exited: '+str(hierarchy.poll()))
-   if raw.startswith('<?xml'):return ET.fromstring(raw)
+# Standard UIAutomator waits for idle longer than the auto-hide timeout.
+# Read the actual native accessibility nodes immediately; no app setting,
+# animation, accessibility mode or control timer is changed for this test.
+adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
+import atexit,select
+hierarchy_log=open(OUT/f'emulator-{TARGET}-hierarchy-reader.log','w')
+idle_dump=h.dump
+idle_remote_tree=h.remote.tree if TV else None
+hierarchy=None
+def start_native_hierarchy():
+ global hierarchy
+ hierarchy=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=hierarchy_log,text=True,bufsize=1)
+ h.dump=fast_dump
+ if TV:h.remote.tree=fast_dump
+def stop_native_hierarchy():
+ h.dump=idle_dump
+ if TV:h.remote.tree=idle_remote_tree
+ if hierarchy is not None and hierarchy.poll() is None:
+  hierarchy.stdin.close()
+  try:hierarchy.wait(timeout=3)
+  except subprocess.TimeoutExpired:hierarchy.terminate()
+atexit.register(stop_native_hierarchy)
+def fast_dump():
+ import xml.etree.ElementTree as ET
+ hierarchy.stdin.write('dump\n');hierarchy.stdin.flush()
+ while True:
+  if not select.select([hierarchy.stdout],[],[],15)[0]:raise RuntimeError('Native hierarchy reader did not respond')
+  raw=hierarchy.stdout.readline()
+  if not raw:raise RuntimeError('Native hierarchy reader exited: '+str(hierarchy.poll()))
+  if raw.startswith('<?xml'):return ET.fromstring(raw)
 native_tab_taps=[]
 gesture_navigation=not TV and adb('shell','settings','get','secure','navigation_mode').strip()=='2'
 def click(label,scroll=False):
@@ -247,7 +246,7 @@ try:
   click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
  capture('home')
  if TV:
-  start_phone_hierarchy()
+  start_native_hierarchy()
   # Isolate direct playback from guide-preview teardown. Both remote Select
   # and dedicated media keys must preserve the same decoded player process.
   click('Watch live');wait_for_native_video();find('Pause live TV',timeout=20)
@@ -286,7 +285,7 @@ try:
  if not TV:
   # Repeated real touch pauses exercise the native prop-update lifecycle.
   # A matching source/options update must not recreate or crash the decoder.
-  start_phone_hierarchy()
+  start_native_hierarchy()
   player_pid=adb('shell','pidof',package)
   for cycle in range(6):
    touch_player('Pause live TV');expect_phone_control('Play live TV')
@@ -305,10 +304,12 @@ try:
  region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
  frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(image),'-vf',region,'-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
  assert sum(frame[i+1]>150 and frame[i]<50 and 70<frame[i+2]<160 for i in range(0,len(frame),3))>len(frame)/12,'Native decoder did not render the original green test band'
- if not TV:stop_phone_hierarchy()
+ if not TV:stop_native_hierarchy()
  click('Back to library')
  if not TV:home()
- (click('Movies') if TV else (click('Library'),click('Movies')));find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV);capture('movies')
+ (click('Movies') if TV else (click('Library'),click('Movies')));find('Play Tidewater' if TV else 'Open Tidewater',timeout=30,scroll=not TV)
+ if TV:h.remote.focus('Play Tidewater') # Scroll the complete poster and title into view with the remote.
+ capture('movies')
  if not TV:click('Library')
  click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
