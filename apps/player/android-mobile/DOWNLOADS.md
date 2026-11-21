@@ -8,10 +8,10 @@
 - [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
 - [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk.sha256)
 - Published: 2026-11-21
-- Status: Public testing release
-- Size: 241,943,349 bytes (230.7 MiB)
+- Status: Stable release
+- Size: 242,071,096 bytes (230.9 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `e7c6a45ab5fbda88d4009555adb403ea348f72defb21363f63b95474a58366a7`
+- SHA-256: `7f28714600bfe76e8bff7d68f5c0dd2cbe2535fd74ccdaa93f3135e348f81663`
 
 This is a published GlowTV binary.
 
@@ -27,7 +27,7 @@ This is a published GlowTV binary.
 ## What changed in 0.7.4
 
 - A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.
-- An inline show/hide password button; the Add playlist sheet clears the gesture bar.
+- An inline show/hide password button and sheets that clear the gesture bar.
 - Easier-to-read LIVE badges and small labels.
 - Existing playlists, profiles, playback engines and transitions are retained.
 

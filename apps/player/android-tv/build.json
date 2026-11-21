@@ -7,22 +7,22 @@
     "x86_64"
   ],
   "minAndroidSdk": 24,
-  "signing": "Standard Android test key; personal testing, not store distribution",
-  "signingCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
-  "updateSigningIdentityMatchesPreviousRelease": true,
+  "signing": "Private GlowTV release key; owner-pinned certificate verified",
+  "signingCertificateSha256": "574b336bbb5343852e5c72612d2ed436c9bf4a9966fa8725bf4964a15d1b168c",
+  "updateSigningIdentityMatchesPreviousRelease": false,
   "version": "0.7.4",
   "versionCode": 704,
   "file": "GlowTV-TV.apk",
   "apk": "GlowTV-TV.apk",
   "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk",
   "release": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4",
-  "bytes": 240426483,
-  "sha256": "179a5ba4c438533d0d915394040c24a73f1ed5274e896f1672d59b5d211ed54c",
-  "sourceCommit": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
-  "buildRun": 44861113582,
-  "publishRun": 44852360755,
-  "nativeCheckRun": 44907960076,
-  "nativeCheckSourceCommit": "b1f3db16bd880b10cec8a730d1907c8f2c46d920",
+  "bytes": 240544302,
+  "sha256": "50507c7f9f152c2ae821c505f15015d8d9e174253d0d94dad662c00f4d654664",
+  "sourceCommit": "9ff1f649c5816ffa59b7f8cdb7896bb9247f49b5",
+  "buildRun": 44932977350,
+  "publishRun": 44959080043,
+  "nativeCheckRun": 44958477465,
+  "nativeCheckSourceCommit": "4f32092740a2fefbe3ded099340a31c14aaa894b",
   "verification": {
     "physicalDeviceTested": false,
     "releaseSignatureAndBundle": "passed",
@@ -34,8 +34,11 @@
     "automatedTests": 139,
     "scope": "Exact signed APK on Android API 35 emulator; physical device and provider testing remains separate.",
     "remoteOnlyNavigation": "passed",
-    "emulatorApi30": "passed",
-    "remoteSelectMediaInfoChannelKeys": "passed"
+    "remoteSelectMediaInfoChannelKeys": "passed",
+    "releaseSigningPolicyTests": 6
   },
-  "minimumOS": "Android API 24 or later"
+  "minimumOS": "Android API 24 or later",
+  "previousSigningCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
+  "compiledSourceCommit": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
+  "compiledBuildRun": 44861113582
 }

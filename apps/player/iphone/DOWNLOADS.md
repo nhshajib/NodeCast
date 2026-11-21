@@ -8,10 +8,10 @@
 - [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4)
 - [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/SHA256SUMS.txt)
 - Published: 2026-11-21
-- Status: Public testing release
-- Size: 32,976,590 bytes (31.4 MiB)
+- Status: Stable release
+- Size: 32,978,024 bytes (31.5 MiB)
 - Minimum OS: iOS 16.4 or later
-- SHA-256: `269445664effb0bdf2d114ecceca89805953a729251f48f6f23fb6d2efcb8d2d`
+- SHA-256: `8e73e26184da53970584abe3c03a4cbcb0c7b7ea0680f66a6fb11dab50ccf091`
 
 This is a published GlowTV binary.
 
@@ -26,8 +26,8 @@ This is a published GlowTV binary.
 
 ## What changed in 0.7.4
 
-- A tidier guide: the filter sits beside the day picker, the selected day reads inline, channels show logos and more rows fit.
-- An inline show/hide button in the password field.
+- A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.
+- An inline show/hide password button and sheets that clear the gesture bar.
 - Easier-to-read LIVE badges and small labels.
 - Existing playlists, profiles, playback engines and transitions are retained.
 

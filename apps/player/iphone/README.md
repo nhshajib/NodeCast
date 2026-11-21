@@ -7,7 +7,7 @@
 
 [**Download IPA directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/GlowTV-0.7.4-unsigned.ipa) · [Features, size and checksum](DOWNLOADS.md) · [0.7.4 release notes](https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4)
 
-This is the published GlowTV 0.7.4 testing release. Sign the unsigned IPA with Impactor before installing.
+This is the published GlowTV 0.7.4 stable release. Sign the unsigned IPA with Impactor before installing.
 <!-- direct-download:end -->
 
 [Download availability](https://glowtv.app/download/iphone/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)
