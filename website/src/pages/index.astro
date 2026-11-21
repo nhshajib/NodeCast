@@ -49,7 +49,7 @@ const platforms = [
 
 <section class="section" id="features" aria-labelledby="features-title">
   <div class="section-head"><h2 id="features-title">Everything in its place</h2><p>Less time looking, more time watching. GlowTV keeps your channels, guide and library tidy on every screen.</p></div>
-  <div class="feature-grid">{features.map(([icon, title, body]) => <article class="feature-card"><Icon name={icon} size={32}/><h3>{title}</h3><p>{body}</p></article>)}</div>
+  <div class="feature-grid">{features.map(([icon, title, body], i) => <article class:list={['feature-card', i === 0 && 'feature-lead']}><Icon name={icon} size={32}/><h3>{title}</h3><p>{body}</p>{i === 0 && <picture class="feature-shot"><source type="image/webp" srcset="/screenshots/tv-guide-small.webp 480w, /screenshots/tv-guide.webp 960w" sizes="(max-width: 900px) 90vw, 760px"/><img src="/screenshots/tv-guide.png" alt="The GlowTV TV guide on Android TV, with channels beside their schedule, using original demo content" width="960" height="540" loading="lazy" decoding="async"/></picture>}</article>)}</div>
 </section>
 
 <CommunityFeedback/>
