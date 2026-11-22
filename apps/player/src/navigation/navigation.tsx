@@ -2,7 +2,6 @@ import {MiniPlayerLayoutProvider,MiniPlayerSafeFrame,useMeasuredMiniPlayerBottom
 import {libraryTabView} from '../uiPolicy';
 import {detailRoute} from '../detailRoute';
 import {LibrarySkeleton} from '../Skeletons';
-import BrandMark from '../BrandMark';
 import { Text } from '../Typography';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, StatusBar, View } from 'react-native';
@@ -32,7 +31,7 @@ export function useHeaderOptions() {
   const reduced = useReducedMotion();
   return {
     headerStyle: { backgroundColor: colors.bg }, headerShadowVisible: false, headerTintColor: colors.link,
-    headerTitleStyle: { color: colors.text, fontFamily: 'Inter-700', fontWeight: '700' as const },
+    headerTitleStyle: { color: colors.text, fontFamily: 'Sans-600', fontWeight: '700' as const },
     headerBackButtonDisplayMode: 'minimal' as const, contentStyle: { backgroundColor: colors.bg },
     animation: reduced ? 'none' as const : 'default' as const,
   };
@@ -101,7 +100,7 @@ export function TabsNavigator() {
   // Only this platform's tabs are visible; the other platform's routes stay hidden and unreachable.
   const ordered = [...tabs.map(tab => tab.name), ...allTabNames.filter(name => !visible.has(name))];
   // The browser preview has no native tab bar; it uses Expo Router's bottom tabs with the same routes.
-  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line, height:64, paddingBottom:8, paddingTop:8 }, tabBarLabelStyle: { fontFamily: 'Inter-600', fontSize: 11 } }}>
+  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line, height:64, paddingBottom:8, paddingTop:8 }, tabBarLabelStyle: { fontFamily: 'Sans-600', fontSize: 11 } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
       return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarButtonTestID: `navigation-tab-${name}`, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;
@@ -125,10 +124,10 @@ export function TabStack({ tab }: { tab: string }) {
   const c = useNodeCast();
   const options = useHeaderOptions();
   const spec = tabs.find(item => item.name === tab);
-  const headerRight=()=>tab==='home'||tab==='settings'?<IconButton name="add" label="Add playlist" onPress={()=>c.addProfile()}/>:<IconButton name="settings-outline" label="Settings" onPress={c.openSettings}/>;
-  const brand = () => <Pressable accessibilityRole="button" accessibilityLabel="GlowTV home" onPress={c.goHome} style={[u.row, { minHeight: 44, gap: 8, paddingLeft: Platform.OS === 'web' ? 8 : 0 }]}><BrandMark size={33} /><Text style={{ fontSize: 20, color: colors.text, letterSpacing: -1, fontWeight: '800' }}>GlowTV</Text></Pressable>;
+  // One way to each place. Android has a Settings tab, so no gear; iPhone and iPad reach Settings from Home.
+  const headerRight=tab==='home'?()=><View style={[u.row,{gap:0}]}><IconButton name="add" label="Add playlist" onPress={()=>c.addProfile()}/>{!androidDesign&&<IconButton name="settings-outline" label="Settings" onPress={c.openSettings}/>}</View>:undefined;
   return <Stack screenOptions={options}>
-    <Stack.Screen name="index" options={{ title: spec?.title || '', headerTitle: tab === 'home' ? brand : undefined, headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(libraryTabView(tab,androidDesign)!,{search:event.nativeEvent.text})}}:{}) }} />
+    <Stack.Screen name="index" options={{ title: tab === 'home' ? 'Watch' : spec?.title || '', headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&tab==='home'?{headerLargeTitle:true,headerLargeTitleShadowVisible:false,headerLargeTitleStyle:{fontFamily:'Display-500',color:colors.text}}:{}), ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(libraryTabView(tab,androidDesign)!,{search:event.nativeEvent.text})}}:{}) }} />
   </Stack>;
 }
 
@@ -208,11 +207,11 @@ export function SheetScreen() {
   useThemeChoice();
   const { c, entry, busy, resolving,restorable } = usePage();
   const page = entry?.page;
-  const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 15 }]}>{page?.type==='delete'||(page?.type==='provider'&&c.providerDirty)?'Cancel':'Done'}</Text></Pressable>;
+  const close = <Pressable accessibilityRole="button" accessibilityLabel={page?.type==='delete'||page?.type==='provider'?'Cancel':'Done'} disabled={busy} onPress={c.back} style={s.textAction}><Text style={[u.link, { fontSize: 16, fontWeight: page?.type==='delete'||page?.type==='provider'?'500':'600' }]}>{page?.type==='delete'||page?.type==='provider'?'Cancel':'Done'}</Text></Pressable>;
   const content = !entry ? <Missing /> : c.renderPage(entry, view => <LibraryScreen view={view} />);
   return <FamilyChallengeHost active>
     <Stack.Screen options={{ gestureEnabled: !busy, ...({
-      title: page ? c.pageTitle(page) : '', headerBackVisible: false, headerRight: () => close,
+      title: page ? c.pageTitle(page) : '', headerBackVisible: false, ...(page?.type==='provider'?{headerLeft:()=>close,headerRight:undefined}:{headerRight:()=>close}),
     }) }} />
     {/* UIKit owns the sheet header and its hit testing. Keep scrolling content
         separate so the native sheet never coerces it over the Done control. */}

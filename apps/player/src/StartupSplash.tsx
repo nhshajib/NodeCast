@@ -102,8 +102,8 @@ const s = StyleSheet.create({
   halo: { position: 'absolute', width: 196, height: 196, borderRadius: 98, top: '50%', left: '50%', marginLeft: -98, marginTop: -98, borderWidth: 1, borderColor: colors.primary },
   orbit: { position: 'absolute', width: 210, height: 210, borderRadius: 105, top: '50%', left: '50%', marginLeft: -105, marginTop: -105, borderWidth: 1, borderColor: colors.videoSecondary },
   copy: { position: 'absolute', top: '50%', marginTop: 48, left: 24, right: 24, alignItems: 'center', gap: 16 },
-  wordmark: { fontFamily: 'Inter-800', fontWeight: '800', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: colors.videoSecondary },
+  wordmark: { fontFamily: 'Sans-600', fontWeight: '600', fontSize: 62, lineHeight: 72, letterSpacing: -2, color: colors.videoSecondary },
   rule: { width: 28, height: 1, backgroundColor: colors.primary, opacity: .7 },
-  tagline: { fontSize: 14, lineHeight: 21, letterSpacing: .5, color: colors.featuredCopy },
+  tagline: { fontSize: 14, lineHeight: 21, letterSpacing: 0, color: colors.featuredCopy },
   signature: { position: 'absolute', left: 20, right: 20, textAlign: 'center', color: colors.videoSignature, fontSize: 12, lineHeight: 16, letterSpacing: 2.4 },
 });

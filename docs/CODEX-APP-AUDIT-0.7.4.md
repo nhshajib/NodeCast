@@ -1,5 +1,11 @@
 # GlowTV 0.7.4: native app design audit and fix brief
 
+> **Status: fixed in 1.0.0** (see `CHANGELOG.md`). Deferred:
+> - **4.5 per-ABI APKs.** Splitting changes the signed release outputs, the x86_64 emulator smoke test, checksums, the publish workflow and the Downloader code's target, so it ships after 1.0 as its own change.
+> - **3.2 iPad sidebar tabs.** iPad gets full-width layouts in 1.0.0; the adaptive sidebar needs a NativeTabs change verified on device.
+> - **1.6 Audio inside More (VLC player).** The phone top bar now has icon-only Back, so the title has room; the Audio button stays as a labelled icon.
+> - **5.7 Remove inside Edit (TV).** Remove now sits at the far end of the row, away from Edit, and still asks first.
+
 You are fixing the GlowTV apps in `apps/player/` (iPhone and iPad IPA, Android phone APK, Android TV / Fire TV APK). This brief comes from a design review of the **real native 0.7.4 captures** taken from the published builds:
 
 - iPhone and iPad: CI run 44861113578

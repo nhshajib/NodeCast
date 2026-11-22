@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { StatusBar, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
+import { fontAssets } from '../Typography';
 import * as SplashScreen from 'expo-splash-screen';
 import { ThemeProvider, isDarkTheme } from '../theme';
 import { FamilyProvider } from '../FamilyControls';
@@ -13,7 +14,7 @@ void SplashScreen.preventAutoHideAsync().catch(() => {});
 
 /** Fonts, providers and the launch splash around the phone navigator (iPhone, Android phone, web). */
 export default function AppShell({ children }: { children: React.ReactNode }) {
-  const [loaded, error] = useFonts({ 'Inter-400': require('../../assets/fonts/Inter-400.ttf'), 'Inter-600': require('../../assets/fonts/Inter-600.ttf'), 'Inter-700': require('../../assets/fonts/Inter-700.ttf'), 'Inter-800': require('../../assets/fonts/Inter-800.ttf') });
+  const [loaded, error] = useFonts(fontAssets);
   const [dataReady, setDataReady] = useState(false);
   const [launchComplete, setLaunchComplete] = useState(false);
   const onReady = useCallback(() => setDataReady(true), []);

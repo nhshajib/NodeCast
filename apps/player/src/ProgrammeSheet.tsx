@@ -8,6 +8,7 @@ import type { Media } from './provider';
 import type { Profile } from './vault';
 import type { GuideProgramme } from './xmltv';
 import { Button, Notice, u } from './ui';
+import { programmeWhen } from './formatting';
 
 /** Programme details in a native form sheet (phones). Drag it down, or past the top detent, with a finger. */
 export default function ProgrammeSheet({ profile, item, programme, onPlay, onAuthorize }: { profile: Profile; item: Media; programme: GuideProgramme; onPlay: (item: Media) => void; onAuthorize?: () => boolean }) {
@@ -16,7 +17,6 @@ export default function ProgrammeSheet({ profile, item, programme, onPlay, onAut
   const [error, setError] = useState('');
   const request = useRef<AbortController | null>(null);
   useEffect(() => () => request.current?.abort(), []);
-  const time = (value: number) => new Date(value).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   const catchup = catchupAvailability(profile.provider, item, programme);
   async function archive() {
     if (onAuthorize && !onAuthorize()) return;
@@ -31,9 +31,9 @@ export default function ProgrammeSheet({ profile, item, programme, onPlay, onAut
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
   return <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={{ padding: 24, gap: 16, paddingBottom: 32 }}>
-    <Text numberOfLines={1} style={u.eyebrow}>{item.name}</Text>
+    {item.name !== programme.title && <Text numberOfLines={1} style={u.eyebrow}>{item.name}</Text>}
     {!nativeTitle&&<H2 style={u.h2}>{programme.title}</H2>}
-    <Text style={u.small}>{new Date(programme.start).toLocaleDateString()} · {time(programme.start)} – {time(programme.end)}</Text>
+    <Text style={u.body}>{programmeWhen(programme.start, programme.end)}</Text>
     {!!programme.description && <Text style={u.body}>{programme.description}</Text>}
     <Text style={u.small}>{catchup.reason}</Text>
     <Button title="Watch live" variant={catchup.available ? 'secondary' : 'primary'} disabled={busy} icon="play" onPress={() => onPlay(item)} />

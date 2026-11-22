@@ -1,5 +1,23 @@
 # GlowTV changes
 
+## 1.0.0 — November 22, 2026 · First stable release
+
+Design pass from `docs/CODEX-APP-AUDIT-0.7.4.md`, using the ui-ux-pro-max and unslop skills.
+
+- Brand type matches glowtv.app: Instrument Sans (400/500/600) for interface text, Newsreader 500 for display titles. Inter is removed; interface weight tops out at 600.
+- Sentence-case labels everywhere; no letter-spaced uppercase eyebrows.
+- Home: one header (native large "Watch" title on iPhone and iPad, top app bar on Android) with Add playlist and, on iPhone and iPad, Settings. The greeting is gone. The featured card has its art in its own frame with the play and favourite actions together. Live rows use a small red dot and a play affordance.
+- Public IP and VPN status moved from Home to Settings → Connection.
+- Library and Search: native-style segmented controls without check marks, no profile subtitle, freshness line only when refreshing, failing or older than six hours. Search scope is one quiet line that opens a native choice. Search starts with a calm prompt instead of the whole library.
+- Guide: one sticky time ruler with a now marker, 80pt programme cells without the clipped "On now" line, and relative dates in programme details.
+- Player: options list with current values (Fit/Fill, sleep timer), no duplicate "Back to library", icon-only Back on phones, larger titles; iPad landscape uses a side-by-side theatre layout.
+- iPad: full-width Home (wide hero, two-column live list), two-column Settings, two-column series header with capped button width.
+- Android: no gear on tabs when Settings is a tab, no duplicate "+" in Settings, form footers clear the gesture bar.
+- Add playlist: Cancel on the left; segmented source picker without check marks.
+- Series: season picker as a segmented control, clearer watched state.
+- TV: Search is a real rail destination that searches all media; the rail never scrolls; library filters sit above the grid so focus can't scroll them away; episodes are titled with the series name; shorter Home hero with a fully visible first shelf; no duplicate close button in guide details; compact guide preview; Remove sits apart from Edit and still confirms; forms use Android TV's full-screen text editor with the field label; larger player title.
+- Deferred with reasons in the audit brief: per-ABI APK splits (changes the signed release, emulator smoke and download pipeline; scheduled after 1.0), iPad sidebar tabs.
+
 ## 0.7.4 — November 21, 2026 · Audit follow-up
 
 - Guide: filter button beside the day picker, inline selected-day check, channel logos instead of initials, shorter rows.

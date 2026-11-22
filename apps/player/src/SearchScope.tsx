@@ -1,9 +1,16 @@
 import { Text } from './Typography';
 import React from 'react';
-import { ScrollView } from 'react-native';
-import Pressable from './FocusPressable';
+import { Alert, ScrollView, View } from 'react-native';
+import Pressable, { isTVBuild } from './FocusPressable';
 import { Icon, colors } from './ui';
 export type SearchScope = 'category' | 'section' | 'all';
+const labels: Record<SearchScope, string> = { category: 'This category', section: 'This media type', all: 'All media' };
 export default function SearchScopeControl({ value, onChange, includeHidden, onHidden, favorites = false }: { value: SearchScope; onChange: (value: SearchScope) => void; includeHidden: boolean; onHidden: () => void; favorites?: boolean }) {
+  // Phones: one quiet line that opens a native choice, instead of a third row of chips under the search field.
+  if (!isTVBuild) {
+    const options = (['category', 'section', ...(!favorites ? ['all'] : [])] as SearchScope[]);
+    const choose = () => Alert.alert('Search in', undefined, [...options.map(id => ({ text: (id === value ? '✓ ' : '') + labels[id], onPress: () => onChange(id) })), ...(!favorites ? [{ text: includeHidden ? 'Hide hidden categories' : 'Include hidden categories', onPress: onHidden }] : []), { text: 'Cancel', style: 'cancel' as const }]);
+    return <View style={{ paddingHorizontal: 24, paddingTop: 8 }}><Pressable accessibilityRole="button" accessibilityLabel={`Search in ${labels[value]}${includeHidden ? ', including hidden categories' : ''}. Change`} onPress={choose} style={{ minHeight: 44, flexDirection: 'row', alignItems: 'center', gap: 8, alignSelf: 'flex-start' }}><Text style={{ color: colors.secondary, fontSize: 14 }}>Searching {labels[value].toLowerCase()}{includeHidden ? ' · hidden included' : ''}</Text><Icon name="chevron-down" size={16} color={colors.link} /></Pressable></View>;
+  }
   return <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, flexShrink: 0, minHeight: 60 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 24, paddingVertical: 8, alignItems: 'center' }}>{([{ id: 'category', label: 'This category' }, { id: 'section', label: 'This media type' }, ...(!favorites ? [{ id: 'all', label: 'All media' }] : [])] as { id: SearchScope; label: string }[]).map(option => <Pressable nativeID={`tv-control:search-scope:${option.id}`} accessibilityLabel={option.label} key={option.id} accessibilityRole="radio" accessibilityState={{ checked: value === option.id }} onPress={() => onChange(option.id)} style={{ minHeight: 44, justifyContent: 'center', paddingHorizontal: 16, borderRadius: 22, backgroundColor: value === option.id ? colors.mint : colors.panel }}><Text style={{ color: value === option.id ? colors.onAccent : colors.text, fontSize: 13 }}>{option.label}</Text></Pressable>)}{!favorites && <Pressable nativeID="tv-control:search-hidden" accessibilityLabel="Include hidden categories" accessibilityRole="checkbox" accessibilityState={{ checked: includeHidden }} onPress={onHidden} style={{ minHeight: 48, flexDirection: 'row', alignItems: 'center', gap: 8, justifyContent: 'center', paddingHorizontal: 16 }}><Icon name={includeHidden?'checkbox':'square-outline'} size={18} color={colors.link}/><Text style={{ color: colors.link, fontSize: 13 }}>Include hidden categories</Text></Pressable>}</ScrollView>;
 }
