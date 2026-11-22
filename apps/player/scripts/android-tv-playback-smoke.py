@@ -77,8 +77,8 @@ def video_ready(timeout=45):
 def click(label,scroll=False):
  if REMOTE:remote.activate(label);return
  x1,y1,x2,y2=find(label,scroll=scroll);adb('shell','input','tap',str((x1+x2)//2),str((y1+y2)//2));time.sleep(.5)
-def text(label,value):
- if REMOTE:remote.fill(label,value);return
+def text(label,value,submit=True):
+ if REMOTE:remote.fill(label,value,submit=submit);return
  if label=='Find category to protect':
   for _ in range(3):adb('shell','input','swipe',str(width//2),str(int(height*.3)),str(width//2),str(int(height*.8)),'350')
  click(label,True)
@@ -87,7 +87,16 @@ def text(label,value):
   nodes=[n for n in dump().iter('node') if n.get('class')=='android.widget.EditText' and n.get('content-desc')==label]
   assert nodes and nodes[0].get('text')==value,'Synthetic profile name did not enter completely'
  else:adb('shell','input','text',value)
- time.sleep(.25);adb('shell','input','keyevent','66');time.sleep(.3)
+ time.sleep(.25)
+ if submit:adb('shell','input','keyevent','66')
+ else:
+  shown=lambda:re.search(r'\bm(?:InputShown|IsInputViewShown)=true\b',adb('shell','dumpsys','input_method')) is not None
+  if shown():
+   adb('shell','input','keyevent','4');end=time.monotonic()+10
+   while shown():
+    if time.monotonic()>end:raise RuntimeError('Native keyboard did not dismiss')
+    time.sleep(.2)
+ time.sleep(.3)
 def remote_next(label):
  if REMOTE:remote.activate(label);return
  target=find(label)
@@ -261,16 +270,14 @@ def main():
   text('Profile name','NativeTest')
   text('Server address','http://10.0.2.2:9090')
   text('Username','example')
-  text('Password','example')
-  # The password field's Go key submits the form (returnKeyType="go"), so the
-  # form may already have closed. Only press Connect if it is still on screen.
-  if any((n.get('content-desc') or '')=='Connect playlist' for n in dump().iter('node')):click('Connect playlist',True)
+  text('Password','example',submit=False)
+  click('Connect playlist',True)
   time.sleep(4);OUT.joinpath('emulator-tv-home.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));click('Live TV')
   if REMOTE and suite=='library':
    audit_library(remote,counts)
    return
   if REMOTE and suite=='input':
-   click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456');click('Set family PIN');find('Find category to protect',timeout=90)
+   click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN');find('Find category to protect',timeout=90)
    OUT.joinpath('emulator-tv-input-result.json').write_text(json.dumps({'passed':['Numeric PIN and confirmation fields remain in the form after keyboard Done','Family PIN saved successfully'],'api':adb('shell','getprop','ro.build.version.sdk')},indent=2)+'\n')
    print('TV numeric input and PIN save passed.',flush=True)
    return
@@ -305,10 +312,10 @@ def main():
   click(mark);find('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');click('Mark watched' if mark=='Mark unwatched' else 'Mark unwatched');find(mark)
   adb('shell','input','keyevent','4');find('Open Sample Series')
   click('Live TV');click('TV guide');click('Add full TV guide')
-  text('XMLTV URL','http://10.0.2.2:9090/guide.xml');click('Save and refresh guide',True);find('Native Guide Match',timeout=45,scroll=True)
+  text('XMLTV URL','http://10.0.2.2:9090/guide.xml',submit=False);click('Save and refresh guide',True);find('Native Guide Match',timeout=45,scroll=True)
   OUT.joinpath('emulator-tv-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back');click('Settings');click('Appearance');click('dark appearance');click('Back');click('Family controls')
-  text('New six-digit PIN','123456');text('Confirm PIN','123456');pin_started=time.monotonic();click('Set family PIN',True)
+  text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);pin_started=time.monotonic();click('Set family PIN',True)
   # Hermes crypto can take longer on a busy video emulator. Wait for completion,
   # including offscreen content, before moving the search field into view.
   while time.monotonic()-pin_started<90:
@@ -322,7 +329,7 @@ def main():
   adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity');time.sleep(6)
   root=dump()
   if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in root.iter('node')):adb('shell','input','keyevent','4')
-  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456');click('Unlock');find('Find category to protect',timeout=90);click('Back');click('Live TV');find('Play Example Live Test')
+  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=90);click('Back');click('Live TV');find('Play Example Live Test')
   click('TV guide');find('Native Guide Match',timeout=30,scroll=True);assert counts['guide']==1,'Saved guide was not reused after process restart'
   OUT.joinpath('emulator-tv-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back');click('Live TV');click('Recently watched');click('Clear recents')

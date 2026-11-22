@@ -55,6 +55,14 @@ Each phase lands as its own commit. The 139 original tests must still pass, and 
 | 6 Setup and transfer | Done (this commit) |
 | Native feature tests, device benchmarks, Hisense Fire TV check | Pending (needs builds 99xx) |
 
+### Preview check investigation — 2026-11-22
+
+- Android build `45023643502` (9901) compiled both editions successfully. The design check `45025464120` and full check `45025466998` failed; they are not release approval.
+- The phone full-check screenshot shows the saved PhoneTest playlist on Home, and the TV full-check screenshot shows Native Guide Match in the guide. The input helper had already sent Go, then tried to press a form button after submission. Explicit-submit checks now dismiss the visible keyboard once without Go, then activate the real Connect / Save / PIN / backup action. Go submission remains available to other checks.
+- The TV design driver was looping between the scrolling sheet and rail while seeking the fixed Back header. It now keeps sending Up toward that header, allowing Android to finish scrolling the body before leaving it. The check must still acquire actual Back focus and activate it using Select; touch input remains forbidden.
+- Seven Python regression tests cover these driver behaviours. These are test-only changes: application code, signing, version 9901 and APKs are unchanged. Re-run the design and full emulator suites against build `45023643502` from the updated `main` before declaring native checks passed.
+- Physical-device upgrade, performance, iPad and Hisense Fire TV checks remain pending. Do not set stable build 10000 or publish on the strength of emulator tests alone.
+
 Notes:
 - **Buffering watchdog:** the native engine's existing status-driven loading timer (15 s in `loading`) plus the bounded retry policy remain the watchdog. They react only to real status events, never to an unchanged live position.
 - **Autoplay countdown:** it fires from the native engine's `playToEnd`. The VLC engine reports no end event, so it offers the Next episode button instead.
