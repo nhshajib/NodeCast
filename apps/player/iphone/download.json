@@ -1,9 +1,11 @@
 {
+  "assetId": 775640092,
+  "downloadCount": 1,
   "version": "0.7.4",
   "tag": "ios-v0.7.4",
   "publishedAt": "2026-11-21T13:15:55Z",
   "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4",
-  "prerelease": true,
+  "prerelease": false,
   "legacy": false,
   "file": "GlowTV-0.7.4-unsigned.ipa",
   "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/GlowTV-0.7.4-unsigned.ipa",
@@ -11,7 +13,7 @@
   "sha256": "8e73e26184da53970584abe3c03a4cbcb0c7b7ea0680f66a6fb11dab50ccf091",
   "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/SHA256SUMS.txt",
   "minimumOS": "iOS 16.4 or later",
-  "checkedAt": "2026-11-21T13:30:00.000Z",
+  "checkedAt": "2026-11-21T22:55:04.929Z",
   "edition": "ios",
   "features": [
     {
@@ -24,7 +26,7 @@
     },
     {
       "title": "Movies and series",
-      "description": "Browse your provider\u2019s library, choose seasons and continue with the next episode."
+      "description": "Browse your provider’s library, choose seasons and continue with the next episode."
     },
     {
       "title": "Favorites and history",
@@ -40,11 +42,9 @@
     }
   ],
   "changes": [
-    "Native startup handles devices whose JavaScript runtime omits plural-rule support.",
-    "Clearer control states, accessible messages and confirmations for destructive actions.",
-    "Responsive tablet layouts, readable text and improved guide navigation.",
-    "Fixed controls respect the native header, search bar and adaptive tab-bar insets.",
-    "Five focused library tabs, native sheets and measured mini-player placement above navigation.",
+    "A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.",
+    "An inline show/hide password button and sheets that clear the gesture bar.",
+    "Easier-to-read LIVE badges and small labels.",
     "Existing playlists, profiles, playback engines and transitions are retained."
   ]
 }

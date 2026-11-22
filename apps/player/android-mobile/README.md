@@ -7,7 +7,7 @@
 
 [**Download Android APK directly from GitHub**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk) · [Features, size and checksum](DOWNLOADS.md) · [0.7.4 release notes](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
 
-This is the published GlowTV 0.7.4 testing release.
+This is the published GlowTV 0.7.4 stable release.
 <!-- direct-download:end -->
 
 [Download availability](https://glowtv.app/download/android/) · [Install guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Version history](CHANGELOG.md)

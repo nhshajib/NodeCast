@@ -8,10 +8,10 @@
 - [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
 - [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk.sha256)
 - Published: 2026-11-21
-- Status: Public testing release
-- Size: 240,424,191 bytes (229.3 MiB)
+- Status: Stable release
+- Size: 240,544,302 bytes (229.4 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `9d8a6a4cb1a312293fd78f6a7400f688d44a30613590ef4f687b18b862e8150b`
+- SHA-256: `50507c7f9f152c2ae821c505f15015d8d9e174253d0d94dad662c00f4d654664`
 
 This is a published GlowTV binary.
 
@@ -26,10 +26,10 @@ This is a published GlowTV binary.
 
 ## What changed in 0.7.4
 
-- Focused movie and series titles no longer clip at the tile edge.
-- Larger labels for update time, connection location and LIVE.
-- The guide shows channel logos instead of initials, without a stray scroll indicator.
-- Existing playlists, profiles, playback engines and remote navigation are retained.
+- A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.
+- Focused poster titles no longer clip, and small labels are larger on the big screen.
+- Easier-to-read LIVE badges and small labels.
+- Existing playlists, profiles, playback engines and transitions are retained.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 
