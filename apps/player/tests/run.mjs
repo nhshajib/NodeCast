@@ -23,3 +23,4 @@ import './tv-library.test.mjs';
 import './transitions.test.mjs';
 
 import './ui-audit.test.mjs';
+import './catalog-repository.test.mjs';
