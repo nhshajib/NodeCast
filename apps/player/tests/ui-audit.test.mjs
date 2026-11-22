@@ -1,5 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {tvPosterLayout} from '../src/tvPosterLayout.ts';
+test('TV posters retain 2:3 artwork and fit readable labels below filters on short viewports',()=>{
+ for(const height of [216,232,320,540]){
+  const layout=tvPosterLayout(160,height);
+  assert.ok(layout.tileHeight<=height-24);
+  assert.equal(layout.tileHeight%8,0);
+  assert.equal(layout.imageHeight/layout.imageWidth,1.5);
+  assert.ok(layout.tileHeight-layout.imageHeight>=112);
+ }
+ assert.deepEqual(tvPosterLayout(160),{imageWidth:160,imageHeight:240,tileHeight:352});
+ assert.deepEqual(tvPosterLayout(160,540),tvPosterLayout(160));
+});
 import {orientationPolicy} from '../src/orientationPolicy.ts';
 test('phone restores portrait, tablets unlock through rotation and narrow multitasking, TV stays landscape',()=>{
  assert.equal(orientationPolicy({width:393,height:852}),'portrait');
