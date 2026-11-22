@@ -83,6 +83,7 @@ p{line-height:1.65;color:var(--muted);max-width:68ch}
 .trust{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 20px;margin:24px 0 0;padding:0;list-style:none;font-size:14px;color:var(--on-night-muted)}
 .trust li{display:inline-flex;align-items:center;gap:8px}
 .trust .icon{color:var(--green)}
+.hero .trust li:first-child{color:var(--on-night);font-weight:500}
 .devices{position:relative;max-width:980px;height:clamp(300px,40vw,472px);margin:56px auto 0}
 .device-tv{position:absolute;left:50%;bottom:-8px;transform:translateX(-50%);width:min(680px,76%);border:10px solid #1A211D;border-bottom-width:18px;border-radius:16px;background:#000;box-shadow:0 24px 48px #00000059}
 .device-tv img,.device-phone img{width:100%;height:auto;background:var(--night-2)}
@@ -101,6 +102,7 @@ p{line-height:1.65;color:var(--muted);max-width:68ch}
  .hero h1{margin:0 0 20px;max-width:none}
  .hero-sub{margin:0 0 32px;max-width:36ch}
  .hero-actions,.trust{justify-content:flex-start}
+ .hero .trust{display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;gap:12px 32px}
  .hero .devices{display:none}
 }
 
@@ -548,9 +550,10 @@ footer nav a:hover{text-decoration:underline}
  .hero .hero-actions .button{min-height:48px;padding:12px 20px;font-size:16px;width:auto;flex:0 0 auto;white-space:nowrap}
  .hero .hero-actions .button .icon{display:inline-block}
  .hero .hero-actions .button.secondary{color:var(--on-night);border-color:#ffffff2e;background:transparent}
- .hero .trust{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:8px 16px;border:0;margin:20px 0 0;padding:0}
+ .hero .trust{display:grid;grid-template-columns:repeat(2,max-content);justify-content:start;gap:12px 24px;border:0;margin:24px 0 0;padding:0}
  .hero .trust li{flex-direction:row;justify-content:flex-start;padding:0;font-size:14px;color:var(--on-night-muted);text-align:left}
  .hero .trust li+li{border:0}
+ .hero .trust li:first-child{color:var(--on-night);font-weight:500}
  .hero .trust .icon{width:16px;height:16px;color:var(--green)}
  .hero-scene{order:2;display:block;position:relative;inset:auto;margin-top:24px;aspect-ratio:972/901;overflow:hidden}
  .hero-scene img{width:100%;height:100%;object-fit:cover;display:block}
@@ -560,6 +563,7 @@ footer nav a:hover{text-decoration:underline}
  .hero .hero-actions{gap:8px}
  .hero .hero-actions .button{padding:12px 16px}
  .hero .hero-actions .button .icon{display:none}
+ .hero .trust{grid-template-columns:1fr;gap:8px}
 }
 @media (min-width:641px) and (max-width:1023px){
  .hero-copy{padding:72px var(--gutter) 0}

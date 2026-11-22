@@ -19,7 +19,8 @@ export const features: [string, string, string][] = [
  ['remote', 'Made for the remote', 'A dedicated TV layout, readable rows and clear D-pad focus help you watch comfortably from the sofa.'],
 ];
 /** Shown under the hero. No account is needed: profiles stay on the device. */
-export const trustLine = ['Free and open source', 'No account needed', 'You bring the playlist'];
+// 'No ads, ever' is a product promise: the app ships no ad SDK and the site no ad trackers. Keep it true.
+export const trustLine = ['No ads, ever', 'Free and open source', 'No account needed', 'You bring the playlist'];
 /**
  * Store listings. Leave a value empty until the listing is live: pages then say the app
  * is not in that store yet instead of showing a placeholder. See HOSTING.md.
