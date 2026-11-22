@@ -327,7 +327,14 @@ try:
  if TV:h.remote.focus('Play Tidewater') # Scroll the complete poster and title into view with the remote.
  capture('movies')
  if not TV:click('Library')
- click('Series');click('Open Tidewater Stories',True);find('Start series',timeout=30,scroll=not TV);capture('series');back()
+ click('Series');click('Open Tidewater Stories',True)
+ if TV:
+  # TV's wide episode sheet opens episodes directly; the phone's Start series
+  # hero belongs to the phone details page and is not rendered on this sheet.
+  find('Play Evening light',timeout=30);find('Play A quiet morning',timeout=30)
+  h.remote.focus('Play Evening light')
+ else:find('Start series',timeout=30,scroll=True)
+ capture('series');back()
  if TV:click('Search');fill('Search channels and titles','Evening')
  else:click('Live');fill('Search library','Evening');find('Evening studio',timeout=30)
  capture('search')
