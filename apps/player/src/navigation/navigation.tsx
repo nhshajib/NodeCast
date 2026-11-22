@@ -127,7 +127,7 @@ export function TabStack({ tab }: { tab: string }) {
   // One way to each place. Android has a Settings tab, so no gear; iPhone and iPad reach Settings from Home.
   const headerRight=tab==='home'?()=><View style={[u.row,{gap:0}]}><IconButton name="add" label="Add playlist" onPress={()=>c.addProfile()}/>{!androidDesign&&<IconButton name="settings-outline" label="Settings" onPress={c.openSettings}/>}</View>:undefined;
   return <Stack screenOptions={options}>
-    <Stack.Screen name="index" options={{ title: tab === 'home' ? 'Watch' : spec?.title || '', headerTitleAlign: 'left', headerRight, ...(Platform.OS==='ios'&&tab==='home'?{headerLargeTitle:true,headerLargeTitleShadowVisible:false,headerLargeTitleStyle:{fontFamily:'Display-500',color:colors.text}}:{}), ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(libraryTabView(tab,androidDesign)!,{search:event.nativeEvent.text})}}:{}) }} />
+    <Stack.Screen name="index" options={{ title: tab === 'home' ? 'Watch' : spec?.title || '', headerTitleAlign: 'left', headerRight,  ...(Platform.OS==='ios'&&['live','library','search'].includes(tab)?{headerSearchBarOptions:{placeholder:'Search your library',hideWhenScrolling:false,onChangeText:(event:{nativeEvent:{text:string}})=>c.setView(libraryTabView(tab,androidDesign)!,{search:event.nativeEvent.text})}}:{}) }} />
   </Stack>;
 }
 

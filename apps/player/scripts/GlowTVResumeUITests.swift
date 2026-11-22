@@ -111,10 +111,10 @@ final class GlowTVResumeUITests: XCTestCase {
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
     let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in content.exists && content.isHittable }, object: nil)
     XCTAssertEqual(XCTWaiter.wait(for: [visible], timeout: 15), .completed, "Home content is present but invisible after returning: \(app.debugDescription)")
-    // 1.0.0: "Watch" is the native large title inside the navigation bar. The first
-    // Home action must sit below that bar, without a second header-sized gap.
+    // 1.0.0: "Watch" is the native navigation title. The first Home action must
+    // sit below that bar, without a second header-sized gap.
     if let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
-      XCTAssertTrue(header.staticTexts["Watch"].exists || header.identifier == "Watch", "Home uses the native large title")
+      XCTAssertTrue(header.staticTexts["Watch"].exists || header.identifier == "Watch", "Home uses the native title")
       XCTAssertGreaterThanOrEqual(content.frame.minY, header.frame.maxY - 2, "Home must clear the native header")
       XCTAssertLessThanOrEqual(content.frame.minY, header.frame.maxY + 320, "Home must not apply the native header inset twice")
     }

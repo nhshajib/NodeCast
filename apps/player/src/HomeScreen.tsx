@@ -36,7 +36,7 @@ export default function HomeScreen(p: Props) {
   const resume = p.continueWatching.find(entry=>entry.item.id!==pending);
   const featured: Media | undefined = resume?.item || p.recentChannels[0] || p.liveChannels[0] || p.preview[0];
   const live = p.liveChannels.slice(0, wide ? 6 : 4);
-  return <ScrollView ref={p.scrollRef} testID="home-content" contentInsetAdjustmentBehavior="automatic" showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { paddingTop: 8, gap: 24 }, wide && { maxWidth: 1120, paddingHorizontal: 40 }]}>
+  return <ScrollView ref={p.scrollRef} testID="home-content" showsVerticalScrollIndicator={false} contentContainerStyle={[u.content, { paddingTop: 8, gap: 24 }, wide && { maxWidth: 1120, paddingHorizontal: 40 }]}>
     
 
 
