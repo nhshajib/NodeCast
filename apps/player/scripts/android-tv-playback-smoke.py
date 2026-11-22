@@ -30,12 +30,13 @@ def find(label, timeout=15, scroll=False):
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))
   foreground_connect=not REMOTE and label=='Connect playlist' and any(n.get('class')=='android.widget.EditText' and n.get('content-desc')=='Profile name' for n in root.iter('node'))
-  if foreground_connect:
-   # Native form sheets retain Home below them. Use the foreground form's
-   # exact action, not Home's identically named action or its covered tab bar.
+  foreground_welcome=not REMOTE and label in ['Get started','Explore demo'] and any(n.get('content-desc')=='Get started' and n.get('clickable')=='true' for n in root.iter('node'))
+  if foreground_connect or foreground_welcome:
+   # Native sheets and Welcome retain Home below them. Use the foreground
+   # action, not Home's identically named action or its covered tab bar.
    nodes=[n for n in nodes if n.get('content-desc')==label and n.get('clickable')=='true'][-1:]
   nav_top=height
-  if not foreground_connect and width<height and label not in ['Home','Live','Guide','Library','Search','Favorites','Settings']:
+  if not (foreground_connect or foreground_welcome) and width<height and label not in ['Home','Live','Guide','Library','Search','Favorites','Settings']:
    for candidate in root.iter('node'):
     box=list(map(int,re.findall(r'\d+',candidate.get('bounds',''))))
     if candidate.get('content-desc') in ['Home','Live','Guide','Library','Search','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:

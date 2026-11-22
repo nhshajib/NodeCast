@@ -19,6 +19,12 @@ def open_backup():
  if any(n.get('content-desc')=='Unlock backup & transfer' for n in root.iter('node')):
   click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Export backup',timeout=180)
 def shot(name):OUT.joinpath(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
+def explore_fresh_demo():
+ click('Explore demo')
+ deadline=time.monotonic()+20
+ while any(n.get('content-desc')=='Get started' and n.get('clickable')=='true' for n in dump().iter('node')):
+  if time.monotonic()>deadline:raise RuntimeError('The foreground welcome screen did not close after Explore demo')
+  time.sleep(.2)
 try:
  subprocess.run(['adb','shell','input','keyevent','4'],check=True);time.sleep(1.5);click('Live');click('Add Phone Test Channel to favorites');open_backup()
  text('Backup password','transfer-test-password-123',submit=False);text('Confirm backup password','transfer-test-password-123',submit=False);click('Create encrypted backup',True)
@@ -39,7 +45,7 @@ try:
  assert paths,'Encrypted backup not found in Downloads';path=paths[-1];filename=path.rsplit('/',1)[-1];local=OUT/'emulator-mobile-transfer.nodecast';adb('pull',path,str(local));encrypted=json.loads(local.read_text());assert encrypted['format']=='nodecast-encrypted';assert 'example' not in local.read_text(),'Plaintext provider credentials in export'
  # Only ever reset this disposable emulator app, never a connected physical device.
  assert adb('shell','getprop','ro.kernel.qemu')=='1' or adb('shell','getprop','ro.boot.qemu')=='1','Fresh-device test requires an emulator'
- adb('shell','pm','clear',package);adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(6);click('Explore demo');open_backup();click('Import backup');click('Choose backup file');system_click(filename,timeout=45);text('Backup password','transfer-test-password-123',submit=False);click('Review backup',True);find('Ready for this device.',timeout=120,scroll=True);shot('emulator-mobile-backup-review.png');click('Import profiles & settings',True)
+ adb('shell','pm','clear',package);adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(6);explore_fresh_demo();open_backup();click('Import backup');click('Choose backup file');system_click(filename,timeout=45);text('Backup password','transfer-test-password-123',submit=False);click('Review backup',True);find('Ready for this device.',timeout=120,scroll=True);shot('emulator-mobile-backup-review.png');click('Import profiles & settings',True)
  find('Add playlist',timeout=45);click('Settings');click('Saved profiles',True);find('PhoneTest',timeout=30);shot('emulator-mobile-restored-profiles.png');click('Go back');click('Family controls',True);click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=180);click('Go back');click('Live');find('Open Phone Test Channel');find('Remove Phone Test Channel from favorites');click('Guide');find('Phone Guide Match',timeout=45,scroll=True);shot('emulator-mobile-restored-guide.png')
  OUT.joinpath('emulator-mobile-backup-result.json').write_text(json.dumps({'passed':['Native AES-GCM export through Android Create Document','Encrypted file persists outside app storage','Fresh-emulator import through Android document picker','Provider, favorite, guide and dark appearance restored','Family PIN and protected category restored and unlocked','Fresh guide downloads after transfer'],'scope':'Synthetic credentials and disposable API 35 x86-64 emulator. The iOS share sheet and physical TV file pickers still need device confirmation.'},indent=2)+'\n');print('Encrypted Android file export and fresh-device restore passed.')
 except Exception:

@@ -133,5 +133,15 @@ class InputDriverTests(unittest.TestCase):
             self.assertTrue(remote.wake_controls(root))
             key.assert_called_once_with(23)
 
+    def test_demo_entry_uses_welcome_action_over_covered_home_and_tab_bar(self):
+        root = ET.fromstring('''<hierarchy>
+          <node content-desc="Explore demo" clickable="true" bounds="[63,828][1017,975]"/>
+          <node content-desc="Settings" clickable="true" bounds="[864,1646][1080,1857]"/>
+          <node content-desc="Get started" clickable="true" bounds="[63,1363][1017,1510]"/>
+          <node content-desc="Explore demo" clickable="true" bounds="[63,1552][1017,1699]"/>
+        </hierarchy>''')
+        with patch.object(helpers, 'REMOTE', False), patch.object(helpers, 'dump', return_value=root):
+            self.assertEqual(helpers.find('Explore demo'), [63,1552,1017,1699])
+
 if __name__ == '__main__':
     unittest.main()
