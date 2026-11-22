@@ -4,6 +4,42 @@
 
 Design pass from `docs/CODEX-APP-AUDIT-0.7.4.md`, using the ui-ux-pro-max and unslop skills.
 
+### Features (research-led plan, `docs/RELEASE-1.0.0.md`)
+
+- **Catalogue:** shared `CatalogRepository` for phone and TV with paged queries (items, total, snapshot ID, cursor).
+  - Storage is native SQLite with an FTS5 trigram index and credential-free rows.
+  - Legacy JSON caches are migrated only after a row-for-row check, and kept as a fallback.
+- **Refresh:** capture, fetch, validate, compare, commit.
+  - Older generations and other profiles never win.
+  - An empty response never empties a working library.
+  - Exact duplicate IDs are dropped; distinct variants are kept.
+- **Search and sorting:**
+  - Ranked search keeps every 0.7.4 match and ranks exact, prefix, word prefix, then broader matches.
+  - Newest first and the Home "Recently added" row use only real Xtream timestamps.
+- **Organization:**
+  - Named lists store ID references only.
+  - Hidden titles leave browsing and search but stay in favorites and lists.
+  - Unavailable saved titles are kept and marked.
+  - Family restrictions always win.
+- **Series:** latest-first display, an unwatched filter, jump to next and refresh episodes.
+  - Optional autoplay is off by default and uses a cancellable ten-second countdown.
+  - Continuation keeps the canonical order.
+- **Guide:**
+  - Matching order is manual choice, then exact EPG ID, then a unique exact name; similar names are only suggested.
+  - Health counts and a quarter-hour time correction, applied once to display and catch-up times.
+  - Past schedules are kept within the archive window.
+  - Empty rows explain why they are empty.
+- **Playback:**
+  - Previous and recent channels, rechecked against access rules.
+  - Return to live through the controlled reopen path; there is no local timeshift.
+  - Exact language-variant matching that explains when only another variant exists.
+  - Allowlisted playback help.
+- **Transfer:**
+  - Paste-and-preview of provider details, shown masked.
+  - Backup payload version 2 adds lists and the new preferences; version 1 still imports, and the encryption envelope is unchanged.
+  - Import preview offers Add or Update. Ambiguous matches need a choice. Update keeps the profile ID and this device's history.
+- **Builds:** previews use build numbers 9900–9999; 10000 is reserved for the stable build.
+
 - Brand type matches glowtv.app: Instrument Sans (400/500/600) for interface text, Newsreader 500 for display titles. Inter is removed; interface weight tops out at 600.
 - Sentence-case labels everywhere; no letter-spaced uppercase eyebrows.
 - Home: one header (native large "Watch" title on iPhone and iPad, top app bar on Android) with Add playlist and, on iPhone and iPad, Settings. The greeting is gone. The featured card has its art in its own frame with the play and favourite actions together. Live rows use a small red dot and a play affordance.

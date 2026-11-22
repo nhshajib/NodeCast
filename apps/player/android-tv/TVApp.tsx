@@ -277,7 +277,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const listIds = useMemo(() => new Set(tvLists.flatMap(list => list.items)), [tvLists]);
   const hiddenSet = useMemo(() => new Set(active?.hiddenItems || []), [active?.hiddenItems]);
   const index = useMemo(() => createSearchIndex(page === 'favorites' ? items.filter(i => favoriteIds.has(i.id) || listIds.has(i.id)) : items.filter(i => (scope === 'all' && !!deferred.trim() || i.kind === page) && (browse.hidden && !!deferred.trim() || !hiddenSet.has(i.id)))), [items, page, favoritesForIndex, listIds, hiddenSet, browse.hidden, scope, !!deferred.trim()]);
-  // With named lists, the Favorites page's chips choose between favourites and each list.
+  // With named lists, the Favorites page's chips choose between favorites and each list.
   const listMode = page === 'favorites' && features.organization && tvLists.length > 0;
   const groups = useMemo(() => listMode ? ['All', ...tvLists.map(list => list.name)] : ['All', ...new Set(index.map(entry => entry.item.group).filter(group => !!group && group!=='All' && !active?.hiddenGroups?.includes(group)))], [listMode, tvLists, index, active?.hiddenGroups]);
   const tvList = listMode ? tvLists.find(list => list.name === group) : undefined;

@@ -28,3 +28,4 @@ import './refresh-search.test.mjs';
 import './organization.test.mjs';
 import './guide-repair.test.mjs';
 import './playback-assist.test.mjs';
+import './transfer-preview.test.mjs';

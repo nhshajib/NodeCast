@@ -23,7 +23,7 @@ test('wrong passwords, modified ciphertext and unbounded KDF parameters are reje
  altered.iterations=999999999;let calls=0;await assert.rejects(decryptBackup(JSON.stringify(altered),password,{...crypto,decrypt:async()=>{calls++;throw Error()}}));assert.equal(calls,0);assert.equal(validBackupPassword('123456'),false);
 });
 test('backup validation rejects unknown schemas, invalid provider URLs and invalid viewing data',()=>{
- assert.throws(()=>validateBackup({...fixture(),version:2}));const b=fixture();b.vault.profiles[0].provider.address='file:///private';assert.throws(()=>validateBackup(b));
+ assert.throws(()=>validateBackup({...fixture(),version:3}));const b=fixture();b.vault.profiles[0].provider.address='file:///private';assert.throws(()=>validateBackup(b));
  const c=fixture();c.history.p1=[{invalid:true}];assert.throws(()=>validateBackup(c));
 });
 test('import adds fresh IDs, keeps existing profiles/PIN, maps history and adapts Apple-only player choices',()=>{

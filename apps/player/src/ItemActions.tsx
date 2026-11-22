@@ -6,7 +6,7 @@ import { Button, Field, Icon, Notice, colors, u } from './ui';
 import type { Media } from './provider';
 import type { MediaList } from './organization';
 
-/** One sheet for everything you can do with a title: favourite, lists, hide, and channel playback. */
+/** One sheet for everything you can do with a title: favorite, lists, hide, and channel playback. */
 export default function ItemActions({ item, favorite, lists, hidden, onFavorite, onToggleList, onCreateList, onToggleHidden, onPlaybackOptions }: {
   item: Media; favorite: boolean; lists: MediaList[]; hidden: boolean;
   onFavorite: () => void; onToggleList: (listId: string) => Promise<void>; onCreateList: (name: string) => Promise<void>; onToggleHidden: () => Promise<void>; onPlaybackOptions?: () => void;
@@ -30,7 +30,7 @@ export default function ItemActions({ item, favorite, lists, hidden, onFavorite,
       {row('hidden', hidden ? 'eye-outline' : 'eye-off-outline', hidden ? 'Show in browsing and search' : 'Hide from browsing and search', null, () => run(onToggleHidden), 'button')}
       {onPlaybackOptions && <View style={{ borderTopWidth: 1, borderTopColor: colors.line }}>{row('playback', 'options-outline', 'Channel playback options', null, onPlaybackOptions, 'button')}</View>}
     </View>
-    <Text style={u.small}>{hidden ? 'Hidden titles stay in your favourites and lists.' : 'Hiding keeps this title in your favourites and lists. Family controls always apply.'}</Text>
+    <Text style={u.small}>{hidden ? 'Hidden titles stay in your favorites and lists.' : 'Hiding keeps this title in your favorites and lists. Family controls always apply.'}</Text>
     {!!error && <Notice danger>{error}</Notice>}
   </ScrollView>;
 }

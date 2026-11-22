@@ -8,7 +8,7 @@ import type { GuideProgramme } from '../xmltv';
 export type LibraryView = 'watch' | 'live' | 'movies' | 'series' | 'search' | 'saved' | 'library';
 /** Anything that can be the focused screen and decides which catalogues to load. */
 export type FocusView = LibraryView | 'home' | 'guide' | 'settings';
-export type ViewState = { search: string; category: string; section: Section; scope: SearchScope; hidden: boolean; source: 'saved' | 'movies' | 'series'; /** A named list shown under Favorites; undefined shows favourites. */ list?: string };
+export type ViewState = { search: string; category: string; section: Section; scope: SearchScope; hidden: boolean; source: 'saved' | 'movies' | 'series'; /** A named list shown under Favorites; undefined shows favorites. */ list?: string };
 
 /** Pushed onto the native stack. Short tasks among them are presented as native form sheets. */
 export type Page = { type: 'provider'; profile?: Profile } | { type: 'profiles' } | { type: 'players' } | { type: 'delete'; profile: Profile } |

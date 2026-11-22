@@ -2,7 +2,7 @@ import { Platform } from 'react-native';
 import * as Haptics from 'expo-haptics';
 
 /**
- * Haptics only when something actually happens: a favourite toggled, a setting switched,
+ * Haptics only when something actually happens: a favorite toggled, a setting switched,
  * a seek committed, a playlist saved or a profile removed. Never for plain navigation taps.
  * Silent on web and TV, and when the native module is missing (an older development build).
  */

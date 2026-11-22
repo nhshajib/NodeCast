@@ -99,7 +99,7 @@ export function parseM3U(text: string, base: string): Media[] {
       metadata = undefined; groupOverride = undefined; streamHeaders = {};
     }
   }
-  // Duplicate entries otherwise create duplicate React keys and favourites.
+  // Duplicate entries otherwise create duplicate React keys and favorites.
   return [...new Map(items.map(item => [item.id, item])).values()];
 }
 

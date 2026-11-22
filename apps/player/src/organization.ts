@@ -74,7 +74,7 @@ export function resolveSaved(ids: string[], catalogue: Media[], restricted: stri
   }
   return { available, unavailable };
 }
-/** Hidden titles leave normal browsing and search; explicit lists and favourites keep them. */
+/** Hidden titles leave normal browsing and search; explicit lists and favorites keep them. */
 export const withoutHidden = <T extends { id: string }>(items: T[], hidden: string[] = []) => {
   if (!hidden.length) return items;
   const set = new Set(hidden);

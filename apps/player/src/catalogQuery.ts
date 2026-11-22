@@ -8,7 +8,7 @@ export type CatalogSort = 'provider' | 'az' | 'za' | 'newest';
 export type CatalogQuery = {
   profile: string; section: Section;
   category?: string; text?: string; sort?: CatalogSort;
-  /** Restrict to these IDs (a named list or favourites), in this order when sort is 'provider'. */
+  /** Restrict to these IDs (a named list or favorites), in this order when sort is 'provider'. */
   ids?: string[];
   hiddenGroups?: string[]; hiddenItems?: string[]; includeHidden?: boolean;
   /** Family-protected categories. Always applied, even inside lists, unless the caller has unlocked them. */
@@ -63,7 +63,7 @@ export function runQuery<T extends QueryRow>(rows: T[], q: CatalogQuery, snapsho
     (q.allSections || row.kind === q.section) &&
     !blocked(row, q) &&
     (!listOrder || listOrder.has(row.id)) &&
-    // Lists keep explicit access to items in hidden categories, like favourites do today.
+    // Lists keep explicit access to items in hidden categories, like favorites do today.
     (listOrder || !hiddenGroups.has(row.group)) &&
     !hiddenItems.has(row.id) &&
     (!category || row.group === category) &&

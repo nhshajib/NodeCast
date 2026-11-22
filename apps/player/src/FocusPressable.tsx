@@ -10,7 +10,7 @@ const androidPhone = Platform.OS === 'android' && !isTVBuild;
 const pressedFeedback: ViewStyle = isTVBuild ? {} : androidPhone ? {} : { opacity: .6 };
 const tvSelect: ViewStyle = { transform: [{ scale: .97 }] };
 type Props = React.ComponentProps<typeof Pressable> & {
-  /** Fires on press-in, only for controls whose press changes something (favourite, toggle, seek). */
+  /** Fires on press-in, only for controls whose press changes something (favorite, toggle, seek). */
   haptic?: HapticKind;
   /** Turn off the default pressed feedback, e.g. for full-screen tap layers over video. */
   noFeedback?: boolean;

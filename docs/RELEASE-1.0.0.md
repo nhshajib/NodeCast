@@ -46,5 +46,16 @@ Each phase lands as its own commit. The 139 original tests must still pass, and 
 | Phase | State |
 |---|---|
 | Design audit fixes | Done (`3efbbca`) |
-| 0 | Done |
-| 1–6 | In progress |
+| 0 | Done (`6b7452a`) |
+| 1 Catalogue repository | Done (`cb65489`) |
+| 2 Refresh and search | Done (`8e4ec8d`) |
+| 3 Organization and series | Done (`27b8b9a`) |
+| 4 Guide repair | Done (`c88f6d9`) |
+| 5 Playback assistance | Done (`144a8ba`) |
+| 6 Setup and transfer | Done (this commit) |
+| Native feature tests, device benchmarks, Hisense Fire TV check | Pending (needs builds 99xx) |
+
+Notes:
+- **Buffering watchdog:** the native engine's existing status-driven loading timer (15 s in `loading`) plus the bounded retry policy remain the watchdog. They react only to real status events, never to an unchanged live position.
+- **Autoplay countdown:** it fires from the native engine's `playToEnd`. The VLC engine reports no end event, so it offers the Next episode button instead.
+- **Tests:** 139 → 176, all passing.

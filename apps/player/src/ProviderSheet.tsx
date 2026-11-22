@@ -3,10 +3,12 @@ import {Text} from './Typography';
 import {useFamily} from './FamilyControls';
 import {pickPlaylist} from './localPlaylist';
 import Pressable,{isTVBuild} from './FocusPressable';
-import React,{useEffect,useRef,useState} from 'react';
+import React,{useEffect,useMemo,useRef,useState} from 'react';
 import {Keyboard,Platform,ScrollView,TextInput,View,useWindowDimensions} from 'react-native';
 import type {Provider} from './provider';
 import {importXtreamLink} from './provider';
+import {features} from './featureFlags';
+import {maskAddress,maskSecret,parseProviderDetails} from './providerPaste';
 import type {Profile} from './vault';
 import {providerFormProblem} from './formValidation';
 import {Button,Field,H1,Icon,IconButton,Notice,colors,u} from './ui';
@@ -18,6 +20,7 @@ export default function ProviderSheet({profile,busy,error,onSave,onDirtyChange}:
  const [localError,setLocalError]=useState('');const [advanced,setAdvanced]=useState(false);const [reveal,setReveal]=useState(false);const [imported,setImported]=useState(false);const [touched,setTouched]=useState<Record<string,boolean>>({});
  const [source,setSource]=useState<'xtream'|'m3u'|'file'>(profile?.provider.localText?'file':profile?.provider.kind||'xtream');
  const [form,setForm]=useState<Provider>(profile?.provider||blank);
+ const [paste,setPaste]=useState('');const pasted=useMemo(()=>parseProviderDetails(paste),[paste]);
  const address=useRef<React.ComponentRef<typeof TextInput>>(null),username=useRef<React.ComponentRef<typeof TextInput>>(null),password=useRef<React.ComponentRef<typeof TextInput>>(null);
  const dirty=JSON.stringify(form)!==JSON.stringify(profile?.provider||blank);
  useEffect(()=>{onDirtyChange?.(dirty);return()=>onDirtyChange?.(false)},[dirty,onDirtyChange]);
@@ -29,6 +32,8 @@ export default function ProviderSheet({profile,busy,error,onSave,onDirtyChange}:
  if(family.enabled&&!family.unlocked)return <View style={u.content}><H1>Unlock profile settings</H1><Text style={u.body}>Your changes are kept while this page is open.</Text><Button title="Unlock profile settings" onPress={family.request}/></View>;
  return <ScrollView {...(Platform.OS==='ios'?{contentInsetAdjustmentBehavior:'automatic' as const,automaticallyAdjustKeyboardInsets:true,keyboardDismissMode:'interactive' as const}:{})} keyboardShouldPersistTaps="handled" contentContainerStyle={[u.content,{gap:!isTVBuild&&androidDesign?8:16,paddingBottom:56+Math.max(insets.bottom,24)}]}>
  <View style={{gap:8}}><H1>{profile?'Edit playlist':'Add a playlist'}</H1><Text style={u.body}>Live channels, films, and series from your own provider.</Text></View>
+ {features.transferPreview&&!profile&&<View style={{gap:8}}><Field label="Paste details from your provider" hideLabel placeholder="Paste the link or the server, username and password you received" multiline value={paste} onChangeText={setPaste} editable={!busy} style={{minHeight:96,textAlignVertical:'top'}} autoComplete="off" importantForAutofill="no"/>
+  {!!paste.trim()&&(pasted?<View style={[u.card,{gap:8}]}><Text style={u.label}>{pasted.kind==='xtream'?'Xtream Codes':'M3U link'}</Text><Text selectable={false} style={u.small}>{pasted.kind==='xtream'?`${pasted.address} · ${pasted.username} · ${maskSecret(pasted.password)}`:maskAddress(pasted.address)}</Text><Button title="Use these details" variant="secondary" disabled={busy} onPress={()=>{setSource(pasted.kind);setForm(current=>({...current,kind:pasted.kind,address:pasted.address,username:pasted.username,password:pasted.password,localText:undefined,name:current.name||(()=>{try{return new URL(pasted.address).hostname}catch{return ''}})()}));setPaste('');setLocalError('');}}/><Text style={u.small}>Nothing is sent until you connect. Check the details, then connect as usual.</Text></View>:<Text style={u.small}>These details weren’t recognised. Paste a full playlist link, or lines with the server, username and password.</Text>)}</View>}
  <View style={{flexDirection:!isTVBuild&&fontScale>1.3?'column':'row',padding:8,borderRadius:!isTVBuild&&fontScale>1.3?16:999,backgroundColor:colors.line}}>{(['m3u','xtream','file'] as const).map(kind=><Pressable nativeID={`tv-control:provider-source:${kind}`} key={kind} accessibilityRole="tab" accessibilityLabel={kind==='xtream'?'Xtream Codes':kind==='file'?'File':'M3U link'} accessibilityState={{selected:source===kind}} disabled={busy} onPress={()=>{setSource(kind);setForm(current=>({...current,kind:kind==='file'?'m3u':kind,localText:kind==='file'?current.localText:undefined,address:current.localText?'':current.address}));}} style={{flex:1,minHeight:48,flexDirection:'row',gap:8,justifyContent:'center',alignItems:'center',paddingHorizontal:8,borderRadius:999,backgroundColor:source===kind?colors.panel:'transparent'}}><Text style={{color:colors.text,fontWeight:source===kind?'600':'500',fontSize:14}}>{kind==='xtream'?'Xtream':kind==='file'?'File':'M3U link'}</Text></Pressable>)}</View>
  <Field nativeID={isTVBuild?'tv-preferred:provider-name':undefined} label="Profile name" placeholder="My living room" value={form.name} autoCapitalize="words" onChangeText={v=>change('name',v)} onBlur={mark('name')} error={touched.name&&!form.name.trim()?'Enter a profile name.':undefined} editable={!busy} returnKeyType="next" submitBehavior="submit" onSubmitEditing={()=>address.current?.focus()}/>
  {source==='file'&&<>{isTVBuild&&<Notice>File import requires a document picker installed on your TV. If none is available, use an M3U link or Xtream Codes instead.</Notice>}<Button title={form.localText?'Replace imported playlist file':'Import playlist file'} variant="secondary" disabled={busy} onPress={()=>{setLocalError('');void pickPlaylist().then(file=>{if(file)setForm(current=>({...current,name:current.name||file.name,address:'https://import.invalid/',localText:file.text}))}).catch(e=>setLocalError(e.message||'Could not import playlist.'));}}/>{form.localText&&<Notice>Local file imported. Replace the file to get new channels; automatic server refresh does not update a local copy.</Notice>}</>}

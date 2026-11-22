@@ -15,6 +15,6 @@ export const features = {
   /** Phase 5: buffering watchdog, previous channel, return to live, playback help. */
   playbackAssist: true,
   /** Phase 6: paste-and-preview setup and backup import preview (Add or Update). */
-  transferPreview: false,
+  transferPreview: true,
 } as const;
 export type FeatureName = keyof typeof features;
