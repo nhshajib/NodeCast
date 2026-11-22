@@ -95,10 +95,10 @@ final class GlowTVResumeUITests: XCTestCase {
       XCTAssertTrue(skip.waitForExistence(timeout: 20))
       skip.tap()
       XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
-      // The playlist form is a native form sheet; its Done button closes it.
-      tapButton("Done")
+      // The playlist form is a native form sheet; its Cancel button (top left) closes it.
+      tapButton("Cancel")
       let closed = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
-        !self.app.buttons["Done"].exists
+        !self.app.textFields["Server address"].exists
       }, object: nil)
       XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 15), .completed, "The native sheet did not dismiss")
     }
@@ -111,10 +111,12 @@ final class GlowTVResumeUITests: XCTestCase {
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
     let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in content.exists && content.isHittable }, object: nil)
     XCTAssertEqual(XCTWaiter.wait(for: [visible], timeout: 15), .completed, "Home content is present but invisible after returning: \(app.debugDescription)")
-    let heading = app.staticTexts["Watch"].firstMatch
-    if heading.exists, let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
-      XCTAssertGreaterThanOrEqual(heading.frame.minY, header.frame.maxY - 2, "Home must clear the native header")
-      XCTAssertLessThanOrEqual(heading.frame.minY, header.frame.maxY + 80, "Home must not apply the native header inset twice")
+    // 1.0.0: "Watch" is the native large title inside the navigation bar. The first
+    // Home action must sit below that bar, without a second header-sized gap.
+    if let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
+      XCTAssertTrue(header.staticTexts["Watch"].exists || header.identifier == "Watch", "Home uses the native large title")
+      XCTAssertGreaterThanOrEqual(content.frame.minY, header.frame.maxY - 2, "Home must clear the native header")
+      XCTAssertLessThanOrEqual(content.frame.minY, header.frame.maxY + 320, "Home must not apply the native header inset twice")
     }
   }
   func testColdStartsAndBackgroundResumeKeepHomeVisible() {
@@ -196,7 +198,7 @@ final class GlowTVResumeUITests: XCTestCase {
     if save.exists && save.isEnabled { save.tap() }
     let program = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@ AND NOT label CONTAINS %@", "Evening studio,", "No matching guide ID")).firstMatch
     XCTAssertTrue(program.waitForExistence(timeout: 30), app.debugDescription)
-    let filters = app.buttons["Guide filters and settings"]
+    let filters = app.buttons["Guide options"]
     if filters.exists, let header = app.navigationBars.allElementsBoundByIndex.first(where: { $0.exists && $0.frame.height > 0 }) {
       XCTAssertGreaterThanOrEqual(filters.frame.minY, header.frame.maxY - 2, "Guide controls must clear the native header")
       XCTAssertLessThanOrEqual(filters.frame.minY, header.frame.maxY + 48, "Guide must not apply the native header inset twice")
