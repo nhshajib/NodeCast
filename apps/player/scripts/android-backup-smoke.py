@@ -17,14 +17,14 @@ def open_backup():
  click('Settings');click('Backup & transfer',True)
  root=dump()
  if any(n.get('content-desc')=='Unlock backup & transfer' for n in root.iter('node')):
-  click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Take your setup with you.',timeout=180)
+  click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Export backup',timeout=180)
 def shot(name):OUT.joinpath(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 try:
  subprocess.run(['adb','shell','input','keyevent','4'],check=True);time.sleep(1.5);click('Live');click('Add Phone Test Channel to favorites');open_backup()
  text('Backup password','transfer-test-password-123',submit=False);text('Confirm backup password','transfer-test-password-123',submit=False);click('Create encrypted backup',True)
  system_click('Save',timeout=120)
  if any('Unlock backup & transfer' in (n.get('content-desc') or '') for n in dump().iter('node')):
-  click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Take your setup with you.',timeout=180)
+  click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Export backup',timeout=180)
  find('Backup handed to the system file picker or share sheet. Keep the saved file and its password for your new device.',timeout=30,scroll=True)
  # The saved file must outlive app storage. It contains synthetic credentials only.
  end=time.monotonic()+30;paths=[]
