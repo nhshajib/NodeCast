@@ -3,9 +3,10 @@ import type { LibraryPreferences } from './libraryPreferences.ts';
 import type { ChannelPlayback } from './viewingPreferences';
 import type { Provider } from './provider';
 import { validateHiddenItems, validateLists, validateSeriesDisplay } from './organization.ts';
+import { validOffset } from './guideMatching.ts';
 import type { MediaList, SeriesDisplay } from './organization.ts';
 
-export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; library?: LibraryPreferences; restrictedGroups?: string[]; guide?: { url: string; mapping?: Record<string, string> }; displayFit?: 'contain' | 'cover'; lists?: MediaList[]; hiddenItems?: string[]; seriesDisplay?: SeriesDisplay; autoplayNext?: boolean; channelPlayback?: Record<string, ChannelPlayback>; liveFormat?: 'auto' | 'hls' | 'ts'; liveEngine?: 'auto' | 'native' | 'vlc'; tracks?: { audio?: string; subtitles?: string } };
+export type Profile = { id: string; provider: Provider; createdAt: string; favorites: string[]; hiddenGroups?: string[]; library?: LibraryPreferences; restrictedGroups?: string[]; guide?: { url: string; mapping?: Record<string, string>; /** Minutes added to every guide time (quarter hours, ±12 h). */ offsetMinutes?: number }; displayFit?: 'contain' | 'cover'; lists?: MediaList[]; hiddenItems?: string[]; seriesDisplay?: SeriesDisplay; autoplayNext?: boolean; channelPlayback?: Record<string, ChannelPlayback>; liveFormat?: 'auto' | 'hls' | 'ts'; liveEngine?: 'auto' | 'native' | 'vlc'; tracks?: { audio?: string; subtitles?: string } };
 export type Vault = { version: 2; activeId: string | null; profiles: Profile[] };
 export const emptyVault = (): Vault => ({ version: 2, activeId: null, profiles: [] });
 export function validateVault(value: unknown): Vault {
@@ -40,6 +41,7 @@ export function validateVault(value: unknown): Vault {
     if (p.restrictedGroups && (!Array.isArray(p.restrictedGroups) || p.restrictedGroups.some(group => typeof group !== 'string'))) throw new Error('Invalid restricted categories.');
     if (p.displayFit !== undefined && !['contain', 'cover'].includes(p.displayFit)) throw new Error('Invalid display fit.');
     if (p.guide && (typeof p.guide.url !== 'string' || p.guide.url.length > 4000 || p.guide.mapping && (typeof p.guide.mapping !== 'object' || Object.entries(p.guide.mapping).some(([key,value]) => key.length > 300 || typeof value !== 'string' || value.length > 300)))) throw new Error('Invalid guide settings.');
+    if (p.guide && !validOffset(p.guide.offsetMinutes)) throw new Error('Invalid guide time correction.');
     validateLists(p.lists); validateHiddenItems(p.hiddenItems); validateSeriesDisplay(p.seriesDisplay);
     if (p.autoplayNext !== undefined && typeof p.autoplayNext !== 'boolean') throw new Error('Invalid autoplay preference.');
     ids.add(p.id);

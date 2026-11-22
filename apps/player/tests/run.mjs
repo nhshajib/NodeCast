@@ -26,3 +26,4 @@ import './ui-audit.test.mjs';
 import './catalog-repository.test.mjs';
 import './refresh-search.test.mjs';
 import './organization.test.mjs';
+import './guide-repair.test.mjs';

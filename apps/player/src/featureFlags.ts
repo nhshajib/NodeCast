@@ -11,7 +11,7 @@ export const features = {
   /** Phase 3: named lists, hidden items, series display options, autoplay countdown. */
   organization: true,
   /** Phase 4: guide health, matching suggestions and time offsets. */
-  guideRepair: false,
+  guideRepair: true,
   /** Phase 5: buffering watchdog, previous channel, return to live, playback help. */
   playbackAssist: false,
   /** Phase 6: paste-and-preview setup and backup import preview (Add or Update). */
