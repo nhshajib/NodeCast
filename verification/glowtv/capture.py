@@ -101,7 +101,7 @@ with sync_playwright() as p:
   assert not errors,errors
   page.set_viewport_size({'width':w,'height':h})
   if name in ('ios','ipad'):
-   button(page,'Appearance').click();page.get_by_role('radio',name='light appearance',exact=True).click();button(page,'Go back').click();button(page,'Go back').click()
+   button(page,'Appearance').click();page.get_by_role('radio',name='Light',exact=True).click();button(page,'Go back').click();button(page,'Go back').click()
   if name=='tv':
    button(page,'Search').click()
   elif name in ('ios','ipad'):page.get_by_test_id('navigation-tab-search').click()

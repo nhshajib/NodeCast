@@ -32,7 +32,9 @@ try:
  click('Connect playlist',True);find('Home');OUT.joinpath('emulator-mobile-home.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']));click('Live');find('Open Phone Test Channel')
  click('Guide');click('Add full TV guide');text('XMLTV URL','http://10.0.2.2:9090/guide.xml',submit=False);click('Save and refresh guide',True);find('Phone Guide Match',timeout=45)
  OUT.joinpath('emulator-mobile-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
- back();settings('Appearance');click('dark appearance');back();settings('Family controls')
+ back();settings('Appearance');click('Dark')
+ assert any(n.get('content-desc')=='Dark' and n.get('checked')=='true' for n in dump().iter('node')),'Dark appearance was not selected'
+ back();settings('Family controls')
  text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN',True);find('Find category to protect',timeout=90);click('Protect Phone test',True);click('Lock protected content now',True)
  click('Unlock family controls');text('Family PIN','000000',submit=False);click('Unlock');find('PIN did not match.',timeout=90)
  # Clear only this synthetic test PIN field; no secrets enter logs.

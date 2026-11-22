@@ -234,6 +234,9 @@ final class GlowTVResumeUITests: XCTestCase {
     goBackOnNativePage()
     element("navigation-tab-search").tap()
     capture("ios-search")
+    // Settings is intentionally a Home header action on iPhone/iPad, not a
+    // repeated action on every tab. Exercise the actual native route to it.
+    element("navigation-tab-home").tap()
     tapButton("Settings")
     XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Version history,")).firstMatch.waitForExistence(timeout: 15))
     capture("ios-settings")

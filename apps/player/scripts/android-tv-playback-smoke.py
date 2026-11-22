@@ -177,7 +177,7 @@ def audit_settings(remote,out,fresh=False):
  remote.activate('Live TV')
  if not fresh:remote.activate('All titles')
  remote.focus('All');remote.horizontal('Remote News 8',22);remote.horizontal('All',21);remote.activate('Save favorite: Remote Channel 18');remote.activate('Smoke test');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
- remote.activate('Appearance');remote.activate('light appearance');checked('light appearance');remote.activate('dark appearance');checked('dark appearance');remote.activate('Back')
+ remote.activate('Appearance');remote.activate('Light');checked('Light');remote.activate('Dark');checked('Dark');remote.activate('Back')
  remote.activate('Playback');remote.activate('Ask each time');checked('Ask each time');remote.activate('GlowTV player');checked('GlowTV player');remote.activate('Live TV options');remote.activate('Engine: Built-in VLC');checked('Engine: Built-in VLC');remote.activate('Engine: Automatic');checked('Engine: Automatic');remote.activate('Back')
  remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Categories');remote.activate('Show Smoke test');checked('Show Smoke test',False);remote.activate('Show Smoke test');checked('Show Smoke test');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')
  remote.activate('Backup & transfer');remote.activate('Include viewing history and progress');checked('Include viewing history and progress',False);remote.activate('Include viewing history and progress');checked('Include viewing history and progress');remote.activate('Import backup');find('Choose backup file');remote.activate('Export backup');remote.activate('Back')
@@ -317,7 +317,7 @@ def main():
   click('Live TV');click('TV guide');click('Add full TV guide')
   text('XMLTV URL','http://10.0.2.2:9090/guide.xml',submit=False);click('Save and refresh guide',True);find('Native Guide Match',timeout=45,scroll=True)
   OUT.joinpath('emulator-tv-full-guide.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
-  click('Back');click('Settings');click('Appearance');click('dark appearance');click('Back');click('Family controls')
+  click('Back');click('Settings');click('Appearance');click('Dark');click('Back');click('Family controls')
   text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);pin_started=time.monotonic();click('Set family PIN',True)
   # Hermes crypto can take longer on a busy video emulator. Wait for completion,
   # including offscreen content, before moving the search field into view.
