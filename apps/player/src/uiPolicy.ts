@@ -1,5 +1,9 @@
 export type AppMessage = { text: string; tone: 'info' | 'error' };
 export const messageLifetime = (message: AppMessage | null) => message?.tone === 'info' ? 4000 : null;
+/** Only a completed in-session data reload invalidates the phone's route keys. */
+export function shouldResetNavigation({revision,handledRevision,booting,ready}:{revision:number;handledRevision:number;booting:boolean;ready:boolean}):boolean {
+ return revision>handledRevision&&!booting&&ready;
+}
 export function tvBackAction({ home, lastBack, now }: { home: boolean; lastBack: number | null; now: number }): 'home' | 'warn' | 'exit' {
   if (!home) return 'home';
   return lastBack !== null && now - lastBack <= 2000 ? 'exit' : 'warn';

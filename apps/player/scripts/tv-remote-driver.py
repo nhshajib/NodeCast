@@ -36,7 +36,7 @@ def tree():
    if attempt==2:raise
    time.sleep(.5)
 def bounds(n):
- a=list(map(int,re.findall(r'\d+',n.get('bounds',''))));return a if len(a)==4 else [0,0,0,0]
+ a=list(map(int,re.findall(r'-?\d+',n.get('bounds',''))));return a if len(a)==4 else [0,0,0,0]
 def name(n):return (n.get('content-desc') or n.get('text') or '').strip()
 RAIL_LABELS=['Home','Search','Live TV','TV guide','Movies','Series','Favorites','Settings','Switch playlist']
 def match(n,label):

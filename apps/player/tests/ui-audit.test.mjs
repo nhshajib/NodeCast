@@ -9,7 +9,16 @@ test('phone restores portrait, tablets unlock through rotation and narrow multit
  assert.equal(orientationPolicy({width:1920,height:1080,television:true}),'landscape');
 });
 
-import {messageLifetime,tvBackAction} from '../src/uiPolicy.ts';
+import {messageLifetime,tvBackAction,shouldResetNavigation} from '../src/uiPolicy.ts';
+test('restore routing waits for loaded data, handles each reset once and leaves cold deep links alone',()=>{
+ const state={revision:1,handledRevision:0,booting:false,ready:true};
+ assert.equal(shouldResetNavigation({...state,revision:0}),false);
+ assert.equal(shouldResetNavigation({...state,booting:true}),false);
+ assert.equal(shouldResetNavigation({...state,ready:false}),false);
+ assert.equal(shouldResetNavigation(state),true);
+ assert.equal(shouldResetNavigation({...state,handledRevision:1}),false);
+ assert.equal(shouldResetNavigation({...state,revision:2,handledRevision:1}),true);
+});
 test('info expires after four seconds; errors require explicit dismissal',()=>{
  assert.equal(messageLifetime({text:'Refreshing',tone:'info'}),4000);
  assert.equal(messageLifetime({text:'Failed to save',tone:'error'}),null);

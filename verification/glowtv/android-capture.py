@@ -342,6 +342,9 @@ try:
  click('Settings');capture('settings')
  checked=[]
  for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Home IP reference'if TV else'Home IP & connection','Version history']:
+  # Native Settings preserves its scroll position after Back. Retap its tab
+  # to return to the first group before searching downward for the next row.
+  if not TV:click('Settings')
   click(label,True);back();checked.append(label)
  if gesture_navigation:
   # Retap the active native Settings tab to return from its retained scroll

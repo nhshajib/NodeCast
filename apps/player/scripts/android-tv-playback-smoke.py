@@ -185,7 +185,12 @@ def audit_settings(remote,out,fresh=False):
   if current is not None and remote.name(current)=='Play Example Live Test':break
   time.sleep(.1)
  else:raise AssertionError('Down from the library toolbar did not enter the first channel row')
- remote.focus('All');remote.horizontal('Remote News 8',22);remote.horizontal('All',21);remote.activate('Save favorite: Remote Channel 18');remote.activate('Smoke test');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
+ # The category strip retains its horizontal offset. Reach a visible chip
+ # first, then reveal All with real Left keys instead of a vertical scan.
+ visible=next((node for node in remote.actions(remote.tree()) if remote.name(node) in ['All','Smoke test'] or remote.name(node).startswith('Remote News ')),None)
+ assert visible is not None,'No visible category chip in the library'
+ remote.focus(remote.name(visible));remote.horizontal('All',21)
+ remote.horizontal('Remote News 8',22);remote.horizontal('All',21);remote.activate('Save favorite: Remote Channel 18');remote.activate('Smoke test');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
  remote.activate('Appearance');remote.activate('Light');checked('Light');remote.activate('Dark');checked('Dark');remote.activate('Back')
  remote.activate('Playback');remote.activate('Ask each time');checked('Ask each time');remote.activate('GlowTV player');checked('GlowTV player');remote.activate('Live TV options');remote.activate('Engine: Built-in VLC');checked('Engine: Built-in VLC');remote.activate('Engine: Automatic');checked('Engine: Automatic');remote.activate('Back')
  remote.activate('Library organization');remote.activate('A–Z');checked('A–Z');remote.activate('Provider order');remote.activate('Refresh after 60 minutes');checked('Refresh after 60 minutes');remote.activate('Refresh after 30 minutes');remote.activate('All media');checked('All media');remote.activate('Current category');remote.activate('Categories');remote.activate('Show Smoke test');checked('Show Smoke test',False);remote.activate('Show Smoke test');checked('Show Smoke test');remote.activate('Favorites order');find('Example Live Test',scroll=True);remote.activate('Back')

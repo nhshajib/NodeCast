@@ -1,5 +1,5 @@
 import {MiniPlayerLayoutProvider,MiniPlayerSafeFrame,useMeasuredMiniPlayerBottom} from './MiniPlayerLayout';
-import {libraryTabView} from '../uiPolicy';
+import {libraryTabView,shouldResetNavigation} from '../uiPolicy';
 import {detailRoute} from '../detailRoute';
 import {LibrarySkeleton} from '../Skeletons';
 import { Text } from '../Typography';
@@ -9,7 +9,7 @@ import { FullWindowOverlay } from 'react-native-screens';
 import {SafeAreaView as NativeScreenSafeAreaView} from 'react-native-screens/experimental';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove, useNavigation } from 'expo-router';
+import { Stack, Tabs, useFocusEffect, useIsFocused, useLocalSearchParams, usePreventRemove, useNavigation, usePathname } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 import { androidDesign, isDarkTheme, useThemeChoice } from '../theme';
 import { FamilyChallengeHost } from '../FamilyControls';
@@ -41,14 +41,30 @@ export function useHeaderOptions() {
 export function RootNavigator(){return <MiniPlayerLayoutProvider><RootNavigatorContent/></MiniPlayerLayoutProvider>;}
 function RootNavigatorContent() {
   const c = useNodeCast();
+  const pathname=usePathname();
+  const [handledRevision,setHandledRevision]=useState(0);
+  const requestedRevision=useRef(0);
+  const goHome=useRef(c.goHome);goHome.current=c.goHome;
+  const resetPending=c.family.revision>handledRevision;
+  // Restore reloads the provider tree, while Expo Router retains its stack.
+  // Wait for the new vault/protection state, then leave the expired route once.
+  // Keep it covered until Home is actually active; never redirect cold links.
+  useEffect(()=>{
+    const revision=c.family.revision;
+    if(!shouldResetNavigation({revision,handledRevision,booting:c.booting,ready:c.family.ready}))return;
+    if(pathname==='/home'||pathname==='/'){setHandledRevision(revision);return;}
+    if(requestedRevision.current===revision)return;
+    requestedRevision.current=revision;goHome.current();
+  },[c.family.revision,c.family.ready,c.booting,handledRevision,pathname]);
   const options = useHeaderOptions();
   const player = c.player;
   const insets=useSafeAreaInsets();
   const miniLayout=useMeasuredMiniPlayerBottom();
   const blocked = !!(player.element && !player.minimized);
+  const navigationBlocked=blocked||resetPending;
   return <View ref={miniLayout.root} onLayout={miniLayout.measure} style={{ flex: 1, backgroundColor: colors.bg }}>
     <StatusBar hidden={player.fullscreen && !!player.element} barStyle={blocked || isDarkTheme() ? 'light-content' : 'dark-content'} />
-    <View style={{ flex: 1 }} pointerEvents={blocked ? 'none' : 'auto'} aria-hidden={blocked} accessibilityElementsHidden={blocked} importantForAccessibility={blocked ? 'no-hide-descendants' : 'auto'}>
+    <View style={{ flex: 1 }} pointerEvents={navigationBlocked ? 'none' : 'auto'} aria-hidden={navigationBlocked} accessibilityElementsHidden={navigationBlocked} importantForAccessibility={navigationBlocked ? 'no-hide-descendants' : 'auto'}>
       <Stack screenOptions={options}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -67,8 +83,8 @@ function RootNavigatorContent() {
     </SafeAreaView>}
     <MessageBanner />
     {c.welcome && !c.booting && c.family.ready && <View style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 50 }}><WelcomeScreen onStart={c.onboardStart} onDemo={c.onboardDemo} /></View>}
-    {(c.booting || !c.family.ready) && <SafeAreaView style={[u.root, u.center, { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 60 }]}>
-      {c.booting ? <><ActivityIndicator color={colors.link} /><Text style={u.small}>Making yourself at home…</Text></> : <><Text style={u.body}>{c.family.loadFailed ? 'Could not read family protection.' : 'Loading local protection…'}</Text>{c.family.loadFailed && <Button title="Open recovery options" onPress={c.family.request} />}<Text style={u.small}>If this stays here, restart the app before changing profiles.</Text></>}
+    {(c.booting || !c.family.ready || resetPending) && <SafeAreaView style={[u.root, u.center, { position: 'absolute', top: 0, bottom: 0, left: 0, right: 0, zIndex: 60 }]}>
+      {c.booting || (resetPending&&c.family.ready) ? <><ActivityIndicator color={colors.link} /><Text style={u.small}>{c.booting?'Making yourself at home…':'Loading your restored library…'}</Text></> : <><Text style={u.body}>{c.family.loadFailed ? 'Could not read family protection.' : 'Loading local protection…'}</Text>{c.family.loadFailed && <Button title="Open recovery options" onPress={c.family.request} />}<Text style={u.small}>If this stays here, restart the app before changing profiles.</Text></>}
     </SafeAreaView>}
   </View>;
 }

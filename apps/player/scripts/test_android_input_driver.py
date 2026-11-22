@@ -20,6 +20,11 @@ with patch('subprocess.check_output', return_value='Physical size: 1080x1920'):
     helpers = module('helpers', 'android-tv-playback-smoke.py')
 
 class InputDriverTests(unittest.TestCase):
+    def test_clipped_horizontal_nodes_keep_signed_bounds(self):
+        node=ET.fromstring('<node bounds="[272,314][-500,402]" enabled="true" clickable="true" focusable="true"/>')
+        self.assertEqual(remote.bounds(node),[272,314,-500,402])
+        self.assertEqual(remote.actions(node),[])
+
     def test_fixed_back_header_waits_for_native_body_scroll(self):
         state = {'ups': 0}
         def tree():
