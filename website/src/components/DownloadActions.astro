@@ -15,7 +15,7 @@ const storeNames=storeLinks.map(([name])=>name).join(' or ');
  {item?<a class="button" href={item.url}>Download {format} · {item.version} <Icon name="arrow-down" size={18}/></a>:<span class="availability">Public download not available yet</span>}
  <a class="download-guide-link" href={`/install/${platform==='ios'?'iphone':platform==='tv'?'android-tv':'android'}/`}>How to install <Icon name="arrow-right" size={16}/></a>
 </div>
-{item&&<DownloadCount item={item} checkedAt={release.checkedAt}/>}
+{item&&<DownloadCount item={item} checkedAt={release.checkedAt} platform={platform}/>}
 <div class="platform-notes">
  {item?.legacy&&<p class="download-notice">The available {item.version} file still uses the <strong>NodeCast</strong> name. The GlowTV screenshots show the upcoming redesign; it is not included in this download.</p>}
  <p>{item?`${item.prerelease?'Public testing release':'Stable release'} from GitHub. `:''}{platform==='ios'?'Unsigned IPA: sign it with your own Apple account before installing. Free Apple signing usually needs renewal every seven days.':platform==='tv'?'Choose the TV APK for Android TV, Google TV and Fire TV. Use the phone APK on touch devices. Apple TV is not supported yet.':'Standalone Android APK. Allow installation for your browser or file manager when prompted, then install over the existing app to keep your profiles.'}</p>

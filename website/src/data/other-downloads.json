@@ -1,0 +1,6 @@
+{
+  "_note": "Downloads from distribution sites other than GitHub, as reported by the GlowTV owner. They are a fixed starting point: GitHub downloads of every version are added on top, so the total never resets.",
+  "ios": 658,
+  "android": 4800,
+  "tv": 2300
+}

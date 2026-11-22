@@ -1,15 +1,18 @@
 ---
 import type {DownloadRelease} from '../data/release';
 import {totalDownloads} from '../lib/download-counts.mjs';
+import otherDownloads from '../data/other-downloads.json';
 import Icon from './Icon.astro';
-const {item,checkedAt}=Astro.props as {item:DownloadRelease;checkedAt:string};
-const previous=Number.isSafeInteger(item.previousDownloadCount)?item.previousDownloadCount as number:0;
+const {item,checkedAt,platform}=Astro.props as {item:DownloadRelease;checkedAt:string;platform:'ios'|'android'|'tv'};
+const other=Number.isSafeInteger((otherDownloads as Record<string,unknown>)[platform])?(otherDownloads as Record<string,number>)[platform]:0;
+// Fixed starting point from other sites, plus every earlier GitHub version.
+const previous=(Number.isSafeInteger(item.previousDownloadCount)?item.previousDownloadCount as number:0)+other;
 const count=totalDownloads(item.downloadCount,previous);
 const date=new Date(checkedAt);
 ---
 <div class="download-activity" data-download-count data-asset-id={item.assetId} data-asset-url={item.url} data-previous={previous}>
- <p class="download-activity-value"><Icon name="download" size={24}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · all versions</span></p>
- <p class="download-activity-note">File downloads, not unique users or installs. <time data-count-date datetime={checkedAt}>Checked {Number.isNaN(date.valueOf())?'at build time':date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}.</time></p>
+ <p class="download-activity-value"><Icon name="download" size={24}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>{other?'all versions, GitHub and other sites':'on GitHub · all versions'}</span></p>
+ <p class="download-activity-note">{other?`Includes ${other.toLocaleString('en')} downloads from other sites before GitHub; GitHub downloads update live. `:''}File downloads, not unique users or installs. <time data-count-date datetime={checkedAt}>Checked {Number.isNaN(date.valueOf())?'at build time':date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}.</time></p>
 </div>
 <script>
  import {assetDownloadCount,cachedDownloadCount} from '../lib/download-counts.mjs';
