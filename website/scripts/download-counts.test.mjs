@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {downloadCount,assetDownloadCount,cachedDownloadCount} from '../src/lib/download-counts.mjs';
+import {downloadCount,assetDownloadCount,cachedDownloadCount,totalDownloads} from '../src/lib/download-counts.mjs';
 import {selectDownloads} from './release-selection.mjs';
 const url='https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk';
 test('a real zero is valid; absent, fractional, negative or fabricated counts stay unknown',()=>{
@@ -22,4 +22,10 @@ test('release selection counts only the app binary, excluding checksums and meta
  const release={tag_name:'glowtv-v0.7.4',published_at:'2026-11-21T00:00:00Z',draft:false,assets:[{...asset,name:'release-metadata.json',download_count:900},asset]};
  const chosen=selectDownloads([release],{platforms:{}}).android;assert.equal(chosen.assetId,123);assert.equal(chosen.downloadCount,7);
  assert.equal(selectDownloads([{...release,assets:[{...asset,download_count:undefined}]}],{platforms:{}}).android.downloadCount,null);
+});
+test('the total keeps every earlier version, so a new release never resets it',()=>{
+ const make=(tag,id,n)=>({tag_name:tag,published_at:'2026-11-21T00:00:00Z',draft:false,assets:[{id,name:'GlowTV.apk',state:'uploaded',size:100,digest:'sha256:'+'a'.repeat(64),browser_download_url:`https://github.com/nhshajib/NodeCast/releases/download/${tag}/GlowTV.apk`,download_count:n}]});
+ const chosen=selectDownloads([make('glowtv-v0.7.5',3,2),make('glowtv-v0.7.4',2,40),make('glowtv-android-v0.7.3',1,9)],{platforms:{}}).android;
+ assert.equal(chosen.downloadCount,2);assert.equal(chosen.previousDownloadCount,49);
+ assert.equal(totalDownloads(2,49),51);assert.equal(totalDownloads(2,null),2);assert.equal(totalDownloads(undefined,49),null);
 });

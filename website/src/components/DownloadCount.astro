@@ -1,24 +1,25 @@
 ---
 import type {DownloadRelease} from '../data/release';
-import {downloadCount} from '../lib/download-counts.mjs';
+import {totalDownloads} from '../lib/download-counts.mjs';
 import Icon from './Icon.astro';
 const {item,checkedAt}=Astro.props as {item:DownloadRelease;checkedAt:string};
-const count=downloadCount(item.downloadCount);
+const previous=Number.isSafeInteger(item.previousDownloadCount)?item.previousDownloadCount as number:0;
+const count=totalDownloads(item.downloadCount,previous);
 const date=new Date(checkedAt);
 ---
-<div class="download-activity" data-download-count data-asset-id={item.assetId} data-asset-url={item.url}>
- <p class="download-activity-value"><Icon name="download" size={24}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · v{item.version}</span></p>
+<div class="download-activity" data-download-count data-asset-id={item.assetId} data-asset-url={item.url} data-previous={previous}>
+ <p class="download-activity-value"><Icon name="download" size={24}/><strong data-count-value aria-live="polite" aria-atomic="true">{count===null?'Download count unavailable':`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`}</strong><span>on GitHub · all versions</span></p>
  <p class="download-activity-note">File downloads, not unique users or installs. <time data-count-date datetime={checkedAt}>Checked {Number.isNaN(date.valueOf())?'at build time':date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'})}.</time></p>
 </div>
 <script>
  import {assetDownloadCount,cachedDownloadCount} from '../lib/download-counts.mjs';
  for(const element of document.querySelectorAll<HTMLElement>('[data-download-count]')){
-  const id=Number(element.dataset.assetId),url=element.dataset.assetUrl;
+  const id=Number(element.dataset.assetId),url=element.dataset.assetUrl,previous=Number(element.dataset.previous)||0;
   if(!Number.isSafeInteger(id)||id<=0||!url)continue;
   const key=`glowtv.github-downloads.v1:${id}`;
   const show=(count:number,checkedAt:number)=>{
    const value=element.querySelector('[data-count-value]'),time=element.querySelector('time');
-   const label=`${count.toLocaleString('en')} ${count===1?'download':'downloads'}`;
+   const total=count+previous;const label=`${total.toLocaleString('en')} ${total===1?'download':'downloads'}`;
    if(value&&value.textContent!==label)value.textContent=label;
    if(time){const date=new Date(checkedAt);time.dateTime=date.toISOString();time.textContent=`Checked ${date.toLocaleDateString('en',{day:'numeric',month:'short',year:'numeric'})}.`;}
   };

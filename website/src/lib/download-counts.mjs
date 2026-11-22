@@ -10,3 +10,9 @@ export function cachedDownloadCount(value, expectedURL, now) {
  if (!value || value.url !== expectedURL || !Number.isFinite(value.checkedAt) || value.checkedAt > now || now - value.checkedAt >= 300000) return null;
  return downloadCount(value.count);
 }
+/** All-version total: the current file plus every earlier version's file. */
+export function totalDownloads(current, previous) {
+ const now = downloadCount(current);
+ if (now === null) return null;
+ return now + (downloadCount(previous) ?? 0);
+}

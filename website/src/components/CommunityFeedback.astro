@@ -1,44 +1,67 @@
 ---
 import feedback from '../data/feedback.json';
 import Icon from './Icon.astro';
-// Quotes are shown exactly as supplied in feedback.json. No star rating or
-// AggregateRating markup is added: these comments are not verified store ratings.
+// Quotes are shown exactly as supplied in feedback.json. No AggregateRating markup:
+// these are comments collected from social media, not verified store ratings.
 const initials=(name:string)=>name.split(/\s+/).map(part=>part[0]).join('').slice(0,2).toUpperCase();
-const first=feedback.slice(0,3),rest=feedback.slice(3);
 ---
-<section class="section community-feedback" aria-labelledby="community-feedback-title">
- <div class="section-head">
-  <h2 id="community-feedback-title">What GlowTV users say</h2>
-  <p class="feedback-context">Reviews collected from GlowTV users across social media platforms.</p>
+<section class="section community-feedback" aria-labelledby="community-feedback-title" data-carousel>
+ <div class="feedback-head">
+  <div class="section-head">
+   <h2 id="community-feedback-title">What GlowTV users say</h2>
+   <p class="feedback-context">Reviews collected from GlowTV users across social media platforms.</p>
+  </div>
+  <div class="feedback-controls"><button type="button" data-review-prev aria-label="Previous reviews"><Icon name="chevron-left" size={22}/></button><button type="button" data-review-next aria-label="Next reviews"><Icon name="chevron-right" size={22}/></button></div>
  </div>
- <ul class="feedback-grid">{first.map(review=><li class="feedback-card"><figure><blockquote><p>{review.quote}</p></blockquote><figcaption><span class="feedback-avatar" aria-hidden="true">{initials(review.name)}</span><span class="feedback-name">{review.name}{review.excerpt&&<span class="feedback-excerpt">Excerpt</span>}</span></figcaption></figure></li>)}</ul>
- {rest.length>0&&<details class="feedback-more"><summary>Read {rest.length} more comments</summary><ul class="feedback-grid">{rest.map(review=><li class="feedback-card"><figure><blockquote><p>{review.quote}</p></blockquote><figcaption><span class="feedback-avatar" aria-hidden="true">{initials(review.name)}</span><span class="feedback-name">{review.name}{review.excerpt&&<span class="feedback-excerpt">Excerpt</span>}</span></figcaption></figure></li>)}</ul></details>}
+ <div class="feedback-track" tabindex="0" role="region" aria-label={`${feedback.length} user reviews. Swipe, use the arrow keys or the previous and next buttons to see more.`}><ul class="feedback-list">
+  {feedback.map(review=><li class="feedback-card"><figure><blockquote><p>{review.quote}</p></blockquote><figcaption><span class="feedback-avatar" aria-hidden="true">{initials(review.name)}</span><span class="feedback-name">{review.name}{review.excerpt&&<span class="feedback-excerpt">Excerpt</span>}</span></figcaption></figure></li>)}
+ </ul></div>
  <div class="feedback-actions">
   <a class="button secondary" href="https://github.com/nhshajib/NodeCast/issues/new?title=GlowTV%20feedback">Share your experience <Icon name="arrow-right" size={18}/></a>
   <a class="button secondary" href="https://github.com/nhshajib/NodeCast/issues/new?labels=enhancement&amp;title=Feature%20request">Request a feature <Icon name="plus" size={18}/></a>
  </div>
 </section>
+<script>
+ // Swipe on touch, arrow keys on the focused track, or the buttons. Never rotates on its own.
+ for(const section of document.querySelectorAll<HTMLElement>('[data-carousel]')){
+  const track=section.querySelector<HTMLElement>('.feedback-track');
+  const prev=section.querySelector<HTMLButtonElement>('[data-review-prev]'),next=section.querySelector<HTMLButtonElement>('[data-review-next]');
+  if(!track||!prev||!next)continue;
+  const update=()=>{prev.disabled=track.scrollLeft<=4;next.disabled=track.scrollLeft+track.clientWidth>=track.scrollWidth-4;};
+  const step=(direction:number)=>{const card=track.querySelector<HTMLElement>('.feedback-card');const width=card?card.getBoundingClientRect().width+16:track.clientWidth*.8;track.scrollBy({left:direction*width,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});};
+  prev.addEventListener('click',()=>step(-1));next.addEventListener('click',()=>step(1));
+  track.addEventListener('keydown',event=>{if(event.key==='ArrowRight'){event.preventDefault();step(1);}else if(event.key==='ArrowLeft'){event.preventDefault();step(-1);}});
+  track.addEventListener('scroll',update,{passive:true});addEventListener('resize',update,{passive:true});update();
+ }
+</script>
 <style>
- .feedback-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0;padding:0;list-style:none}
- .feedback-card{min-width:0;margin:0;display:flex}
- .feedback-card figure{display:flex;flex-direction:column;justify-content:space-between;gap:20px;margin:0;width:100%;padding:24px;border:1px solid var(--line);border-radius:var(--radius-lg,20px);background:var(--surface)}
- .feedback-card blockquote{margin:0;position:relative}
- .feedback-card blockquote::before{content:"\201C";display:block;height:28px;font-size:56px;line-height:1;font-weight:600;color:var(--green)}
- .feedback-card blockquote p{margin:0;font-size:16px;line-height:1.65;color:var(--ink);overflow-wrap:anywhere}
+ .feedback-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px}
+ .feedback-controls{display:flex;gap:8px;margin-bottom:40px}
+ .feedback-controls button{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);cursor:pointer;transition:background-color .15s ease,opacity .15s ease}
+ .feedback-controls button:hover:not(:disabled){background:var(--surface-2)}
+ .feedback-controls button:disabled{opacity:.4;cursor:default}
+ .feedback-track{display:flex;gap:16px;margin:0 calc(-1 * var(--gutter));padding:4px var(--gutter) 8px;list-style:none;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 var(--gutter);overscroll-behavior-x:contain;scrollbar-width:none}
+ .feedback-track::-webkit-scrollbar{display:none}
+ .feedback-list{display:flex;gap:inherit;margin:0;padding:0;list-style:none}
+ .feedback-card{flex:0 0 min(400px,82vw);min-width:0;margin:0;display:flex;scroll-snap-align:start}
+ .feedback-card figure{display:flex;flex-direction:column;justify-content:space-between;gap:24px;margin:0;width:100%;padding:28px;border:1px solid var(--line);border-radius:var(--radius-lg,20px);background:var(--surface)}
+ .feedback-card blockquote{margin:0}
+ .feedback-card blockquote::before{content:"\201C";display:block;height:32px;font-family:var(--serif);font-size:64px;line-height:1;color:var(--green)}
+ .feedback-card blockquote p{margin:0;font-family:var(--serif);font-size:19px;line-height:1.55;color:var(--ink);overflow-wrap:anywhere}
  .feedback-card figcaption{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:600;color:var(--ink)}
- .feedback-avatar{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--mint);color:var(--deep);font-size:14px;font-weight:600;letter-spacing:0}
+ .feedback-avatar{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:50%;background:var(--mint);color:var(--deep);font-size:14px;font-weight:600}
  .feedback-name{display:flex;flex-direction:column;line-height:1.3}
  .feedback-excerpt{font-size:13px;font-weight:500;color:var(--muted)}
- .feedback-more{margin-top:16px}
- .feedback-more summary{display:inline-flex;align-items:center;min-height:48px;cursor:pointer;color:var(--link);font-size:16px;font-weight:600}
- .feedback-more[open] summary{margin-bottom:8px}
  .feedback-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
- @media(max-width:900px){.feedback-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
  @media(max-width:640px){
-  .feedback-grid{grid-template-columns:1fr;gap:12px}
-  .feedback-card figure{padding:16px;gap:16px;border:0;border-radius:var(--cell-radius,12px);background:var(--ios-cell,var(--surface))}
-  .feedback-card blockquote::before{height:20px;font-size:40px}
-  .feedback-card blockquote p{font-size:16px;line-height:1.5}
+  .feedback-head{align-items:flex-end}
+  .feedback-controls{margin-bottom:24px}
+  .feedback-controls button{width:44px;height:44px}
+  .feedback-track{gap:12px}
+  .feedback-card{flex-basis:84vw}
+  .feedback-card figure{padding:20px;gap:20px;border:0;border-radius:var(--cell-radius,12px);background:var(--ios-cell,var(--surface))}
+  .feedback-card blockquote::before{height:24px;font-size:48px}
+  .feedback-card blockquote p{font-size:18px}
   .feedback-actions{flex-direction:column;align-items:stretch;gap:8px;margin-top:20px}
   .feedback-actions .button{width:100%}
  }

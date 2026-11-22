@@ -73,7 +73,7 @@ try{
   assert((await counter.innerText()).includes('not unique users or installs'),'Counter must explain its scope');
   const feedback=downloadPage.locator('.community-feedback');
   assert.equal(await feedback.locator('figure').count(),9,'All supplied comments remain available');
-  await feedback.locator('summary').click();assert(await feedback.getByText('Rachel Bennett',{exact:true}).isVisible(),'More feedback is keyboard/touch accessible');
+  const nextReview=feedback.locator('[data-review-next]');for(let i=0;i<12&&!(await feedback.getByText('Rachel Bennett',{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth}));i++){await nextReview.click();await downloadPage.waitForTimeout(250);}assert(await feedback.getByText('Rachel Bennett',{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth}),'Every review is reachable with the next button, not only by swiping');
   assert(!(await feedback.innerText()).includes('4.7'),'No invented aggregate rating');
   if(item.legacy)assert((await downloadPage.locator('.download-notice').innerText()).includes('not included'),'Legacy design notice: '+edition);
  }
@@ -87,12 +87,12 @@ try{
    requests++;await route.fulfill({json:{id:countItem.assetId,browser_download_url:countItem.url,download_count:1234567}});
   });
   const page=await context.newPage();await page.goto(origin+'/download/iphone/');
-  await page.getByText('1,234,567 downloads',{exact:true}).waitFor();
+  const live=(1234567+(countItem.previousDownloadCount||0)).toLocaleString('en')+' downloads';await page.getByText(live,{exact:true}).waitFor();
   for(const width of [360,393,412,768,1280]){await page.setViewportSize({width,height:915});assert(!await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'Large live count must wrap on phones');}
-  await page.reload();await page.getByText('1,234,567 downloads',{exact:true}).waitFor();assert.equal(requests,1,'Fresh session cache prevents repeated API calls');await context.close();
+  await page.reload();await page.getByText(live,{exact:true}).waitFor();assert.equal(requests,1,'Fresh session cache prevents repeated API calls');await context.close();
   const offline=await auditContext({viewport:{width:360,height:900}});await offline.route('https://api.github.com/repos/nhshajib/NodeCast/releases/assets/*',route=>route.fulfill({status:429,json:{message:'Rate limit'}}));
   const page2=await offline.newPage();await page2.goto(origin+'/download/iphone/');
-  const expected=Number.isSafeInteger(countItem.downloadCount)?`${countItem.downloadCount.toLocaleString('en')} ${countItem.downloadCount===1?'download':'downloads'}`:'Download count unavailable';
+  const totalSnap=Number.isSafeInteger(countItem.downloadCount)?countItem.downloadCount+(countItem.previousDownloadCount||0):null;const expected=totalSnap!==null?`${totalSnap.toLocaleString('en')} ${totalSnap===1?'download':'downloads'}`:'Download count unavailable';
   assert.equal(await page2.locator('[data-count-value]').innerText(),expected,'Rate limits retain the honest dated snapshot');await offline.close();
  }
  report.interactions=['Per-edition direct download links, features, checksums and legacy notices','Per-file live download counts, rate-limit fallback, caching and mobile large numbers','Supplied feedback, excerpt attribution and expandable comments; no invented aggregate rating','FAQ keyboard toggle','gallery arrow-key scrolling, tabs and previous/next buttons','24px pointer targets on home','no visible placeholders','iPhone, Android and Fire TV download detection'];
