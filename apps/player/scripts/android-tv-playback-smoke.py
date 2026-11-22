@@ -25,8 +25,7 @@ def find(label, timeout=15, scroll=False):
  while time.monotonic()<end:
   root=dump()
   parents={child:parent for parent in root.iter('node') for child in parent}
-  if label!='Show player controls' and REMOTE and any(n.get('content-desc')=='Show player controls' and n.get('focused')=='true' for n in root.iter('node')):
-   remote.key(23);continue
+  if label!='Show player controls' and REMOTE and remote.wake_controls(root):continue
   nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))

@@ -164,7 +164,7 @@ def wait_tv_text(labels, present=True, timeout=20):
   texts={(n.get('text')or'').strip() for n in root.iter('node')} | {(n.get('content-desc')or'').strip() for n in root.iter('node')}
   found=any(label in texts for label in labels)
   if found==present:return
-  if present and any(n.get('content-desc')=='Show player controls' and n.get('focused')=='true' for n in root.iter('node')):h.remote.key(23)
+  if present:h.remote.wake_controls(root)
   time.sleep(.15)
  raise AssertionError(f'TV UI did not settle: {labels}, present={present}')
 def close_tv_info():

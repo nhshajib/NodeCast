@@ -120,5 +120,18 @@ class InputDriverTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'did not respond'):
                 reader.dump()
 
+    def test_stale_reveal_snapshot_never_selects_the_new_menu_back_button(self):
+        old = ET.fromstring('<hierarchy><node content-desc="Show player controls" focused="true"/></hierarchy>')
+        menu = ET.fromstring('<hierarchy><node content-desc="Back to video" focused="true"/></hierarchy>')
+        with patch.object(remote, 'tree', return_value=menu), patch.object(remote, 'key') as key, patch.object(remote.time, 'sleep'):
+            self.assertTrue(remote.wake_controls(old))
+            key.assert_not_called()
+
+    def test_still_focused_reveal_control_gets_exactly_one_select(self):
+        root = ET.fromstring('<hierarchy><node content-desc="Show player controls" focused="true"/></hierarchy>')
+        with patch.object(remote, 'tree', return_value=root), patch.object(remote, 'key') as key, patch.object(remote.time, 'sleep'):
+            self.assertTrue(remote.wake_controls(root))
+            key.assert_called_once_with(23)
+
 if __name__ == '__main__':
     unittest.main()

@@ -61,12 +61,21 @@ def route(nodes,start,goal):
  return []
 def focused(root):return next((n for n in root.iter('node') if n.get('focused')=='true'),None)
 def key(code):adb('shell','input','keyevent',code);time.sleep(.15)
+def wake_controls(root=None):
+ current=focused(tree() if root is None else root)
+ if current is None or name(current)!='Show player controls':return False
+ # A menu may mount after this accessibility snapshot. Its preferred Back
+ # control then owns Select. Recheck before waking so we never close that
+ # new menu (or toggle playback) using a stale reveal-control snapshot.
+ time.sleep(.35);settled=focused(tree())
+ if settled is not None and name(settled)=='Show player controls':key(23)
+ return True
 def focus(label,timeout=100):
  end=time.monotonic()+timeout;seen=collections.Counter();scan=20;history=[]
  while time.monotonic()<end:
   root=tree();nodes=actions(root);current=focused(root)
   history.append({"focus":name(current)if current is not None else None,"bounds":bounds(current)if current is not None else None})
-  if label!='Show player controls' and current is not None and name(current)=='Show player controls':key(23);continue
+  if label!='Show player controls' and wake_controls(root):continue
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
   if current is not None and name(current) in RAIL_LABELS and label not in RAIL_LABELS:
    key(22);continue
