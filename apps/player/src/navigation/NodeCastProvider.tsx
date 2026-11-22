@@ -50,6 +50,7 @@ import { hydrateMedia } from '../catalog';
 import { clearRecents as hideRecents, recordViewing, resumePosition, timeLabel, markWatched } from '../activity';
 import type { PlaybackSnapshot, ViewingEntry } from '../activity';
 import { clearProfileData, readCatalog, writeCatalog, readViewing, writeViewing } from '../libraryStore';
+import { RefreshGate, refreshSummary, stageRefresh } from '../refreshPipeline';
 import { haptic } from '../haptics';
 import { Artwork, SettingsRow, s } from './shared';
 import { isSheet } from './types';
@@ -77,6 +78,7 @@ let pageCounter = 0;
 
 function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const { width: windowWidth } = useWindowDimensions();
+  const refreshGate = useRef(new RefreshGate());
   const theme = useThemeChoice();
   const family = useFamily();
   const sleepTimer = useSleepTimer();
@@ -303,9 +305,18 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
           }
         }
       }
+      const summaries: string[] = [];
       const results = await Promise.allSettled(updates.map(async id => {
-        const items = await loadLibrary(provider, id, controller.signal);
-        if (controller.signal.aborted) return;
+        const ticket = refreshGate.current.begin(profileId, id);
+        const fetched = await loadLibrary(provider, id, controller.signal);
+        if (controller.signal.aborted || !refreshGate.current.isCurrent(ticket, vaultRef.current.activeId)) return;
+        // Validate and compare before committing; an empty response never replaces a working library.
+        const previous = memory[id];
+        const outcome = stageRefresh(previous, fetched);
+        const summary = refreshSummary(outcome, !!previous?.length);
+        if (summary) summaries.push(summary);
+        if (!outcome.accept) return;
+        const items = outcome.items;
         commit(id, items); fetchedAt.current[id] = Date.now(); setUpdatedAt(current => ({ ...current, [id]: new Date().toISOString() }));
         void writeCatalog(profileId, id, items).catch(() => { if (!controller.signal.aborted) setLibraryNotice('Library loaded. Offline browsing could not be saved on this device.'); });
       }));
@@ -317,7 +328,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
           const result = failures[0] as PromiseRejectedResult;
           setLibraryError(result.reason instanceof ProviderError ? result.reason.message : 'Could not load your library. Try again.');
         }
-      } else setLibraryNotice('');
+      } else setLibraryNotice(summaries[0] || '');
       setLoading(false); setRefreshing(false);
     })();
     return () => controller.abort();
@@ -510,10 +521,11 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const guideChannels = useMemo(() => allItems.filter(item => item.kind === 'live' && !hiddenGroups.includes(item.group)), [allItems, hiddenGroups]);
   const authorize = () => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; };
   const renderGuide = (scrollRef?: React.Ref<unknown>,settingsOnly=false) => active ? <FullGuide settingsOnly={settingsOnly} onOpenSettings={()=>open({type:'guide-settings'})} onSettingsDone={back} listRef={scrollRef} onOpenProgramme={(item, programme) => open({ type: 'programme', item, programme })} onAuthorize={() => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; }} profile={active} channels={guideChannels} onPlay={item => { void launch(item); }} onSave={guide => updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === active.id ? { ...profile, guide } : profile) }))} /> : <Empty icon="grid-outline" title="Your TV guide" message="Connect a playlist, then add its guide source to see schedules."><Button title="Connect playlist" onPress={() => addProfile()} /></Empty>;
+  const recentlyAdded = useMemo(() => { const since = Date.now() - 30 * 86400000; return allItems.filter(item => item.kind !== 'live' && !!item.added && item.added >= since && !hiddenGroups.includes(item.group)).sort((a, b) => b.added! - a.added!).slice(0, 10); }, [allItems, hiddenGroups]);
   const renderHome = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <HomeScreen scrollRef={scrollRef} active={active} demo={demo} profileCount={vault.profiles.length} loading={loading} liveCount={demo ? demoLibrary.filter(i => i.kind === 'live').length : cache.live?.length}
     favoriteIds={favorites} onFavorite={toggleFavorite} onCategory={group => browse('live', group)} liveChannels={allItems.filter(item => item.kind === 'live')} onSearch={openSearch} preview={preview} savedCount={saved.length} playerName={playerName} error={libraryError}
     onRetry={refreshLibrary} onAdd={() => addProfile()} onDemo={startDemo} onProfiles={openProfiles}
-    continueWatching={continueWatching} recentChannels={recentChannels.map(entry => allItems.find(item => item.id === entry.item.id) || (provider ? hydrateMedia(entry.item, provider) : entry.item))} onResume={entry => { void launch(allItems.find(item => item.id === entry.item.id) || entry.item, false, 'internal'); }} onRemove={id => removeViewing(id)} onClearRecents={confirmClearRecents}
+    recentlyAdded={recentlyAdded} continueWatching={continueWatching} recentChannels={recentChannels.map(entry => allItems.find(item => item.id === entry.item.id) || (provider ? hydrateMedia(entry.item, provider) : entry.item))} onResume={entry => { void launch(allItems.find(item => item.id === entry.item.id) || entry.item, false, 'internal'); }} onRemove={id => removeViewing(id)} onClearRecents={confirmClearRecents}
     onBrowse={section => browse(section)} onSaved={openFavorites} onPlay={play} onPlayers={() => open({ type: 'players' })}
     network={null}
   />;
@@ -561,7 +573,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       case 'guide-settings': return active?renderGuide(undefined,true):null;
       case 'organize': {
         const state = views[page.view]; const section = sectionOf(page.view, state);
-        return <><LibraryOptions section={section} sort={active?.library?.sort?.[section] || 'provider'} refreshMinutes={active?.library?.refreshMinutes || 30}
+        return <><LibraryOptions section={section} hasDates={allItems.some(item => item.kind === section && !!item.added)} sort={active?.library?.sort?.[section] || 'provider'} refreshMinutes={active?.library?.refreshMinutes || 30}
           onRefreshMinutes={minutes => saveProfile(profile => ({ ...profile, library: { ...profile.library, refreshMinutes: minutes } }), 'Could not save refresh policy.')}
           onSort={order => saveProfile(profile => ({ ...profile, library: { ...profile.library, sort: { ...profile.library?.sort, [section]: order } } }), 'Could not save sort order.')}
           scope={state.scope} onScope={value => setView(page.view, { scope: value, category: 'All' })} groups={Array.from(new Set(allItems.map(item => item.group))).sort()} hidden={hiddenGroups} favorites={saved}

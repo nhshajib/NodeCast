@@ -1,8 +1,10 @@
 import type { Media, Section } from './provider.ts';
-export type SortOrder = 'provider' | 'az' | 'za';
+export type SortOrder = 'provider' | 'az' | 'za' | 'newest';
 export type LibraryPreferences = { tvSearchScope?: Partial<Record<Section, 'category' | 'section' | 'all'>>; tvLiveLayout?: 'list' | 'grid'; tvChannelLogos?: boolean; sort?: Partial<Record<Section, SortOrder>>; refreshMinutes?: 30 | 60 | 360 | 1440 };
 export function sortMedia(items: Media[], order: SortOrder = 'provider'): Media[] {
   if (order === 'provider') return items;
+  // Newest first uses only provider-reported dates; undated titles follow in provider order.
+  if (order === 'newest') return items.map((item, index) => ({ item, index })).sort((a, b) => (b.item.added ?? -Infinity) - (a.item.added ?? -Infinity) || a.index - b.index).map(row => row.item);
   const direction = order === 'az' ? 1 : -1;
   return items.map((item, index) => ({ item, index })).sort((a, b) => direction * a.item.name.localeCompare(b.item.name, undefined, { numeric: true, sensitivity: 'base' }) || a.index - b.index).map(row => row.item);
 }

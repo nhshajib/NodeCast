@@ -4,7 +4,7 @@ export type Section = 'live' | 'movies' | 'series';
 export type Media = {
   id: string; name: string; group: string; logo?: string; artwork?: number; url?: string;
   playbackURLs?: string[]; externalURL?: string; headers?: Record<string, string>;
-  archiveDays?:number; catchup?:boolean; accessGroup?: string; epgId?: string; seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
+  archiveDays?:number; catchup?:boolean; /** Provider-reported time the title was added (ms). Absent when the provider gives none. */ added?: number; accessGroup?: string; epgId?: string; seriesId?: string; kind: Section; containerExtension?: string; streamId?: string; description?: string; rating?: string;
 };
 export class ProviderError extends Error {
   status?: number;
@@ -149,6 +149,13 @@ export async function authenticate(provider: Provider, signal?: AbortSignal): Pr
     throw new ProviderError('Login rejected or account inactive. Check your username and password.');
   }
 }
+/** Xtream timestamps are Unix seconds. Anything implausible is treated as unknown, never as "new". */
+export function providerTime(value: unknown): number | undefined {
+  const seconds = typeof value === 'number' ? value : typeof value === 'string' && /^\d{9,11}$/.test(value.trim()) ? Number(value) : NaN;
+  if (!Number.isFinite(seconds)) return undefined;
+  const ms = seconds * 1000;
+  return ms > Date.UTC(2005, 0, 1) && ms < Date.now() + 86400000 ? ms : undefined;
+}
 export async function loadLibrary(provider: Provider, section: Section, signal?: AbortSignal): Promise<Media[]> {
   if (provider.kind === 'm3u') {
     const playlist = provider.localText !== undefined ? { text: provider.localText, base: provider.address } : await loadM3U(provider.address, signal, provider.headers);
@@ -172,7 +179,7 @@ export async function loadLibrary(provider: Provider, section: Section, signal?:
       archiveDays:section==='live'?((row.tv_archive===true||String(row.tv_archive)==='1')&&Number.isInteger(Number(row.tv_archive_duration))&&Number(row.tv_archive_duration)>0?Math.min(30,Number(row.tv_archive_duration)):0):undefined,
       epgId: typeof row.epg_channel_id === 'string' ? row.epg_channel_id : undefined, headers: safeHeaders(provider.headers), logo: artwork(row.stream_icon || row.cover), kind: section, streamId: String(id),
       description: typeof row.plot === 'string' ? row.plot : undefined,
-      rating: row.rating ? String(row.rating) : undefined, containerExtension: section === 'live' ? 'm3u8' : ext,
+      rating: row.rating ? String(row.rating) : undefined, containerExtension: section === 'live' ? 'm3u8' : ext, added: providerTime(section === 'series' ? row.last_modified : row.added),
       url: section === 'series' ? undefined : section === 'live' && artwork(row.direct_source) ? artwork(row.direct_source) : streamURL(provider, section === 'live' ? 'live' : 'movie', String(id), section === 'live' ? 'm3u8' : ext),
     }];
   });

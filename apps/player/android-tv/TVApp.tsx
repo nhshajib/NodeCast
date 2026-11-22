@@ -32,6 +32,9 @@ import SeriesEpisodes from '../src/SeriesEpisodes';
 import RetainedList from '../src/RetainedList';
 import GuideScreen from '../src/GuideScreen';
 import { readCatalog, writeCatalog, clearProfileData } from '../src/libraryStore';
+import { RefreshGate, stageRefresh } from '../src/refreshPipeline';
+import { rankedSearch } from '../src/catalogQuery';
+import { features } from '../src/featureFlags';
 import TVConnection from './TVConnection';
 import { followingEpisode } from '../src/episodes';
 import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from 'react';
@@ -106,6 +109,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const [edit, setEdit] = useState<Profile | undefined>();
   const [libraryData, setLibraryData] = useState<{ key: string; items: Media[] }>({ key: '', items: [] });
   const memory = useRef(new Map<string, { items: Media[]; savedAt: string; artworkFresh?: boolean }>());
+  const refreshGate = useRef(new RefreshGate());
   const guideWindows=useRef(new Map<string,number>());
   const scrollMemory = useRef(new Map<string, number>());
   const [updatedAt, setUpdatedAt] = useState('');
@@ -207,8 +211,13 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
       const artworkMissing=needsTVArtwork(page,sections,saved,profile.library?.tvLiveLayout,profile.library?.tvChannelLogos);
       if(!forced&&!missingArchiveMetadata&&!artworkMissing&&saved.length&&saved.every(row=>row&&Date.now()-Date.parse(row.savedAt)<(active.library?.refreshMinutes||30)*60000)){setBusy(false);return;}
       const results = await Promise.allSettled(sections.map(async section => {
-        const items = await loadLibrary(profile.provider, section, controller.signal);
-        if (controller.signal.aborted) return null;
+        const ticket = refreshGate.current.begin(profile.id, section);
+        const fetched = await loadLibrary(profile.provider, section, controller.signal);
+        if (controller.signal.aborted || !refreshGate.current.isCurrent(ticket, vaultRef.current.activeId)) return null;
+        // An empty response never replaces a working library; exact duplicate IDs are dropped.
+        const outcome = stageRefresh(memory.current.get(`${profile.id}:${section}`)?.items, fetched);
+        if (!outcome.accept) return memory.current.get(`${profile.id}:${section}`) || null;
+        const items = outcome.items;
         const row = { items, savedAt: new Date().toISOString(), artworkFresh:true };
         memory.current.set(`${profile.id}:${section}`, row);
         void writeCatalog(profile.id, section, items).catch(() => {});
@@ -232,7 +241,8 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
       if(controller.signal.aborted)return;setCatalogVersion(value=>value+1);
       const results=await Promise.allSettled(sections.map(async(section,index)=>{
         if(saved[index]&&Date.now()-Date.parse(saved[index]!.savedAt)<(profile.library?.refreshMinutes||30)*60000)return;
-        const items=await loadLibrary(profile.provider,section,controller.signal);if(controller.signal.aborted)return;
+        const ticket=refreshGate.current.begin(profile.id,section);
+        const outcome=stageRefresh(memory.current.get(`${profile.id}:${section}`)?.items,await loadLibrary(profile.provider,section,controller.signal));if(controller.signal.aborted||!refreshGate.current.isCurrent(ticket,vaultRef.current.activeId)||!outcome.accept)return;const items=outcome.items;
         memory.current.set(`${profile.id}:${section}`,{items,savedAt:new Date().toISOString(),artworkFresh:true});void writeCatalog(profile.id,section,items).catch(()=>{});
       }));
       if(controller.signal.aborted)return;setCatalogVersion(value=>value+1);
@@ -260,14 +270,14 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   const scope: SearchScope = searchPage ? 'all' : browse.scope;
   const index = useMemo(() => createSearchIndex(page === 'favorites' ? items.filter(i => favoriteIds.has(i.id)) : items.filter(i => scope === 'all' && !!deferred.trim() || i.kind === page)), [items, page, favoritesForIndex, scope, !!deferred.trim()]);
   const groups = useMemo(() => ['All', ...new Set(index.map(entry => entry.item.group).filter(group => !!group && group!=='All' && !active?.hiddenGroups?.includes(group)))], [index, active?.hiddenGroups]);
-  const matched = useMemo(() => searchIndex(index, deferred, deferred.trim() && scope !== 'category' ? 'All' : group, active?.hiddenGroups || [], page === 'favorites' || !!deferred.trim() && browse.hidden), [index, deferred, group, scope, browse.hidden, page, active?.hiddenGroups]);
+  const matched = useMemo(() => features.rankedSearch && deferred.trim() ? rankedSearch(index.map(entry => entry.item), deferred, scope !== 'category' ? 'All' : group, active?.hiddenGroups || [], page === 'favorites' || browse.hidden) : searchIndex(index, deferred, deferred.trim() && scope !== 'category' ? 'All' : group, active?.hiddenGroups || [], page === 'favorites' || !!deferred.trim() && browse.hidden), [index, deferred, group, scope, browse.hidden, page, active?.hiddenGroups]);
   const pageSort=active?.library?.sort?.[page==='movies'||page==='series'?page:'live']||'provider';
   const filtered=useMemo(()=>{
     const recentIds=new Set(recentOnly?viewing.filter(entry=>!entry.hiddenFromRecents).map(entry=>entry.item.id):[]);
     const allowed=recentOnly?matched.filter(item=>recentIds.has(item.id)):matched;
     const byId=page==='favorites'?new Map(allowed.map(item=>[item.id,item])):null;
-    return page==='favorites'?active?.favorites.flatMap(id=>{const item=byId?.get(id);return item?[item]:[]})||[]:sortTVMedia(allowed,pageSort);
-  },[matched,recentOnly,recentOnly?viewing:null,page,favoriteOrder,pageSort]);
+    return page==='favorites'?active?.favorites.flatMap(id=>{const item=byId?.get(id);return item?[item]:[]})||[]:features.rankedSearch&&deferred.trim()?allowed:sortTVMedia(allowed,pageSort);
+  },[matched,recentOnly,recentOnly?viewing:null,page,favoriteOrder,pageSort,deferred]);
   async function patchProfile(change: Partial<Profile>|((profile:Profile)=>Partial<Profile>)){const id=activeId;if(!id)return;await updateVault(current=>({...current,profiles:current.profiles.map(profile=>{if(profile.id!==id)return profile;const patch=typeof change==='function'?change(profile):change;return {...profile,...patch,...(patch.library?{library:{...profile.library,...patch.library,sort:{...profile.library?.sort,...patch.library.sort}}}:{} )};})}));}
   async function organizeSave(change:Partial<Profile>|((profile:Profile)=>Partial<Profile>)){setError('');try{await patchProfile(change);}catch(error){setError('Could not save library changes. Please try again.');throw error;}}
   function openOrganization(){setError('');setOrganizeSection(active?.provider.kind==='m3u'?'live':lastSection.current);setOrganizeMode('settings');setOverlay('organize');}
@@ -371,7 +381,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
   if(overlay==='storage')return sheet('Library & storage',<StorageSettings profile={active||null} onClearRecents={clearProfileRecents} onCleared={()=>{memory.current.clear();setUpdatedAt('')}} onClearHistory={()=>{if(activeId)void writeViewing(activeId,[]).then(()=>{viewingRef.current=[];setViewing([])}).catch(()=>setError('Could not clear history.'))}}/>);
   if(overlay==='family')return sheet('Family controls',<FamilySettings profile={active||null} groups={[...new Set(profileItems.map(item=>item.group))].sort()} onSave={restrictedGroups=>patchProfile({restrictedGroups})}/>);
   if(overlay==='players')return sheet('Playback',<PlaybackSettings choice={preferences.player} profile={active||null} compatibilityAvailable={hasCompatibilityPlayer()} error={error} onPlayer={player=>{void updatePreferences({player}).catch(()=>setError('Could not save player.'))}} onEngine={liveEngine=>{void patchProfile({liveEngine}).catch(()=>setError('Could not save engine.'))}} onFormat={liveFormat=>{void patchProfile({liveFormat}).catch(()=>setError('Could not save format.'))}}/>);
-  if(overlay==='organize'&&active)return sheet('Library organization',<TVLibraryOptions mode={organizeMode} onMode={setOrganizeMode} section={organizeSection} onSection={setOrganizeSection} m3u={active.provider.kind==='m3u'} groups={organizationGroups} hidden={active.hiddenGroups||[]} favorites={organizationFavorites} loading={organizeBusy} error={error} layout={active.library?.tvLiveLayout||'list'} logos={logos} sort={active.library?.sort?.[organizeSection]||'provider'} refreshMinutes={active.library?.refreshMinutes||30} scope={organizationScope} onScope={async scope=>{await organizeSave(profile=>({library:{tvSearchScope:{...profile.library?.tvSearchScope,[organizeSection]:scope}}}));setBrowseStates(current=>({...current,[organizationKey]:{...(current[organizationKey]||{query:'',group:'All',hidden:false}),scope}}));}} onLayout={layout=>organizeSave({library:{tvLiveLayout:layout}})} onLogos={()=>organizeSave(profile=>({library:{tvChannelLogos:!profile.library?.tvChannelLogos}}))} onSort={order=>organizeSave({library:{sort:{[organizeSection]:order}}})} onRefresh={minutes=>organizeSave({library:{refreshMinutes:minutes}})} onToggle={group=>organizeSave(profile=>({hiddenGroups:profile.hiddenGroups?.includes(group)?profile.hiddenGroups.filter(value=>value!==group):[...(profile.hiddenGroups||[]),group]}))} onMove={(id,direction)=>organizeSave(profile=>({favorites:moveTVFavorite(profile.favorites,id,direction)}))} onRemove={id=>organizeSave(profile=>({favorites:profile.favorites.filter(value=>value!==id)}))}/>);
+  if(overlay==='organize'&&active)return sheet('Library organization',<TVLibraryOptions hasDates={items.some(item=>item.kind===organizeSection&&!!item.added)} mode={organizeMode} onMode={setOrganizeMode} section={organizeSection} onSection={setOrganizeSection} m3u={active.provider.kind==='m3u'} groups={organizationGroups} hidden={active.hiddenGroups||[]} favorites={organizationFavorites} loading={organizeBusy} error={error} layout={active.library?.tvLiveLayout||'list'} logos={logos} sort={active.library?.sort?.[organizeSection]||'provider'} refreshMinutes={active.library?.refreshMinutes||30} scope={organizationScope} onScope={async scope=>{await organizeSave(profile=>({library:{tvSearchScope:{...profile.library?.tvSearchScope,[organizeSection]:scope}}}));setBrowseStates(current=>({...current,[organizationKey]:{...(current[organizationKey]||{query:'',group:'All',hidden:false}),scope}}));}} onLayout={layout=>organizeSave({library:{tvLiveLayout:layout}})} onLogos={()=>organizeSave(profile=>({library:{tvChannelLogos:!profile.library?.tvChannelLogos}}))} onSort={order=>organizeSave({library:{sort:{[organizeSection]:order}}})} onRefresh={minutes=>organizeSave({library:{refreshMinutes:minutes}})} onToggle={group=>organizeSave(profile=>({hiddenGroups:profile.hiddenGroups?.includes(group)?profile.hiddenGroups.filter(value=>value!==group):[...(profile.hiddenGroups||[]),group]}))} onMove={(id,direction)=>organizeSave(profile=>({favorites:moveTVFavorite(profile.favorites,id,direction)}))} onRemove={id=>organizeSave(profile=>({favorites:profile.favorites.filter(value=>value!==id)}))}/>);
   if (overlay === 'history') return sheet('Version history', <VersionHistory />);
   if (overlay === 'channel-options' && optionItem) return sheet('Channel playback', <ChannelPlaybackOptions key={optionItem.id} value={active?.channelPlayback?.[optionItem.id]} onSave={value => saveChannelOptions(optionItem, value)} />);
   if(overlay==='guide'&&active)return sheet('TV guide',<FullGuide onPreview={item=>{void open(item,true)}} onPreviewBounds={bounds=>setGuidePreviewBox(current=>current&&Math.abs(current.x-bounds.x)<1&&Math.abs(current.y-bounds.y)<1&&current.width===bounds.width?current:bounds)} initialFrom={guideWindows.current.get(active.id)} onWindowChange={from=>guideWindows.current.set(active.id,from)} onAuthorize={()=>{if(family.enabled&&!family.unlocked){family.request();return false;}return true;}} profile={active} channels={items.filter(item=>item.kind==='live'&&!active.hiddenGroups?.includes(item.group))} onPlay={item=>{void open(item)}} onSave={guide=>patchProfile({guide})}/>);

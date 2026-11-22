@@ -7,7 +7,7 @@ export const features = {
   /** Phase 1: SQLite catalogue store with legacy JSON fallback. */
   catalogRepository: true,
   /** Phase 2: ranked search, newest-first sort, staged refresh. */
-  rankedSearch: false,
+  rankedSearch: true,
   /** Phase 3: named lists, hidden items, series display options, autoplay countdown. */
   organization: false,
   /** Phase 4: guide health, matching suggestions and time offsets. */

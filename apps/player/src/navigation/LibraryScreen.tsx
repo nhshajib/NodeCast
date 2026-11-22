@@ -11,6 +11,8 @@ import SearchScopeControl from '../SearchScope';
 import { androidDesign, useThemeChoice } from '../theme';
 import { sortMedia } from '../libraryPreferences';
 import { createSearchIndex, searchIndex } from '../catalog';
+import { rankedSearch } from '../catalogQuery';
+import { features } from '../featureFlags';
 import type { Media } from '../provider';
 import { Button, Empty, Icon, LiveDot, colors, u } from '../ui';
 import { Artwork, s } from './shared';
@@ -55,9 +57,11 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   const index = useMemo(() => createSearchIndex(library), [library]);
   const sort = c.active?.library?.sort?.[section] || 'provider';
   const filtered = useMemo(() => {
-    const found = searchIndex(index, deferred, deferred.trim() && state.scope !== 'category' ? 'All' : state.category, c.hiddenGroups, favorites || includeHidden);
+    const group = deferred.trim() && state.scope !== 'category' ? 'All' : state.category;
+    if (features.rankedSearch) return rankedSearch(library, deferred, group, c.hiddenGroups, favorites || includeHidden, favorites ? 'provider' : sort);
+    const found = searchIndex(index, deferred, group, c.hiddenGroups, favorites || includeHidden);
     return favorites ? found : sortMedia(found, sort);
-  }, [index, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
+  }, [index, library, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
   const idleSearch = view === 'search' && !searching;
   const posterLayout = (view === 'watch' || view === 'movies' || view === 'series' || view === 'library') && !favorites && section !== 'live' && !allMediaSearch;
   // A new filter starts at the top. The list itself is not remounted per keystroke.

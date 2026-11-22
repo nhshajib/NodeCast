@@ -17,7 +17,8 @@ export type CatalogQuery = {
   allSections?: boolean;
   rank?: boolean; cursor?: string | null; limit?: number;
 };
-export type CatalogPage = { items: CatalogRow[]; total: number; snapshotId: string; nextCursor: string | null };
+export type QueryRow = Pick<MediaSummary, 'id' | 'name' | 'group' | 'kind' | 'accessGroup'> & { position: number; added?: number };
+export type CatalogPage<T extends QueryRow = CatalogRow> = { items: T[]; total: number; snapshotId: string; nextCursor: string | null };
 
 export const searchText = (row: Pick<MediaSummary, 'name' | 'group'>) => normalizeSearch(`${row.name} ${row.group}`);
 export const compactName = (name: string) => normalizeSearch(name).replace(/ /g, '');
@@ -37,7 +38,7 @@ export function rankOf(row: Pick<MediaSummary, 'name'>, terms: string[]) {
   if (terms.every(term => words.some(word => word.startsWith(term)))) return 2;
   return 3;
 }
-const blocked = (row: CatalogRow, q: CatalogQuery) => !q.unlocked && !!q.restrictedGroups?.length && (q.restrictedGroups.includes(row.group) || (!!row.accessGroup && q.restrictedGroups.includes(row.accessGroup)));
+const blocked = (row: QueryRow, q: CatalogQuery) => !q.unlocked && !!q.restrictedGroups?.length && (q.restrictedGroups.includes(row.group) || (!!row.accessGroup && q.restrictedGroups.includes(row.accessGroup)));
 
 export function encodeCursor(snapshotId: string, offset: number) { return `${snapshotId}~${offset}`; }
 export function decodeCursor(cursor: string | null | undefined, snapshotId: string) {
@@ -52,7 +53,7 @@ export function decodeCursor(cursor: string | null | undefined, snapshotId: stri
  * Filters, ranks, sorts and pages rows. Restrictions, hidden rules and scope are
  * applied before counting, so totals and pages never include rows the user can't see.
  */
-export function runQuery(rows: CatalogRow[], q: CatalogQuery, snapshotId: string): CatalogPage {
+export function runQuery<T extends QueryRow>(rows: T[], q: CatalogQuery, snapshotId: string): CatalogPage<T> {
   const terms = normalizeSearch(q.text || '').split(' ').filter(Boolean);
   const hiddenGroups = new Set(q.includeHidden ? [] : q.hiddenGroups || []);
   const hiddenItems = new Set(q.includeHidden || q.ids ? [] : q.hiddenItems || []);
@@ -68,7 +69,7 @@ export function runQuery(rows: CatalogRow[], q: CatalogQuery, snapshotId: string
     (!category || row.group === category) &&
     matches(row, terms));
   const sort = q.sort || 'provider';
-  const base = (a: CatalogRow, b: CatalogRow) => {
+  const base = (a: T, b: T) => {
     if (sort === 'az' || sort === 'za') return (sort === 'az' ? 1 : -1) * a.name.localeCompare(b.name, undefined, { numeric: true, sensitivity: 'base' }) || a.position - b.position;
     // Only genuine provider timestamps order "newest". Unknown dates follow, in provider order.
     if (sort === 'newest') return (b.added ?? -Infinity) - (a.added ?? -Infinity) || a.position - b.position;
@@ -77,7 +78,19 @@ export function runQuery(rows: CatalogRow[], q: CatalogQuery, snapshotId: string
   };
   const ranked = q.rank && terms.length ? kept.map(row => ({ row, rank: rankOf(row, terms) })).sort((a, b) => a.rank - b.rank || base(a.row, b.row)).map(entry => entry.row) : kept.sort(base);
   const offset = decodeCursor(q.cursor, snapshotId);
-  const limit = Math.max(1, Math.min(q.limit || 200, 1000));
+  // limit 0 returns every match (in-memory lists that virtualize their own rendering).
+  const limit = q.limit === 0 ? ranked.length || 1 : Math.max(1, Math.min(q.limit || 200, 1000));
   const items = ranked.slice(offset, offset + limit);
   return { items, total: ranked.length, snapshotId, nextCursor: offset + limit < ranked.length ? encodeCursor(snapshotId, offset + limit) : null };
+}
+
+/**
+ * Drop-in for 0.7.4's searchIndex: the same matches and hidden/category rules, ranked so exact
+ * names come first, then names starting with the query, then word prefixes, then broader matches.
+ * Without a query the provider (or chosen) order is kept.
+ */
+export function rankedSearch<T extends Omit<QueryRow, 'position'>>(items: T[], query: string, group = 'All', hidden: string[] = [], includeHidden = false, sort: CatalogSort = 'provider'): T[] {
+  const rows = items.map((item, position) => ({ item, row: { id: item.id, name: item.name, group: item.group, kind: item.kind, accessGroup: item.accessGroup, added: item.added, position } }));
+  const byPosition = rows.map(entry => entry.item);
+  return runQuery(rows.map(entry => entry.row), { profile: '', section: 'live', allSections: true, text: query, category: group, hiddenGroups: hidden, includeHidden, sort, rank: true, limit: 0 }, 'memory').items.map(row => byPosition[row.position]);
 }

@@ -24,3 +24,4 @@ import './transitions.test.mjs';
 
 import './ui-audit.test.mjs';
 import './catalog-repository.test.mjs';
+import './refresh-search.test.mjs';

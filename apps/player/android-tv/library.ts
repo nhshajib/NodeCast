@@ -13,6 +13,7 @@ export async function cachedTVSection(memory: Map<string, TVCatalog>, profile: s
 let collator: Intl.Collator | undefined;
 export function sortTVMedia(items: Media[], order: SortOrder = 'provider') {
   if (order === 'provider') return items;
+  if (order === 'newest') return items.map((item,index)=>({item,index})).sort((a,b)=>(b.item.added??-Infinity)-(a.item.added??-Infinity)||a.index-b.index).map(row=>row.item);
   collator ||= new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
   const compare = collator.compare;
   const direction = order === 'az' ? 1 : -1;

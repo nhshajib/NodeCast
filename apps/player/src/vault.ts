@@ -33,7 +33,7 @@ export function validateVault(value: unknown): Vault {
     if (p.library?.tvSearchScope && Object.entries(p.library.tvSearchScope).some(([key,value])=>!['live','movies','series'].includes(key)||!['category','section','all'].includes(value!))) throw new Error('Invalid TV search scope.');
     if (p.library?.tvLiveLayout !== undefined && !['list','grid'].includes(p.library.tvLiveLayout)) throw new Error('Invalid TV channel layout.');
     if (p.library?.tvChannelLogos !== undefined && typeof p.library.tvChannelLogos !== 'boolean') throw new Error('Invalid TV logo preference.');
-    if (p.library?.sort && Object.entries(p.library.sort).some(([key, value]) => !['live', 'movies', 'series'].includes(key) || !['provider', 'az', 'za'].includes(value!))) throw new Error('Invalid sort order.');
+    if (p.library?.sort && Object.entries(p.library.sort).some(([key, value]) => !['live', 'movies', 'series'].includes(key) || !['provider', 'az', 'za', 'newest'].includes(value!))) throw new Error('Invalid sort order.');
     if (p.library?.refreshMinutes !== undefined && ![30,60,360,1440].includes(p.library.refreshMinutes)) throw new Error('Invalid refresh interval.');
     if (p.restrictedGroups && (!Array.isArray(p.restrictedGroups) || p.restrictedGroups.some(group => typeof group !== 'string'))) throw new Error('Invalid restricted categories.');
     if (p.displayFit !== undefined && !['contain', 'cover'].includes(p.displayFit)) throw new Error('Invalid display fit.');
