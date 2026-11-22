@@ -176,6 +176,15 @@ def audit_settings(remote,out,fresh=False):
  if not fresh:remote.activate('Back')
  remote.activate('Live TV')
  if not fresh:remote.activate('All titles')
+ # A real remote must enter the wide list row from the left toolbar rather
+ # than jumping to the icon rail. No search/direct focus bypass is allowed.
+ remote.focus('Recently watched');time.sleep(.35);remote.key(20)
+ deadline=time.monotonic()+3
+ while time.monotonic()<deadline:
+  current=remote.focused(remote.tree())
+  if current is not None and remote.name(current)=='Play Example Live Test':break
+  time.sleep(.1)
+ else:raise AssertionError('Down from the library toolbar did not enter the first channel row')
  remote.focus('All');remote.horizontal('Remote News 8',22);remote.horizontal('All',21);remote.activate('Save favorite: Remote Channel 18');remote.activate('Smoke test');remote.activate('Save favorite: Example Live Test');remote.activate('Favorites');find('Play Example Live Test');remote.activate('Settings')
  remote.activate('Appearance');remote.activate('Light');checked('Light');remote.activate('Dark');checked('Dark');remote.activate('Back')
  remote.activate('Playback');remote.activate('Ask each time');checked('Ask each time');remote.activate('GlowTV player');checked('GlowTV player');remote.activate('Live TV options');remote.activate('Engine: Built-in VLC');checked('Engine: Built-in VLC');remote.activate('Engine: Automatic');checked('Engine: Automatic');remote.activate('Back')

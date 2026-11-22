@@ -143,5 +143,13 @@ class InputDriverTests(unittest.TestCase):
         with patch.object(helpers, 'REMOTE', False), patch.object(helpers, 'dump', return_value=root):
             self.assertEqual(helpers.find('Explore demo'), [63,1552,1017,1699])
 
+    def test_down_from_toolbar_prefers_aligned_wide_row_over_nearer_sidebar(self):
+        root = ET.fromstring('''<hierarchy>
+          <node content-desc="Recently watched" bounds="[263,426][651,518]"/>
+          <node content-desc="Favorites" bounds="[120,702][216,814]"/>
+          <node content-desc="Play Example Live Test" bounds="[290,550][1518,706]"/>
+        </hierarchy>''')
+        self.assertEqual(remote.route(list(root), 0, 2), [20])
+
 if __name__ == '__main__':
     unittest.main()

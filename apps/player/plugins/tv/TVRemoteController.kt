@@ -252,7 +252,11 @@ class TVRemoteController(private val activity: Activity) {
       val score = primary.toDouble() * primary + 4.0 * cross * cross + if (beam) 0.0 else 100000.0
       Triple(target, score, beam)
     }
-    val best = options.minByOrNull { it.second }
+    // A wide row's centre can be farther sideways than the rail's centre.
+    // Prefer the directional beam before comparing distance so Down from a
+    // toolbar enters the list instead of jumping sideways to the rail.
+    val aligned = options.filter { it.third }
+    val best = (if (aligned.isNotEmpty()) aligned else options).minByOrNull { it.second }
     val sign = if (positive) 1 else -1
     val canScroll = scroll != null && if (horizontal) scroll.canScrollHorizontally(sign) else scroll.canScrollVertically(sign)
     if (canScroll && (best == null || !best.third)) {
