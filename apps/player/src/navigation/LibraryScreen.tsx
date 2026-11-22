@@ -3,7 +3,7 @@ import {LibrarySkeleton} from '../Skeletons';
 import {useAnnouncement} from '../accessibility';
 import { Text } from '../Typography';
 import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react';
-import { useWindowDimensions, ActivityIndicator, FlatList, Keyboard, Platform, TextInput, View } from 'react-native';
+import { useWindowDimensions, ActivityIndicator, FlatList, Keyboard, Platform, ScrollView, TextInput, View } from 'react-native';
 import type { ListRenderItem } from 'react-native';
 import Pressable from '../FocusPressable';
 import RetainedList from '../RetainedList';
@@ -12,6 +12,8 @@ import { androidDesign, useThemeChoice } from '../theme';
 import { sortMedia } from '../libraryPreferences';
 import { createSearchIndex, searchIndex } from '../catalog';
 import { rankedSearch } from '../catalogQuery';
+import { deleteList, resolveSaved, withoutHidden } from '../organization';
+import { confirmDestructive } from '../confirmDestructive';
 import { features } from '../featureFlags';
 import type { Media } from '../provider';
 import { Button, Empty, Icon, LiveDot, colors, u } from '../ui';
@@ -20,10 +22,10 @@ import { favoritesMode, sectionOf, sections, useNodeCast } from './NodeCastProvi
 import { useTabScrollToTop } from './scrollToTop';
 import type { LibraryView } from './types';
 
-const PosterItem = React.memo(function PosterItem({ item, favorite, width, onPlay, onFavorite }: { width:number; item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void }) {
+const PosterItem = React.memo(function PosterItem({ item, favorite, width, onPlay, onFavorite, onOptions }: { width:number; item: Media; favorite: boolean; onPlay: (item: Media) => void; onFavorite: (item: Media) => void; onOptions: (item: Media) => void }) {
   useThemeChoice();
   return <View style={{ width, maxWidth:width, marginBottom: 24, gap: 8 }}>
-    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'LIVE, ':''}${item.group}`} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
+    <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'live, ':''}${item.group}`} accessibilityHint="Touch and hold for lists and more options" accessibilityActions={[{ name: 'longpress', label: 'More options' }]} onAccessibilityAction={() => onOptions(item)} onLongPress={() => onOptions(item)} onPress={() => onPlay(item)} style={{ gap: 8 }}><View style={{ aspectRatio: 0.73, width: '100%', borderRadius: 16, overflow: 'hidden', backgroundColor: colors.pale }}><Artwork item={item} poster /></View><Text numberOfLines={2} style={{ fontSize: 14, fontWeight: '600', color: colors.text }}>{item.name}</Text><Text numberOfLines={1} style={u.small}>{item.group}</Text></Pressable>
     <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={{ position: 'absolute', right: 10, top: 10, width: 44, height: 44, borderRadius: 16, backgroundColor: colors.panel, alignItems: 'center', justifyContent: 'center' }}><Icon name={favorite ? 'heart' : 'heart-outline'} size={17} color={colors.link} /></Pressable>
   </View>;
 });
@@ -31,7 +33,7 @@ const RowItem = React.memo(function RowItem({ item, favorite, demo, onPlay, onFa
   useThemeChoice();
   return <View style={s.mediaRow}>
     <Pressable accessibilityRole="button" accessibilityLabel={`Open ${item.name}, ${item.kind==='live'?'live, ':''}${item.group}`} onPress={() => onPlay(item)} style={[u.row, { flex: 1, gap: 16 }]}><Artwork item={item} /><View style={{ flex: 1, gap: 8 }}><Text numberOfLines={2} style={[u.label, { fontSize: 14, lineHeight: 20 }]}>{item.name}</Text><View style={[u.row, { gap: 8 }]}>{item.kind === 'live' && <LiveDot />}<Text numberOfLines={2} style={[u.small, { flex: 1 }]}>{demo ? 'Public sample' : item.group}</Text></View></View></Pressable>
-    {item.kind === 'live' && <Pressable accessibilityRole="button" accessibilityLabel={`Playback options for ${item.name}`} onPress={() => onOptions(item)} style={s.iconAction}><Icon name="ellipsis-horizontal" size={20} color={colors.secondary} /></Pressable>}
+    {<Pressable accessibilityRole="button" accessibilityLabel={`Options for ${item.name}`} onPress={() => onOptions(item)} style={s.iconAction}><Icon name="ellipsis-horizontal" size={20} color={colors.secondary} /></Pressable>}
     <Pressable accessibilityRole="button" accessibilityLabel={`${favorite ? 'Remove' : 'Add'} ${item.name} ${favorite ? 'from' : 'to'} favorites`} onPress={() => onFavorite(item)} style={s.iconAction}><Icon name={favorite ? 'heart' : 'heart-outline'} size={21} color={favorite ? colors.link : colors.secondary} /></Pressable>
   </View>;
 });
@@ -52,16 +54,19 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   const searching = !!state.search.trim();
   const allMediaSearch = !favorites && state.scope === 'all' && searching;
   const includeHidden = state.hidden && searching;
-  const library = useMemo(() => favorites ? c.saved : allMediaSearch ? c.allItems : c.allItems.filter(item => item.kind === section), [favorites, c.saved, allMediaSearch, c.allItems, section]);
+  const activeList = favorites && state.list ? c.lists.find(list => list.id === state.list) : undefined;
+  const listItems = useMemo(() => activeList ? resolveSaved(activeList.items, c.allItems, c.restrictedGroups, c.familyUnlocked) : null, [activeList, c.allItems, c.restrictedGroups, c.familyUnlocked]);
+  const library = useMemo(() => listItems ? listItems.available : favorites ? c.saved : allMediaSearch ? c.allItems : c.allItems.filter(item => item.kind === section), [listItems, favorites, c.saved, allMediaSearch, c.allItems, section]);
   const groups = useMemo(() => ['All', ...Array.from(new Set(library.filter(item => !c.hiddenGroups.includes(item.group)).map(item => item.group))).sort()], [library, c.hiddenGroups]);
   const index = useMemo(() => createSearchIndex(library), [library]);
   const sort = c.active?.library?.sort?.[section] || 'provider';
   const filtered = useMemo(() => {
     const group = deferred.trim() && state.scope !== 'category' ? 'All' : state.category;
-    if (features.rankedSearch) return rankedSearch(library, deferred, group, c.hiddenGroups, favorites || includeHidden, favorites ? 'provider' : sort);
+    // Hidden titles leave normal browsing and search; favourites and lists keep them.
+    if (features.rankedSearch) return rankedSearch(favorites || includeHidden ? library : withoutHidden(library, c.hiddenItems), deferred, group, c.hiddenGroups, favorites || includeHidden, favorites ? 'provider' : sort);
     const found = searchIndex(index, deferred, group, c.hiddenGroups, favorites || includeHidden);
     return favorites ? found : sortMedia(found, sort);
-  }, [index, library, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
+  }, [index, library, c.hiddenItems, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
   const idleSearch = view === 'search' && !searching;
   const posterLayout = (view === 'watch' || view === 'movies' || view === 'series' || view === 'library') && !favorites && section !== 'live' && !allMediaSearch;
   // A new filter starts at the top. The list itself is not remounted per keystroke.
@@ -69,14 +74,14 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   const firstFilter = useRef(true);
   useEffect(() => { if (firstFilter.current) { firstFilter.current = false; return; } list.current?.scrollToOffset({ offset: 0, animated: false }); }, [filterKey]);
   const favoriteSet = useMemo(() => new Set(c.favorites), [c.favorites]);
-  const onOptions = useCallback((item: Media) => c.open({ type: 'channel-options', item }), [c.open]);
+  const onOptions = useCallback((item: Media) => c.open({ type: 'item-actions', item }), [c.open]);
   const play = useRef(c.play); play.current = c.play;
   const favorite = useRef(c.toggleFavorite); favorite.current = c.toggleFavorite;
   const onPlay = useCallback((item: Media) => play.current(item), []);
   const onFavorite = useCallback((item: Media) => favorite.current(item), []);
   const renderItem = useCallback<ListRenderItem<Media>>(({ item }) => posterLayout
-    ? <PosterItem width={(width-48-(numColumns-1)*16)/numColumns} item={item} favorite={favoriteSet.has(item.id)} onPlay={onPlay} onFavorite={onFavorite} />
-    : <RowItem item={item} favorite={favoriteSet.has(item.id)} demo={c.demo} onPlay={onPlay} onFavorite={onFavorite} onOptions={onOptions} />, [posterLayout, favoriteSet, c.demo, onPlay, onFavorite, onOptions,width,numColumns]);
+    ? <PosterItem width={(width-48-(numColumns-1)*16)/numColumns} item={item} favorite={favoriteSet.has(item.id)} onPlay={onPlay} onFavorite={onFavorite} onOptions={onOptions} />
+    : <RowItem item={item} favorite={favoriteSet.has(item.id)} demo={c.demo} onPlay={onPlay} onFavorite={onFavorite} onOptions={onOptions} />, [posterLayout, favoriteSet, c.demo, onPlay, onFavorite, onOptions, width, numColumns]);
   const setSearch = (search: string) => set({ search });
   const updated = c.updatedAt[section];
   const age = updated ? Date.now() - new Date(updated).getTime() : Infinity;
@@ -91,6 +96,8 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
       const selected = state.source === source;
       return <Pressable key={source} accessibilityRole="tab" accessibilityState={{ selected }} haptic={selected ? undefined : 'selection'} onPress={() => set({ source, search: '', category: 'All' })} style={[s.segmentItem, selected && { backgroundColor: colors.panel }]}><Text style={{ color: colors.text, fontWeight: selected ? '600' : '500', fontSize: 14 }}>{source === 'saved' ? 'Favorites' : source === 'movies' ? 'Movies' : 'Series'}</Text></Pressable>;
     })}</View>}
+    {favorites && c.lists.length > 0 && <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ flexGrow: 0, flexShrink: 0 }} contentContainerStyle={{ gap: 8, paddingHorizontal: 24, paddingBottom: 8 }}>{[{ id: undefined as string | undefined, name: 'Favorites' }, ...c.lists].map(list => { const selected = state.list === list.id; return <Pressable key={list.id || 'favorites'} accessibilityRole="tab" accessibilityState={{ selected }} haptic={selected ? undefined : 'selection'} onPress={() => set({ list: list.id, search: '', category: 'All' })} style={[s.category, selected && { backgroundColor: colors.selected }]}><Text numberOfLines={1} style={{ color: selected ? colors.selectedText : colors.text, fontSize: 14, fontWeight: selected ? '600' : '500' }}>{list.name}</Text></Pressable>; })}</ScrollView>}
+    {activeList && <View style={[u.between, { paddingHorizontal: 24, paddingBottom: 8 }]}><Text style={u.small}>{plural(activeList.items.length, 'title')}</Text><Pressable accessibilityRole="button" accessibilityLabel={`Delete list ${activeList.name}`} onPress={() => confirmDestructive('Delete list', `“${activeList.name}” will be removed. The titles stay in your library and favourites.`, () => { void c.patchActive(profile => ({ lists: deleteList(profile.lists || [], activeList.id) })).then(() => set({ list: undefined })); })} style={s.textAction}><Text style={[u.link, { color: colors.danger }]}>Delete list</Text></Pressable></View>}
     {!c.connected ? <Empty icon={favorites ? 'heart-outline' : 'tv-outline'} title={favorites ? 'Keep the good ones close' : 'Your library starts here'} message="Add a provider or explore the demo to start watching."><Button title="Connect my provider" onPress={() => c.addProfile()} /><Button title="Explore demo" variant="secondary" onPress={c.startDemo} /></Empty> : <>
       {view === 'watch' && <View style={s.segment}>{sections.map(item => <Pressable key={item.id} accessibilityRole="tab" accessibilityState={{ selected: section === item.id }} haptic={section === item.id ? undefined : 'selection'} onPress={() => set({ search: '', category: 'All', section: item.id })} style={[s.segmentItem, section === item.id && { backgroundColor: colors.panel }]}><Text style={{ color: colors.text, fontWeight: section === item.id ? '600' : '500', fontSize: 14 }}>{item.title}</Text></Pressable>)}</View>}
       {!nativeSearch&&<View style={s.search}>
@@ -113,6 +120,7 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
         contentContainerStyle={[{ paddingHorizontal: 24, paddingBottom: 112 }, (idleSearch || !filtered.length) && { flex: 1 }]}
         ListHeaderComponent={filtered.length && !searching && !idleSearch ? <Text style={[u.small, { paddingBottom: 8 }]}>{plural(filtered.length,section==='live'&&!favorites&&!allMediaSearch?'channel':'title')}</Text> : undefined}
         ListEmptyComponent={idleSearch ? <Empty icon="search-outline" title="Search everything you’ve added" message="Type a channel, movie or series name. Pick a category above to narrow it down." /> : <Empty icon={favorites ? 'heart-outline' : 'search-outline'} title={deferred.trim() ? 'No matching titles' : favorites ? 'Your favorites belong here' : 'Nothing here just yet'} message={deferred.trim() ? 'Try another name, or reset your search to see the library again.' : favorites ? 'Tap the heart beside a channel, movie, or series. We’ll keep it here for this profile.' : section === 'series' && (c.demo || c.provider?.kind === 'm3u') ? 'Use an Xtream Codes profile for a structured series and episode library.' : 'Try another search or category, or check the library supplied by your provider.'}>{deferred.trim() ? <Button title="Reset search" variant="secondary" onPress={() => set({ search: '', category: 'All' })} /> : favorites ? <Button title="Browse your library" onPress={() => c.browse('live')} /> : null}</Empty>}
+        ListFooterComponent={listItems && listItems.unavailable.length > 0 && !c.loading && !c.refreshing ? <View style={{ gap: 8, paddingTop: 16 }}><Text style={u.small}>{plural(listItems.unavailable.length, 'saved title')} {listItems.unavailable.length === 1 ? 'isn’t' : 'aren’t'} in this playlist right now. {listItems.unavailable.length === 1 ? 'It stays' : 'They stay'} in the list and come back if your provider offers {listItems.unavailable.length === 1 ? 'it' : 'them'} again.</Text>{activeList && <Button title="Remove unavailable titles" variant="secondary" onPress={() => { void c.patchActive(profile => ({ lists: (profile.lists || []).map(list => list.id === activeList.id ? { ...list, items: list.items.filter(id => !listItems.unavailable.includes(id)) } : list) })); }} />}</View> : undefined}
         renderItem={renderItem} extraData={favoriteSet} />}
     </>}
   </View>;

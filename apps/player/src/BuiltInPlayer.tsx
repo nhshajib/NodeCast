@@ -20,9 +20,12 @@ import type { LiveEngine } from './playbackPolicy';
 import { Button as ActionButton, Icon, LiveDot, colors, u } from './ui';
 import { GlassButton as Button, glass } from './PlaybackGlass';
 import { PlaybackChromeProvider, usePlaybackChrome } from './PlaybackChrome';
+import NextEpisodeCountdown from './NextEpisodeCountdown';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-type Props = React.ComponentProps<typeof Player> & { liveEngine?: LiveEngine; channelOptions?: ChannelPlayback; onSaveOptions?: (value?: ChannelPlayback) => Promise<void>; savedFit?: DisplayFit; onFit?: (fit: DisplayFit) => void; onMinimize?: () => void; minimized?: boolean; onRegisterStop?: (stop: () => Promise<void>) => void };
-export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onSaveOptions, savedFit = 'contain', onFit, onMinimize, minimized = false, onRegisterStop, ...props }: Props) {
+type Props = React.ComponentProps<typeof Player> & { liveEngine?: LiveEngine; channelOptions?: ChannelPlayback; onSaveOptions?: (value?: ChannelPlayback) => Promise<void>; savedFit?: DisplayFit; onFit?: (fit: DisplayFit) => void; onMinimize?: () => void; minimized?: boolean; onRegisterStop?: (stop: () => Promise<void>) => void; /** Off by default. Shows a cancellable countdown when an episode ends. */ autoplayNext?: boolean };
+export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onSaveOptions, savedFit = 'contain', onFit, onMinimize, minimized = false, onRegisterStop, autoplayNext = false, ...props }: Props) {
+  const [countdown, setCountdown] = useState(false);
+  const onProgress = (snapshot: Parameters<Props['onProgress']>[0]) => { props.onProgress(snapshot); if (snapshot.ended && autoplayNext && props.nextEpisode && !minimized) setCountdown(true); };
   const viewport = useWindowDimensions();
   const portraitDetails = !props.television && !minimized && !props.fullscreen && viewport.height > viewport.width;
   // iPad and large landscape screens: video and its details side by side, like a theatre.
@@ -54,9 +57,9 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
   const engine = chooseEngine(props.item.kind, override || initialEngine, available);
   useEffect(() => { if (!panel) return; const listener = BackHandler.addEventListener('hardwareBackPress', () => { setPanel(null); return true; }); return () => listener.remove(); }, [panel]);
   let surface: React.ReactNode;
-  if (engine === 'vlc') surface = <CompatibilityPlayer item={props.item} tracks={props.tracks} onTracks={props.onTracks} onInfo={setInfo} displayFit={fit} minimized={minimized} registerStop={registerStop} onOptions={() => setPanel('menu')} onProgress={props.onProgress} onClose={props.onClose} onExternal={props.onExternal} fullscreen={props.fullscreen} onFullscreenChange={props.onFullscreenChange || (() => {})} />;
+  if (engine === 'vlc') surface = <CompatibilityPlayer item={props.item} tracks={props.tracks} onTracks={props.onTracks} onInfo={setInfo} displayFit={fit} minimized={minimized} registerStop={registerStop} onOptions={() => setPanel('menu')} onProgress={onProgress} onClose={props.onClose} onExternal={props.onExternal} fullscreen={props.fullscreen} onFullscreenChange={props.onFullscreenChange || (() => {})} />;
   else if (engine === 'unavailable') surface = <View style={[u.center, { padding: 24, backgroundColor: colors.featured }]}><H2 style={[u.h2, { color: colors.onVideo }]}>This build needs the VLC engine</H2><Text style={[u.body, { color: colors.videoMuted }]}>Install a GlowTV standalone build, or choose an external player.</Text><Button title="Choose an external player" onPress={props.onExternal} /><Button title="Back to library" onPress={props.onClose} /></View>;
-  else surface = <Player {...props} registerPip={registerPip} minimized={minimized} displayFit={fit} playbackRate={rate} registerStop={registerStop} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
+  else surface = <Player {...props} onProgress={onProgress} registerPip={registerPip} minimized={minimized} displayFit={fit} playbackRate={rate} registerStop={registerStop} onInfo={setInfo} onOptions={() => setPanel('menu')} compatibilityAvailable={available} onCompatibility={available ? () => setOverride('vlc') : undefined} />;
   return <PlaybackChromeProvider panelOpen={!!panel} onIdle={() => setPanel(null)} playing={info.state === 'playing'} minimized={minimized}>
     <PlaybackOverlay panel={panel} onClose={() => setPanel(null)} television={!!props.television} surface={<View style={{flex:1,backgroundColor:colors.bg,flexDirection:theatre?'row':'column'}}><View style={theatre?{flex:1,justifyContent:'center',backgroundColor:colors.videoBlack}:portraitDetails?{height:Math.max(props.item.kind==='live'?(viewport.fontScale>1.3?320:240):props.nextEpisode?(viewport.fontScale>1.3?560:384):(viewport.fontScale>1.3?400:320),viewport.width*9/16)}:{flex:1}}><View style={theatre?{width:'100%',aspectRatio:16/9}:{flex:1}}>{surface}</View></View>{(portraitDetails||theatre)&&<ScrollView style={theatre?{width:360,flexGrow:0,borderLeftWidth:1,borderLeftColor:colors.line}:undefined} contentContainerStyle={{padding:24,gap:24,paddingBottom:32,width:'100%',maxWidth:720,alignSelf:'center'}}>
         <View style={{gap:8}}><View style={[u.row,{gap:8}]}>{props.item.kind==='live'&&<LiveDot/>}<Text numberOfLines={1} style={[u.small,{flex:1}]}>{props.item.kind==='live'?`Live · ${props.item.group}`:props.item.group}</Text></View><Text accessibilityRole="header" numberOfLines={3} style={u.display}>{props.item.name}</Text>{!!props.item.description&&<Text style={u.body}>{props.item.description}</Text>}</View>
@@ -87,6 +90,7 @@ export default function BuiltInPlayer({ liveEngine = 'auto', channelOptions, onS
         <Button title="Playback information" onPress={() => setPanel('info')} />
       </ScrollView>}
     </PlaybackOverlay>
+    {countdown && props.nextEpisode && !minimized && <NextEpisodeCountdown key={props.item.id} title={props.nextEpisode.item.name} onPlay={() => { setCountdown(false); props.nextEpisode?.onPress(); }} onCancel={() => setCountdown(false)} />}
   </PlaybackChromeProvider>;
 }
 function ChannelOptions(props: React.ComponentProps<typeof ChannelPlaybackOptions>) {

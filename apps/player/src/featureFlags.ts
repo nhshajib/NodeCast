@@ -9,7 +9,7 @@ export const features = {
   /** Phase 2: ranked search, newest-first sort, staged refresh. */
   rankedSearch: true,
   /** Phase 3: named lists, hidden items, series display options, autoplay countdown. */
-  organization: false,
+  organization: true,
   /** Phase 4: guide health, matching suggestions and time offsets. */
   guideRepair: false,
   /** Phase 5: buffering watchdog, previous channel, return to live, playback help. */
