@@ -80,14 +80,12 @@ def focus(label,timeout=100):
 def activate(label,timeout=100):
  n=focus(label,timeout);assert match(n,label);key(23);visited.append(label);print('Remote Select: '+label,flush=True)
 def dismiss_keyboard():
- # Back belongs to the IME only while it is visibly open. Send it once and
- # wait; a second Back could dismiss the form under test.
+ # Called immediately after activating and editing an input. Send Back once;
+ # mInputShown can stay true after the IME disappears. The next action waits
+ # for its actual visible bounds, never for that stale flag or a second Back.
  shown=lambda:re.search(r'\bm(?:InputShown|IsInputViewShown)=true\b',adb('shell','dumpsys','input_method')) is not None
  if not shown():return
- key(4);end=time.monotonic()+10
- while shown():
-  if time.monotonic()>end:raise RuntimeError('Native keyboard did not dismiss')
-  time.sleep(.2)
+ key(4)
 def fill(label,value,submit=True):
  activate(label);time.sleep(.5);adb('shell','input','keyevent','123',*(['67']*100))
  if value:adb('shell','input','text',value)

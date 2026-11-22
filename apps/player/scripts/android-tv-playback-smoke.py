@@ -30,8 +30,13 @@ def find(label, timeout=15, scroll=False):
   nodes=[n for n in root.iter('node') if label.casefold() in (n.get('content-desc') or '').casefold() or (n.get('text') or '').casefold()==label.casefold()]
   if label in ['Profile name','Server address','Username','Password','XMLTV URL','New six-digit PIN','Confirm PIN','Family PIN','Find category to protect','Backup password','Confirm backup password']: nodes=[n for n in nodes if n.get('class')=='android.widget.EditText']
   nodes.sort(key=lambda n:((n.get('content-desc') or '').casefold()!=label.casefold() and (n.get('text') or '').casefold()!=label.casefold(),n.get('clickable')!='true'))
+  foreground_connect=not REMOTE and label=='Connect playlist' and any(n.get('class')=='android.widget.EditText' and n.get('content-desc')=='Profile name' for n in root.iter('node'))
+  if foreground_connect:
+   # Native form sheets retain Home below them. Use the foreground form's
+   # exact action, not Home's identically named action or its covered tab bar.
+   nodes=[n for n in nodes if n.get('content-desc')==label and n.get('clickable')=='true'][-1:]
   nav_top=height
-  if width<height and label not in ['Home','Live','Guide','Library','Search','Favorites','Settings']:
+  if not foreground_connect and width<height and label not in ['Home','Live','Guide','Library','Search','Favorites','Settings']:
    for candidate in root.iter('node'):
     box=list(map(int,re.findall(r'\d+',candidate.get('bounds',''))))
     if candidate.get('content-desc') in ['Home','Live','Guide','Library','Search','Favorites','Settings'] and candidate.get('clickable')=='true' and len(box)==4 and box[1]>height*.7:
@@ -91,11 +96,9 @@ def text(label,value,submit=True):
  if submit:adb('shell','input','keyevent','66')
  else:
   shown=lambda:re.search(r'\bm(?:InputShown|IsInputViewShown)=true\b',adb('shell','dumpsys','input_method')) is not None
-  if shown():
-   adb('shell','input','keyevent','4');end=time.monotonic()+10
-   while shown():
-    if time.monotonic()>end:raise RuntimeError('Native keyboard did not dismiss')
-    time.sleep(.2)
+  # The just-edited input opened the IME. Its requested-state flag can remain
+  # true after Back, so let find() wait for the next real on-screen control.
+  if shown():adb('shell','input','keyevent','4')
  time.sleep(.3)
 def remote_next(label):
  if REMOTE:remote.activate(label);return

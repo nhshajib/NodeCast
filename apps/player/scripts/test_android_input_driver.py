@@ -43,6 +43,12 @@ class InputDriverTests(unittest.TestCase):
             remote.dismiss_keyboard()
             key.assert_not_called()
 
+    def test_stale_ime_flag_is_not_polled_after_back(self):
+        with patch.object(remote, 'adb', return_value='mInputShown=true') as adb, patch.object(remote, 'key') as key:
+            remote.dismiss_keyboard()
+            key.assert_called_once_with(4)
+            adb.assert_called_once()
+
     def test_remote_explicit_submit_path_never_sends_go(self):
         with patch.object(remote, 'activate'), patch.object(remote, 'adb'), patch.object(remote, 'key') as key, patch.object(remote, 'dismiss_keyboard') as dismiss, patch.object(remote.time, 'sleep'):
             remote.fill('Password', 'synthetic', submit=False)
@@ -70,6 +76,16 @@ class InputDriverTests(unittest.TestCase):
         for action in ['tap', 'swipe']:
             with self.assertRaisesRegex(RuntimeError, 'forbidden'):
                 remote.adb('shell', 'input', action, '1', '1')
+
+    def test_phone_connect_uses_foreground_sheet_and_not_covered_tabs(self):
+        tree = ET.fromstring('''<hierarchy>
+          <node content-desc="Connect playlist" clickable="true" bounds="[0,100][900,200]"/>
+          <node content-desc="Home" clickable="true" bounds="[0,1700][200,1800]"/>
+          <node content-desc="Profile name" class="android.widget.EditText" bounds="[0,400][900,500]"/>
+          <node content-desc="Connect playlist" clickable="true" bounds="[0,1720][900,1840]"/>
+        </hierarchy>''')
+        with patch.object(helpers, 'REMOTE', False), patch.object(helpers, 'dump', return_value=tree):
+            self.assertEqual(helpers.find('Connect playlist'), [0,1720,900,1840])
 
 if __name__ == '__main__':
     unittest.main()
