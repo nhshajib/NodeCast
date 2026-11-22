@@ -87,6 +87,20 @@ p{line-height:1.65;color:var(--muted);max-width:68ch}
 .device-phone.ios{left:2%;transform:rotate(-6deg)}
 .device-phone.android{right:2%;transform:rotate(6deg)}
 
+/* Scene hero (laptop and up): a living room at night, GlowTV on the TV, headline in the calm dark area. */
+.hero-scene{display:none}
+@media (min-width:1024px){
+ .hero{text-align:left;min-height:clamp(600px,52vw,860px);padding:0 var(--gutter);display:flex;align-items:center}
+ .hero-scene{display:block;position:absolute;inset:0;z-index:0}
+ .hero-scene img{width:100%;height:100%;object-fit:cover;object-position:70% 60%}
+ .hero-scene::after{content:"";position:absolute;inset:0;background:linear-gradient(to right,var(--night) 0%,#0A0E0C00 30%),linear-gradient(to bottom,#0A0E0C00 75%,var(--night) 100%)}
+ .hero-copy{margin:0 auto 0 max(0px,calc((100vw - var(--max)) / 2 - var(--gutter)));max-width:min(560px,44vw);padding:120px 0 96px}
+ .hero h1{margin:0 0 20px;max-width:none}
+ .hero-sub{margin:0 0 32px;max-width:36ch}
+ .hero-actions,.trust{justify-content:flex-start}
+ .hero .devices{display:none}
+}
+
 /* Sections */
 .section{max-width:calc(var(--max) + 2*var(--gutter));margin:0 auto;padding:96px var(--gutter)}
 .section + .section{padding-top:0}
