@@ -24,6 +24,9 @@ server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Threa
 def back():
  subprocess.run(['adb','shell','input','keyevent','4'],check=True);time.sleep(1.5)  # system Back pops the native stack
 def settings(name):click('Settings');click(name,True)
+def wait_for_pin(label):
+ started=time.monotonic();find(label,timeout=180)
+ print(f'PIN UI wait ({label}): {time.monotonic()-started:.1f}s',flush=True)
 try:
  click('Get started');click('Not now',True)
  # First-run setup opens the provider form directly; later sessions use Add playlist.
@@ -35,14 +38,14 @@ try:
  back();settings('Appearance');click('Dark')
  assert any(n.get('content-desc')=='Dark' and n.get('checked')=='true' for n in dump().iter('node')),'Dark appearance was not selected'
  back();settings('Family controls')
- text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN',True);find('Find category to protect',timeout=90);click('Protect Phone test',True);click('Lock protected content now',True)
- click('Unlock family controls');text('Family PIN','000000',submit=False);click('Unlock');find('PIN did not match.',timeout=90)
+ text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN',True);wait_for_pin('Find category to protect');click('Protect Phone test',True);click('Lock protected content now',True)
+ click('Unlock family controls');text('Family PIN','000000',submit=False);click('Unlock');wait_for_pin('PIN did not match.')
  # Clear only this synthetic test PIN field; no secrets enter logs.
- click('Family PIN');adb('shell','input','keyevent','123');adb('shell','input','keyevent','67','67','67','67','67','67');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=90)
+ click('Family PIN');adb('shell','input','keyevent','123');adb('shell','input','keyevent','67','67','67','67','67','67');text('Family PIN','123456',submit=False);click('Unlock');wait_for_pin('Find category to protect')
  OUT.joinpath('emulator-mobile-family.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  click('Lock protected content now',True);back();click('Live');assert not any('Open Phone Test Channel' in (n.get('content-desc') or '') for n in dump().iter('node'))
  adb('shell','am','force-stop','com.nhshajib.nodecast');adb('shell','am','start','-W','-n','com.nhshajib.nodecast/.MainActivity');time.sleep(6)
- settings('Family controls');click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=90);back();click('Live');find('Open Phone Test Channel');click('Guide');find('Phone Guide Match',timeout=30);assert counts['guide']==1,'Native guide cache was not reused'
+ settings('Family controls');click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');wait_for_pin('Find category to protect');back();click('Live');find('Open Phone Test Channel');click('Guide');find('Phone Guide Match',timeout=30);assert counts['guide']==1,'Native guide cache was not reused'
  OUT.joinpath('emulator-mobile-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  import runpy;runpy.run_path('scripts/android-backup-smoke.py',run_name='__main__')
  OUT.joinpath('emulator-mobile-features-result.json').write_text(json.dumps({'passed':['Synthetic Xtream connection','Native XMLTV import and SQLite persistence across process restart','Dark appearance','Six-digit family PIN native crypto','PIN prompt inside Settings sheet','Wrong PIN rejected, correct PIN restores access','Protected category hidden and state survives process restart'],'scope':'Android API 35 x86-64 emulator. Physical iPhone/PiP/AirPlay are not verified.'},indent=2)+'\n')

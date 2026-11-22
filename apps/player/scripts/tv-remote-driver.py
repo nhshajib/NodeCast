@@ -1,6 +1,30 @@
 """Navigate actual Android focus using D-pad/Select only. Text uses keyboard input, never touch."""
-import collections,re,subprocess,time,xml.etree.ElementTree as ET
+import collections,re,subprocess,time,select,xml.etree.ElementTree as ET
 visited=[]
+class NativeHierarchy:
+ """The same immediate native accessibility reader used by the design suite.
+
+ UIAutomator's idle wait exceeds the unchanged player's control timeout. This
+ reads real nodes without changing the app, timers, animations or focus.
+ """
+ def __init__(self,log):
+  adb('push','/tmp/glowtv-hierarchy.jar','/data/local/tmp/glowtv-hierarchy.jar')
+  self.log=open(log,'w')
+  self.process=subprocess.Popen(['adb','shell','CLASSPATH=/data/local/tmp/glowtv-hierarchy.jar app_process /system/bin FastHierarchy --server'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=self.log,text=True,bufsize=1)
+ def dump(self):
+  self.process.stdin.write('dump\n');self.process.stdin.flush()
+  while True:
+   if not select.select([self.process.stdout],[],[],15)[0]:raise RuntimeError('Native hierarchy reader did not respond')
+   raw=self.process.stdout.readline()
+   if not raw:raise RuntimeError('Native hierarchy reader exited: '+str(self.process.poll()))
+   if raw.startswith('<?xml'):return ET.fromstring(raw)
+ def close(self):
+  if self.process.poll() is None:
+   self.process.stdin.close()
+   try:self.process.wait(timeout=3)
+   except subprocess.TimeoutExpired:self.process.terminate();self.process.wait(timeout=3)
+  self.log.close()
+
 def adb(*args):
  if args[:2]==('shell','input') and len(args)>2 and args[2] in ['tap','swipe']:raise RuntimeError('Touch input is forbidden in the TV remote audit')
  return subprocess.check_output(['adb',*map(str,args)],text=True).strip()

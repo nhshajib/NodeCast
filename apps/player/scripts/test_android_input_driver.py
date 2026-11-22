@@ -1,5 +1,7 @@
 """Regression tests for emulator input, with no emulator or device required."""
 import importlib.util
+import io
+from types import SimpleNamespace
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -94,6 +96,29 @@ class InputDriverTests(unittest.TestCase):
             remote.activate('Home', timeout=1)
             self.assertEqual(focus.call_count, 2)
             key.assert_called_once_with(23)
+
+    def reader(self, output):
+        reader = remote.NativeHierarchy.__new__(remote.NativeHierarchy)
+        reader.process = SimpleNamespace(stdin=io.StringIO(), stdout=io.StringIO(output), poll=lambda: 0)
+        return reader
+
+    def test_native_reader_parses_actual_xml_after_shell_preamble(self):
+        reader = self.reader('shell preamble\n<?xml version="1.0"?><hierarchy><node content-desc="Player options" focused="true"/></hierarchy>\n')
+        with patch.object(remote.select, 'select', return_value=([reader.process.stdout],[],[])):
+            self.assertEqual(remote.name(remote.focused(reader.dump())), 'Player options')
+        self.assertEqual(reader.process.stdin.getvalue(), 'dump\n')
+
+    def test_native_reader_eof_is_a_failure_not_a_cached_hierarchy(self):
+        reader = self.reader('')
+        with patch.object(remote.select, 'select', return_value=([reader.process.stdout],[],[])):
+            with self.assertRaisesRegex(RuntimeError, 'reader exited'):
+                reader.dump()
+
+    def test_native_reader_timeout_is_a_failure(self):
+        reader = self.reader('')
+        with patch.object(remote.select, 'select', return_value=([],[],[])):
+            with self.assertRaisesRegex(RuntimeError, 'did not respond'):
+                reader.dump()
 
 if __name__ == '__main__':
     unittest.main()

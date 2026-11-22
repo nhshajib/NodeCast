@@ -70,8 +70,8 @@ jobs:
             sudo apt-get update -qq
             sudo apt-get install -y ffmpeg
           fi
-      - name: Build fast native hierarchy reader for transient phone controls
-        if: ${{ inputs.tv_suite == 'design' }}
+      - name: Build fast native hierarchy reader for transient controls
+        if: ${{ inputs.tv_suite == 'design' || matrix.target == 'tv' }}
         run: |
           set -euo pipefail
           mkdir -p /tmp/glowtv-hierarchy/classes /tmp/glowtv-hierarchy/dex

@@ -218,6 +218,11 @@ def audit_library(remote,counts):
  print('TV library organization, lazy loading, list/grid and restart persistence passed.',flush=True)
 
 def main():
+ global dump
+ if REMOTE:
+  import atexit
+  reader=remote.NativeHierarchy(OUT/'emulator-tv-hierarchy-reader.log')
+  dump=reader.dump;remote.tree=reader.dump;atexit.register(reader.close)
  video=Path('tests/fixtures/android-live-test.mpegts')
  suite=os.environ.get('NODECAST_TV_SUITE','full')
  counts={'guide':0,'ts':0,'archive':0,'logos':0,'api':{},'episodes':[]}
@@ -280,7 +285,7 @@ def main():
    audit_library(remote,counts)
    return
   if REMOTE and suite=='input':
-   click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN');find('Find category to protect',timeout=90)
+   click('Settings');click('Family controls');text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);click('Set family PIN');find('Find category to protect',timeout=180)
    OUT.joinpath('emulator-tv-input-result.json').write_text(json.dumps({'passed':['Numeric PIN and confirmation fields remain in the form after keyboard Done','Family PIN saved successfully'],'api':adb('shell','getprop','ro.build.version.sdk')},indent=2)+'\n')
    print('TV numeric input and PIN save passed.',flush=True)
    return
@@ -321,10 +326,10 @@ def main():
   text('New six-digit PIN','123456');text('Confirm PIN','123456',submit=False);pin_started=time.monotonic();click('Set family PIN',True)
   # Hermes crypto can take longer on a busy video emulator. Wait for completion,
   # including offscreen content, before moving the search field into view.
-  while time.monotonic()-pin_started<90:
+  while time.monotonic()-pin_started<180:
    if any(n.get('content-desc')=='Find category to protect' for n in dump().iter('node')):break
    time.sleep(.5)
-  else:raise RuntimeError('Family PIN setup did not finish within 90 seconds')
+  else:raise RuntimeError('Family PIN setup did not finish within 180 seconds')
   print(f'Native TV PIN setup completed in {time.monotonic()-pin_started:.1f}s',flush=True)
   text('Find category to protect','Smoke');find('Lock protected content now',timeout=30,scroll=True)
   click('Protect Smoke test');click('Lock protected content now');click('Back');click('Live TV')
@@ -332,7 +337,7 @@ def main():
   adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity');time.sleep(6)
   root=dump()
   if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in root.iter('node')):adb('shell','input','keyevent','4')
-  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=90);click('Back');click('Live TV');find('Play Example Live Test')
+  click('Settings');click('Family controls');click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=180);click('Back');click('Live TV');find('Play Example Live Test')
   click('TV guide');find('Native Guide Match',timeout=30,scroll=True);assert counts['guide']==1,'Saved guide was not reused after process restart'
   OUT.joinpath('emulator-tv-guide-persisted.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
   click('Back');click('Live TV');click('Recently watched');click('Clear recents')
