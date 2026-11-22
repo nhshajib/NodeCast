@@ -28,7 +28,7 @@ export const stores = { appStore: '', playStore: '', amazonAppstore: '', downloa
 /** Google Search Console HTML verification token. Empty: no verification tag is rendered. */
 export const searchConsoleToken = '';
 /** Readable names for URL segments in breadcrumbs and BreadcrumbList data. */
-const crumbNames: Record<string, string> = { iphone: 'iPhone', android: 'Android', tv: 'TV', 'android-tv': 'Android TV', 'fire-tv': 'Fire TV', 'apple-tv': 'Apple TV', faq: 'FAQ', 'add-m3u-playlist': 'Add an M3U playlist', 'xtream-codes-login': 'Xtream Codes login', 'tv-guide-epg': 'TV guide (EPG)', 'fix-buffering': 'Fix buffering', '404.html': 'Page not found' };
+const crumbNames: Record<string, string> = { iphone: 'iPhone', android: 'Android', tv: 'TV', 'android-tv': 'Android TV', 'fire-tv': 'Fire TV', 'apple-tv': 'Apple TV', faq: 'FAQ', 'add-m3u-playlist': 'Add an M3U playlist', 'xtream-codes-login': 'Xtream Codes login', 'tv-guide-epg': 'TV guide (EPG)', 'fix-buffering': 'Fix buffering', 'm3u-vs-xtream-codes': 'M3U vs Xtream Codes', 'catch-up-tv': 'Catch-up TV', 'parental-controls': 'Parental controls', 'backup-and-restore': 'Back up and restore', '404.html': 'Page not found' };
 export function crumbName(segment: string) { return crumbNames[segment] ?? segment.charAt(0).toUpperCase() + segment.slice(1).replaceAll('-', ' '); }
 export const screens = ['home','guide','player','movies','series','playlists','search','settings'];
 export const screenLabel: Record<string,string> = {home:'Home and your playlist',guide:'TV guide and programme details',player:'Live player and controls',movies:'Movie library',series:'Series details and episodes',playlists:'Add a playlist',search:'Search your library',settings:'Settings and profiles'};
