@@ -26,6 +26,24 @@ sleep 12
 adb shell pidof "$PACKAGE"
 adb shell uiautomator dump /sdcard/nodecast-initial.xml
 adb pull /sdcard/nodecast-initial.xml "verification/android/emulator-$TARGET-initial.xml"
+# API 35's Pixel Launcher can leave its own ANR over a healthy app. Recover
+# only that exact system-launcher dialog on a disposable emulator. Never
+# dismiss an app ANR or relax any subsequent GlowTV startup/feature assertion.
+if python3 - "$TARGET" <<'PY'
+import sys,xml.etree.ElementTree as ET
+root=ET.parse(f'verification/android/emulator-{sys.argv[1]}-initial.xml')
+sys.exit(0 if any(n.get('package')=='android' and n.get('text')=="Pixel Launcher isn't responding" for n in root.iter('node')) else 1)
+PY
+then
+  test "$(adb shell getprop ro.kernel.qemu | tr -d '\r')" = 1 || test "$(adb shell getprop ro.boot.qemu | tr -d '\r')" = 1
+  cp "verification/android/emulator-$TARGET-initial.xml" "verification/android/emulator-$TARGET-launcher-anr.xml"
+  adb exec-out screencap -p > "verification/android/emulator-$TARGET-launcher-anr.png"
+  adb shell am force-stop com.google.android.apps.nexuslauncher
+  adb shell am start -W -n "$PACKAGE/.MainActivity" "${PROFILE_ARGS[@]}"
+  sleep 1
+  adb shell uiautomator dump /sdcard/nodecast-initial.xml
+  adb pull /sdcard/nodecast-initial.xml "verification/android/emulator-$TARGET-initial.xml"
+fi
 adb exec-out screencap -p > "verification/android/emulator-$TARGET-initial.png"
 if [ "$TARGET" = tv ]; then
   # Home-IP setup is initially offered. Back returns to TV navigation.
