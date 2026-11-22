@@ -7,6 +7,9 @@ import { Text } from './Typography';
 import VideoSeekBar from './VideoSeekBar';
 import { ChromeLayer } from './PlaybackGlass';
 import { usePlaybackChrome, usePlaybackMedia } from './PlaybackChrome';
+import { features } from './featureFlags';
+import { matchTrack } from './playbackAssist';
+import PlaybackHelp from './PlaybackHelp';
 import { usePlayerOrientation } from './usePlayerOrientation';
 import { useSleepTimer } from './PlayerToolsContext';
 import Pressable from './FocusPressable';
@@ -123,9 +126,9 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
         const available = player.availableAudioTracks || []; setAudio([...available]);
         const preferred = preference.current.audio;
         if (preferred) {
-          const match = available.find(track => language(track.language || '') === language(preferred));
+          const { track: match, notice } = features.playbackAssist ? matchTrack(available, preferred) : { track: available.find(track => language(track.language || '') === language(preferred)) || null, notice: available.length ? 'Your preferred audio is not reported by this stream. You can choose an available track.' : '' };
           if (match) player.audioTrack = match;
-          else if (available.length) setTrackNotice('Your preferred audio is not reported by this stream. You can choose an available track.');
+          else if (notice) setTrackNotice(notice);
         }
       } catch { /* Native controls remain available when track APIs are unavailable. */ }
     }
@@ -136,9 +139,9 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
         const preferred = preference.current.subtitles;
         if (preferred === 'off') player.subtitleTrack = null;
         else if (preferred) {
-          const match = available.find(track => language(track.language || '') === language(preferred));
+          const { track: match, notice } = features.playbackAssist ? matchTrack(available, preferred) : { track: available.find(track => language(track.language || '') === language(preferred)) || null, notice: 'Your preferred subtitles are not available in this stream. You can choose another available track.' };
           if (match) { player.subtitleTrack = match; setTrackNotice(''); }
-          else setTrackNotice('Your preferred subtitles are not available in this stream. You can choose another available track.');
+          else setTrackNotice(notice || 'Your preferred subtitles are not available in this stream. You can choose another available track.');
         }
       } catch { /* No unavailable feature is presented as a supported track. */ }
     }
@@ -253,7 +256,7 @@ export default function Player({ item, resumeAt = 0, tracks = {}, onProgress, on
       <Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{ minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center',padding:compactChrome?8:16, backgroundColor: colors.videoControlStrong, borderRadius: 24 }}><Icon name="ellipsis-horizontal" color={colors.onVideo}/>{television&&<Text style={{color:colors.onVideo,fontSize:14}}>Player options</Text>}</Pressable><View style={{ flex: 1,minWidth:0 }}><Text numberOfLines={1} ellipsizeMode="tail" style={{ color: colors.onVideo, fontSize: television ? 28 : 16, fontWeight: '600', textShadowColor: colors.videoBlack, textShadowRadius: 4 }}>{item.name}</Text><Text numberOfLines={1} ellipsizeMode="tail" style={{ color: colors.videoHandle, fontSize: television ? 18 : 13, textShadowColor: colors.videoBlack, textShadowRadius: 4 }}>{item.group}</Text></View><Pressable accessibilityRole="button" accessibilityLabel="Choose another player" onPress={onExternal} style={{ minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center',backgroundColor: colors.videoControlStrong, padding:compactChrome?8:16, borderRadius: 24 }}><Icon name="open-outline" color={colors.onVideo}/>{television&&<Text style={{color:colors.onVideo,fontSize:14}}>Other player</Text>}</Pressable>
     </ChromeLayer>
     {!minimized && (status === 'loading' || recovering || failed) && <View style={{ position: 'absolute', top: '28%', left: '20%', right: '20%', alignItems: 'center', gap: 16, padding: 24, borderRadius: 24, backgroundColor: colors.videoErrorSurface }}>
-      {failed ? <><Announcement text={`Could not open this video. ${failureMessage(recovery.kind)}`}/><Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={{ color: colors.onVideo, fontSize: 18 }}>Couldn’t open this video</Text><Text style={{ color: colors.videoHandle, textAlign: 'center' }}>{failureMessage(recovery.kind)}</Text><Button title="Try again" onPress={() => session.current?.retry()} />{item.kind==='live' && onCompatibility && <Button title="Try built-in VLC" onPress={onCompatibility} />}<Button title="Choose an external player" variant="secondary" onPress={onExternal} /></> : <><ActivityIndicator color={colors.mint} /><Text style={{ color: colors.onVideo }}>{recovering ? 'Reconnecting…' : 'Opening your video…'}</Text></>}
+      {failed ? <><Announcement text={`Could not open this video. ${failureMessage(recovery.kind)}`}/><Text accessibilityRole="alert" accessibilityLiveRegion="assertive" style={{ color: colors.onVideo, fontSize: 18 }}>Couldn’t open this video</Text><Text style={{ color: colors.videoHandle, textAlign: 'center' }}>{failureMessage(recovery.kind)}</Text>{features.playbackAssist && <PlaybackHelp kind={recovery.kind} />}<Button title="Try again" onPress={() => session.current?.retry()} />{item.kind==='live' && onCompatibility && <Button title="Try built-in VLC" onPress={onCompatibility} />}<Button title="Choose an external player" variant="secondary" onPress={onExternal} /></> : <><ActivityIndicator color={colors.mint} /><Text style={{ color: colors.onVideo }}>{recovering ? 'Reconnecting…' : 'Opening your video…'}</Text></>}
     </View>}
     {!minimized&&showTracks&&television&&<TVTrackSheet audio={audio.map(t=>({id:String(t.id),label:t.label||t.language||'Audio track'}))} subtitles={subtitles.map(t=>({id:String(t.id),label:t.label||t.language||'Subtitle track'}))} selectedAudio={selectedTrack.audio||String(player.audioTrack?.id||'')} selectedSubtitle={selectedTrack.subtitle??(player.subtitleTrack?String(player.subtitleTrack.id):'off')} onAudio={id=>{const t=audio.find(t=>String(t.id)===id);if(t)chooseAudio(t)}} onSubtitle={id=>chooseSubtitles(subtitles.find(t=>String(t.id)===id)||null)} onClose={()=>setShowTracks(false)}/>}
     {!minimized && chrome.visible && showTracks && !television && <View nativeID="tv-trap:video-tracks" style={{ position: 'absolute', bottom: Math.max(insets.bottom, television ? tvSafe.v : 24) + 100, right: 24, width: 380, maxWidth: '80%', maxHeight: '55%', backgroundColor: colors.videoScrim, borderWidth:1, borderColor:colors.videoBorder, borderRadius: 22, padding: 16, gap: 8 }}>

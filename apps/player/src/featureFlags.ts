@@ -13,7 +13,7 @@ export const features = {
   /** Phase 4: guide health, matching suggestions and time offsets. */
   guideRepair: true,
   /** Phase 5: buffering watchdog, previous channel, return to live, playback help. */
-  playbackAssist: false,
+  playbackAssist: true,
   /** Phase 6: paste-and-preview setup and backup import preview (Add or Update). */
   transferPreview: false,
 } as const;

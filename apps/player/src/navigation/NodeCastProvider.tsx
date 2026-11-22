@@ -32,6 +32,7 @@ import { demoLibrary } from '../demo';
 import NetworkCard from '../NetworkCard';
 import ItemActions from '../ItemActions';
 import { features } from '../featureFlags';
+import { recentChannelPicker } from '../playbackAssist';
 import { createList, toggleHidden, toggleInList } from '../organization';
 import HomeScreen from '../HomeScreen';
 import ProviderSheet from '../ProviderSheet';
@@ -611,7 +612,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     }
   }
 
-  const playerElement = playerSession && playerOwner.current === (active?.id || 'demo') ? <BuiltInPlayer autoplayNext={features.organization && !!active?.autoplayNext} onRegisterStop={stop => { playerStop.current = stop; }} nextEpisode={episodeQueue && episodeQueue.profile === active?.id && followingEpisode(episodeQueue.items, playerSession.item) ? { item: followingEpisode(episodeQueue.items, playerSession.item)!, onPress: () => { const next = followingEpisode(episodeQueue.items, playerSession.item); if (next) { seasonMemory.current.set(`${active?.id}:${episodeQueue.series.id}`, next.group); void launch(next, true, 'internal'); } } } : undefined}
+  const playerElement = playerSession && playerOwner.current === (active?.id || 'demo') ? <BuiltInPlayer recentChannels={playerSession.item.kind === 'live' ? recentChannelPicker(viewing, playerSession.item.id, allItems, { restricted: active?.restrictedGroups, unlocked: !family.enabled || family.unlocked, hidden: active?.hiddenItems }) : undefined} onChannel={item => { void launch(item, false, 'internal'); }} autoplayNext={features.organization && !!active?.autoplayNext} onRegisterStop={stop => { playerStop.current = stop; }} nextEpisode={episodeQueue && episodeQueue.profile === active?.id && followingEpisode(episodeQueue.items, playerSession.item) ? { item: followingEpisode(episodeQueue.items, playerSession.item)!, onPress: () => { const next = followingEpisode(episodeQueue.items, playerSession.item); if (next) { seasonMemory.current.set(`${active?.id}:${episodeQueue.series.id}`, next.group); void launch(next, true, 'internal'); } } } : undefined}
     channelOptions={active?.channelPlayback?.[playerSession.item.id]} onSaveOptions={active ? value => saveChannelOptions(playerSession.item, value) : undefined} minimized={minimized} onMinimize={() => { setMinimized(true); setPlayerFullscreen(false); }}
     savedFit={active?.displayFit} onFit={displayFit => saveProfile(profile => ({ ...profile, displayFit }), 'Could not save display choice.', text=>setMessage({text,tone:'error'}))} fullscreen={playerFullscreen} onFullscreenChange={setPlayerFullscreen} liveEngine={resolvePlayback(active, playerSession.item.id, preferences.player).engine}
     onClose={() => { const series = episodeQueue?.series; const episode = playerSession.item.id.startsWith('episode:'); closePlayer(); if (episode && series && !pagesRef.current.some(entry => entry.page.type === 'series' && entry.page.item.id === series.id)) open({ type: 'series', item: series }); }}
