@@ -78,7 +78,16 @@ def focus(label,timeout=100):
   key(direction)
  raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None)+'; recent focus='+repr(history[-20:]))
 def activate(label,timeout=100):
- n=focus(label,timeout);assert match(n,label);key(23);visited.append(label);print('Remote Select: '+label,flush=True)
+ end=time.monotonic()+timeout
+ while time.monotonic()<end:
+  n=focus(label,max(.1,end-time.monotonic()));assert match(n,label)
+  # Fabric transitions can replace the active scope after this accessibility
+  # snapshot. Allow the native pre-draw focus repair to run, then require the
+  # actual focused control to still have this label before sending Select.
+  time.sleep(.35);current=focused(tree())
+  if current is not None and match(current,label):
+   key(23);visited.append(label);print('Remote Select: '+label,flush=True);return
+ raise RuntimeError('Remote focus did not settle before Select: '+label)
 def dismiss_keyboard():
  # Called immediately after activating and editing an input. Send Back once;
  # mInputShown can stay true after the IME disappears. The next action waits

@@ -87,5 +87,13 @@ class InputDriverTests(unittest.TestCase):
         with patch.object(helpers, 'REMOTE', False), patch.object(helpers, 'dump', return_value=tree):
             self.assertEqual(helpers.find('Connect playlist'), [0,1720,900,1840])
 
+    def test_select_rechecks_focus_after_transition_without_pressing_wrong_control(self):
+        home = ET.fromstring('<node content-desc="Home" focused="true"/>')
+        player = ET.fromstring('<node content-desc="Watch live" focused="true"/>')
+        with patch.object(remote, 'focus', return_value=home) as focus, patch.object(remote, 'tree', side_effect=[player,home]), patch.object(remote, 'key') as key, patch.object(remote.time, 'sleep'):
+            remote.activate('Home', timeout=1)
+            self.assertEqual(focus.call_count, 2)
+            key.assert_called_once_with(23)
+
 if __name__ == '__main__':
     unittest.main()
