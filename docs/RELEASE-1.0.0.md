@@ -1,0 +1,50 @@
+# GlowTV 1.0.0: release record and phase gates
+
+1.0.0 is free and account-free on iPhone/iPad, Android phone and Android TV/Fire TV. It ships the 0.7.4 design audit fixes (`docs/CODEX-APP-AUDIT-0.7.4.md`) and the research-led features below. Recording, timeshift, multiview, cloud sync, QR pairing, new provider protocols and external metadata services are out of scope.
+
+## Phase 0: frozen baseline
+
+| Item | Value |
+|---|---|
+| Stable source | `glowtv-v0.7.4` → `ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb` |
+| iOS bundle ID | `com.nhshajib.nodecast` |
+| Android package IDs | `com.nhshajib.nodecast` (phone), `com.nhshajib.nodecast.tv` (TV) |
+| Android signing | Private key in repository secrets; certificate pinned by `GLOWTV_ANDROID_SIGNING_CERT_SHA256` (`apps/player/scripts/android_release_signing.py`) |
+| Baseline checks | `npm run typecheck` clean; `npm test` 139 passing; `check-ui-grid` and `check-ui-scope` passing |
+| Build numbers | 0.7.4 = 704. Previews use 9900–9999; **10000 is reserved for the stable 1.0.0 build**. |
+
+- **Fixtures:** `apps/player/tests/fixtures/library.mjs` covers Xtream, remote M3U, local file, multiple profiles, protected categories and a version-1 backup.
+- **Flags:** `apps/player/src/featureFlags.ts` holds compile-time internal flags, one per phase. A flag turns on only after its phase passes its gate. Users never see these switches.
+- **Scope check:** `verification/glowtv/check-ui-scope.cjs` now allows the model changes this plan needs. The playback policy, recovery, native playback and backup transaction journal stay frozen, together with the native engine patches and the player lifecycle effects.
+
+## Phases
+
+Each phase lands as its own commit. The 139 original tests must still pass, and each phase adds its own tests.
+
+| Phase | Scope | Flag |
+|---|---|---|
+| 1 | Shared `CatalogRepository` with paged queries (items, total, snapshot ID, cursor), stored in native SQLite with FTS and a memory adapter for web and tests. Legacy JSON is migrated after verification and kept as a fallback. Stream URLs and credentials stay out of the catalogue. | `catalogRepository` |
+| 2 | Refresh runs: capture → fetch → validate → stage → compare → commit. Older generations and other profiles never win. Ranked search (exact, then prefix, then broader) with no lost matches. Newest-first sorting only from real provider timestamps. | `rankedSearch` |
+| 3 | Named lists (references only), hiding individual items, unavailable saved items, latest-first series display, unwatched filter, jump to continuation, and an optional cancellable 10-second next-episode countdown (off by default). | `organization` |
+| 4 | Guide matching order: manual mapping, then exact EPG ID, then a unique exact normalized name. Fuzzy matches are suggestions only. Guide health counts, saved time offsets applied once, history kept within the archive window, and distinct failure states. | `guideRepair` |
+| 5 | Buffering watchdog driven by real status events, previous channel, return to live (controlled reopen), exact language-variant matching, and allowlisted playback help. | `playbackAssist` |
+| 6 | Paste-and-preview provider setup (masked) and backup payload v2 with lists and new preferences. v1 backups still import. Import preview offers Add or Update, with the encryption envelope unchanged. | `transferPreview` |
+
+## Release gates
+
+- **Native UI:** iPhone/iPad rotation and multitasking, Android Back, TV remote-only navigation, focus restoration, large text and screen readers.
+- **Performance targets** (measured against 0.7.4 on the same devices):
+  - warmed search p95 under 250 ms after debounce;
+  - cached first content within 1.5 s;
+  - no unexplained regression above 10% in first-frame time or memory.
+- **Stable publication:** only after the native feature tests and the physical-device checks pass, including the Hisense Fire TV.
+  - The stable build is 10000.
+  - Sizes, checksums and OS requirements come from the real packages.
+
+## Status
+
+| Phase | State |
+|---|---|
+| Design audit fixes | Done (`3efbbca`) |
+| 0 | Done |
+| 1–6 | In progress |
