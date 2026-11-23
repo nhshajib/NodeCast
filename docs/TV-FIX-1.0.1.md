@@ -14,7 +14,7 @@ Source: hands-on test of `GlowTV-TV.apk` 1.0.0 on a Hisense Fire TV Edition (Fir
 | 7 | Multi-category groups | Split on `;`. A channel belongs to every category it lists; subtitles read "A · B"; "undefined" becomes Other. | `groups.ts` and every matcher |
 | 8 | Thin Home | The hero is the last-watched channel. Rows: Continue watching (including live), Favorites, From your playlist. | `TVHome.tsx` |
 | 9 | Loading feedback | Shows the current step and elapsed time; the Add button is replaced while loading. | `TVApp.tsx`, `TVHome.tsx` |
-| 10 | Header too tall | Chips and actions share one row; the hint and count move under the title; rows are 56 dp. The focused row stays inside the middle band of the list. | `TVApp.tsx`, `TVChannelRow.tsx`, controller |
+| 10 | Header too tall | Chips and actions share one row: the actions (Recently watched, Library options, Grid view, TV guide) are 56 dp icon buttons that show their name while focused, so the chips keep most of the width. The hint and count move under the title; rows are 56 dp. The focused row stays inside the middle band of the list. | `TVApp.tsx`, `TVChannelRow.tsx`, controller |
 | 11 | Row shifts on focus | The ring goes around the whole row; scaling is capped at about 8 dp per side. | controller |
 | 12 | Clipped rings | Scale is capped, lists and Home rows are padded, and radio rows are padded. | controller, `TVHome.tsx`, `ChannelPlaybackOptions.tsx` |
 | 13 | Hard top edge | A soft fade at the top of Home. | `TVHome.tsx` |
