@@ -326,8 +326,11 @@ class TVRemoteController(private val activity: Activity) {
     // right of a row in favour of a farther, wider control (backup's history switch).
     if(!horizontal&&aligned.isNotEmpty()){
       fun gap(t:View):Int { val b=rectangles.getValue(t); return maxOf(0,if(positive)b.top-a.bottom else a.top-b.bottom) }
-      val nearest=aligned.minOf { gap(it.first) }
-      best=aligned.filter { gap(it.first)<=nearest+16 }.minByOrNull { val b=rectangles.getValue(it.first); kotlin.math.abs(b.centerX()-a.centerX()) }
+      // Inside a scrolling list, its own next item (even scrolled out of view) comes first;
+      // focus leaves the list only at its end.
+      val pool=if(scroll!=null)aligned.filter { scroller(it.first,false)===scroll }.ifEmpty { aligned } else aligned
+      val nearest=pool.minOf { gap(it.first) }
+      best=pool.filter { gap(it.first)<=nearest+16 }.minByOrNull { val b=rectangles.getValue(it.first); kotlin.math.abs(b.centerX()-a.centerX()) }
     }
     // Inside a horizontal strip (category chips, Home rows), the next item in the strip wins,
     // even when it is scrolled off-screen and a rail item that grazes the row is nearer.
