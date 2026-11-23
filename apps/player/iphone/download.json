@@ -1,36 +1,36 @@
 {
-  "assetId": 775640092,
-  "downloadCount": 1,
-  "version": "0.7.4",
-  "tag": "ios-v0.7.4",
-  "publishedAt": "2026-11-21T13:15:55Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v0.7.4",
+  "assetId": 781547463,
+  "downloadCount": 0,
+  "version": "1.0.0",
+  "tag": "ios-v1.0.0",
+  "publishedAt": "2026-11-23T04:40:58Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v1.0.0",
   "prerelease": false,
   "legacy": false,
-  "file": "GlowTV-0.7.4-unsigned.ipa",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/GlowTV-0.7.4-unsigned.ipa",
-  "size": 32978024,
-  "sha256": "8e73e26184da53970584abe3c03a4cbcb0c7b7ea0680f66a6fb11dab50ccf091",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v0.7.4/SHA256SUMS.txt",
+  "file": "GlowTV-1.0.0-unsigned.ipa",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/GlowTV-1.0.0-unsigned.ipa",
+  "size": 32540598,
+  "sha256": "f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/SHA256SUMS.txt",
   "minimumOS": "iOS 16.4 or later",
-  "checkedAt": "2026-11-21T22:55:04.929Z",
+  "checkedAt": "2026-11-23T04:47:00.000Z",
   "edition": "ios",
   "features": [
     {
       "title": "Your playlists, together",
-      "description": "Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+      "description": "Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
     },
     {
       "title": "A full TV guide",
-      "description": "Load XMLTV schedules, search programmes and use catch-up when your provider supports it."
+      "description": "Load XMLTV schedules, fix unmatched channels, shift a guide that runs early or late, and use catch-up when your provider supports it."
     },
     {
       "title": "Movies and series",
       "description": "Browse your provider’s library, choose seasons and continue with the next episode."
     },
     {
-      "title": "Favorites and history",
-      "description": "Save channels, resume watching and clear recents without deleting your profiles."
+      "title": "Favorites, lists and history",
+      "description": "Save channels, build your own lists, hide titles you never watch and resume where you left off."
     },
     {
       "title": "Built for iPhone and iPad",
@@ -42,9 +42,12 @@
     }
   ],
   "changes": [
-    "A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.",
-    "An inline show/hide password button and sheets that clear the gesture bar.",
-    "Easier-to-read LIVE badges and small labels.",
-    "Existing playlists, profiles, playback engines and transitions are retained."
+    "Faster, ranked search: exact names first, then names that start with what you typed.",
+    "Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.",
+    "Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.",
+    "Previous channel, return to live, and audio and subtitles that follow your preferred language.",
+    "Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.",
+    "Native navigation, sheets and press feedback across the app.",
+    "Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import."
   ]
 }

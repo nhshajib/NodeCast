@@ -17,10 +17,10 @@ This is a published GlowTV binary.
 
 ## Features
 
-- **Your playlists, together:** Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.
-- **A full TV guide:** Load XMLTV schedules, search programmes and use catch-up when your provider supports it.
+- **Your playlists, together:** Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.
+- **A full TV guide:** Load XMLTV schedules, fix unmatched channels, shift a guide that runs early or late, and use catch-up when your provider supports it.
 - **Movies and series:** Browse your provider’s library, choose seasons and continue with the next episode.
-- **Favorites and history:** Save channels, resume watching and clear recents without deleting your profiles.
+- **Favorites, lists and history:** Save channels, build your own lists, hide titles you never watch and resume where you left off.
 - **Playback your way:** Adjust playback over the video, choose supported player options and set a sleep timer.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
