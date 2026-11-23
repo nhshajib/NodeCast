@@ -1,4 +1,5 @@
 import type { Media, Provider, Section } from './provider.ts';
+import { inCategory, matchesAny } from './groups.ts';
 import { streamURL } from './provider.ts';
 import { summarizeMedia } from './activity.ts';
 import type { MediaSummary } from './activity.ts';
@@ -29,5 +30,5 @@ export function createSearchIndex(items: Media[]) { return items.map(item => ({ 
 export function searchIndex(index: ReturnType<typeof createSearchIndex>, query: string, group = 'All', hidden: string[] = [], includeHidden = false): Media[] {
   const terms = normalizeSearch(query).split(' ').filter(Boolean);
   const excluded = new Set(hidden);
-  return index.filter(({ item, text, compactName }) => (includeHidden || !excluded.has(item.group)) && (group === 'All' || item.group === group) && (terms.every(term => text.includes(term)) || (!!terms.length && compactName.includes(terms.join(''))))).map(row => row.item);
+  return index.filter(({ item, text, compactName }) => (includeHidden || !matchesAny(item.group, excluded)) && (group === 'All' || inCategory(item.group, group)) && (terms.every(term => text.includes(term)) || (!!terms.length && compactName.includes(terms.join(''))))).map(row => row.item);
 }

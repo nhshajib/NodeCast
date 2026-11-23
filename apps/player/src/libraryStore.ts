@@ -63,6 +63,7 @@ export function writeViewing(profile: string, entries: ViewingEntry[]): Promise<
 export async function clearProfileData(profile: string) {
   await (queues.get(profile) || Promise.resolve());
   await clearCatalog(profile);
+  await clearLogos(profile).catch(() => {});
   const { clearGuide }=await import('./guideStore');await clearGuide(profile);
   await AsyncStorage.removeItem(key(profile, 'viewing'));
   queues.delete(profile);
@@ -76,4 +77,23 @@ export async function cacheSize(profile: string): Promise<number> {
 async function repositorySize(profile: string) {
   const repo = catalogRepository();
   return repo ? repo.size(profile).catch(() => 0) : 0;
+}
+
+// Channel logos live in small JSON files beside the catalogue (see logoCache.ts for what is kept).
+const logoSections: Section[] = ['live', 'movies', 'series'];
+async function logoFile(profile: string, section: Section) {
+  const { File, Paths } = await import('expo-file-system');
+  return new File(Paths.document, `glowtv-logos-${encodeURIComponent(profile)}-${section}.json`);
+}
+export async function readLogos(profile: string, section: Section): Promise<Record<string, string> | null> {
+  if (Platform.OS === 'web') return null;
+  try { const file = await logoFile(profile, section); if (!file.exists) return null; const value = JSON.parse(await file.text()); return value && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, string> : null; } catch { return null; }
+}
+export async function writeLogos(profile: string, section: Section, map: Record<string, string>) {
+  if (Platform.OS === 'web') return;
+  try { const file = await logoFile(profile, section); if (!file.exists) file.create(); file.write(JSON.stringify(map)); } catch { /* logos are a cache; lists fall back to initials */ }
+}
+async function clearLogos(profile: string) {
+  if (Platform.OS === 'web') return;
+  for (const section of logoSections) { const file = await logoFile(profile, section); if (file.exists) file.delete(); }
 }

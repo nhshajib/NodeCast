@@ -67,8 +67,13 @@ class TVRemoteController(private val activity: Activity) {
     // White remains visible on green; the night separator remains visible on white.
     val ring=LayerDrawable(arrayOf(line(Color.WHITE,3f,radius),line(Color.rgb(10,14,12),2f,radius-3*dp)))
     ring.setLayerInset(1,(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt(),(3*dp).toInt())
-    target.scaleX=1.05f;target.scaleY=1.05f
-    indicatedControl=next;indicator=ring;indicatorBounds(target);target.overlay.add(ring)
+    // Grow at most ~8 dp per side so wide rows and edge buttons keep their ring on screen.
+    val grow=16*dp
+    val scale=minOf(1.05f,1f+grow/target.width.coerceAtLeast(1),1f+grow/target.height.coerceAtLeast(1))
+    target.scaleX=scale;target.scaleY=scale
+    // A row's main action takes the whole row's outline, so its buttons sit inside the ring.
+    val whole=target!==next&&next.width>=target.width*0.6f
+    indicatedControl=if(whole)target else next;indicator=ring;indicatorBounds(target);target.overlay.add(ring)
     target.addOnLayoutChangeListener(indicatorLayout);highlighted=target;indicator=ring
   }
   private val arrows = mapOf(KeyEvent.KEYCODE_DPAD_UP to View.FOCUS_UP, KeyEvent.KEYCODE_DPAD_DOWN to View.FOCUS_DOWN,
@@ -76,7 +81,11 @@ class TVRemoteController(private val activity: Activity) {
   init {
     root.viewTreeObserver.addOnGlobalFocusChangeListener { _, next ->
       highlight(next)
-      if (next != null && allowed(next)) nativeId(next)?.let { remembered[scope(next)] = focusId(it); if(remembered.size>300)remembered.remove(remembered.keys.first()) }
+      if (next != null && allowed(next)) nativeId(next)?.let { id ->
+        remembered[scope(next)] = focusId(id)
+        (scroller(next,false)?:scroller(next,true))?.let { box -> remembered["container:"+(nativeId(box)?:System.identityHashCode(box).toString())]=focusId(id) }
+        while(remembered.size>300)remembered.remove(remembered.keys.first())
+      }
     }
     // Fabric can mount/reparent native views without an Android global-layout pass.
     // Repair invalid/hidden focus before drawing; reuse the bounded candidate cache.
@@ -163,8 +172,25 @@ class TVRemoteController(private val activity: Activity) {
   private fun visible(view: View): Boolean { val r = Rect(); return view.getGlobalVisibleRect(r) && r.width() > 8 && r.height() > 8 }
   private fun focus(view: View) {
     view.isFocusableInTouchMode = true
-    view.requestRectangleOnScreen(Rect(0, 0, view.width, view.height), true)
+    // Ask the nearest list to keep the item away from the edges (roughly the middle
+    // band), so a focused row is never cut off at the bottom of the screen.
+    val margin=(scroller(view,false)?.height ?: 0)/4
+    view.requestRectangleOnScreen(Rect(0, -margin, view.width, view.height+margin), true)
     view.requestFocus()
+  }
+  // React Native opens the keyboard on programmatic focus only in touch mode, which a
+  // TV never enters, and Fire OS ignores implicit requests from a D-pad press. Focus the
+  // field, then ask explicitly once it is the IME's served view.
+  private fun showKeyboard(field: EditText) {
+    if (!field.isFocused) field.requestFocus()
+    val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    field.post {
+      if (android.os.Build.VERSION.SDK_INT >= 30) field.windowInsetsController?.show(android.view.WindowInsets.Type.ime())
+      if (!imm.showSoftInput(field, 0)) {
+        @Suppress("DEPRECATION")
+        imm.showSoftInput(field, InputMethodManager.SHOW_FORCED)
+      }
+    }
   }
   private fun imeVisible(): Boolean {
     if (android.os.Build.VERSION.SDK_INT >= 30) {
@@ -174,19 +200,35 @@ class TVRemoteController(private val activity: Activity) {
     return root.height - frame.bottom > root.height / 4
   }
   fun onWindowFocus() { dirty=true;root.post { ensureFocus();highlight(activity.currentFocus) } }
+  // After a rail item is chosen, focus follows into the page it opened.
+  private var pendingContent=0L
+  private var pendingScope:String?=null
+  private var pendingSince=0L
   private fun ensureFocus(): List<View> {
     val choices = candidates()
     if (!root.hasWindowFocus()) return choices
+    val now=android.os.SystemClock.uptimeMillis()
+    val current=activity.currentFocus
     val nonRail=scopeRoots.filter { nativeId(it)!="tv-scope:rail" && nativeId(it)?.startsWith("tv-scope:mini")!=true && choices.any { choice -> inside(choice,it) } }
     val latest=nonRail.maxByOrNull { scopeMounts[it] ?: 0L }
     val latestName=latest?.let { nativeId(it) }
-    val changed=latest!==activeScope||latestName!=activeScopeName;activeScope=latest;activeScopeName=latestName
-    if(!changed && choices.any { it===activity.currentFocus })return choices
-    val scoped=if(latest!=null)choices.filter { inside(it,latest) } else choices
+    val changed=latest!==activeScope||latestName!=activeScopeName
+    val followRail=pendingContent>now&&current!=null&&inRail(current)&&latest!=null
+    if(!changed && !followRail && choices.any { it===current })return choices
+    val keepCurrent={ if(choices.none { it===current }) (railHome(choices)?:choices.firstOrNull { visible(it) })?.let { focus(it) } }
+    // A page that is still fading in has no visible controls yet. Don't mark it handled,
+    // so the next pass focuses inside it instead of leaving focus on the rail.
+    if(latest==null){keepCurrent();return choices}
+    val scoped=choices.filter { inside(it,latest) }
     val shown=scoped.filter { visible(it) }
+    if(shown.isEmpty()){keepCurrent();return choices}
+    if(pendingScope!=latestName){pendingScope=latestName;pendingSince=now}
     val restored=scoped.firstOrNull { nativeId(it)?.let(::focusId)==remembered[scope(it)] }
+    // A virtualized list scrolls back to the remembered row a moment after it mounts.
+    if(restored==null&&remembered[latestName!!]!=null&&now-pendingSince<700&&!followRail){keepCurrent();return choices}
     val preferred=shown.firstOrNull { nativeId(it)?.startsWith("tv-preferred:")==true }
-    (restored ?: preferred ?: shown.firstOrNull() ?: choices.firstOrNull { visible(it) })?.let { focus(it) }
+    val target=restored ?: preferred ?: readingOrder(shown)
+    if(target!=null){focus(target);activeScope=latest;activeScopeName=latestName;pendingContent=0L}
     return choices
   }
   private fun scroller(view: View, horizontal: Boolean): View? {
@@ -210,7 +252,8 @@ class TVRemoteController(private val activity: Activity) {
       // Up from a control near the top to the bottom of the page.
       val from=origin?.let { rect(it) }
       val ahead=if(from==null)shown else shown.filter { val r=rect(it); if(horizontal){if(sign>0)r.left>=from.right-2 else r.right<=from.left+2}else{if(sign>0)r.top>=from.bottom-2 else r.bottom<=from.top+2} }
-      val pool=ahead.ifEmpty { shown }
+      if(from!=null&&ahead.isEmpty())return@postDelayed
+      val pool=ahead
       val target=if(sign>0)pool.minByOrNull { if(horizontal)rect(it).left else rect(it).top }
         else pool.maxByOrNull { if(horizontal)rect(it).right else rect(it).bottom }
       target?.let { focus(it) }
@@ -231,24 +274,39 @@ class TVRemoteController(private val activity: Activity) {
     }
     visit(root);return views.maxByOrNull { it.width*it.height }
   }
+  private fun inRail(view: View) = scope(view)=="tv-scope:rail"
+  // The rail item for the page on screen (accessibilityState.selected sets View.isSelected).
+  private fun railHome(choices: List<View>) = choices.filter { inRail(it)&&visible(it) }.let { rail -> rail.firstOrNull { it.isSelected } ?: rail.firstOrNull() }
+  private fun readingOrder(views: List<View>) = views.minWithOrNull(compareBy<View>({ rect(it).top/8 }, { rect(it).left }))
   private fun move(direction: Int, choices: List<View>): Boolean {
     val from = activity.currentFocus ?: return true
+    val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
+    val positive = direction == View.FOCUS_RIGHT || direction == View.FOCUS_DOWN
+    val fromRail=inRail(from)
     // Right leaves the rail for the active screen, rather than geometrically
     // choosing another rail icon while its labels expand/collapse. Restoring
     // the remembered row also scrolls a virtualized list back to that item.
-    if(direction==View.FOCUS_RIGHT && scope(from)=="tv-scope:rail"){
-      val content=choices.filter { scope(it)!="tv-scope:rail" && (activeScope==null || inside(it,activeScope!!)) }
+    if(direction==View.FOCUS_RIGHT && fromRail){
+      val content=choices.filter { !inRail(it) && (activeScope==null || inside(it,activeScope!!)) }
       val target=content.firstOrNull { nativeId(it)?.let(::focusId)==remembered[scope(it)] }
         ?:content.firstOrNull { visible(it)&&nativeId(it)?.startsWith("tv-preferred:")==true }
-        ?:content.firstOrNull { visible(it) }
+        ?:readingOrder(content.filter { visible(it) })
       if(target!=null){focus(target);return true}
     }
-    val horizontal = direction == View.FOCUS_LEFT || direction == View.FOCUS_RIGHT
-    val positive = direction == View.FOCUS_RIGHT || direction == View.FOCUS_DOWN
+    if(fromRail&&direction==View.FOCUS_LEFT)return true
+    // Up and Down stay inside the rail; its first and last items are hard stops.
+    if(fromRail&&!horizontal){
+      val a=rect(from)
+      val next=choices.filter { inRail(it)&&it!==from }.map { it to rect(it).centerY()-a.centerY() }
+        .filter { (_,dy)->if(positive)dy>2 else dy< -2 }.minByOrNull { (_,dy)->kotlin.math.abs(dy) }?.first
+      next?.let { focus(it) }
+      return true
+    }
     val a = rect(from); val scroll = scroller(from, horizontal)
     val rectangles=choices.associateWith { rect(it) }
     val options = choices.filter { target ->
-      target !== from && (visible(target) || scroll != null && scroller(target, horizontal) === scroll)
+      // Content never falls into the rail vertically; Left is the only way in.
+      target !== from && !(inRail(target)&&!horizontal) && (visible(target) || scroll != null && scroller(target, horizontal) === scroll)
     }.mapNotNull { target ->
       val b = rectangles.getValue(target)
       val primary = if (horizontal) b.centerX() - a.centerX() else b.centerY() - a.centerY()
@@ -262,7 +320,16 @@ class TVRemoteController(private val activity: Activity) {
     // Prefer the directional beam before comparing distance so Down from a
     // toolbar enters the list instead of jumping sideways to the rail.
     val aligned = options.filter { it.third }
-    val best = (if (aligned.isNotEmpty()) aligned else options).minByOrNull { it.second }
+    var best = (if (aligned.isNotEmpty()) aligned else if (horizontal) emptyList() else options).minByOrNull { it.second }
+    // Left into the rail always lands on the current page's item, never the nearest icon.
+    if(direction==View.FOCUS_LEFT&&(best==null||inRail(best.first))&&(best!=null||options.any { inRail(it.first) })){
+      railHome(choices)?.let { focus(it);return true }
+    }
+    // Right never jumps diagonally to a control that shares no row with the focus.
+    if(horizontal&&best==null){
+      val canScrollSide=scroll!=null&&scroll.canScrollHorizontally(if(positive)1 else -1)
+      if(!canScrollSide)return true
+    }
     val sign = if (positive) 1 else -1
     val canScroll = scroll != null && if (horizontal) scroll.canScrollHorizontally(sign) else scroll.canScrollVertically(sign)
     if (canScroll && (best == null || !best.third)) {
@@ -270,7 +337,19 @@ class TVRemoteController(private val activity: Activity) {
       return true
     }
     if(best==null&&scroll==null)contentScroller(from,horizontal,sign)?.let { scrollMore(it,sign,horizontal);return true }
-    best?.let { focus(it.first) }
+    // Entering a different list or grid from outside lands on its remembered item,
+    // or its first item, instead of whichever cell happens to sit under the origin.
+    best?.let { choice ->
+      val target=choice.first
+      val container=scroller(target,false)?:scroller(target,true)
+      if(!horizontal&&container!=null&&container!==scroller(from,false)&&container!==scroller(from,true)){
+        val inside=choices.filter { inside(it,container)&&visible(it) }
+        val entry=inside.firstOrNull { nativeId(it)?.let(::focusId)==remembered["container:"+(nativeId(container)?:System.identityHashCode(container).toString())] }
+          ?:readingOrder(inside)
+        if(entry!=null){focus(entry);return true}
+      }
+      focus(target)
+    }
     return true
   }
   private fun menu(choices: List<View>) {
@@ -328,6 +407,10 @@ class TVRemoteController(private val activity: Activity) {
       while(player!=null && nativeId(player)?.startsWith("tv-trap:player:")!=true && nativeId(player)?.startsWith("tv-scope:mini:")!=true)player=player.parent as? View
       val live=nativeId(player?:owner)?.endsWith(":live")==true
       if(command!=null){if(event.action==KeyEvent.ACTION_UP)emit(owner,"GlowTVRemoteCommand",command);return true}
+      // Left over live video opens the channel list, so you can zap without leaving the player.
+      if(live && wake!=null && event.keyCode==KeyEvent.KEYCODE_DPAD_LEFT){
+        if(event.action==KeyEvent.ACTION_DOWN&&event.repeatCount==0)emit(owner,"GlowTVRemoteCommand","channels");return true
+      }
       if(live && wake!=null && event.keyCode in listOf(KeyEvent.KEYCODE_DPAD_UP,KeyEvent.KEYCODE_DPAD_DOWN)){
         if(event.action==KeyEvent.ACTION_DOWN){wakingKey=event.keyCode;emit(owner,"GlowTVRemoteCommand",if(event.keyCode==KeyEvent.KEYCODE_DPAD_UP)"next"else"previous")};return true
       }
@@ -362,8 +445,9 @@ class TVRemoteController(private val activity: Activity) {
     if (event.action == KeyEvent.ACTION_UP) {
       val target = pressed; pressed = null
       if (target != null && target.isEnabled && allowed(target) && visible(target) && choices.any { it === target }) {
+        if(inRail(target)&&nativeId(target)!="tv-control:nav:search")pendingContent=android.os.SystemClock.uptimeMillis()+1500
         target.performClick()
-        if (target is EditText) (activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).showSoftInput(target, InputMethodManager.SHOW_IMPLICIT)
+        if (target is EditText) showKeyboard(target)
       }
       return true
     }

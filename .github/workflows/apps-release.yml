@@ -134,6 +134,17 @@ jobs:
           "$BUILD_TOOLS/aapt" dump badging "$OUT" > "android-${NODECAST_TARGET}/apk-manifest.txt"
           python3 scripts/verify-android.py "$OUT" "$NODECAST_TARGET" "android-${NODECAST_TARGET}/apk-manifest.txt"
           sha256sum "$OUT" > "${OUT}.sha256"
+          if [ "$NODECAST_TARGET" = tv ]; then
+            # Fire TV and most TVs run 32-bit userspace: ship a smaller armeabi-v7a-only build
+            # of the same release. The universal APK (tested on the x86_64 emulator) stays.
+            cp android/app/build/outputs/apk/release/app-release.apk /tmp/glowtv-tv-v7a.apk
+            zip -q -d /tmp/glowtv-tv-v7a.apk 'lib/arm64-v8a/*' 'lib/x86_64/*' 'lib/x86/*' 'META-INF/*.SF' 'META-INF/*.RSA' 'META-INF/*.EC' 'META-INF/*.MF' || true
+            "$BUILD_TOOLS/zipalign" -f -p 4 /tmp/glowtv-tv-v7a.apk /tmp/glowtv-tv-v7a-aligned.apk
+            V7A="android-tv/GlowTV-TV-armeabi-v7a.apk"
+            python3 scripts/android_release_signing.py sign "$BUILD_TOOLS" /tmp/glowtv-tv-v7a-aligned.apk "$V7A"
+            "$BUILD_TOOLS/aapt" dump badging "$V7A" | grep -q "native-code: 'armeabi-v7a'"
+            sha256sum "$V7A" > "${V7A}.sha256"
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: GlowTV-Android-${{ matrix.target }}

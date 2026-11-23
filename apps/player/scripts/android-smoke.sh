@@ -6,7 +6,9 @@ PACKAGE=com.nhshajib.nodecast
 if [ "$TARGET" = tv ]; then PACKAGE="$PACKAGE.tv"; PROFILE_ARGS=(--ez nodecastTvProfile true); fi
 mkdir -p verification/android
 trap 'adb logcat -d > "verification/android/emulator-$TARGET-logcat.txt" || true' EXIT
-APK_FILE="$(find apk -name '*.apk' -print -quit)"
+APK_NAME=GlowTV.apk
+if [ "$TARGET" = tv ]; then APK_NAME=GlowTV-TV.apk; fi
+APK_FILE="$(find apk -name "$APK_NAME" -print -quit)"
 adb install "$APK_FILE"
 sha256sum "$APK_FILE" > "verification/android/emulator-$TARGET-apk.sha256"
 cp "$(find apk -name 'apk-manifest.txt' -print -quit)" "verification/android/emulator-$TARGET-apk-manifest.txt"

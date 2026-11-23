@@ -2,7 +2,7 @@
 import hashlib,json,os,re,sys
 from pathlib import Path
 root=Path(sys.argv[1]);assets={}
-for name in ['GlowTV.apk','GlowTV-TV.apk']:
+for name in ['GlowTV.apk','GlowTV-TV.apk','GlowTV-TV-armeabi-v7a.apk']:
     candidates=list(root.rglob(name))
     if not candidates: continue
     if len(candidates)!=1: raise SystemExit(f'Ambiguous artifact: {name}')

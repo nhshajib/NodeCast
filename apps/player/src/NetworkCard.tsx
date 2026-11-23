@@ -14,7 +14,10 @@ export default function NetworkCard({ baseline, onBaseline, onOpenDetails, detai
   const focused = useScreenFocus();
   const {fontScale}=useWindowDimensions();
   const [result, setResult] = useState<ExitIP | null>(null);
-  const [busy, setBusy] = useState(true);
+  // The TV details page looks nothing up until asked, and keeps the address hidden until shown.
+  const optIn = detailsOnly;
+  const [busy, setBusy] = useState(!optIn);
+  const [showIP, setShowIP] = useState(!optIn);
   const [clock, setClock] = useState(Date.now());
   const [error, setError] = useState('');
   const [details, setDetails] = useState(false);
@@ -32,15 +35,15 @@ export default function NetworkCard({ baseline, onBaseline, onOpenDetails, detai
   }
   useEffect(() => {
     if (!focused) return;
-    void refresh();
+    if (!optIn) void refresh();
     const timer = setInterval(() => setClock(Date.now()), 15000);
-    const sub = AppState.addEventListener('change', state => { if (state === 'active') void refresh(); });
+    const sub = AppState.addEventListener('change', state => { if (state === 'active' && !optIn) void refresh(); });
     return () => { controller.current?.abort(); clearInterval(timer); sub.remove(); };
   }, [focused]);
   const comparison = compareIP(result, baseline?.ip || null, busy || !!error || !!result && clock - Date.parse(result.checkedAt) > 60000);
   const stackSummary=fontScale>1.3||!!result?.ip.includes(':');
   const label = comparison === 'changed' ? 'Different from home' : comparison === 'same' ? 'Using home IP' : 'VPN unverified';
-  const place = result ? [result.city, result.country].filter(Boolean).join(', ') || 'Location unavailable' : busy ? 'Finding your exit location…' : 'Location unavailable';
+  const place = result ? [result.city, result.country].filter(Boolean).join(', ') || 'Location unavailable' : busy ? 'Finding your exit location…' : optIn ? 'Not looked up yet' : 'Location unavailable';
   async function storeBaseline() {
     if (!result || busy || error) return;
     setSaving(true); setSaveError('');
@@ -63,12 +66,13 @@ export default function NetworkCard({ baseline, onBaseline, onOpenDetails, detai
   if(detailsOnly)return <View style={{flex:1,flexDirection:'row',gap:24,padding:24}}>
     <View style={{flex:1,gap:16}}>
 
-      <View style={[u.section,{gap:8}]}><Text style={u.eyebrow}>{error?'Last known public IP':'Public IP address'}</Text><H2 style={[u.h2,{fontSize:result?.ip.includes(':')?21:30}]}>{result?.ip||(busy?'Checking…':'Unavailable')}</H2><Text style={[u.body,{fontSize:14,lineHeight:19}]}>{place}</Text>{!!result?.isp&&<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result.isp}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result?`Checked ${new Date(result.checkedAt).toLocaleTimeString()}`:'No successful lookup yet.'}</Text></View>
+      <View style={[u.section,{gap:8}]}><Text style={u.eyebrow}>{error?'Last known public IP':'Public IP address'}</Text><H2 style={[u.h2,{fontSize:result?.ip.includes(':')?21:30}]}>{result?(showIP?result.ip:'Hidden'):(busy?'Checking…':'Not looked up yet')}</H2><Text style={[u.body,{fontSize:14,lineHeight:19}]}>{result&&!showIP?'Location hidden':place}</Text>{!!result?.isp&&<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result.isp}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>{result?`Checked ${new Date(result.checkedAt).toLocaleTimeString()}`:'No successful lookup yet.'}</Text></View>
       <View style={[u.section,{gap:8}]}><Text style={u.label}>VPN status is unverified</Text><Text style={[u.body,{fontSize:14,lineHeight:19}]}>{comparison==='same'?'This matches your saved home IP. Check your VPN if you expected a different connection.':comparison==='changed'?'This IP differs from your saved home IP. A VPN is one possible reason.':'Save your home IP with the VPN disconnected to compare future connections.'}</Text><Text style={[u.small,{fontSize:12,lineHeight:17}]}>An IP comparison cannot confirm VPN status. Check your VPN app for its actual connection status.</Text></View>
-      {!!error&&<Text style={u.errorText}>{error}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>Approximate location from ipwho.is; no GPS or IPTV account details are sent.</Text>
+      {!!error&&<Text style={u.errorText}>{error}</Text>}<Text style={[u.small,{fontSize:12,lineHeight:17}]}>Refresh public IP asks ipwho.is, which sees your public IP and returns an approximate location. Nothing is looked up until you ask; no GPS or IPTV account details are sent.</Text>
     </View>
     <ScrollView style={{width:290,flexGrow:0}} contentContainerStyle={{gap:16,paddingBottom:16}}>
       <Button title="Refresh public IP" busy={busy} onPress={()=>{void refresh()}}/>
+      {!!result&&<Button title={showIP?'Hide IP':'Show IP'} variant="secondary" onPress={()=>setShowIP(value=>!value)}/>}
       {baseline&&<View style={{gap:8}}><Text style={u.eyebrow}>Saved home IP</Text><Text style={u.label}>{baseline.ip}</Text></View>}
       {confirm?<View style={{gap:16}}><Text style={u.label}>Save this home IP?</Text><Text style={[u.small,{fontSize:12,lineHeight:17}]}>Disconnect your VPN, refresh, then save only when you know you are on your home connection.</Text><Button title="Save this home IP" busy={saving} disabled={!result||busy||!!error} onPress={()=>{void storeBaseline()}}/><Button title="Cancel" variant="secondary" disabled={saving} onPress={()=>setConfirm(false)}/></View>:<><Button title={baseline?'Replace home IP':'Save home IP'} variant="secondary" disabled={!result||busy||!!error} onPress={()=>{setSaveError('');setConfirm(true)}}/>{(!result||!!error)&&<Text style={[u.small,{fontSize:12,lineHeight:17}]}>A successful IP refresh is needed before saving.</Text>}{baseline&&<Button title="Remove reference IP" variant="danger" onPress={()=>confirmDestructive("Remove reference IP","Future IP checks will no longer compare against your saved home connection.",()=>{void onBaseline(null).catch(()=>setSaveError('Could not remove the reference IP.'))})}/>}</>}
       {!!saveError&&<Text style={u.errorText}>{saveError}</Text>}<Button title="Close connection details" variant="secondary" disabled={saving} onPress={onCloseDetails||(()=>{})}/>

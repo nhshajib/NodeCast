@@ -1,4 +1,5 @@
 import type { Section } from './provider.ts';
+import { inCategory, matchesAny } from './groups.ts';
 import type { MediaSummary } from './activity.ts';
 import { normalizeSearch } from './catalog.ts';
 
@@ -38,7 +39,7 @@ export function rankOf(row: Pick<MediaSummary, 'name'>, terms: string[]) {
   if (terms.every(term => words.some(word => word.startsWith(term)))) return 2;
   return 3;
 }
-const blocked = (row: QueryRow, q: CatalogQuery) => !q.unlocked && !!q.restrictedGroups?.length && (q.restrictedGroups.includes(row.group) || (!!row.accessGroup && q.restrictedGroups.includes(row.accessGroup)));
+const blocked = (row: QueryRow, q: CatalogQuery) => !q.unlocked && !!q.restrictedGroups?.length && (matchesAny(row.group, q.restrictedGroups) || (!!row.accessGroup && q.restrictedGroups.includes(row.accessGroup)));
 
 export function encodeCursor(snapshotId: string, offset: number) { return `${snapshotId}~${offset}`; }
 export function decodeCursor(cursor: string | null | undefined, snapshotId: string) {
@@ -64,9 +65,9 @@ export function runQuery<T extends QueryRow>(rows: T[], q: CatalogQuery, snapsho
     !blocked(row, q) &&
     (!listOrder || listOrder.has(row.id)) &&
     // Lists keep explicit access to items in hidden categories, like favorites do today.
-    (listOrder || !hiddenGroups.has(row.group)) &&
+    (listOrder || !matchesAny(row.group, hiddenGroups)) &&
     !hiddenItems.has(row.id) &&
-    (!category || row.group === category) &&
+    (!category || inCategory(row.group, category)) &&
     matches(row, terms));
   const sort = q.sort || 'provider';
   const base = (a: T, b: T) => {
