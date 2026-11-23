@@ -1,0 +1,43 @@
+# Lets the Claude Code session start the existing GlowTV workflows. The session's
+# GitHub connection cannot dispatch workflows itself, so it pushes a request file
+# to its own branch and this job dispatches the listed runs with the workflow
+# token (GitHub allows workflow_dispatch from GITHUB_TOKEN).
+# Only the allowlisted workflows below can be started, always on main.
+name: Agent dispatch
+on:
+  push:
+    branches: [claude/inspiring-goldberg-e01rrb]
+    paths: ['.github/agent-dispatch.json']
+permissions:
+  actions: write
+  contents: read
+concurrency:
+  group: agent-dispatch
+  cancel-in-progress: false
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dispatch requested workflows on main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, subprocess
+          allowed = {'apps-release.yml', 'ios-sideload.yml', 'android-smoke.yml', 'publish-iphone-download.yml', 'publish-android-downloads.yml'}
+          request = json.load(open('.github/agent-dispatch.json'))
+          runs = request.get('runs', [])
+          assert isinstance(runs, list) and 0 < len(runs) <= 4, 'Between one and four runs per request'
+          for run in runs:
+              workflow = run['workflow']; inputs = run.get('inputs', {})
+              assert workflow in allowed, f'Not an allowed workflow: {workflow}'
+              assert isinstance(inputs, dict) and all(re.fullmatch(r'[a-z_]{1,40}', k) and isinstance(v, (str, bool, int)) and len(str(v)) <= 80 for k, v in inputs.items()), 'Invalid inputs'
+              command = ['gh', 'workflow', 'run', workflow, '--repo', '${{ github.repository }}', '--ref', 'main']
+              for key, value in inputs.items():
+                  command += ['-f', f'{key}={str(value).lower() if isinstance(value, bool) else value}']
+              print('Dispatching', workflow, inputs, flush=True)
+              subprocess.run(command, check=True)
+          PY

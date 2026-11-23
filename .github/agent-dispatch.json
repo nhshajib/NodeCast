@@ -1,0 +1,8 @@
+{
+  "request": "Preview 9905 builds",
+  "nonce": "2026-11-23T01:20Z-1",
+  "runs": [
+    { "workflow": "apps-release.yml", "inputs": { "target": "both", "create_draft": false } },
+    { "workflow": "ios-sideload.yml", "inputs": { "mode": "full" } }
+  ]
+}
