@@ -13,7 +13,7 @@
   "sha256": "50507c7f9f152c2ae821c505f15015d8d9e174253d0d94dad662c00f4d654664",
   "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk.sha256",
   "minimumOS": "Android API 24 or later",
-  "checkedAt": "2026-11-21T22:55:04.929Z",
+  "checkedAt": "2026-11-23T04:47:00.000Z",
   "edition": "tv",
   "features": [
     {
@@ -22,11 +22,11 @@
     },
     {
       "title": "Your playlists, together",
-      "description": "Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+      "description": "Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
     },
     {
       "title": "A full TV guide",
-      "description": "Load XMLTV schedules, search programmes and use catch-up when your provider supports it."
+      "description": "Load XMLTV schedules, fix unmatched channels, shift a guide that runs early or late, and use catch-up when your provider supports it."
     },
     {
       "title": "Movies and series",

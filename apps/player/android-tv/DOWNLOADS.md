@@ -18,8 +18,8 @@ This is a published GlowTV binary.
 ## Features
 
 - **Made for your remote:** Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.
-- **Your playlists, together:** Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.
-- **A full TV guide:** Load XMLTV schedules, search programmes and use catch-up when your provider supports it.
+- **Your playlists, together:** Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.
+- **A full TV guide:** Load XMLTV schedules, fix unmatched channels, shift a guide that runs early or late, and use catch-up when your provider supports it.
 - **Movies and series:** Browse your provider’s library, choose seasons and continue with the next episode.
 - **A lighter channel library:** Use the default text list, enable grid or logos when you want them, and organize each media library separately.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
