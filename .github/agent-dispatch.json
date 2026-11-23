@@ -1,1 +1,1 @@
-{"request":"Cancel superseded iPhone build 45101377308 (pre-fix 10000) so the 1.0.0 iPhone build can start","nonce":"2026-11-23T03:25Z-9","cancel":["45101377308"],"runs":[]}
+{"request":"Rebuild Android 1.0.0 (TV categories focus fix) as the draft release","nonce":"2026-11-23T03:55Z-10","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}}]}
