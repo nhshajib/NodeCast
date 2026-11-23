@@ -1,8 +1,1 @@
-{
-  "request": "Emulator gate for preview 9906",
-  "nonce": "2026-11-23T02:20Z-4",
-  "runs": [
-    { "workflow": "android-smoke.yml", "inputs": { "build_run": "45097190542", "target": "both", "tv_suite": "design", "api_level": "35", "make_public": false } },
-    { "workflow": "android-smoke.yml", "inputs": { "build_run": "45097190542", "target": "both", "tv_suite": "full", "api_level": "35", "make_public": false } }
-  ]
-}
+{"request":"Stable 1.0.0 build 10000: Android draft release and iPhone IPA","nonce":"2026-11-23T02:50Z-5","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}},{"workflow":"ios-sideload.yml","inputs":{"mode":"full"}}]}
