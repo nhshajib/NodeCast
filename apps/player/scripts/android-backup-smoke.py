@@ -18,6 +18,14 @@ def open_backup():
  root=dump()
  if any(n.get('content-desc')=='Unlock backup & transfer' for n in root.iter('node')):
   click('Unlock backup & transfer');text('Family PIN','123456',submit=False);click('Unlock');find('Export backup',timeout=180)
+def back():
+ # The native stack header labels its button "Navigate up" on Android; older builds used "Go back".
+ for _ in range(20):
+  labels={n.get('content-desc') for n in dump().iter('node') if n.get('clickable')=='true'}
+  for label in ('Navigate up','Go back'):
+   if label in labels:click(label);time.sleep(1);return
+  time.sleep(.5)
+ adb('shell','input','keyevent','4');time.sleep(1.5)
 def shot(name):OUT.joinpath(name).write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
 def explore_fresh_demo():
  click('Explore demo')
@@ -48,7 +56,7 @@ try:
  adb('shell','pm','clear',package);adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(6);explore_fresh_demo();open_backup();click('Import backup');click('Choose backup file');system_click(filename,timeout=45);text('Backup password','transfer-test-password-123',submit=False);click('Review backup',True);find('Ready for this device.',timeout=120,scroll=True);shot('emulator-mobile-backup-review.png');click('Import profiles & settings',True)
  find('Add playlist',timeout=45)
  assert not any(n.get('text')=='This page has closed' for n in dump().iter('node')),'Restore left the native router on an expired page'
- click('Settings');click('Saved profiles',True);find('PhoneTest',timeout=30);shot('emulator-mobile-restored-profiles.png');find('Go back',timeout=90);click('Go back');click('Family controls',True);click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=180);click('Go back');click('Live');find('Open Phone Test Channel');find('Remove Phone Test Channel from favorites');click('Guide');find('Phone Guide Match',timeout=45,scroll=True);shot('emulator-mobile-restored-guide.png')
+ click('Settings');click('Saved profiles',True);find('PhoneTest',timeout=30);shot('emulator-mobile-restored-profiles.png');back();click('Family controls',True);click('Unlock family controls');text('Family PIN','123456',submit=False);click('Unlock');find('Find category to protect',timeout=180);back();click('Live');find('Open Phone Test Channel');find('Remove Phone Test Channel from favorites');click('Guide');find('Phone Guide Match',timeout=45,scroll=True);shot('emulator-mobile-restored-guide.png')
  OUT.joinpath('emulator-mobile-backup-result.json').write_text(json.dumps({'passed':['Native AES-GCM export through Android Create Document','Encrypted file persists outside app storage','Fresh-emulator import through Android document picker','Provider, favorite, guide and dark appearance restored','Family PIN and protected category restored and unlocked','Fresh guide downloads after transfer'],'scope':'Synthetic credentials and disposable API 35 x86-64 emulator. The iOS share sheet and physical TV file pickers still need device confirmation.'},indent=2)+'\n');print('Encrypted Android file export and fresh-device restore passed.')
 except Exception:
  shot('emulator-mobile-backup-failure.png');OUT.joinpath('emulator-mobile-backup-failure.xml').write_text(__import__('xml.etree.ElementTree',fromlist=['tostring']).tostring(dump(),encoding='unicode'));raise
