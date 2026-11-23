@@ -1,4 +1,5 @@
 import type { Media } from './provider.ts';
+import { matchesAny } from './groups.ts';
 import type { ViewingEntry } from './activity.ts';
 import type { FailureKind } from './recovery.ts';
 
@@ -38,7 +39,7 @@ export function previousChannel(history: ViewingEntry[], currentId: string, cata
   for (const entry of recent) {
     const item = byId.get(entry.item.id);
     if (!item || hidden.includes(item.id)) continue;
-    if (!unlocked && (restricted.includes(item.group) || (!!item.accessGroup && restricted.includes(item.accessGroup)))) continue;
+    if (!unlocked && (matchesAny(item.group, restricted) || (!!item.accessGroup && restricted.includes(item.accessGroup)))) continue;
     return item;
   }
   return null;
@@ -64,6 +65,8 @@ export function playbackHelp(kind: FailureKind): { title: string; steps: string[
   const uncertainty = 'GlowTV can’t always tell whether the provider or this player caused it. The steps below are the ones most likely to help.';
   switch (kind) {
     case 'access': return { title: 'The provider refused this stream', steps: ['Check that your subscription is active.', 'Close GlowTV on other devices if your plan limits simultaneous streams.', 'Try again in a minute.'], uncertainty };
+    case 'missing': return { title: 'This channel’s address no longer works', steps: ['Refresh your playlist; the provider may have moved the channel.', 'Try another channel.'], uncertainty };
+    case 'stalled': return { title: 'The channel didn’t start', steps: ['Try again.', 'Try the other player.', 'Go to the next channel; this one may be offline or blocked in your region.'], uncertainty };
     case 'network': return { title: 'The connection dropped or the provider didn’t answer', steps: ['Check your Wi‑Fi or mobile data.', 'Try again.', 'If other channels play, this channel may be offline at the provider.'], uncertainty };
     case 'format': return { title: 'This player couldn’t open the stream’s format', steps: ['Try built-in VLC, if it’s available.', 'Or choose an external player.'], uncertainty };
     case 'server': return { title: 'The server answered in a way this engine can’t use', steps: ['Try built-in VLC, if it’s available.', 'Or choose an external player such as VLC.'], uncertainty };

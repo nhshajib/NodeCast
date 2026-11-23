@@ -223,7 +223,7 @@ def audit_library(remote,counts):
    assert time.monotonic()<end,label+' did not update'
    time.sleep(.2)
  def shot(name):OUT.joinpath(name+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
- initial=dict(counts['api']);find('Grid view');assert counts['logos']==0,'Default list loaded channel images'
+ initial=dict(counts['api']);find('Grid view');time.sleep(2);assert counts['logos']<100,'List logo requests are not bounded'
  assert not counts['api'].get('get_vod_streams',0) and not counts['api'].get('get_series',0),'Live TV preloaded unopened libraries'
  shot('emulator-tv-library-list')
  remote.activate('Library options');checked('Channel layout: List');remote.activate('Z–A');checked('Z–A');remote.activate('Back');find('Play Remote Channel 3000')
@@ -232,15 +232,15 @@ def audit_library(remote,counts):
  remote.activate('Save favorite: Remote Channel 01');remote.activate('Save favorite: Remote Channel 02');remote.activate('Library options');remote.activate('Favorites order');remote.activate('Move Remote Channel 02 up');remote.activate('Back');remote.activate('Favorites')
  first=find('Play Remote Channel 02');second=find('Play Remote Channel 01');assert first[1]<second[1],'Saved favorite order did not apply'
  assert not counts['api'].get('get_vod_streams',0) and not counts['api'].get('get_series',0),'Live-only favorites loaded unrelated media'
- remote.activate('Settings');remote.activate('Library organization');remote.activate('Organize Movies');remote.activate('Z–A');checked('Z–A');remote.activate('All media');checked('All media');remote.activate('Categories');find('Show Cinema');remote.activate('Library preferences');remote.activate('Organize Live TV');checked('Provider order');checked('Current category');remote.activate('Back')
+ remote.activate('Settings');remote.activate('Library organization');remote.activate('Organize Movies');remote.activate('Z–A');checked('Z–A');remote.activate('All media');checked('All media');remote.activate('Categories');find('Show Cinema');remote.activate('Library preferences');remote.activate('Organize Live TV');checked('Provider order');checked('Current media type');remote.activate('Back')
  assert counts['api'].get('get_vod_streams',0)==1 and not counts['api'].get('get_series',0),'Organization did not load only the selected media type'
  before=dict(counts['api']);adb('shell','am','force-stop','com.nhshajib.nodecast.tv');adb('shell','am','start','-W','-n','com.nhshajib.nodecast.tv/.MainActivity','--ez','nodecastTvProfile','true');time.sleep(6)
  if any('Home IP reference' in (n.get('text') or n.get('content-desc') or '') for n in dump().iter('node')):remote.activate('Not now')
  find('Play Remote Channel 01');assert counts['api']==before,'Restart refetched a fresh cached catalogue'
- remote.activate('Settings');remote.activate('Library organization');checked('Channel layout: List');checked('Channel logos in list view',False);remote.activate('Categories');remote.fill('Find category','Smoke test');find('Show Smoke test');checked('Show Smoke test',False)
+ remote.activate('Settings');remote.activate('Library organization');checked('Channel layout: List');checked('Channel logos in list view');remote.activate('Categories');remote.fill('Find category','Smoke test');find('Show Smoke test');checked('Show Smoke test',False)
  shot('emulator-tv-organization-cached-categories');remote.activate('Favorites order');find('Move Remote Channel 02 down');remote.activate('Library preferences');remote.activate('Organize Movies');checked('Z–A');checked('All media');remote.activate('Back');remote.activate('Live TV')
  remote.activate('Grid view');find('List view');time.sleep(2);assert 0<counts['logos']<100,'Grid artwork requests are not bounded';grid_nodes=list(dump().iter('node'));grid_cards=[n for n in grid_nodes if (n.get('content-desc') or '').startswith('Play Remote Channel')];assert len(grid_cards)<60,'Grid mounted too many channel cards';shot('emulator-tv-library-grid');remote.activate('List view');find('Grid view');shot('emulator-tv-library-restored-list')
- OUT.joinpath('emulator-tv-library-result.json').write_text(json.dumps({'passed':['Default text list requests no channel logos','List/Grid preference switches with the remote and persists after restart','Live TV and live-only favorites do not load Movies/Series','Media-specific organization loads only the requested catalogue','Numeric sorting and independent movie/live preferences','Hidden selected category returns to All','Favorites move in actual saved order','Disk cache hydrates categories/favorites after process restart without refetching','Search scope, hidden categories and layouts survive restart'], 'channels':3001,'categories':301,'initialApiCalls':initial,'finalApiCalls':counts['api'],'logoRequestsOnlyAfterGrid':counts['logos'],'mountedGridCards':len(grid_cards),'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator with D-pad/Select and keyboard text, no touch. Physical Fire TV speed and memory use require device confirmation.'},indent=2)+'\n')
+ OUT.joinpath('emulator-tv-library-result.json').write_text(json.dumps({'passed':['Default list loads a bounded set of channel logos','List/Grid preference switches with the remote and persists after restart','Live TV and live-only favorites do not load Movies/Series','Media-specific organization loads only the requested catalogue','Numeric sorting and independent movie/live preferences','Hidden selected category returns to All','Favorites move in actual saved order','Disk cache hydrates categories/favorites after process restart without refetching','Search scope, hidden categories and layouts survive restart'], 'channels':3001,'categories':301,'initialApiCalls':initial,'finalApiCalls':counts['api'],'logoRequestsOnlyAfterGrid':counts['logos'],'mountedGridCards':len(grid_cards),'api':adb('shell','getprop','ro.build.version.sdk'),'scope':'Android emulator with D-pad/Select and keyboard text, no touch. Physical Fire TV speed and memory use require device confirmation.'},indent=2)+'\n')
  print('TV library organization, lazy loading, list/grid and restart persistence passed.',flush=True)
 
 def main():
@@ -301,6 +301,8 @@ def main():
  server=http.server.ThreadingHTTPServer(('0.0.0.0',9090),Handler);threading.Thread(target=server.serve_forever,daemon=True).start()
  try:
   click('Add your playlist')
+  # The TV form opens on the last-used source (M3U first); this fixture is an Xtream server.
+  click('Xtream Codes')
   text('Profile name','NativeTest')
   text('Server address','http://10.0.2.2:9090')
   text('Username','example')

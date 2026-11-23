@@ -1,5 +1,22 @@
 # GlowTV changes
 
+## 1.0.1 — November 23, 2026 · Fire TV fixes from real-device testing
+
+From hands-on testing on a Hisense Fire TV (Fire OS 8) with an 11,491-channel M3U playlist. See `docs/TV-FIX-1.0.1.md`.
+
+- **Keyboard:** selecting a text field on TV opens the keyboard (explicit IME request; React Native only does this in touch mode).
+- **Playback:** large centred loading card with the channel name; after 15 s without a first frame, a card with Retry (focused), Try other player and Next channel. 404 and region-blocked (403) streams get specific messages. No Pause button until the picture starts.
+- **Playlist form:** Back with unsaved details asks "Discard this playlist?" (Keep editing focused). Focus starts on the source tabs; the last tab is remembered (M3U first); the selected tab is the brightest; the name is prefilled; errors appear only after Connect.
+- **Focus:** opening a page from the rail moves focus into it; Left lands on the current page's rail item; Up/Down stay inside the rail; content never falls into the rail; no diagonal jumps; entering a list lands on its first or last-focused item; focused rows stay away from the screen edge; closing a menu returns to the row.
+- **Rail:** all nine items fit at 1080p, with a scrim over the content while expanded; "Switch playlist" uses one name.
+- **Guide:** one Back on every guide screen; with no feed, channels are listed with "No programme info"; plain-language XMLTV help.
+- **Library:** logos on by default in list view, on Home and in the player (contain, not crop), kept in a small credential-free store; multi-category groups split on `;`; empty or "undefined" groups show as Other; M3U playlists explain that movies and series come from Xtream accounts; compact Live TV header (at least five rows); whole-row focus ring; rings no longer clipped.
+- **Home:** last-watched hero, Continue watching (including channels), Favorites and From your playlist rows; loading progress with step and elapsed time; a soft fade at the top edge.
+- **Player:** channel position, group, logo and a "▲▼ Change channel" hint; Left opens a channel list.
+- **Privacy:** no Home IP screen on first launch; Settings no longer looks up the public IP; Connection details looks it up only when asked and hides it until Show.
+- **APK:** TV build drops USE_BIOMETRIC, USE_FINGERPRINT, VIBRATE and SYSTEM_ALERT_WINDOW, sets allowBackup=false, and adds a smaller `GlowTV-TV-armeabi-v7a.apk`.
+- **Search:** the rail's Search opens with an empty query; search defaults to all channels of the current type.
+
 ## 1.0.0 — November 22, 2026 · First stable release
 
 Design pass from `docs/CODEX-APP-AUDIT-0.7.4.md`, using the ui-ux-pro-max and unslop skills.

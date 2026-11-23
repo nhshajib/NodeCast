@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 0.7.4
+## Current published version: 1.0.0
 
-- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk.sha256)
-- Published: 2026-11-21
+- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk.sha256)
+- Published: 2026-11-23
 - Status: Stable release
-- Size: 242,071,096 bytes (230.9 MiB)
+- Size: 241,669,688 bytes (230.5 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `7f28714600bfe76e8bff7d68f5c0dd2cbe2535fd74ccdaa93f3135e348f81663`
+- SHA-256: `851578cefa47adecc5d4092768fc858009714a27b7cf8a54561c6efaac4290cb`
 
 This is a published GlowTV binary.
 
@@ -24,12 +24,15 @@ This is a published GlowTV binary.
 - **Playback your way:** Adjust playback over the video, choose supported player options and set a sleep timer.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 0.7.4
+## What changed in 1.0.0
 
-- A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.
-- An inline show/hide password button and sheets that clear the gesture bar.
-- Easier-to-read LIVE badges and small labels.
-- Existing playlists, profiles, playback engines and transitions are retained.
+- Faster, ranked search: exact names first, then names that start with what you typed.
+- Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.
+- Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.
+- Previous channel, return to live, and audio and subtitles that follow your preferred language.
+- Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.
+- Native navigation, sheets and press feedback across the app.
+- Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

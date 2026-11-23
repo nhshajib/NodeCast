@@ -1,4 +1,5 @@
 import type { Media } from './provider.ts';
+import { matchesAny } from './groups.ts';
 import type { ViewingEntry } from './activity.ts';
 
 /** A named list stores references to media IDs only, never copies of streams. */
@@ -69,7 +70,7 @@ export function resolveSaved(ids: string[], catalogue: Media[], restricted: stri
   for (const id of ids) {
     const item = byId.get(id);
     if (!item) { unavailable.push(id); continue; }
-    if (!unlocked && (restricted.includes(item.group) || (!!item.accessGroup && restricted.includes(item.accessGroup)))) continue;
+    if (!unlocked && (matchesAny(item.group, restricted) || (!!item.accessGroup && restricted.includes(item.accessGroup)))) continue;
     available.push(item);
   }
   return { available, unavailable };

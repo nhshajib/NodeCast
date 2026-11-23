@@ -29,3 +29,4 @@ import './organization.test.mjs';
 import './guide-repair.test.mjs';
 import './playback-assist.test.mjs';
 import './transfer-preview.test.mjs';
+import './tv-fixes.test.mjs';

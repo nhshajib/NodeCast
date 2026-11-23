@@ -231,7 +231,7 @@ def wait_for_native_video(timeout=45):
  raise AssertionError('Native decoder did not expose the original green scene within 45 seconds')
 package='com.nhshajib.nodecast'+('.tv'if TV else '')
 try:
- apk=next(Path('apk').rglob('*.apk'));adb('install',str(apk))
+ apk=next(Path('apk').rglob('GlowTV-TV.apk' if TV else 'GlowTV.apk'));adb('install',str(apk))
  # A fresh API 35 AVD can leave its Pixel Launcher ANR over another app.
  # Clear only that known system-launcher failure before starting GlowTV.
  # Never dismiss an ANR belonging to the app under test.
@@ -243,9 +243,9 @@ try:
   print('Cleared the AVD Pixel Launcher ANR before app launch',flush=True)
  adb('shell','am','start','-W','-n',package+'/.MainActivity');time.sleep(8)
  if TV:
-  # Wait for the first-run task itself. A blind Back during a slower cold
-  # launch can close the Activity before the IP-reference sheet is presented.
-  find('Home IP reference',timeout=45);click('Back');click('Add your playlist')
+  # First launch lands on Home; the IP check lives behind Settings. The form
+  # opens on M3U, and this fixture is an Xtream server.
+  find('Add your playlist',timeout=45);click('Add your playlist');click('Xtream Codes')
  else:
   click('Get started');click('Not now',True)
  for label,value in [('Profile name','GlowTVDemo'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:fill(label,value)

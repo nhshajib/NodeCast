@@ -53,7 +53,7 @@ Each phase lands as its own commit. The 139 original tests must still pass, and 
 | 4 Guide repair | Done (`c88f6d9`) |
 | 5 Playback assistance | Done (`144a8ba`) |
 | 6 Setup and transfer | Done (this commit) |
-| Native feature tests (emulator/simulator) | Gating stable build 10000 |
+| Native feature tests (emulator/simulator) | Passed: Android full `45136394577`, design `45132775093`; iPhone/iPad `45101665000` |
 | Device benchmarks, Hisense Fire TV check | Skipped by owner decision |
 
 ### Preview check investigation — 2026-11-22
@@ -130,3 +130,21 @@ Notes:
   - On TV the full run passed Home IP reference, search and channel playback options, then reported that the "Saved…" confirmation was not found. The dump shows it is rendered, but below the fold.
   - The driver's `reveal()` returned as soon as the label existed anywhere in the tree, including offscreen nodes with inverted bounds, so it never paged. It now pages until the label is on screen; the regression test fails on the old driver. That makes 20 driver tests.
   - This is a driver-only fix, so the full run is repeated on the same build.
+
+### Stable 1.0.0 published — 2026-11-23
+
+- **Android phone and TV:** `glowtv-v1.0.0`, published 08:30 UTC.
+  - Built by `45129931552` from `4e7d421`.
+  - Design check `45132775093` and full check `45136394577` both passed on phone and TV.
+  - `GlowTV.apk`: 241,669,688 bytes, SHA-256 `851578cefa47adecc5d4092768fc858009714a27b7cf8a54561c6efaac4290cb`.
+  - `GlowTV-TV.apk`: 240,142,894 bytes, SHA-256 `b0862108274bc05e0e04f12b152eaede43fef778a731713f58681cb14b1d3f4c`.
+  - Android API 24 or later.
+- **iPhone/iPad:** `ios-v1.0.0`, published 04:40 UTC.
+  - Built by `45101665000` from `37906a6`, with simulator UI audits passed.
+  - `GlowTV-1.0.0-unsigned.ipa`: 32,540,598 bytes, SHA-256 `f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011`.
+  - iOS 16.4 or later.
+- **Website:** download metadata for all three editions is updated. The build, tests and audit pass, with zero axe, HTML, runtime or request issues on every page.
+- Physical-device checks were skipped by owner decision; the release was gated on emulator and simulator checks.
+- **Follow-ups:**
+  - On TV, saving channel playback options moves focus to Back, and the confirmation sits below the fold.
+  - The TV Settings "Connection details" tile duplicates the network card's "VPN and IP details" button.

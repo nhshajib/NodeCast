@@ -1,19 +1,17 @@
-# GlowTV 1.0.0 — Android phone and TV
+# GlowTV 1.0.1 — Android phone and TV
 
-[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0)
+[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.1)
 
-The first stable GlowTV release.
+Fixes from hands-on testing on a Fire TV with the remote, plus everything in 1.0.0.
 
-- **Faster, ranked search.** Exact names come first, then names that start with what you typed. Large libraries are stored in an on-device SQLite catalogue.
-- **Your own lists.** Build lists, hide titles you never watch, and show series latest-first or unwatched-only. The next episode can play automatically.
-- **Guide repair.** Get suggested matches for channels without a guide, a guide health summary, per-guide time offsets and recent programme history.
-- **Playback help.** Jump to the previous channel and return to live. Audio and subtitles follow your preferred language, and a help sheet explains common playback problems.
-- **Quicker setup and transfer.**
-  - Paste the details your provider sent to fill the connection form.
-  - Backups now include lists and the new preferences.
-  - Importing a backup shows a preview and lets you add or update profiles. Backups from 0.7.x still import.
-- **Native feel on phones.** Native stack navigation, tabs and sheets, immediate press feedback, and 44-point touch targets.
-- **On TV,** library options open with focus on the current choice, so every option can be reached with the remote.
+- **Keyboard:** selecting a text field on TV now opens the keyboard.
+- **Channels that won't start:** a clear loading card, then after 15 seconds Retry, Try other player and Next channel. Missing (404) and region-blocked streams are named.
+- **Remote focus:** focus goes into the page you open. Left returns to the current page in the rail. The rail fits on screen. Lists start on their first item, and Back never loses your place.
+- **Logos everywhere:** in lists, on Home and in the player, kept between launches.
+- **Categories:** channels with several categories, such as News;Public, appear under each one.
+- **TV Home:** your last channel, Continue watching and Favorites. In the player, Left opens a channel list.
+- **Privacy:** your public IP is only looked up when you ask, and stays hidden until you choose Show.
+- **Smaller Fire TV download:** `GlowTV-TV-armeabi-v7a.apk` for Fire TV and other 32-bit TVs. The universal `GlowTV-TV.apk` still works everywhere.
 
 Your profiles, playlists, favorites, guide settings, encrypted backups, app identifiers, signing identity and player engines carry over. To keep your local data, install over the matching edition. Both APKs include JavaScript and VLC, so no computer is needed while watching.
 
