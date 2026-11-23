@@ -1,8 +1,8 @@
 {
-  "request": "Preview 9905 builds",
-  "nonce": "2026-11-23T01:20Z-1",
+  "request": "Emulator gate for preview 9905",
+  "nonce": "2026-11-23T01:32Z-2",
   "runs": [
-    { "workflow": "apps-release.yml", "inputs": { "target": "both", "create_draft": false } },
-    { "workflow": "ios-sideload.yml", "inputs": { "mode": "full" } }
+    { "workflow": "android-smoke.yml", "inputs": { "build_run": "45092451279", "target": "both", "tv_suite": "design", "api_level": "35", "make_public": false } },
+    { "workflow": "android-smoke.yml", "inputs": { "build_run": "45092451279", "target": "both", "tv_suite": "full", "api_level": "35", "make_public": false } }
   ]
 }
