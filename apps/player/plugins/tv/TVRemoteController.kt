@@ -321,6 +321,11 @@ class TVRemoteController(private val activity: Activity) {
     // toolbar enters the list instead of jumping sideways to the rail.
     val aligned = options.filter { it.third }
     var best = (if (aligned.isNotEmpty()) aligned else if (horizontal) emptyList() else options).minByOrNull { it.second }
+    // Inside a horizontal strip (category chips, Home rows), the next item in the strip wins,
+    // even when it is scrolled off-screen and a rail item that grazes the row is nearer.
+    if(horizontal&&scroll!=null){
+      aligned.filter { scroller(it.first,true)===scroll }.minByOrNull { it.second }?.let { best=it }
+    }
     // Left into the rail always lands on the current page's item, never the nearest icon.
     if(direction==View.FOCUS_LEFT&&(best==null||inRail(best.first))&&(best!=null||options.any { inRail(it.first) })){
       railHome(choices)?.let { focus(it);return true }
