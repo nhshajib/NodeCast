@@ -97,3 +97,8 @@ Notes:
   - On TV, "Dark did not update" read the radio's checked state in the same frame as Select. The failure dump shows Dark `checked=true`. The check now polls for up to 3 s.
 - Full run `45099555694` (9906) passed Light/Dark on TV and stopped at the refresh options. The driver looked for "Refresh after 60 minutes", but the app labels the option "Every 1 hours". That label was also ungrammatical on phone and TV. Both now read **"Every hour"**, through the shared `refreshInterval`, and the driver uses the real labels.
 - Stable **10000** is rebuilt from the commit with this label fix. The earlier 10000 builds (`45101374785`, `45101377308`) are superseded. Physical-device checks were skipped by owner decision; the release is gated on emulator and simulator checks.
+- Stable gate, Android build `45101660839`:
+  - Design `45105396869` passed.
+  - The full run `45105399008` passed on phone, including the backup restore with the native "Navigate up".
+  - On TV the full run passed Light/Dark and the refresh and search options, then stopped on **Categories**. That page had no starting focus inside its list, so focus stayed in the left menu, where Down only moves between menu items. Categories below the fold, such as "Smoke test", could not be reached.
+  - The first category row now has preferred focus, as Library preferences got in 9906. Android is rebuilt. The iPhone build `45101665000` is unaffected, because this file is TV-only.
