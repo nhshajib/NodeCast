@@ -38,6 +38,7 @@ The native focus controller now does the following:
 - On Left, always lands on the current page's rail item.
 - Keeps Up and Down inside the rail, with hard stops at both ends.
 - Never lets content fall into the rail vertically.
+- Moves Up and Down to the nearest row first, so small controls at the side of a row (like the backup history switch) are reachable.
 - Refuses diagonal moves to the side, and keeps Left and Right inside a chip strip or Home row until its end, even when the next item is scrolled off-screen.
 - Never jumps to the far edge after paging.
 - On entry, sends focus to a list's first or last-focused item.
