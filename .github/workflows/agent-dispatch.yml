@@ -30,7 +30,16 @@ jobs:
           allowed = {'apps-release.yml', 'ios-sideload.yml', 'android-smoke.yml', 'publish-iphone-download.yml', 'publish-android-downloads.yml'}
           request = json.load(open('.github/agent-dispatch.json'))
           runs = request.get('runs', [])
-          assert isinstance(runs, list) and 0 < len(runs) <= 4, 'Between one and four runs per request'
+          cancel = request.get('cancel', [])
+          assert isinstance(runs, list) and len(runs) <= 4, 'At most four runs per request'
+          assert isinstance(cancel, list) and len(cancel) <= 4 and (runs or cancel), 'Nothing requested'
+          # Superseded runs of allowlisted workflows only; never anything else.
+          for run_id in cancel:
+              assert re.fullmatch(r'[0-9]{1,15}', str(run_id)), 'Invalid run id'
+              path = subprocess.run(['gh', 'run', 'view', str(run_id), '--repo', '${{ github.repository }}', '--json', 'path', '--jq', '.path'], check=True, capture_output=True, text=True).stdout.strip()
+              assert path.split('/')[-1].split('@')[0] in allowed, f'Not an allowed workflow run: {path}'
+              print('Cancelling superseded run', run_id, path, flush=True)
+              subprocess.run(['gh', 'run', 'cancel', str(run_id), '--repo', '${{ github.repository }}'], check=False)
           for run in runs:
               workflow = run['workflow']; inputs = run.get('inputs', {})
               assert workflow in allowed, f'Not an allowed workflow: {workflow}'
