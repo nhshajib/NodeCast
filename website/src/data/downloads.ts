@@ -14,6 +14,20 @@ export const features:Record<DownloadPlatform,string[][]>={
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
+ if(version==='1.0.1')return platform==='tv'?[
+  'The on-screen keyboard now opens when you select a text box with the remote.',
+  'Streams that never start show a clear card after 15 seconds with Retry, Try other player and Next channel, instead of spinning forever.',
+  'Steadier remote focus: Left always returns to the current page in the menu, lists remember your place, and the menu fits on screen.',
+  'Channel logos are on by default and stay after a restart; channels with several categories appear under each one.',
+  'A fuller Home with Last watched, Continue watching and Favorites, plus a channel list over live video (press Left).',
+  'Leaving the playlist form asks before discarding what you typed. The IP lookup only runs when you ask.',
+  'A smaller download for 32-bit Fire TV and Android TV devices (armeabi-v7a), and fewer permissions.',
+ ]:[
+  'Streams that never start show a clear card with Retry, Try other player and Next channel, instead of spinning forever.',
+  'Channels listed under several categories now appear in each of them, and empty categories read "Other".',
+  'Clearer messages for missing streams (404) and region-blocked channels.',
+  'Existing playlists, profiles, signing and identifiers are retained.',
+ ];
  if(version==='1.0.0')return [
   'Faster, ranked search: exact names first, then names that start with what you typed.',
   'Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.',
