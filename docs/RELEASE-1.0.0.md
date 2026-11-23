@@ -102,3 +102,9 @@ Notes:
   - The full run `45105399008` passed on phone, including the backup restore with the native "Navigate up".
   - On TV the full run passed Light/Dark and the refresh and search options, then stopped on **Categories**. That page had no starting focus inside its list, so focus stayed in the left menu, where Down only moves between menu items. Categories below the fold, such as "Smoke test", could not be reached.
   - The first category row now has preferred focus, as Library preferences got in 9906. Android is rebuilt. The iPhone build `45101665000` is unaffected, because this file is TV-only.
+- Build `45108425588`:
+  - The full run on phone passed again.
+  - The design run on phone failed on a truncated UI Automator dump (XML parse error, then broken pipe). That is an emulator transport fault, not an app or driver assertion.
+  - On TV, focus still stayed in the left menu after choosing Categories. The native controller applies preferred focus only when a focus scope mounts or is renamed, and switching tabs did neither.
+  - The Library organization view now has a scope named after its tab (`tv-scope:organize:<mode>`), so each tab switch moves focus into that tab's content.
+- iPhone build `45101665000` passed its simulator audits. IPA SHA-256: `f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011`. Published through `publish-iphone-download.yml`.
