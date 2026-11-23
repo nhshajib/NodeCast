@@ -80,7 +80,9 @@ def focus(label,timeout=100):
   history.append({"focus":name(current)if current is not None else None,"bounds":bounds(current)if current is not None else None})
   if label!='Show player controls' and wake_controls(root):continue
   goals=[i for i,n in enumerate(nodes) if match(n,label)];goals.sort(key=lambda i:name(nodes[i]).casefold()!=label.casefold())
-  if current is not None and name(current) in RAIL_LABELS and label not in RAIL_LABELS:
+  # Only a real rail item (at the left edge) needs Right to reach the page; pages have
+  # their own "TV guide" or "Live TV" buttons.
+  if current is not None and name(current) in RAIL_LABELS and label not in RAIL_LABELS and bounds(current)[0]<260:
    key(22);continue
   # The rail is a column at the left edge. Left from a page lands on the current page's
   # rail item, and Up/Down stay inside the rail, so move by rail order, never by a
