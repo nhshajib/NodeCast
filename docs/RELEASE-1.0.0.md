@@ -113,3 +113,9 @@ Notes:
   - The full run's TV job now passed Library organization and Categories.
   - It stopped on Home, looking for "Connection details". The audit fix had taken the IP/VPN card off Home without adding the Settings entry that the audit asked for, so TV had no route to connection details.
   - TV Settings now has a **Connection details** row ("Public IP and VPN check"), and the driver opens it from Settings.
+- Build `45118058428`:
+  - Design `45120400989` passed on phone and TV.
+  - The full run `45120403351` passed on phone, the fourth full phone pass.
+  - On TV it got through connection details, including refreshing, saving, cancelling and removing the home IP reference. After Back, focus landed on the rail's **Switch playlist** button and could not move.
+  - When the rail expands to 200 dp, the nav items stretch to 184 dp, but Switch playlist stayed 48 dp and centred. That placed it outside the rail's visible area, so Up found nothing.
+  - It now matches the other rail items: 184 dp wide when the rail is expanded, with a "Playlists" label.
