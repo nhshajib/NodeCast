@@ -1,1 +1,1 @@
-{"request":"Re-run GlowTV 1.0.1 iPhone build (transient Expo module scan failure)","nonce":"2026-11-23T19:27Z-26","runs":[{"workflow":"ios-sideload.yml","inputs":{"mode":"full"}}]}
+{"request":"Rebuild Android 1.0.1 (rail fit) as the draft release","nonce":"2026-11-23T19:55Z-27","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}}]}
