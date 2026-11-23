@@ -125,3 +125,8 @@ Notes:
   - When no control is ahead, the native controller scrolls half a page and then focuses a revealed control. After Up it picked the lowest visible control, so Up near the top of a page sent focus to the bottom.
   - It now picks the nearest revealed control beyond the origin in the pressed direction.
   - The emulator driver now reverses its scan only when focus stops moving, or when a wrapping list revisits the same control. The driver has a new regression test, for 19 in total.
+- Build `45129931552`:
+  - Design `45132775093` passed, and the paging fix compiled. Full run `45132778572` passed on phone.
+  - On TV the full run passed Home IP reference, search and channel playback options, then reported that the "Saved…" confirmation was not found. The dump shows it is rendered, but below the fold.
+  - The driver's `reveal()` returned as soon as the label existed anywhere in the tree, including offscreen nodes with inverted bounds, so it never paged. It now pages until the label is on screen; the regression test fails on the old driver. That makes 20 driver tests.
+  - This is a driver-only fix, so the full run is repeated on the same build.

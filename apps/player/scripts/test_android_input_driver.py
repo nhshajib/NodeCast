@@ -37,6 +37,20 @@ class InputDriverTests(unittest.TestCase):
         with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
             self.assertEqual(remote.name(remote.focus('Home IP reference',timeout=5)),'Home IP reference')
 
+    def test_reveal_pages_until_offscreen_message_is_on_screen(self):
+        state={'downs':0}
+        def tree():
+            on=state['downs']>=3
+            box='[336,700][1680,800]' if on else '[336,1236][1680,1026]'
+            rows=''.join(f'<node content-desc="Option {i}" bounds="[336,{300+i*100}][1680,{380+i*100}]" enabled="true" clickable="true" focusable="true" focused="{str(i==state["downs"]).lower()}"/>' for i in range(4))
+            return ET.fromstring(f'<hierarchy>{rows}<node text="Saved. Applies next time you open this channel." bounds="{box}"/></hierarchy>')
+        def key(code):
+            self.assertEqual(code,20)
+            state['downs']+=1
+        with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
+            remote.reveal('Saved. Applies next time you open this channel.',timeout=5)
+        self.assertEqual(state['downs'],3)
+
     def test_clipped_horizontal_nodes_keep_signed_bounds(self):
         node=ET.fromstring('<node bounds="[272,314][-500,402]" enabled="true" clickable="true" focusable="true"/>')
         self.assertEqual(remote.bounds(node),[272,314,-500,402])

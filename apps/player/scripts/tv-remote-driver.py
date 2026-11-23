@@ -147,7 +147,8 @@ def reveal(label,timeout=30):
  end=time.monotonic()+timeout;last=None;direction=20
  while time.monotonic()<end:
   r=tree()
-  if any(match(n,label) for n in r.iter('node')):return
+  # Offscreen nodes stay in the tree with inverted bounds; keep paging until the label is on screen.
+  if any(match(n,label) and bounds(n)[2]>bounds(n)[0] and bounds(n)[3]>bounds(n)[1] for n in r.iter('node')):return
   current=focused(r);state=(name(current) if current is not None else '',tuple(name(n) for n in actions(r)))
   if state==last:direction=19 if direction==20 else 20
   last=state;key(direction)
