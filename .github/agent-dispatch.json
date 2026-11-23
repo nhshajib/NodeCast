@@ -1,1 +1,1 @@
-{"request":"Stable 1.0.0 build 10000: Android draft release and iPhone IPA","nonce":"2026-11-23T02:50Z-5","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}},{"workflow":"ios-sideload.yml","inputs":{"mode":"full"}}]}
+{"request":"Stable 1.0.0 build 10000 (refresh label fix): Android draft release and iPhone IPA","nonce":"2026-11-23T03:00Z-6","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}},{"workflow":"ios-sideload.yml","inputs":{"mode":"full"}}]}
