@@ -20,6 +20,23 @@ with patch('subprocess.check_output', return_value='Physical size: 1080x1920'):
     helpers = module('helpers', 'android-tv-playback-smoke.py')
 
 class InputDriverTests(unittest.TestCase):
+    def test_scan_keeps_direction_past_two_controls_to_offscreen_rows(self):
+        # Settings scrolled to the bottom: tiles above are offscreen (inverted bounds).
+        order=['Home IP reference','Version history','Add playlist','Buy me a coffee']
+        state={'at':3}
+        def tree():
+            nodes=[]
+            for index,label in enumerate(order):
+                visible=index>=state['at']-1 or index>=2
+                bounds=f'[272,{200+index*200}][1744,{300+index*200}]' if visible else f'[272,210][1744,{100-index*50}]'
+                nodes.append(f'<node content-desc="{label}" bounds="{bounds}" enabled="true" clickable="true" focusable="true" focused="{str(index==state["at"]).lower()}"/>')
+            return ET.fromstring('<hierarchy>'+''.join(nodes)+'</hierarchy>')
+        def key(code):
+            if code==19:state['at']=max(0,state['at']-1)
+            elif code==20:state['at']=min(len(order)-1,state['at']+1)
+        with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
+            self.assertEqual(remote.name(remote.focus('Home IP reference',timeout=5)),'Home IP reference')
+
     def test_clipped_horizontal_nodes_keep_signed_bounds(self):
         node=ET.fromstring('<node bounds="[272,314][-500,402]" enabled="true" clickable="true" focusable="true"/>')
         self.assertEqual(remote.bounds(node),[272,314,-500,402])
