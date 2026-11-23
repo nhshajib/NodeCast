@@ -110,7 +110,10 @@ def focus(label,timeout=100):
     direction=(19 if RAIL_LABELS.index(label)<RAIL_LABELS.index(current_name) else 20) if current_name in RAIL_LABELS else 21
    else:
     a=bounds(nodes[i]);direction=22 if a[2]<480 and current_name in RAIL_LABELS else scan
-    if seen[signature]>2:scan=19 if scan==20 else 20;direction=scan
+    # Keep scanning one way while focus moves; reverse at an edge where the last
+    # key left focus in place, or when a wrapping list revisits the same control.
+    if (len(history)>1 and history[-2]==history[-1]) or seen[signature]>5:scan=19 if scan==20 else 20
+    direction=scan
   key(direction)
  raise RuntimeError('Remote cannot reach: '+label+'; focused='+str(name(current) if current is not None else None)+'; recent focus='+repr(history[-20:]))
 def activate(label,timeout=100):

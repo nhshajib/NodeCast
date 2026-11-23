@@ -119,3 +119,9 @@ Notes:
   - On TV it got through connection details, including refreshing, saving, cancelling and removing the home IP reference. After Back, focus landed on the rail's **Switch playlist** button and could not move.
   - When the rail expands to 200 dp, the nav items stretch to 184 dp, but Switch playlist stayed 48 dp and centred. That placed it outside the rail's visible area, so Up found nothing.
   - It now matches the other rail items: 184 dp wide when the rail is expanded, with a "Playlists" label.
+- Build `45123306112`:
+  - Design `45126027894` passed. Full run `45126030471` passed on phone; on TV it got through the rail fix and back to Settings.
+  - It then looped between "Add playlist" and "Buy me a coffee" and never reached the tiles above.
+  - When no control is ahead, the native controller scrolls half a page and then focuses a revealed control. After Up it picked the lowest visible control, so Up near the top of a page sent focus to the bottom.
+  - It now picks the nearest revealed control beyond the origin in the pressed direction.
+  - The emulator driver now reverses its scan only when focus stops moving, or when a wrapping list revisits the same control. The driver has a new regression test, for 19 in total.

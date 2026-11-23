@@ -205,8 +205,14 @@ class TVRemoteController(private val activity: Activity) {
       dirty=true
       if(activity.currentFocus!==origin)return@postDelayed
       val shown=candidates().filter { inside(it,scroll)&&visible(it) }
-      val target=if(sign>0)shown.minByOrNull { if(horizontal)rect(it).left else rect(it).top }
-        else shown.maxByOrNull { if(horizontal)rect(it).right else rect(it).bottom }
+      // Continue from where focus was: the nearest revealed control beyond the
+      // origin in the pressed direction. Choosing the farthest edge instead sent
+      // Up from a control near the top to the bottom of the page.
+      val from=origin?.let { rect(it) }
+      val ahead=if(from==null)shown else shown.filter { val r=rect(it); if(horizontal){if(sign>0)r.left>=from.right-2 else r.right<=from.left+2}else{if(sign>0)r.top>=from.bottom-2 else r.bottom<=from.top+2} }
+      val pool=ahead.ifEmpty { shown }
+      val target=if(sign>0)pool.minByOrNull { if(horizontal)rect(it).left else rect(it).top }
+        else pool.maxByOrNull { if(horizontal)rect(it).right else rect(it).bottom }
       target?.let { focus(it) }
     },220)
   }
