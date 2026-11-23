@@ -43,7 +43,7 @@ jobs:
           for run in runs:
               workflow = run['workflow']; inputs = run.get('inputs', {})
               assert workflow in allowed, f'Not an allowed workflow: {workflow}'
-              assert isinstance(inputs, dict) and all(re.fullmatch(r'[a-z_]{1,40}', k) and isinstance(v, (str, bool, int)) and len(str(v)) <= 80 for k, v in inputs.items()), 'Invalid inputs'
+              assert isinstance(inputs, dict) and all(re.fullmatch(r'[a-z][a-z0-9_]{0,39}', k) and isinstance(v, (str, bool, int)) and len(str(v)) <= 80 for k, v in inputs.items()), 'Invalid inputs'
               command = ['gh', 'workflow', 'run', workflow, '--repo', '${{ github.repository }}', '--ref', 'main']
               for key, value in inputs.items():
                   command += ['-f', f'{key}={str(value).lower() if isinstance(value, bool) else value}']
