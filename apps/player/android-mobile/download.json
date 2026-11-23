@@ -1,19 +1,19 @@
 {
-  "assetId": 777123856,
   "downloadCount": 0,
-  "version": "0.7.4",
-  "tag": "glowtv-v0.7.4",
-  "publishedAt": "2026-11-21T03:26:13Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4",
+  "version": "1.0.0",
+  "tag": "glowtv-v1.0.0",
+  "publishedAt": "2026-11-23T08:30:20Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0",
   "prerelease": false,
   "legacy": false,
-  "file": "GlowTV.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk",
-  "size": 242071096,
-  "sha256": "7f28714600bfe76e8bff7d68f5c0dd2cbe2535fd74ccdaa93f3135e348f81663",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV.apk.sha256",
   "minimumOS": "Android API 24 or later",
-  "checkedAt": "2026-11-23T04:47:00.000Z",
+  "assetId": 781985265,
+  "file": "GlowTV.apk",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk",
+  "size": 241669688,
+  "sha256": "851578cefa47adecc5d4092768fc858009714a27b7cf8a54561c6efaac4290cb",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk.sha256",
+  "checkedAt": "2026-11-23T08:36:00.000Z",
   "edition": "android",
   "features": [
     {
@@ -42,9 +42,12 @@
     }
   ],
   "changes": [
-    "A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.",
-    "An inline show/hide password button and sheets that clear the gesture bar.",
-    "Easier-to-read LIVE badges and small labels.",
-    "Existing playlists, profiles, playback engines and transitions are retained."
+    "Faster, ranked search: exact names first, then names that start with what you typed.",
+    "Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.",
+    "Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.",
+    "Previous channel, return to live, and audio and subtitles that follow your preferred language.",
+    "Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.",
+    "Native navigation, sheets and press feedback across the app.",
+    "Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import."
   ]
 }
