@@ -7,7 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "buildNumber": "9904",
+      "buildNumber": "9905",
       "supportsTablet": true,
       "bundleIdentifier": "com.nhshajib.nodecast",
       "infoPlist": {
@@ -30,7 +30,7 @@
         "backgroundImage": "./assets/android-icon-background.png"
       },
       "predictiveBackGestureEnabled": true,
-      "versionCode": 9904
+      "versionCode": 9905
     },
     "web": {
       "favicon": "./assets/favicon.png"
