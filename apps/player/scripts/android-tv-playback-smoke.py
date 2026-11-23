@@ -172,7 +172,13 @@ def stability(remote,counts):
 def audit_settings(remote,out,fresh=False):
  # Every activation below must acquire native focus and use D-pad Select.
  def checked(label,value=True):
-  node=remote.focus(label);assert node.get('checked')==str(value).lower(),label+' did not update'
+  # The checked state lands on the next render after Select; poll briefly instead of reading once.
+  end=time.monotonic()+3
+  while True:
+   node=remote.focus(label)
+   if node.get('checked')==str(value).lower():break
+   assert time.monotonic()<end,label+' did not update'
+   time.sleep(.2)
  if not fresh:remote.activate('Back')
  remote.activate('Live TV')
  if not fresh:remote.activate('All titles')
@@ -209,7 +215,13 @@ def audit_settings(remote,out,fresh=False):
 
 def audit_library(remote,counts):
  def checked(label,value=True):
-  node=remote.focus(label);assert node.get('checked')==str(value).lower(),label+' did not update'
+  # The checked state lands on the next render after Select; poll briefly instead of reading once.
+  end=time.monotonic()+3
+  while True:
+   node=remote.focus(label)
+   if node.get('checked')==str(value).lower():break
+   assert time.monotonic()<end,label+' did not update'
+   time.sleep(.2)
  def shot(name):OUT.joinpath(name+'.png').write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
  initial=dict(counts['api']);find('Grid view');assert counts['logos']==0,'Default list loaded channel images'
  assert not counts['api'].get('get_vod_streams',0) and not counts['api'].get('get_series',0),'Live TV preloaded unopened libraries'

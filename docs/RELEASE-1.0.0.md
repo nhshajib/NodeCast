@@ -37,7 +37,7 @@ Each phase lands as its own commit. The 139 original tests must still pass, and 
   - warmed search p95 under 250 ms after debounce;
   - cached first content within 1.5 s;
   - no unexplained regression above 10% in first-frame time or memory.
-- **Stable publication:** only after the native feature tests and the physical-device checks pass, including the Hisense Fire TV.
+- **Stable publication:** only after the emulator and simulator checks pass. *Owner decision, 2026-11-23: physical-device checks (including the Hisense Fire TV) are skipped for 1.0.0; the release is gated on emulator and simulator CI only.*
   - The stable build is 10000.
   - Sizes, checksums and OS requirements come from the real packages.
 
@@ -53,7 +53,8 @@ Each phase lands as its own commit. The 139 original tests must still pass, and 
 | 4 Guide repair | Done (`c88f6d9`) |
 | 5 Playback assistance | Done (`144a8ba`) |
 | 6 Setup and transfer | Done (this commit) |
-| Native feature tests, device benchmarks, Hisense Fire TV check | Pending (needs builds 99xx) |
+| Native feature tests (emulator/simulator) | Gating stable build 10000 |
+| Device benchmarks, Hisense Fire TV check | Skipped by owner decision |
 
 ### Preview check investigation — 2026-11-22
 
@@ -86,3 +87,12 @@ Notes:
 - Preview 9902 design passed on TV, and iPhone full run `45034879844` passed. Phone design `45036747877` reached Settings but its downward-only search started at a retained bottom scroll position. The walkthrough now retaps the real Settings tab before each subsection. Full TV `45036754932` passed the toolbar-to-channel Down regression, then searched vertically for a horizontally offscreen category. It now enters a visible chip and uses Left to reveal All; signed clipped bounds are preserved and regression-tested. These are input-driver fixes, not app navigation changes. Fresh 9903 native runs remain required for the restore-routing change.
 - Native TV screenshot review found another app issue in the 960×540 dp emulator viewport: a poster plus labels exceeded the space below the persistent filters, clipping the focused title. Preview **9904** measures the grid viewport and fits the 2:3 artwork above the unchanged readable metadata; columns, filters, focus IDs, options and transitions remain intact. Row measurements use the same fitted tile height. The layout policy covers short/tall viewports in a regression test. Fresh 9904 native builds are required; earlier runs are superseded.
 - Preview 9904 local verification: typecheck, **178 app tests**, **18 input-driver tests**, grid/scope guards and phone/TV web exports pass. A browser geometry check at 960×540, 1280×720 and 1920×1080 confirms the entire TV movie card and title fit below the fixed controls. This is browser evidence, not native remote or physical-device approval. Superseded 9903 builds `45083389335` and `45083391784` were cancelled before starting their checks.
+
+### Previews 9905–9906 and stable 10000 — 2026-11-23
+
+- iPhone/iPad build `45092453658` (9905 code) passed its simulator UI audits and produced the IPA.
+- Android 9906 build `45097190542` passed the design suite `45099553351` on phone and TV.
+- Full run `45095118397` (9905) failed in two test drivers. Both were driver problems; the app behaved correctly in each:
+  - On phone, after a restore, the native header's back button is announced as **"Navigate up"**, not "Go back". The backup smoke now uses a `back()` helper that tries the native label, then the older label, then the system Back key.
+  - On TV, "Dark did not update" read the radio's checked state in the same frame as Select. The failure dump shows Dark `checked=true`. The check now polls for up to 3 s.
+- Stable **10000** is built from this commit. Physical-device checks were skipped by owner decision; the release is gated on emulator and simulator checks.
