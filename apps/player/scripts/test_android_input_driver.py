@@ -51,6 +51,25 @@ class InputDriverTests(unittest.TestCase):
             remote.reveal('Saved. Applies next time you open this channel.',timeout=5)
         self.assertEqual(state['downs'],3)
 
+    def test_rail_targets_move_by_rail_order_not_through_the_page(self):
+        rail=['Home','Search','Live TV','TV guide','Movies','Series','Favorites','Settings']
+        state={'at':'page','index':0,'keys':[]}
+        def tree():
+            nodes=[f'<node content-desc="{label}" bounds="[103,{164+i*104}][240,{256+i*104}]" enabled="true" clickable="true" focusable="true" focused="{str(state["at"]=="rail" and state["index"]==i).lower()}"/>' for i,label in enumerate(rail)]
+            nodes.append(f'<node content-desc="TV guide" bounds="[673,294][938,418]" enabled="true" clickable="true" focusable="true" focused="false"/>')
+            nodes.append(f'<node content-desc="Watch live" bounds="[312,294][655,414]" enabled="true" clickable="true" focusable="true" focused="{str(state["at"]=="page").lower()}"/>')
+            return ET.fromstring('<hierarchy>'+''.join(nodes)+'</hierarchy>')
+        def key(code):
+            state['keys'].append(code)
+            if state['at']=='page':
+                self.assertEqual(code,21,'Enter the rail with Left only');state['at']='rail';state['index']=0
+            elif code==20:state['index']=min(len(rail)-1,state['index']+1)
+            elif code==19:state['index']=max(0,state['index']-1)
+            else:self.fail('Left/Right inside the rail are not part of the route')
+        with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
+            self.assertEqual(remote.name(remote.focus('Settings',timeout=5)),'Settings')
+            self.assertEqual(remote.bounds(remote.focus('TV guide',timeout=5))[0],103)
+
     def test_clipped_horizontal_nodes_keep_signed_bounds(self):
         node=ET.fromstring('<node bounds="[272,314][-500,402]" enabled="true" clickable="true" focusable="true"/>')
         self.assertEqual(remote.bounds(node),[272,314,-500,402])
