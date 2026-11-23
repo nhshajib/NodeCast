@@ -321,6 +321,14 @@ class TVRemoteController(private val activity: Activity) {
     // toolbar enters the list instead of jumping sideways to the rail.
     val aligned = options.filter { it.third }
     var best = (if (aligned.isNotEmpty()) aligned else if (horizontal) emptyList() else options).minByOrNull { it.second }
+    // Up/Down go to the nearest row of aligned controls first; sideways distance only breaks
+    // ties within that row. Ranking by centre distance alone skipped a small switch at the
+    // right of a row in favour of a farther, wider control (backup's history switch).
+    if(!horizontal&&aligned.isNotEmpty()){
+      fun gap(t:View):Int { val b=rectangles.getValue(t); return maxOf(0,if(positive)b.top-a.bottom else a.top-b.bottom) }
+      val nearest=aligned.minOf { gap(it.first) }
+      best=aligned.filter { gap(it.first)<=nearest+16 }.minByOrNull { val b=rectangles.getValue(it.first); kotlin.math.abs(b.centerX()-a.centerX()) }
+    }
     // Inside a horizontal strip (category chips, Home rows), the next item in the strip wins,
     // even when it is scrolled off-screen and a rail item that grazes the row is nearer.
     if(horizontal&&scroll!=null){
