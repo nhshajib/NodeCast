@@ -1,1 +1,1 @@
-{"request":"Full emulator gate for stable 1.0.0 (build 45129931552, driver reveal fix); publishes the Android release if it passes","nonce":"2026-11-23T08:25Z-22","runs":[{"workflow":"android-smoke.yml","inputs":{"build_run":"45129931552","target":"both","tv_suite":"full","api_level":"35","make_public":true}}]}
+{"request":"GlowTV 1.0.1 builds: Android draft release and iPhone IPA","nonce":"2026-11-23T10:00Z-23","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}},{"workflow":"ios-sideload.yml","inputs":{"mode":"full"}}]}
