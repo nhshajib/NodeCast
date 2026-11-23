@@ -1,1 +1,1 @@
-{"request":"Publish GlowTV 1.0.1 iPhone download from build 45247727901","nonce":"2026-11-23T20:47Z-29","runs":[{"workflow":"publish-iphone-download.yml","inputs":{"build_run":"45247727901","source_sha":"93546d31f1fc4af01e22501f39119236aaf91b0e","expected_sha256":"7682eb70b98194f52b98ad016e6f51d26ecbdca4f2216fe8edee395ba4d14f2a","make_public":true}}]}
+{"request":"Rebuild Android 1.0.1 (compact library actions) as the draft release","nonce":"2026-11-23T20:58Z-30","runs":[{"workflow":"apps-release.yml","inputs":{"target":"both","create_draft":true}}]}
