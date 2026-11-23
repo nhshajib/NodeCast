@@ -1,10 +1,10 @@
 import type {DownloadPlatform} from './release';
 export const editionFolders:Record<DownloadPlatform,string>={ios:'iphone',android:'android-mobile',tv:'android-tv'};
 const shared=[
- ['Your playlists, together','Connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.'],
- ['A full TV guide','Load XMLTV schedules, search programmes and use catch-up when your provider supports it.'],
+ ['Your playlists, together','Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device.'],
+ ['A full TV guide','Load XMLTV schedules, fix unmatched channels, shift a guide that runs early or late, and use catch-up when your provider supports it.'],
  ['Movies and series','Browse your provider’s library, choose seasons and continue with the next episode.'],
- ['Favorites and history','Save channels, resume watching and clear recents without deleting your profiles.'],
+ ['Favorites, lists and history','Save channels, build your own lists, hide titles you never watch and resume where you left off.'],
  ['Playback your way','Adjust playback over the video, choose supported player options and set a sleep timer.'],
  ['Take your settings with you','Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.'],
 ];
@@ -14,6 +14,15 @@ export const features:Record<DownloadPlatform,string[][]>={
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
+ if(version==='1.0.0')return [
+  'Faster, ranked search: exact names first, then names that start with what you typed.',
+  'Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.',
+  'Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.',
+  'Previous channel, return to live, and audio and subtitles that follow your preferred language.',
+  'Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.',
+  platform==='tv'?'Library options open with focus on the current choice, so every option is reachable with the remote.':'Native navigation, sheets and press feedback across the app.',
+  'Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import.',
+ ];
  if(version==='0.7.4')return [
   'A tidier guide: the filter sits beside the day picker, channels show logos and more rows fit.',
   platform==='tv'?'Focused poster titles no longer clip, and small labels are larger on the big screen.':'An inline show/hide password button and sheets that clear the gesture bar.',

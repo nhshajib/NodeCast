@@ -1,17 +1,22 @@
-# GlowTV 0.7.2 — a calmer, clearer interface
+# GlowTV 1.0.0 — Android phone and TV
 
-[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-android-v0.7.2/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-android-v0.7.2)
+[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0)
 
-- Consistent Lucide icons, including clear filled/outline favorite states and local native-tab assets.
-- An 8px layout grid; primary green, neutral and semantic-red color families, with theme-safe surfaces.
-- Bare settings/empty-state icons, plain information sections and fewer repeated Home/settings links.
-- Clearer playback, playlist and library selection controls; existing native navigation and animations retained.
-- Unchanged picture-in-picture props no longer schedule native decoder recreation during UI updates.
-- Android poster libraries keep the first title visible on short screens with a compact metadata header.
-- TV row and grid measurements remain aligned with the revised spacing for remote navigation and virtualization.
+The first stable GlowTV release.
 
-Existing profiles, playlists, favorites, guide settings, encrypted backups, application identifiers, signing identity and player engines are retained. Install over the matching existing edition to keep local data. Both APKs include JavaScript and VLC; Expo Go and a running computer are not needed while watching.
+- **Faster, ranked search.** Exact names come first, then names that start with what you typed. Large libraries are stored in an on-device SQLite catalogue.
+- **Your own lists.** Build lists, hide titles you never watch, and show series latest-first or unwatched-only. The next episode can play automatically.
+- **Guide repair.** Get suggested matches for channels without a guide, a guide health summary, per-guide time offsets and recent programme history.
+- **Playback help.** Jump to the previous channel and return to live. Audio and subtitles follow your preferred language, and a help sheet explains common playback problems.
+- **Quicker setup and transfer.**
+  - Paste the details your provider sent to fill the connection form.
+  - Backups now include lists and the new preferences.
+  - Importing a backup shows a preview and lets you add or update profiles. Backups from 0.7.x still import.
+- **Native feel on phones.** Native stack navigation, tabs and sheets, immediate press feedback, and 44-point touch targets.
+- **On TV,** library options open with focus on the current choice, so every option can be reached with the remote.
 
-See the [screen-by-screen audit and before/after code](https://github.com/nhshajib/NodeCast/blob/main/docs/UI-UX-AUDIT-0.7.2.md), [design tokens](https://github.com/nhshajib/NodeCast/blob/main/apps/player/src/designTokens.ts) and each edition's `DOWNLOADS.md` for exact requirements, file size and SHA-256. Companion checksum files and release-metadata.json describe these exact builds.
+Your profiles, playlists, favorites, guide settings, encrypted backups, app identifiers, signing identity and player engines carry over. To keep your local data, install over the matching edition. Both APKs include JavaScript and VLC, so no computer is needed while watching.
 
-These are public testing APKs using the existing Android test signing identity. Native emulator checks are separate from physical Fire TV/phone and provider-specific playback testing. Store publication is pending. GlowTV is a player only and provides no channels, playlists, content or subscriptions.
+Each edition's `DOWNLOADS.md` lists exact requirements, file size and SHA-256. The companion checksum files and `release-metadata.json` describe these exact builds.
+
+The release was verified with Android emulator checks on phone and TV, and iPhone/iPad simulator checks. It was not tested on physical devices. GlowTV is a player only and provides no channels, playlists, content or subscriptions.
