@@ -70,6 +70,20 @@ class InputDriverTests(unittest.TestCase):
             self.assertEqual(remote.name(remote.focus('Settings',timeout=5)),'Settings')
             self.assertEqual(remote.bounds(remote.focus('TV guide',timeout=5))[0],103)
 
+    def test_page_button_named_like_a_rail_item_is_not_treated_as_the_rail(self):
+        state={'at':'TV guide','keys':[]}
+        def tree():
+            nodes=[f'<node content-desc="TV guide" bounds="[120,478][216,566]" enabled="true" clickable="true" focusable="true" focused="false"/>']
+            for label,box in [('Watch live','[320,299][647,413]'),('TV guide','[679,297][932,415]'),('Browse channels','[954,294][1360,418]')]:
+                nodes.append(f'<node content-desc="{label}" bounds="{box}" enabled="true" clickable="true" focusable="true" focused="{str(state["at"]==label and box!="[120,478][216,566]").lower()}"/>')
+            return ET.fromstring('<hierarchy>'+''.join(nodes)+'</hierarchy>')
+        def key(code):
+            state['keys'].append(code)
+            self.assertEqual(code,21,'Left from the page button, not Right as if leaving the rail')
+            state['at']='Watch live'
+        with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
+            self.assertEqual(remote.name(remote.focus('Watch live',timeout=5)),'Watch live')
+
     def test_clipped_horizontal_nodes_keep_signed_bounds(self):
         node=ET.fromstring('<node bounds="[272,314][-500,402]" enabled="true" clickable="true" focusable="true"/>')
         self.assertEqual(remote.bounds(node),[272,314,-500,402])
