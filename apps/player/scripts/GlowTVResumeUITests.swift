@@ -109,7 +109,9 @@ final class GlowTVResumeUITests: XCTestCase {
     // Inspect content near the top, so small iPhones need no scroll to pass.
     let content = homeContent()
     XCTAssertTrue(content.waitForExistence(timeout: 15), app.debugDescription)
-    let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in content.exists && content.isHittable }, object: nil)
+    // A tab switch can leave the button briefly without a valid frame; asking for
+    // hittability then fails at once. Wait for a real on-screen frame first.
+    let visible = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.onScreen(content) && content.isHittable }, object: nil)
     XCTAssertEqual(XCTWaiter.wait(for: [visible], timeout: 15), .completed, "Home content is present but invisible after returning: \(app.debugDescription)")
     // 1.0.0: "Watch" is the native navigation title. The first Home action must
     // sit below that bar, without a second header-sized gap.
@@ -118,6 +120,12 @@ final class GlowTVResumeUITests: XCTestCase {
       XCTAssertGreaterThanOrEqual(content.frame.minY, header.frame.maxY - 2, "Home must clear the native header")
       XCTAssertLessThanOrEqual(content.frame.minY, header.frame.maxY + 320, "Home must not apply the native header inset twice")
     }
+  }
+  /// True once the element has a real frame inside the window (not mid-transition).
+  func onScreen(_ element: XCUIElement) -> Bool {
+    guard element.exists else { return false }
+    let frame = element.frame, window = app.frame
+    return !frame.isEmpty && frame.width > 1 && frame.height > 1 && window.intersects(frame)
   }
   func testColdStartsAndBackgroundResumeKeepHomeVisible() {
     continueAfterFailure = false
@@ -136,7 +144,8 @@ final class GlowTVResumeUITests: XCTestCase {
       // Check before touching navigation: recovery must work without a tap.
       let content = homeContent()
       XCTAssertTrue(content.waitForExistence(timeout: 15))
-      XCTAssertTrue(content.isHittable, "Blank Home after background interval \(delay)s")
+      let shown = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.onScreen(content) && content.isHittable }, object: nil)
+      XCTAssertEqual(XCTWaiter.wait(for: [shown], timeout: 15), .completed, "Blank Home after background interval \(delay)s")
       capture("home-after-background-\(Int(delay))s")
       settleHome()
     }
