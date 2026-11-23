@@ -419,6 +419,7 @@ function TVContent({ onReady, launchComplete }: { onReady: () => void; launchCom
  {title:'Library organization',description:'Layout, categories and favorite order',action:openOrganization},
  {title:'Backup & transfer',description:'Encrypted profiles and preferences',action:()=>setOverlay('backup')},
  {title:'Library & storage',description:'Cache and viewing history',action:()=>setOverlay('storage')},
+ {title:'Connection details',description:'Public IP and VPN check',action:()=>setOverlay('network')},
  {title:'Home IP reference',description:'Compare your known home connection',action:()=>setOverlay('home-ip')},
  {title:'Version history',description:'Changes in this app',action:()=>setOverlay('history')},
  ] as const).map(row=><Pressable key={row.title} nativeID={`tv-control:settings:${row.title}`} accessibilityLabel={`${row.title}, ${row.description}`} onPress={row.action} style={{width:'48%',flexGrow:1,minHeight:104,padding:16,gap:8,borderRadius:16,backgroundColor:colors.panel}}><Text style={u.label}>{row.title}</Text><Text style={u.small}>{row.description}</Text></Pressable>)}</View><Button title="Add playlist" onPress={add} disabled={!!storageError}/><NetworkCard onOpenDetails={()=>setOverlay('network')} baseline={preferences.baseline} onBaseline={baseline=>updatePreferences({baseline})}/>

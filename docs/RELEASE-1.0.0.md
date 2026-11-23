@@ -108,3 +108,8 @@ Notes:
   - On TV, focus still stayed in the left menu after choosing Categories. The native controller applies preferred focus only when a focus scope mounts or is renamed, and switching tabs did neither.
   - The Library organization view now has a scope named after its tab (`tv-scope:organize:<mode>`), so each tab switch moves focus into that tab's content.
 - iPhone build `45101665000` passed its simulator audits. IPA SHA-256: `f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011`. Published through `publish-iphone-download.yml`.
+- Build `45113256759`:
+  - Design `45115543850` passed on phone and TV.
+  - The full run's TV job now passed Library organization and Categories.
+  - It stopped on Home, looking for "Connection details". The audit fix had taken the IP/VPN card off Home without adding the Settings entry that the audit asked for, so TV had no route to connection details.
+  - TV Settings now has a **Connection details** row ("Public IP and VPN check"), and the driver opens it from Settings.
