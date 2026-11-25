@@ -294,7 +294,9 @@ try:
  capture('guide')
  if TV:click('Close mini player');back();home()
  else:back();home()
- click('Watch live')
+ # Phone Home has a greeting until a favorite is saved; play the actual
+ # Live now row. TV deliberately favorites its hero earlier in this audit.
+ click('Watch live' if TV else 'Watch Evening studio, live, Original demos')
  wait_for_native_video()
  if TV:find('Pause live TV',timeout=20)
  player_pid=adb('shell','pidof',package)
