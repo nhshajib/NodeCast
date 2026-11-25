@@ -45,7 +45,7 @@ Results and screenshots are recorded in `verification/glowtv/refinement-2026-11-
 
 ### Build and release status
 
-The build candidate is **1.0.2 / 10002**, above the installed 1.0.1 build 10001. No identifiers, signing identity or existing screen transitions changed. The native splash background and TV Menu bridge require fresh native packages. No new dependency or native module was installed.
+The build candidate is **1.0.2 / 10003**, above the installed 1.0.1 build 10001. No identifiers, signing identity or existing screen transitions changed. The native splash background and TV Menu bridge require fresh native packages. No new dependency or native module was installed.
 
 Physical-device testing remains skipped by the owner's earlier decision. This candidate still needs Android design/full emulator checks (phone and remote-only TV) and the full iPhone/iPad simulator workflow before release approval. No tag or release has been published from this change.
 
@@ -61,3 +61,11 @@ Browser evidence (not native certification):
 - [iPad Home](../verification/glowtv/refinement-2026-11-25/ipad-home.png), [player](../verification/glowtv/refinement-2026-11-25/ipad-player.png).
 - [TV Home](../verification/glowtv/refinement-2026-11-25/tv-home.png), [category settings](../verification/glowtv/refinement-2026-11-25/tv-category-settings.png), [player](../verification/glowtv/refinement-2026-11-25/tv-player.png).
 - [Flow checks](../verification/glowtv/refinement-2026-11-25/checks.json), [launch checks](../verification/glowtv/refinement-2026-11-25/launch-checks.json).
+
+### Native gate corrections
+
+The first design run used an obsolete phone hero action and sampled TV video beneath the redesigned bottom scrim. The capture harness now selects the visible live-channel row and inspects the same original video band above the scrim, with unchanged RGB thresholds and black/green-UI negative controls.
+
+The full TV remote suite exposed a real category-management bug after opening Settings: current-page items are empty there. Management now uses the active playlist’s cached sections and reapplies hidden/category access rules. Fresh build 10003 is required; build 10002 is not approved for publication.
+
+The phone native capture also exposed fixed-height top/bottom scrims overlapping across portrait video and remaining visible after controls hid. Scrims now scale to the video bounds, stop at 160 dp, and follow the existing 180 ms ChromeLayer fade and reduced-motion policy. No playback surface or engine lifecycle changes. Browser regression checks require the shading to reach zero opacity during playback before revealing and pausing.

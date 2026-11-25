@@ -56,6 +56,14 @@ with sync_playwright() as p:
    assert page.get_by_text('Your connection',exact=True).count()==0
    assert page.get_by_text('Home IP & connection',exact=True).count()==0
    assert page.get_by_text('Connection details',exact=True).count()==0
+   if edition=='tv':
+    # Settings deliberately has no current-page items. Management must use
+    # the active profile's cached catalogue, and keep the saved pin visible.
+    organization=page.get_by_role('button',name=re.compile('^Library organization,'))
+    organization.focus();page.wait_for_timeout(150);organization.click();button(page,'Favorite categories').click()
+    row=page.get_by_role('checkbox',name='Sport, favorite category',exact=True)
+    expect(row).to_be_checked();row.click();expect(row).not_to_be_checked();row.click();expect(row).to_be_checked()
+    page.screenshot(path=str(out/'tv-category-from-settings.png'));button(page,'Back').click()
    if edition=='ios':page.locator('[aria-label$=", back"], [aria-label="Go back"], [aria-label="Back"]').filter(visible=True).last.click()
    # Verify transport placement against the real decoded VOD surface.
    if edition=='tv':
@@ -70,7 +78,10 @@ with sync_playwright() as p:
    page.wait_for_function('document.querySelector("video")?.readyState>=2',timeout=30000)
    if start.is_visible():start.click()
    page.wait_for_function('document.querySelector("video").currentTime>.3',timeout=15000)
-   pause.wait_for(timeout=10000);pause.click();page.wait_for_timeout(300)
+   hide=button(page,'Hide player controls')
+   if hide.count():hide.click(position={'x':4,'y':hide.bounding_box()['height']/2})
+   page.wait_for_function('Number(getComputedStyle(document.querySelector("[data-testid=video-controls-scrim]").parentElement).opacity)===0',timeout=10000)
+   button(page,'Show player controls').click();pause.wait_for(timeout=10000);pause.click();page.wait_for_timeout(300)
    play=page.get_by_role('button',name='Play video',exact=True).bounding_box();back=page.get_by_role('button',name='Back to library',exact=True).bounding_box();seek=page.get_by_label('Seek video',exact=True) if edition!='tv' else page.get_by_label('Video progress, Left or Right to seek ten seconds',exact=True)
    seek.wait_for(timeout=10000)
    if seek.count():
@@ -78,9 +89,10 @@ with sync_playwright() as p:
    page.screenshot(path=str(out/(name+'-player.png')))
    assert not lookups,lookups
    assert not errors,errors
-   results[name]={'greetingWithoutFavorite':True,'favoriteLiveHero':True,'categoryPinAndOrder':True,'noConnectionSettings':True,'noPublicIPRequests':True,'centeredPlayer':True,'pageErrors':errors}
+   results[name]={'greetingWithoutFavorite':True,'favoriteLiveHero':True,'categoryPinAndOrder':True,'noConnectionSettings':True,'noPublicIPRequests':True,'centeredPlayer':True,'videoShadeFollowsControls':True,'categorySettingsUsesCachedCatalog':edition=='tv','pageErrors':errors}
    print(name+' passed',flush=True)
   except Exception:
+   (out/(name+'-failure-state.json')).write_text(json.dumps(page.evaluate('''()=>({videos:[...document.querySelectorAll('video')].map(v=>({paused:v.paused,time:v.currentTime})),scrims:[...document.querySelectorAll('[data-testid=video-controls-scrim]')].map(el=>{let nodes=[];for(let n=el;n&&nodes.length<4;n=n.parentElement)nodes.push({opacity:getComputedStyle(n).opacity,style:n.getAttribute('style'),testID:n.getAttribute('data-testid')});return nodes})})'''),indent=2))
    page.screenshot(path=str(out/(name+'-failure.png')));(out/(name+'-failure.txt')).write_text(page.locator('body').inner_text());raise
   finally:context.close();server.shutdown()
  browser.close()

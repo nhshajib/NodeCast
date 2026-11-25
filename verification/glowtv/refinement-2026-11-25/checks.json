@@ -6,6 +6,7 @@
     "noConnectionSettings": true,
     "noPublicIPRequests": true,
     "centeredPlayer": true,
+    "videoShadeFollowsControls": true,
     "pageErrors": []
   },
   "android": {
@@ -15,6 +16,7 @@
     "noConnectionSettings": true,
     "noPublicIPRequests": true,
     "centeredPlayer": true,
+    "videoShadeFollowsControls": true,
     "pageErrors": []
   },
   "ipad": {
@@ -24,6 +26,7 @@
     "noConnectionSettings": true,
     "noPublicIPRequests": true,
     "centeredPlayer": true,
+    "videoShadeFollowsControls": true,
     "pageErrors": []
   },
   "tv": {
@@ -33,6 +36,8 @@
     "noConnectionSettings": true,
     "noPublicIPRequests": true,
     "centeredPlayer": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": true,
     "pageErrors": []
   }
 }

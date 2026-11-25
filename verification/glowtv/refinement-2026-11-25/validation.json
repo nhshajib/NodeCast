@@ -1,6 +1,6 @@
 {
   "version": "1.0.2",
-  "build": 10002,
+  "build": 10003,
   "date": "2026-11-25",
   "appTests": 187,
   "inputDriverTests": 22,
@@ -25,7 +25,8 @@
     "warnings": 0,
     "hints": 0
   },
-  "nativeCI": "pending fresh APK/IPA builds and emulator/simulator gates",
+  "nativeCI": "Pending fresh build 10003 after cached-category and video-shading corrections",
   "physicalDevices": "skipped by owner decision",
-  "published": "No 1.0.2 release or download assets published"
+  "published": "No 1.0.2 release or download assets published",
+  "inputDriverAndSigningTests": 28
 }
