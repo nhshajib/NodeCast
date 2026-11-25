@@ -1,6 +1,8 @@
 # GlowTV changes
 
-## 1.0.2 — November 25, 2026 · Build candidate
+## 1.0.2 — November 25, 2026
+
+Android phone and TV are published as stable. iPhone/iPad verification is in progress; the published IPA remains 1.0.1.
 
 - Native pull-to-refresh on Home and library lists, with animated loading placeholders and reduced-motion support.
 - Per-playlist favorite Live TV categories, pinned ahead of other groups and included in backups.

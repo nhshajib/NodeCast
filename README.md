@@ -6,16 +6,16 @@
 
 [Website](https://glowtv.app/) · [Download availability](https://glowtv.app/download/) · [Installation guides](https://glowtv.app/install/) · [Support](https://glowtv.app/support/) · [Changelog](CHANGELOG.md)
 
-GlowTV 1.0.0 is available for iPhone/iPad, Android phone and Android TV/Fire TV. The IPA needs personal signing; Android APKs install directly. Store listings are pending. See [hosting instructions](website/HOSTING.md) for the website domain.
+GlowTV is available for iPhone/iPad, Android phone and Android TV/Fire TV. The IPA needs personal signing; Android APKs install directly. Store listings are pending. See [hosting instructions](website/HOSTING.md) for the website domain.
 
 [![GlowTV website preview with the updated native iPhone and TV app screenshots](verification/glowtv/website-home.png)](https://glowtv.app/)
 
 <!-- downloads:start -->
 | Your device | Direct GitHub download | Setup and features | Project |
 | --- | --- | --- | --- |
-| iPhone / iPad | [IPA · 1.0.0](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/GlowTV-1.0.0-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
-| Android phone | [APK · 1.0.0](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
-| Android TV / Fire TV | [TV APK · 1.0.0](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV-TV.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
+| iPhone / iPad | [IPA · 1.0.1](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/GlowTV-1.0.1-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
+| Android phone | [APK · 1.0.2](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
+| Android TV / Fire TV | [TV APK · 1.0.2](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
 <!-- downloads:end -->
 
 [0.7.2 UI audit and before/after code](docs/UI-UX-AUDIT-0.7.2.md) · [Design tokens](apps/player/src/designTokens.ts)

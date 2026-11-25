@@ -1,19 +1,20 @@
 {
+  "assetId": 793455138,
   "downloadCount": 0,
-  "version": "1.0.0",
-  "tag": "glowtv-v1.0.0",
-  "publishedAt": "2026-11-23T08:30:20Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0",
+  "version": "1.0.2",
+  "tag": "glowtv-v1.0.2",
+  "publishedAt": "2026-11-25T22:52:36Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
   "prerelease": false,
   "legacy": false,
-  "minimumOS": "Android API 24 or later",
-  "assetId": 781985786,
   "file": "GlowTV-TV.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV-TV.apk",
-  "size": 240142894,
-  "sha256": "b0862108274bc05e0e04f12b152eaede43fef778a731713f58681cb14b1d3f4c",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV-TV.apk.sha256",
-  "checkedAt": "2026-11-23T08:36:00.000Z",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk",
+  "size": 240646927,
+  "sha256": "9617f1f4ff2e30e2f23b9d641210002940c264bc416a3121ea7ddd1b19a5ee26",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk.sha256",
+  "minimumOS": "Android API 24 or later",
+  "previousDownloadCount": 40,
+  "checkedAt": "2026-11-25T22:54:12.478Z",
   "edition": "tv",
   "features": [
     {
@@ -34,7 +35,7 @@
     },
     {
       "title": "A lighter channel library",
-      "description": "Use the default text list, enable grid or logos when you want them, and organize each media library separately."
+      "description": "Keep favorite Live TV categories first. Use a text list, enable logos or a grid, and hold OK or press Menu on a category to pin it."
     },
     {
       "title": "Take your settings with you",
@@ -42,12 +43,11 @@
     }
   ],
   "changes": [
-    "Faster, ranked search: exact names first, then names that start with what you typed.",
-    "Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.",
-    "Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.",
-    "Previous channel, return to live, and audio and subtitles that follow your preferred language.",
-    "Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.",
-    "Library options open with focus on the current choice, so every option is reachable with the remote.",
-    "Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import."
+    "Animated loading placeholders respect reduced motion; refresh stays available through the remote toolbar.",
+    "Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.",
+    "Home features an available favorite live channel; without one, it shows a greeting.",
+    "Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.",
+    "Public-IP/connection screens and lookups removed; older settings and backups remain readable.",
+    "Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks."
   ]
 }

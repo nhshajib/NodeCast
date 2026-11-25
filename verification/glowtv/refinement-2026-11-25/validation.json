@@ -25,8 +25,19 @@
     "warnings": 0,
     "hints": 0
   },
-  "nativeCI": "Pending fresh build 10003 after cached-category and video-shading corrections",
+  "nativeCI": {
+    "androidBuild": "https://github.com/nhshajib/NodeCast/actions/runs/45614594754",
+    "androidDesign": "https://github.com/nhshajib/NodeCast/actions/runs/45618141434",
+    "androidFull": "https://github.com/nhshajib/NodeCast/actions/runs/45618145461",
+    "androidResult": "passed",
+    "iphoneFull": "https://github.com/nhshajib/NodeCast/actions/runs/45716675826",
+    "iphoneResult": "running"
+  },
   "physicalDevices": "skipped by owner decision",
-  "published": "No 1.0.2 release or download assets published",
+  "published": {
+    "android": "1.0.2",
+    "tv": "1.0.2",
+    "ios": "1.0.1; new IPA pending CI"
+  },
   "inputDriverAndSigningTests": 28
 }

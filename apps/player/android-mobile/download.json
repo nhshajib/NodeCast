@@ -1,24 +1,25 @@
 {
+  "assetId": 793455139,
   "downloadCount": 0,
-  "version": "1.0.0",
-  "tag": "glowtv-v1.0.0",
-  "publishedAt": "2026-11-23T08:30:20Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.0",
+  "version": "1.0.2",
+  "tag": "glowtv-v1.0.2",
+  "publishedAt": "2026-11-25T22:52:36Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
   "prerelease": false,
   "legacy": false,
-  "minimumOS": "Android API 24 or later",
-  "assetId": 781985265,
   "file": "GlowTV.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk",
-  "size": 241669688,
-  "sha256": "851578cefa47adecc5d4092768fc858009714a27b7cf8a54561c6efaac4290cb",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.0/GlowTV.apk.sha256",
-  "checkedAt": "2026-11-23T08:36:00.000Z",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk",
+  "size": 242198297,
+  "sha256": "98b3bda440e3bd7deb985d6d03c2866bec0a9504df166e33ed583bb9c5a51fc0",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk.sha256",
+  "minimumOS": "Android API 24 or later",
+  "previousDownloadCount": 42,
+  "checkedAt": "2026-11-25T22:54:12.478Z",
   "edition": "android",
   "features": [
     {
       "title": "Your playlists, together",
-      "description": "Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device."
+      "description": "Paste your provider’s details to fill the form, or connect with Xtream Codes, an M3U link or a local playlist file. Keep multiple profiles on your device. Pull to refresh Home or a library without leaving the screen."
     },
     {
       "title": "A full TV guide",
@@ -29,12 +30,12 @@
       "description": "Browse your provider’s library, choose seasons and continue with the next episode."
     },
     {
-      "title": "Favorites, lists and history",
-      "description": "Save channels, build your own lists, hide titles you never watch and resume where you left off."
+      "title": "Your favorites first",
+      "description": "Keep a favorite live channel on Home, pin Live TV categories, build lists and resume recent viewing."
     },
     {
-      "title": "Playback your way",
-      "description": "Adjust playback over the video, choose supported player options and set a sleep timer."
+      "title": "Playback, in focus",
+      "description": "Centered transport controls and a bottom timeline keep the picture clear. Audio, subtitles and supported player options stay close."
     },
     {
       "title": "Take your settings with you",
@@ -42,12 +43,11 @@
     }
   ],
   "changes": [
-    "Faster, ranked search: exact names first, then names that start with what you typed.",
-    "Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.",
-    "Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.",
-    "Previous channel, return to live, and audio and subtitles that follow your preferred language.",
-    "Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.",
-    "Native navigation, sheets and press feedback across the app.",
-    "Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import."
+    "Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.",
+    "Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.",
+    "Home features an available favorite live channel; without one, it shows a greeting.",
+    "Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.",
+    "Public-IP/connection screens and lookups removed; older settings and backups remain readable.",
+    "Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks."
   ]
 }

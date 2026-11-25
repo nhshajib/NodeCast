@@ -19,15 +19,13 @@
     "Library organization",
     "Backup & transfer",
     "Library & storage",
-    "Home IP & connection",
     "Version history"
   ],
   "actualVideoPixels": true,
   "androidApi": "35",
   "emulatorGpu": "swangle",
   "scope": "Android emulator; physical Fire TV and iPhone hardware are separate checks.",
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44907960076",
-  "source": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
-  "captureSource": "b1f3db16bd880b10cec8a730d1907c8f2c46d920",
-  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/44861113582"
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/45618141434",
+  "source": "44f27b896095b60d187e496133f45749b8381028",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/45614594754"
 }

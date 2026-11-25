@@ -15,11 +15,11 @@ export const features:Record<DownloadPlatform,string[][]>={
 };
 export function editionFeatures(platform:DownloadPlatform,version:string):string[][] {
  if(version.localeCompare('1.0.2',undefined,{numeric:true})<0)return features[platform];
- return features[platform].map(([title,text])=>title==='Favorites, lists and history'?['Your favorites first','Keep a favorite live channel on Home, pin Live TV categories, build lists and resume recent viewing.']:title==='Playback your way'?['Playback, in focus','Centered transport controls and a bottom timeline keep the picture clear. Audio, subtitles and supported player options stay close.']:title==='Your playlists, together'?[title,text+(platform==='tv'?'':' Pull to refresh Home or a library without leaving the screen.')]:[title,text]);
+ return features[platform].map(([title,text])=>title==='Favorites, lists and history'?['Your favorites first','Keep a favorite live channel on Home, pin Live TV categories, build lists and resume recent viewing.']:title==='A lighter channel library'?[title,'Keep favorite Live TV categories first. Use a text list, enable logos or a grid, and hold OK or press Menu on a category to pin it.']:title==='Playback your way'?['Playback, in focus','Centered transport controls and a bottom timeline keep the picture clear. Audio, subtitles and supported player options stay close.']:title==='Your playlists, together'?[title,text+(platform==='tv'?'':' Pull to refresh Home or a library without leaving the screen.')]:[title,text]);
 }
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
  if(version==='1.0.2')return [
-  "Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.",
+  platform==='tv'?"Animated loading placeholders respect reduced motion; refresh stays available through the remote toolbar.":"Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.",
   "Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.",
   "Home features an available favorite live channel; without one, it shows a greeting.",
   "Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.",

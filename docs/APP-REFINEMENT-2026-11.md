@@ -1,6 +1,6 @@
 # App refinement — November 25, 2026
 
-Baseline: main `db5f56e`, published GlowTV 1.0.1. Changes are app work, not a new published release. Identifiers, signing, installation instructions, screen transitions and persistent IPTV engines remain unchanged.
+Baseline: main `db5f56e`, published GlowTV 1.0.1. Android phone/TV 1.0.2 is now published; the new iPhone IPA remains gated on Apple CI. Identifiers, signing, installation instructions, screen transitions and persistent IPTV engines remain unchanged.
 
 ## Changes
 
@@ -32,7 +32,7 @@ Applied the repository's Unslop skill (Damir Sokolovsky, CC BY 4.0, https://heyd
 
 ## Verification
 
-Results and screenshots are recorded in `verification/glowtv/refinement-2026-11-25/`. Browser checks do not verify native pull gestures, Apple/Android decoder handoff, TV remote focus, VoiceOver/TalkBack or physical-device behavior. Native packages, releases and website downloads have not been updated in this change.
+Results and screenshots are recorded in `verification/glowtv/refinement-2026-11-25/`. Browser checks do not verify native pull gestures, Apple/Android decoder handoff, TV remote focus, VoiceOver/TalkBack or physical-device behavior. Android packages and download metadata are now updated from passing native CI; the new iPhone IPA is still pending.
 
 ### Unslop polish
 
@@ -47,7 +47,7 @@ Results and screenshots are recorded in `verification/glowtv/refinement-2026-11-
 
 The build candidate is **1.0.2 / 10003**, above the installed 1.0.1 build 10001. No identifiers, signing identity or existing screen transitions changed. The native splash background and TV Menu bridge require fresh native packages. No new dependency or native module was installed.
 
-Physical-device testing remains skipped by the owner's earlier decision. This candidate still needs Android design/full emulator checks (phone and remote-only TV) and the full iPhone/iPad simulator workflow before release approval. No tag or release has been published from this change.
+Physical-device testing remains skipped by the owner's earlier decision. Android design/full emulator checks (phone and remote-only TV) passed and the verified APK release is published. Full iPhone/iPad simulator checks and IPA packaging remain required before publishing the new Apple release.
 
 Local verification: **187 app tests**, **22 Python input-driver tests**, TypeScript, UI grid/scope guards, and iOS-style/Android/TV exports pass. Four browser profiles (393×852, 412×915, 1032×1376, 960×540 at 2× scale) verify the greeting, saved-channel hero, category ordering, removed connection UI and decoded VOD transport/timeline placement. Browser TV focus is DOM focus, not proof of native D-pad behavior.
 
@@ -73,3 +73,7 @@ The phone native capture also exposed fixed-height top/bottom scrims overlapping
 The build-10003 Android design and full phone/TV suites passed. The iPhone cold-start/background-resume test passed, but its design harness queried a standalone channel StaticText that is now correctly grouped into a descriptive accessible button. The harness now requires that actual live-channel button and checks it is hittable after the playlist sheet closes. App source and build numbers are unchanged for this test-only retry.
 
 The subsequent iPhone design test passed, but the cold/resume test intermittently timed out on hittability after 60 seconds in the background. Its failure had no corresponding screen capture. The harness now waits for foreground activation, resolves a fresh Home accessibility query on every poll, and preserves the existing visible/hittable assertions without navigation or relaunch recovery. A failure records app/device screenshots and both app/SpringBoard hierarchies so a genuine app defect cannot be mistaken for a stale accessibility target. Runtime app source and build numbers are unchanged.
+
+## Android publication
+
+Android phone, universal TV and 32-bit TV build 10003 passed native design and full suites, signed-archive verification and publication workflow [45716750863](https://github.com/nhshajib/NodeCast/actions/runs/45716750863). [Stable APK release](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2). Website metadata and Android/TV screenshots now use the published exact files; iPhone remains on its existing verified 1.0.1 release while full Apple CI runs. Installation instructions are unchanged. Physical-device checks remain skipped by owner decision.

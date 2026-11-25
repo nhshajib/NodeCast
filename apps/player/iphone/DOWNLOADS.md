@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 1.0.0
+## Current published version: 1.0.1
 
-- [**Direct GitHub download — GlowTV-1.0.0-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/GlowTV-1.0.0-unsigned.ipa)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v1.0.0)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/SHA256SUMS.txt)
+- [**Direct GitHub download — GlowTV-1.0.1-unsigned.ipa**](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/GlowTV-1.0.1-unsigned.ipa)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/ios-v1.0.1)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/SHA256SUMS.txt)
 - Published: 2026-11-23
 - Status: Stable release
-- Size: 32,540,598 bytes (31.0 MiB)
+- Size: 32,547,539 bytes (31.0 MiB)
 - Minimum OS: iOS 16.4 or later
-- SHA-256: `f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011`
+- SHA-256: `7682eb70b98194f52b98ad016e6f51d26ecbdca4f2216fe8edee395ba4d14f2a`
 
 This is a published GlowTV binary.
 
@@ -24,15 +24,12 @@ This is a published GlowTV binary.
 - **Built for iPhone and iPad:** Watch in portrait or landscape. Compatible native playback supports AirPlay and picture-in-picture; availability depends on the stream and engine.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 1.0.0
+## What changed in 1.0.1
 
-- Faster, ranked search: exact names first, then names that start with what you typed.
-- Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.
-- Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.
-- Previous channel, return to live, and audio and subtitles that follow your preferred language.
-- Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.
-- Native navigation, sheets and press feedback across the app.
-- Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import.
+- Streams that never start show a clear card with Retry, Try other player and Next channel, instead of spinning forever.
+- Channels listed under several categories now appear in each of them, and empty categories read "Other".
+- Clearer messages for missing streams (404) and region-blocked channels.
+- Existing playlists, profiles, signing and identifiers are retained.
 
 The IPA is unsigned. Sign it with Impactor and your own Apple account. Free Apple signing normally needs renewal every seven days. Keep the app installed when updating to retain profiles.
 

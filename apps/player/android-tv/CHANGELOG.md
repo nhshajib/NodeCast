@@ -1,5 +1,17 @@
 # Android TV version history
 
+## 1.0.2 · 2026-11-25 · Stable release
+
+- Animated loading placeholders respect reduced motion; refresh stays available through the remote toolbar.
+- Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.
+- Home features an available favorite live channel; without one, it shows a greeting.
+- Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.
+- Public-IP/connection screens and lookups removed; older settings and backups remain readable.
+- Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks.
+
+[Verified release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2)
+
+
 ## 0.7.3 — November 19, 2026 · Accessibility and navigation
 
 - Fixed native startup on Hermes runtimes without Intl.PluralRules.

@@ -1,0 +1,50 @@
+{
+  "version": "1.0.2",
+  "build": 10003,
+  "sourceCommit": "44f27b896095b60d187e496133f45749b8381028",
+  "buildWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/45614594754",
+  "archiveIntegrity": "passed",
+  "checksumsMatchArtifactCompanions": true,
+  "assets": [
+    {
+      "file": "GlowTV.apk",
+      "size": 242198297,
+      "sha256": "98b3bda440e3bd7deb985d6d03c2866bec0a9504df166e33ed583bb9c5a51fc0",
+      "vlcArchitectures": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "bothOriginalLaunchFilmsBundled": true
+    },
+    {
+      "file": "GlowTV-TV.apk",
+      "size": 240646927,
+      "sha256": "9617f1f4ff2e30e2f23b9d641210002940c264bc416a3121ea7ddd1b19a5ee26",
+      "vlcArchitectures": [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "x86_64"
+      ],
+      "bothOriginalLaunchFilmsBundled": true
+    },
+    {
+      "file": "GlowTV-TV-armeabi-v7a.apk",
+      "size": 73288197,
+      "sha256": "a8fb538f439f8f48d0b784fea093a208213a362de6ba269d2672ee7a7f03fa4c",
+      "vlcArchitectures": [
+        "armeabi-v7a"
+      ],
+      "bothOriginalLaunchFilmsBundled": true
+    }
+  ],
+  "physicalDeviceTested": false,
+  "publication": {
+    "android": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
+    "androidPublishWorkflow": "https://github.com/nhshajib/NodeCast/actions/runs/45716750863",
+    "ios": "Pending full simulator/device build 45716675826"
+  },
+  "signingCertificateSha256": "574b336bbb5343852e5c72612d2ed436c9bf4a9966fa8725bf4964a15d1b168c",
+  "samePublicCertificateAsExistingPrivateReleaseRecord": true,
+  "certificateEvidence": "Public signing certificates read from all three actual APKs; build CI separately enforces the owner-pinned private key"
+}

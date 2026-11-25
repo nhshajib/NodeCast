@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-11-24T00:25:00.000Z",
+  "checkedAt": "2026-11-25T22:54:12.478Z",
   "platforms": {
     "ios": {
       "assetId": 784484401,
-      "downloadCount": 0,
+      "downloadCount": 1,
       "version": "1.0.1",
       "tag": "ios-v1.0.1",
       "publishedAt": "2026-11-23T20:45:44Z",
@@ -15,40 +15,43 @@
       "size": 32547539,
       "sha256": "7682eb70b98194f52b98ad016e6f51d26ecbdca4f2216fe8edee395ba4d14f2a",
       "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/SHA256SUMS.txt",
-      "minimumOS": "iOS 16.4 or later"
+      "minimumOS": "iOS 16.4 or later",
+      "previousDownloadCount": 39
     },
     "android": {
-      "assetId": 785003924,
+      "assetId": 793455139,
       "downloadCount": 0,
-      "version": "1.0.1",
-      "tag": "glowtv-v1.0.1",
-      "publishedAt": "2026-11-24T00:21:39Z",
-      "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.1",
+      "version": "1.0.2",
+      "tag": "glowtv-v1.0.2",
+      "publishedAt": "2026-11-25T22:52:36Z",
+      "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
       "prerelease": false,
       "legacy": false,
       "file": "GlowTV.apk",
-      "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV.apk",
-      "size": 241686072,
-      "sha256": "fe1f1191aad5ee3b150c7a7af41cb0ae0d4e71cdf765f38805c78cdc9288c404",
-      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV.apk.sha256",
-      "minimumOS": "Android API 24 or later"
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk",
+      "size": 242198297,
+      "sha256": "98b3bda440e3bd7deb985d6d03c2866bec0a9504df166e33ed583bb9c5a51fc0",
+      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk.sha256",
+      "minimumOS": "Android API 24 or later",
+      "previousDownloadCount": 42
     },
     "tv": {
-      "assetId": 785004425,
+      "assetId": 793455138,
       "downloadCount": 0,
-      "version": "1.0.1",
-      "tag": "glowtv-v1.0.1",
-      "publishedAt": "2026-11-24T00:21:39Z",
-      "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.1",
+      "version": "1.0.2",
+      "tag": "glowtv-v1.0.2",
+      "publishedAt": "2026-11-25T22:52:36Z",
+      "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
       "prerelease": false,
       "legacy": false,
       "file": "GlowTV-TV.apk",
-      "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV-TV.apk",
-      "size": 240130606,
-      "sha256": "58d8e9816abac23d76b1a83818e40ee49e901163265da6ce8a1a537fa79dd6ef",
-      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV-TV.apk.sha256",
-      "minimumOS": "Android API 24 or later"
+      "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk",
+      "size": 240646927,
+      "sha256": "9617f1f4ff2e30e2f23b9d641210002940c264bc416a3121ea7ddd1b19a5ee26",
+      "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk.sha256",
+      "minimumOS": "Android API 24 or later",
+      "previousDownloadCount": 40
     }
   },
-  "verification": "Public GitHub release metadata"
+  "verification": "Public GitHub release assets, companion checksums and exact build metadata"
 }

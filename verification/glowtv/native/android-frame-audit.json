@@ -1,10 +1,10 @@
 {
-  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/44907960076",
-  "source": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/45618141434",
+  "source": "44f27b896095b60d187e496133f45749b8381028",
   "capture": "android-player.png",
-  "sha256": "8d405b52f3be3feabb82caa5477186347444f584774727f26df68f5949e27c1f",
-  "greenVideoBandFraction": 0.09432218309859156,
-  "darkSceneRegionFraction": 1.0,
+  "sha256": "ff76a91cad6131b3ebed966a9404c540234967161c486272182bcb07ed33fa33",
+  "greenVideoBandFraction": 0.04810739436619718,
+  "darkSceneRegionFraction": 0.7458576998050682,
   "result": "Both original scene colors are present in the native player capture",
   "scope": "Native screenshot inspection; physical-device playback is separate."
 }

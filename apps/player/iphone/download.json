@@ -1,19 +1,20 @@
 {
-  "assetId": 781547463,
-  "downloadCount": 0,
-  "version": "1.0.0",
-  "tag": "ios-v1.0.0",
-  "publishedAt": "2026-11-23T04:40:58Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v1.0.0",
+  "assetId": 784484401,
+  "downloadCount": 1,
+  "version": "1.0.1",
+  "tag": "ios-v1.0.1",
+  "publishedAt": "2026-11-23T20:45:44Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/ios-v1.0.1",
   "prerelease": false,
   "legacy": false,
-  "file": "GlowTV-1.0.0-unsigned.ipa",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/GlowTV-1.0.0-unsigned.ipa",
-  "size": 32540598,
-  "sha256": "f06a445a6b23bac10eb089ecc55c5df38c96b7b6cbdcaa422e9277f09a99a011",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.0/SHA256SUMS.txt",
+  "file": "GlowTV-1.0.1-unsigned.ipa",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/GlowTV-1.0.1-unsigned.ipa",
+  "size": 32547539,
+  "sha256": "7682eb70b98194f52b98ad016e6f51d26ecbdca4f2216fe8edee395ba4d14f2a",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/SHA256SUMS.txt",
   "minimumOS": "iOS 16.4 or later",
-  "checkedAt": "2026-11-23T08:36:00.000Z",
+  "previousDownloadCount": 39,
+  "checkedAt": "2026-11-25T22:54:12.478Z",
   "edition": "ios",
   "features": [
     {
@@ -42,12 +43,9 @@
     }
   ],
   "changes": [
-    "Faster, ranked search: exact names first, then names that start with what you typed.",
-    "Your own lists, hidden titles, and series shown latest-first or unwatched-only, with autoplay of the next episode.",
-    "Guide repair: suggested channel matches, a health summary, per-guide time offsets and recent history.",
-    "Previous channel, return to live, and audio and subtitles that follow your preferred language.",
-    "Paste your provider details to set up in seconds. Backups now carry lists and new preferences, and import lets you add or update.",
-    "Native navigation, sheets and press feedback across the app.",
-    "Existing playlists, profiles, signing and identifiers are retained; 0.7.x backups still import."
+    "Streams that never start show a clear card with Retry, Try other player and Next channel, instead of spinning forever.",
+    "Channels listed under several categories now appear in each of them, and empty categories read \"Other\".",
+    "Clearer messages for missing streams (404) and region-blocked channels.",
+    "Existing playlists, profiles, signing and identifiers are retained."
   ]
 }

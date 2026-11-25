@@ -1,44 +1,73 @@
 {
+  "version": "1.0.2",
+  "file": "GlowTV-TV.apk",
+  "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk",
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
+  "bytes": 240646927,
+  "sha256": "9617f1f4ff2e30e2f23b9d641210002940c264bc416a3121ea7ddd1b19a5ee26",
+  "minimumOS": "Android API 24 or later",
+  "sourceCommit": "44f27b896095b60d187e496133f45749b8381028",
+  "nativeCheckSourceCommit": "44f27b896095b60d187e496133f45749b8381028",
+  "compiledSourceCommit": "44f27b896095b60d187e496133f45749b8381028",
   "edition": "tv",
   "package": "com.nhshajib.nodecast.tv",
   "architectures": [
-    "armeabi-v7a",
     "arm64-v8a",
+    "armeabi-v7a",
     "x86_64"
   ],
   "minAndroidSdk": 24,
   "signing": "Private GlowTV release key; owner-pinned certificate verified",
   "signingCertificateSha256": "574b336bbb5343852e5c72612d2ed436c9bf4a9966fa8725bf4964a15d1b168c",
-  "updateSigningIdentityMatchesPreviousRelease": false,
-  "version": "0.7.4",
-  "versionCode": 704,
-  "file": "GlowTV-TV.apk",
+  "versionCode": 10003,
   "apk": "GlowTV-TV.apk",
-  "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v0.7.4/GlowTV-TV.apk",
-  "release": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v0.7.4",
-  "bytes": 240544302,
-  "sha256": "50507c7f9f152c2ae821c505f15015d8d9e174253d0d94dad662c00f4d654664",
-  "sourceCommit": "9ff1f649c5816ffa59b7f8cdb7896bb9247f49b5",
-  "buildRun": 44932977350,
-  "publishRun": 44959080043,
-  "nativeCheckRun": 44958477465,
-  "nativeCheckSourceCommit": "4f32092740a2fefbe3ded099340a31c14aaa894b",
+  "buildRun": 45614594754,
+  "compiledBuildRun": 45614594754,
+  "publishRun": 45716750863,
+  "nativeCheckRun": 45618141434,
+  "nativeFullCheckRun": 45618145461,
   "verification": {
     "physicalDeviceTested": false,
+    "physicalDeviceChecks": "Skipped by owner decision; release gated on CI",
     "releaseSignatureAndBundle": "passed",
     "archiveIntegrityAndSha256": "passed",
-    "nativeEightScreensAndEightSettings": "passed",
+    "nativeScreens": [
+      "home",
+      "guide",
+      "player",
+      "movies",
+      "series",
+      "playlists",
+      "search",
+      "settings"
+    ],
+    "nativeSettingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Playback",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Version history"
+    ],
     "nativeVideoPixels": "passed",
     "emulatorApi": 35,
     "typecheck": "passed",
-    "automatedTests": 139,
-    "scope": "Exact signed APK on Android API 35 emulator; physical device and provider testing remains separate.",
-    "remoteOnlyNavigation": "passed",
-    "remoteSelectMediaInfoChannelKeys": "passed",
-    "releaseSigningPolicyTests": 6
+    "automatedTests": 187,
+    "designAndFullWorkflowChecks": "passed",
+    "scope": "Exact private-key-signed APK on Android API35 emulator. Physical devices and real providers were not tested.",
+    "remoteOnlyNavigation": "passed"
   },
-  "minimumOS": "Android API 24 or later",
-  "previousSigningCertificateSha256": "fac61745dc0903786fb9ede62a962b399f7348f0bb6f899b8332667591033b9c",
-  "compiledSourceCommit": "ac9bf14618c6348b5c9a7993ce10f2dc6de01cfb",
-  "compiledBuildRun": 44861113582
+  "alternateDownloads": [
+    {
+      "file": "GlowTV-TV-armeabi-v7a.apk",
+      "architectures": [
+        "armeabi-v7a"
+      ],
+      "download": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV-armeabi-v7a.apk",
+      "bytes": 73288197,
+      "sha256": "a8fb538f439f8f48d0b784fea093a208213a362de6ba269d2672ee7a7f03fa4c",
+      "minimumOS": "Android API 24 or later"
+    }
+  ]
 }

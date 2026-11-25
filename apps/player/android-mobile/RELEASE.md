@@ -1,20 +1,22 @@
-# GlowTV 1.0.1 — Android phone and TV
+GlowTV 1.0.2 · build 10003, for Android phones/tablets and Android TV, Google TV and Fire TV.
 
-[Download Android phone APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV.apk) · [Download TV APK](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.1/GlowTV-TV.apk) · [Release and checksums](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.1)
+- Pull to refresh Home and library lists on phones and tablets, with animated loading placeholders that respect reduced motion.
+- Pin Live TV categories separately for each playlist. On TV, use Library organization or hold OK / press Menu on a category.
+- Home features an available favorite live channel; without one, it greets you. Continue watching and the rest of your library remain available.
+- Clearer player controls: centered transport, a bottom timeline where supported, and video shading that disappears with the controls.
+- Four-second portrait and landscape launch films, with still-image and reduced-motion fallbacks.
+- Removed the connection/IP screens and lookups. Older saved settings and encrypted backups remain readable; backups also carry category pins.
+- Fixed TV category management when opened from Settings.
 
-Fixes from hands-on testing on a Fire TV with the remote, plus everything in 1.0.0.
+Files:
+- `GlowTV.apk`: Android phone/tablet touch interface.
+- `GlowTV-TV.apk`: universal TV interface for remote control.
+- `GlowTV-TV-armeabi-v7a.apk`: smaller TV package for 32-bit devices.
 
-- **Keyboard:** selecting a text field on TV now opens the keyboard.
-- **Channels that won't start:** a clear loading card, then after 15 seconds Retry, Try other player and Next channel. Missing (404) and region-blocked streams are named.
-- **Remote focus:** focus goes into the page you open. Left returns to the current page in the rail. The rail fits on screen. Lists start on their first item, and Back never loses your place.
-- **Logos everywhere:** in lists, on Home and in the player, kept between launches.
-- **Categories:** channels with several categories, such as News;Public, appear under each one.
-- **TV Home:** your last channel, Continue watching and Favorites. In the player, Left opens a channel list.
-- **Privacy:** your public IP is only looked up when you ask, and stays hidden until you choose Show.
-- **Smaller Fire TV download:** `GlowTV-TV-armeabi-v7a.apk` for Fire TV and other 32-bit TVs. The universal `GlowTV-TV.apk` still works everywhere.
+App identifiers, private Android signing identity and existing player engines are retained. SHA-256 companion files and `release-metadata.json` describe the exact attached packages.
 
-Your profiles, playlists, favorites, guide settings, encrypted backups, app identifiers, signing identity and player engines carry over. To keep your local data, install over the matching edition. Both APKs include JavaScript and VLC, so no computer is needed while watching.
+Verification: [Android build](https://github.com/nhshajib/NodeCast/actions/runs/45614594754), [native design checks](https://github.com/nhshajib/NodeCast/actions/runs/45618141434), and [full phone/TV checks](https://github.com/nhshajib/NodeCast/actions/runs/45618145461). TV interactions were D-pad/Select/Back/Menu driven. Physical-device checks were skipped by owner decision; the release is gated on CI.
 
-Each edition's `DOWNLOADS.md` lists exact requirements, file size and SHA-256. The companion checksum files and `release-metadata.json` describe these exact builds.
+Existing installation guides: [Android](https://glowtv.app/install/android/) · [Android TV](https://glowtv.app/install/android-tv/) · [Fire TV](https://glowtv.app/install/fire-tv/).
 
-The release was verified with Android emulator checks on phone and TV, and iPhone/iPad simulator checks. It was not tested on physical devices. GlowTV is a player only and provides no channels, playlists, content or subscriptions.
+GlowTV is a free media player only. It provides no channels, subscriptions or content. Add your own legally obtained playlist or provider account.

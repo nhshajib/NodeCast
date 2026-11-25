@@ -1,0 +1,31 @@
+{
+  "workflow": "https://github.com/nhshajib/NodeCast/actions/runs/45618145461",
+  "sourceCommit": "44f27b896095b60d187e496133f45749b8381028",
+  "build": 10003,
+  "physicalDeviceTested": false,
+  "results": {
+    "emulator-mobile-features-result.json": {
+      "passed": [
+        "Synthetic Xtream connection",
+        "Native XMLTV import and SQLite persistence across process restart",
+        "Dark appearance",
+        "Six-digit family PIN native crypto",
+        "PIN prompt inside Settings sheet",
+        "Wrong PIN rejected, correct PIN restores access",
+        "Protected category hidden and state survives process restart"
+      ],
+      "scope": "Android API 35 x86-64 emulator. Physical iPhone/PiP/AirPlay are not verified."
+    },
+    "emulator-mobile-backup-result.json": {
+      "passed": [
+        "Native AES-GCM export through Android Create Document",
+        "Encrypted file persists outside app storage",
+        "Fresh-emulator import through Android document picker",
+        "Provider, favorite, guide and dark appearance restored",
+        "Family PIN and protected category restored and unlocked",
+        "Fresh guide downloads after transfer"
+      ],
+      "scope": "Synthetic credentials and disposable API 35 x86-64 emulator. The iOS share sheet and physical TV file pickers still need device confirmation."
+    }
+  }
+}
