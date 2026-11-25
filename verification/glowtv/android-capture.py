@@ -221,7 +221,10 @@ def wait_for_native_video(timeout=45):
  deadline=time.monotonic()+timeout
  player_pid=adb('shell','pidof',package)
  assert player_pid,'Native player process is not running'
- region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
+ # The redesigned bottom scrim darkens the old TV probe at .75-.85.
+ # Inspect the same original video band just above it, never the controls.
+ # Keep the strict original RGB test below (black video must still fail).
+ region='crop=iw*0.6:ih*0.04:iw*0.2:ih*0.68,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
  while time.monotonic()<deadline:
   assert adb('shell','pidof',package)==player_pid,'Player process changed before a decoded frame appeared'
   probe=OUT/f'emulator-design-{TARGET}-video-probe.png';probe.write_bytes(subprocess.check_output(['adb','exec-out','screencap','-p']))
@@ -319,7 +322,7 @@ try:
  assert adb('shell','pidof',package)==player_pid,'Player process changed while pausing the decoded video'
  # The actual decoded bottom band is green; a blank decoder or Home is not.
  image=OUT/f'emulator-design-{TARGET}-player.png'
- region='crop=iw*0.6:ih*0.1:iw*0.2:ih*0.75,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
+ region='crop=iw*0.6:ih*0.04:iw*0.2:ih*0.68,scale=32:8'if TV else'crop=iw*0.6:ih*0.06:iw*0.2:ih*0.25,scale=32:8'
  frame=subprocess.check_output(['ffmpeg','-v','error','-i',str(image),'-vf',region,'-f','rawvideo','-pix_fmt','rgb24','pipe:1'])
  assert sum(frame[i+1]>150 and frame[i]<50 and 70<frame[i+2]<160 for i in range(0,len(frame),3))>len(frame)/12,'Native decoder did not render the original green test band'
  if not TV:stop_native_hierarchy()
