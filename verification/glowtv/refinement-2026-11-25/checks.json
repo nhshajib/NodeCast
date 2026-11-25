@@ -1,0 +1,38 @@
+{
+  "iphone": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "pageErrors": []
+  },
+  "android": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "pageErrors": []
+  },
+  "ipad": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "pageErrors": []
+  },
+  "tv": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "pageErrors": []
+  }
+}

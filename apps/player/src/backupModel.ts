@@ -7,7 +7,7 @@ import {validateVault} from './vault.ts';
 import type {Vault,Profile} from './vault.ts';
 import {parseViewing} from './activity.ts';
 import type {ViewingEntry} from './activity.ts';
-import {isIP} from './network.ts';
+import {isIP} from './ipAddress.ts';
 import {validateHiddenItems,validateLists,validateSeriesDisplay} from './organization.ts';
 export const backupLimit=12*1024*1024;
 export const familyKey='nodecast.family.pin.v1';

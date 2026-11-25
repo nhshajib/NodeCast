@@ -12,7 +12,7 @@ export const defaultTransitions: Readonly<Record<string, TransitionType>> = Obje
   details: 'slide', series: 'slide', provider: 'slide', profiles: 'slide',
   players: 'slide', delete: 'slide', external: 'slide', appearance: 'slide',
   storage: 'slide', backup: 'slide', family: 'slide', 'channel-options': 'slide',
-  privacy: 'slide', organize: 'slide', guide: 'slide', history: 'slide', 'home-ip': 'slide',
+  privacy: 'slide', organize: 'slide', guide: 'slide', history: 'slide', 'favorite-categories': 'slide',
 });
 
 const overrides = new Map<string, TransitionType>();

@@ -371,6 +371,9 @@ class TVRemoteController(private val activity: Activity) {
   private fun menu(choices: List<View>) {
     val item=activity.currentFocus
     val itemId=item?.let { nativeId(it)?.let(::focusId) }.orEmpty()
+    if(item!=null && itemId.startsWith("tv-control:category:")){
+      emit(item,"GlowTVCategoryOptions",itemId.substringAfter("tv-control:category:"));return
+    }
     if(item!=null && (itemId.startsWith("tv-control:tile:")||itemId.startsWith("tv-control:channel:"))){emit(item,"GlowTVItemOptions",itemId.substringAfter(":tile:",itemId.substringAfter(":channel:")));return}
     val focused=activity.currentFocus?.contentDescription?.toString().orEmpty()
     val channel=if(focused.startsWith("Play "))focused.removePrefix("Play ") else ""

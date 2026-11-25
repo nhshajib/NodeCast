@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadM3U, loadLibrary, parseM3U, ProviderError } from '../src/provider.ts';
 import { compatibilityOptions } from '../src/playbackPolicy.ts';
-import { compareIP } from '../src/network.ts';
 function mock(t, fetch) { const old = globalThis.fetch; globalThis.fetch = fetch; t.after(() => globalThis.fetch = old); }
 test('missing M3U endpoint preserves HTTP 404 and explains Xtream without revealing credentials', async t => {
   let calls = 0; mock(t, async () => { calls++; return new Response('', { status: 404 }); });
@@ -25,9 +24,4 @@ test('playlist quote styles, CR-only lines and per-stream headers survive parsin
   assert.deepEqual(items[0].headers, { 'User-Agent': 'Example Player', Referer: 'https://example.com/' }); assert.equal(items[1].headers, undefined);
   assert.ok(compatibilityOptions(items[0]).includes(':http-user-agent=Example Player'));
   assert.ok(!compatibilityOptions({ ...items[0], headers: { 'User-Agent': 'invalid\r\nHeader: x' } }).some(value => /invalid/.test(value)));
-});
-test('equivalent IPv6 spellings match home IP and stale checks never warn', () => {
-  const current = { ip: '2001:db8::1' };
-  assert.equal(compareIP(current, '2001:0db8:0000:0000:0000:0000:0000:0001'), 'same');
-  assert.equal(compareIP(current, current.ip, true), 'unknown');
 });

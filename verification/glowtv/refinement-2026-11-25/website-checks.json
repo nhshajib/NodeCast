@@ -1,0 +1,196 @@
+{
+  "scope": "Local production website; not native application certification",
+  "pages": 27,
+  "errors": [],
+  "checks": [
+    {
+      "route": "/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/download/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/download/iphone/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/download/android/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/download/tv/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/iphone/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/android/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/android-tv/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/fire-tv/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/install/apple-tv/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/support/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/support/faq/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/add-m3u-playlist/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/xtream-codes-login/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/tv-guide-epg/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/fix-buffering/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/changelog/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/privacy/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/terms/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/legal/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/m3u-vs-xtream-codes/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/catch-up-tv/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/parental-controls/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/guides/backup-and-restore/",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    },
+    {
+      "route": "/404.html",
+      "axeViolations": 0,
+      "htmlErrors": 0,
+      "runtimeErrors": 0,
+      "failedRequests": 0
+    }
+  ]
+}

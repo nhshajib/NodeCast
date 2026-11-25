@@ -6,7 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { readSecureVault, writeSecureVault, emptyVault } from './vault';
 import type { SecretStore, Vault } from './vault';
-import { isIP } from './network';
+import { isIP } from './ipAddress';
 import type { PlayerChoice } from './players';
 
 const webSession = new Map<string, string>();

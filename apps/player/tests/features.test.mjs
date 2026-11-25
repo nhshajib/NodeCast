@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { externalPlayerURL } from '../src/players.ts';
-import { compareIP, isIP, lookupExitIP } from '../src/network.ts';
+import { isIP } from '../src/ipAddress.ts';
 import { emptyVault, removeProfile, validateVault, readSecureVault, writeSecureVault } from '../src/vault.ts';
 function memoryStore() {
  const data = new Map();
@@ -17,29 +17,9 @@ test('external player links encode the full credential-bearing stream URL', () =
  }
  assert.throws(()=>externalPlayerURL('vlc','file:///private/password'));
 });
-test('IP comparison is unknown when stale, even if a previous IP differs', () => {
- assert.equal(compareIP({ip:'1.2.3.4'},'1.2.3.4'),'same');
- assert.equal(compareIP({ip:'1.2.3.4'},'5.6.7.8'),'changed');
- assert.equal(compareIP({ip:'1.2.3.4'},null),'no-baseline');
- assert.equal(compareIP({ip:'1.2.3.4'},'5.6.7.8',true),'unknown');
- assert.equal(compareIP(null,'5.6.7.8'),'unknown');
-});
-test('IP service data must contain valid IPv4 or IPv6', () => {
+test('legacy IP references must contain valid IPv4 or IPv6', () => {
  for (const ip of ['1.2.3.4','2001:db8::1','::1']) assert.ok(isIP(ip));
  for (const ip of ['999.1.2.3','hello','https://example.com','::::',null]) assert.ok(!isIP(ip));
-});
-test('IP lookup exposes no IPTV credentials and parses service fields', async t => {
- const original=globalThis.fetch;t.after(()=>globalThis.fetch=original);
- globalThis.fetch=async (url, options)=>{
-  assert.equal(url,'https://ipwho.is/');assert.equal(options.credentials,'omit');
-  return new Response(JSON.stringify({success:true,ip:'1.2.3.4',city:'Test City',country:'Test Country',connection:{isp:'Test ISP'}}));
- };
- const result=await lookupExitIP();assert.equal(result.city,'Test City');assert.equal(result.isp,'Test ISP');
-});
-test('IP lookup rejects a service error rather than displaying false connection status', async t => {
- const original=globalThis.fetch;t.after(()=>globalThis.fetch=original);
- globalThis.fetch=async ()=>new Response(JSON.stringify({success:false,ip:'1.2.3.4'}));
- await assert.rejects(lookupExitIP(), /Couldn’t check/);
 });
 test('empty profile storage has no active account or provider', async () => {
  assert.deepEqual(await readSecureVault(memoryStore()),emptyVault());

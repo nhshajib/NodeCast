@@ -247,7 +247,7 @@ try:
   # opens on M3U, and this fixture is an Xtream server.
   find('Add your playlist',timeout=45);click('Add your playlist');click('Xtream Codes')
  else:
-  click('Get started');click('Not now',True)
+  click('Get started')
  for label,value in [('Profile name','GlowTVDemo'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:fill(label,value)
  dismiss_phone_keyboard();capture('playlists')
  # The final Go key submits on TV; phone verifies the explicit Connect action.
@@ -258,7 +258,7 @@ try:
   find('Evening studio',timeout=45)
   assert not any(n.get('content-desc')=='Connect playlist' for n in h.dump().iter('node')),'Playlist form must close before checking the first native tab selection'
  if TV:
-  click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
+  click('Live TV');click('Save favorite: Evening studio');home();click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
  capture('home')
  if TV:
   start_native_hierarchy()
@@ -341,7 +341,7 @@ try:
  # Android library search stays in the Live tab; native Settings remains available.
  click('Settings');capture('settings')
  checked=[]
- for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Home IP reference'if TV else'Home IP & connection','Version history']:
+ for label in ['Appearance','Family controls','Playback'if TV else'Default player','Library organization','Backup & transfer','Library & storage','Version history']:
   # Native Settings preserves its scroll position after Back. Retap its tab
   # to return to the first group before searching downward for the next row.
   if not TV:click('Settings')

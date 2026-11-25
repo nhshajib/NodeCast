@@ -1,3 +1,6 @@
+import {categoryList,matchesAny} from '../groups';
+import FavoriteCategories from '../FavoriteCategories';
+import {toggleFavoriteGroup} from '../favoriteGroups';
 import {detailRoute} from '../detailRoute';
 import {H2,H1} from '../ui';
 import { confirmDestructive } from '../confirmDestructive';
@@ -29,7 +32,6 @@ import { loadPreferences, loadVault, savePreferences, saveVault } from '../stora
 import type { Preferences } from '../storage';
 import { players as allPlayers } from '../players';
 import { demoLibrary } from '../demo';
-import NetworkCard from '../NetworkCard';
 import ItemActions from '../ItemActions';
 import { features } from '../featureFlags';
 import { recentChannelPicker } from '../playbackAssist';
@@ -44,7 +46,6 @@ import { preparePlayback } from '../livePlayback';
 import { appVersion } from '../releases';
 import PlaybackSettings from '../PlaybackSettings';
 import VersionHistory from '../VersionHistory';
-import HomeIPSetup from '../HomeIPSetup';
 import ProgrammeSheet from '../ProgrammeSheet';
 import { restoreOrientation } from '../restoreOrientation';
 import Pressable from '../FocusPressable';
@@ -96,8 +97,6 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const [preferences, setPreferences] = useState<Preferences>({ onboarded: false, player: 'internal', baseline: null });
   const prefsRef = useRef(preferences);
   const preferenceMutations = useRef(Promise.resolve());
-  const homeIPNext = useRef(false);
-  const homeIPFinished = useRef(true);
   const [playerSession, setPlayerSession] = useState<PlayerSession | null>(null);
   const [minimized, setMinimized] = useState(false);
   const [playerFullscreen, setPlayerFullscreen] = useState(false);
@@ -110,6 +109,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const [focused, setFocused] = useState<FocusView>('home');
   const [demo, setDemo] = useState(false);
   const [demoFavorites, setDemoFavorites] = useState<string[]>([]);
+  const [demoFavoriteGroups,setDemoFavoriteGroups]=useState<string[]>([]);
   const [demoHidden, setDemoHidden] = useState<string[]>([]);
   // Native stack pages. Routes hold only a key; payloads stay in memory, never in a URL.
   const [pages, setPages] = useState<PageEntry[]>([]);
@@ -147,10 +147,14 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   const active = demo ? null : vault.profiles.find(p => p.id === vault.activeId) || null;
   const provider = active?.provider || null;
   const favorites = demo ? demoFavorites : active?.favorites || emptyIds;
+  const favoriteGroups=demo?demoFavoriteGroups:active?.library?.favoriteGroups||emptyIds;
+  async function toggleCategoryFavorite(group:string){if(demo){setDemoFavoriteGroups(current=>toggleFavoriteGroup(current,group));return;}await patchActive(profile=>({library:{...profile.library,favoriteGroups:toggleFavoriteGroup(profile.library?.favoriteGroups,group)}}));}
   const hiddenGroups = demo ? demoHidden : active?.hiddenGroups || emptyIds;
   const favoriteRef = useRef(favorites); favoriteRef.current = favorites;
   const rawItems = useMemo(() => demo ? demoLibrary : cacheOwner.current === active?.id ? Object.values(cache).flatMap(items => items || []) : [], [demo, cache, active?.id]);
   const allItems = useMemo(() => rawItems.filter(item => contentAllowed(active, item, !family.enabled || family.unlocked)), [rawItems, active?.restrictedGroups, family.enabled, family.unlocked]);
+  const liveItems=useMemo(()=>allItems.filter(item=>item.kind==='live'),[allItems]);
+  const liveGroups=useMemo(()=>categoryList(liveItems.filter(item=>!matchesAny(item.group,hiddenGroups)).map(item=>item.group)).sort(),[liveItems,hiddenGroups]);
   const mediaById = useMemo(() => new Map(allItems.map(item => [item.id, item])), [allItems]);
   const saved = useMemo(() => favorites.flatMap(id => { const item = mediaById.get(id); return item ? [item] : []; }), [favorites, mediaById]);
   const viewing = (demo ? demoActivity : activity.profile === active?.id ? activity.entries : []).filter(entry => contentAllowed(active, entry.item, !family.enabled || family.unlocked));
@@ -195,7 +199,6 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   // Latest closure, so a page removed by a native gesture sees current state.
   const released = useRef<(page: Page) => void>(() => {});
   released.current = page => {
-    if (page.type === 'home-ip' && !homeIPFinished.current) void finishHomeIP(undefined, false).catch(() => setMessage({text:'Could not save your preference. Try again.',tone:'error'}));
     if (page.type === 'provider') { connection.current?.abort(); setConnecting(false); }
     setSheetError('');
   };
@@ -241,16 +244,6 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     preferenceMutations.current = operation.catch(() => {});
     return operation;
   }
-  async function finishHomeIP(baseline?: NonNullable<Preferences['baseline']>, close = true) {
-    homeIPFinished.current = true;
-    await updatePreferences(baseline ? { baseline, homeIPSetup: 'saved' } : { homeIPSetup: 'skipped' });
-    if (close && pagesRef.current.at(-1)?.page.type === 'home-ip') back();
-    if (homeIPNext.current) { homeIPNext.current = false; addProfile(); }
-  }
-  function openHomeIP(next: boolean) { homeIPNext.current = next; homeIPFinished.current = false; open({ type: 'home-ip' }); }
-  useEffect(() => {
-    if (launchComplete && !booting && !storageFailed && preferences.onboarded && !preferences.baseline && !preferences.homeIPSetup && !pages.length && !demo) openHomeIP(false);
-  }, [launchComplete, booting, storageFailed, preferences.onboarded, preferences.baseline, preferences.homeIPSetup, pages.length, demo]);
   useEffect(() => {
     if (!playerSession || minimized) {
       setPlayerFullscreen(false);
@@ -268,7 +261,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     if (owner === browseOwner.current) browseMemory.current.set(owner, views);
   }, [views]);
   useEffect(() => { const sub = AppState.addEventListener('change', state => { if (state === 'active') setRevision(value => value + 1); }); return () => sub.remove(); }, []);
-  function refreshLibrary() { forceFetch.current = true; setRevision(value => value + 1); }
+  function refreshLibrary() { if(forceFetch.current||refreshing||loading||demo||!active)return; forceFetch.current = true; setRevision(value => value + 1); }
   useEffect(() => {
     if (!active || demo) return;
     let cancelled = false;
@@ -412,7 +405,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   function openSettings() { if (androidDesign) goTab('settings'); else open({ type: 'settings' }); }
   function openProfiles() { setSheetError(''); open({ type: 'profiles' }); }
   function goHome() { goTab('home'); }
-  function startDemo() { connection.current?.abort(); setDemo(true); setCache({}); setDemoFavorites([]); setDemoHidden([]); setDemoActivity([]); setLibraryError(''); goHome(); }
+  function startDemo() { connection.current?.abort(); setDemo(true); setCache({}); setDemoFavorites([]); setDemoFavoriteGroups([]); setDemoHidden([]); setDemoActivity([]); setLibraryError(''); goHome(); }
   async function connect(raw: Provider, editing?: Profile, selecting?: Profile) {
     if (family.enabled && !family.unlocked) { family.request(); return; }
     connection.current?.abort();
@@ -529,17 +522,16 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   }
 
   // ── Screens ───────────────────────────────────────────────────────────────
-  const preview = saved.length ? saved.slice(0, 6) : demo ? [...demoLibrary.filter(i => i.kind === 'movies'), ...demoLibrary.filter(i => i.kind === 'live')].slice(0, 6) : allItems.slice(0, 6);
   const guideChannels = useMemo(() => allItems.filter(item => item.kind === 'live' && !hiddenGroups.includes(item.group)), [allItems, hiddenGroups]);
   const authorize = () => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; };
   const renderGuide = (scrollRef?: React.Ref<unknown>,settingsOnly=false) => active ? <FullGuide settingsOnly={settingsOnly} onOpenSettings={()=>open({type:'guide-settings'})} onSettingsDone={back} listRef={scrollRef} onOpenProgramme={(item, programme) => open({ type: 'programme', item, programme })} onAuthorize={() => { if (family.enabled && !family.unlocked) { family.request(); return false; } return true; }} profile={active} channels={guideChannels} onPlay={item => { void launch(item); }} onSave={guide => updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === active.id ? { ...profile, guide } : profile) }))} /> : <Empty icon="grid-outline" title="Your TV guide" message="Connect a playlist, then add its guide source to see schedules."><Button title="Connect playlist" onPress={() => addProfile()} /></Empty>;
   const recentlyAdded = useMemo(() => { const since = Date.now() - 30 * 86400000; return allItems.filter(item => item.kind !== 'live' && !!item.added && item.added >= since && !hiddenGroups.includes(item.group)).sort((a, b) => b.added! - a.added!).slice(0, 10); }, [allItems, hiddenGroups]);
-  const renderHome = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <HomeScreen scrollRef={scrollRef} active={active} demo={demo} profileCount={vault.profiles.length} loading={loading} liveCount={demo ? demoLibrary.filter(i => i.kind === 'live').length : cache.live?.length}
-    favoriteIds={favorites} onFavorite={toggleFavorite} onCategory={group => browse('live', group)} liveChannels={allItems.filter(item => item.kind === 'live')} onSearch={openSearch} preview={preview} savedCount={saved.length} playerName={playerName} error={libraryError}
-    onRetry={refreshLibrary} onAdd={() => addProfile()} onDemo={startDemo} onProfiles={openProfiles}
+  const preview = saved.length ? saved.slice(0, 6) : demo ? [...demoLibrary.filter(i => i.kind === 'movies'), ...demoLibrary.filter(i => i.kind === 'live')].slice(0, 6) : allItems.slice(0, 6);
+  const renderHome = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <HomeScreen scrollRef={scrollRef} active={active} demo={demo} loading={loading} refreshing={refreshing}
+    favoriteIds={favorites} onFavorite={toggleFavorite} onCategory={group => browse('live', group)} liveChannels={liveItems} preview={preview} savedCount={saved.length} error={libraryError}
+    onRetry={refreshLibrary} onAdd={() => addProfile()} onDemo={startDemo}
     recentlyAdded={recentlyAdded} continueWatching={continueWatching} recentChannels={recentChannels.map(entry => allItems.find(item => item.id === entry.item.id) || (provider ? hydrateMedia(entry.item, provider) : entry.item))} onResume={entry => { void launch(allItems.find(item => item.id === entry.item.id) || entry.item, false, 'internal'); }} onRemove={id => removeViewing(id)} onClearRecents={confirmClearRecents}
-    onBrowse={section => browse(section)} onSaved={openFavorites} onPlay={play} onPlayers={() => open({ type: 'players' })}
-    network={null}
+    onBrowse={section => browse(section)} onSaved={openFavorites} onPlay={play}
   />;
   const wideSettings = windowWidth >= 900;
   const renderSettings = (scrollRef?: React.ComponentProps<typeof ScrollView>['ref']) => <ScrollView ref={scrollRef} contentContainerStyle={[u.content, wideSettings && { maxWidth: 1120, paddingHorizontal: 40 }]} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
@@ -550,7 +542,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     <View style={s.settingsGroup}><SettingsRow icon="play-circle-outline" title="Default player" subtitle={playerName} onPress={() => open({ type: 'players' })} /><View style={u.divider} /><SettingsRow icon="options-outline" title="Library organization" subtitle="Categories, search, and favorites order" onPress={() => open({ type: 'organize', view: androidDesign ? 'watch' : 'live' })} /></View><Text accessibilityRole="header" style={u.eyebrow}>Make it yours</Text><View style={s.settingsGroup}><SettingsRow icon="color-palette-outline" title="Appearance" subtitle="Light, dark or your device setting" onPress={() => open({ type: 'appearance' })} /><View style={u.divider} /><SettingsRow icon="shield-checkmark-outline" title="Family controls" subtitle="PIN and protected categories" onPress={() => open({ type: 'family' })} /></View>
     </View>
     <View style={wideSettings ? { flex: 1, gap: 24 } : { gap: 24 }}>
-<Text accessibilityRole="header" style={u.eyebrow}>Connection</Text><NetworkCard baseline={preferences.baseline} onBaseline={value => updatePreferences({ baseline: value, homeIPSetup: value ? 'saved' : 'skipped' })} /><Text accessibilityRole="header" style={u.eyebrow}>On this device</Text><View style={s.settingsGroup}><SettingsRow icon="swap-horizontal-outline" title="Backup & transfer" subtitle="Move profiles and settings to another device" onPress={() => open({ type: 'backup' })} /><View style={u.divider} /><SettingsRow icon="folder-outline" title="Library & storage" subtitle="Cache and viewing history" onPress={() => open({ type: 'storage' })} /><View style={u.divider} /><SettingsRow icon="home-outline" title="Home IP & connection" subtitle="Save or update your home connection" onPress={() => openHomeIP(false)} /><View style={u.divider} /><SettingsRow icon="lock-closed-outline" title="Privacy & storage" subtitle="What stays on your device" onPress={() => open({ type: 'privacy' })} /><View style={u.divider} /><SettingsRow icon="time-outline" title="Version history" subtitle={`What’s new · ${appVersion}`} onPress={() => open({ type: 'history' })} /></View>
+<Text accessibilityRole="header" style={u.eyebrow}>On this device</Text><View style={s.settingsGroup}><SettingsRow icon="swap-horizontal-outline" title="Backup & transfer" subtitle="Move profiles and settings to another device" onPress={() => open({ type: 'backup' })} /><View style={u.divider} /><SettingsRow icon="folder-outline" title="Library & storage" subtitle="Cache and viewing history" onPress={() => open({ type: 'storage' })} /><View style={u.divider} /><SettingsRow icon="lock-closed-outline" title="Privacy & storage" subtitle="What stays on your device" onPress={() => open({ type: 'privacy' })} /><View style={u.divider} /><SettingsRow icon="time-outline" title="Version history" subtitle={`What’s new · ${appVersion}`} onPress={() => open({ type: 'history' })} /></View>
     <View style={{ gap: 8 }}><Text accessibilityRole="header" style={u.eyebrow}>Support GlowTV</Text><Pressable accessibilityRole="link" accessibilityLabel="Buy me a coffee" accessibilityHint="Opens the optional support website in your browser" onPress={() => { void Linking.openURL('https://buymeacoffee.com/hexorbd').catch(() => setMessage({text:'Couldn’t open the support page. You can visit buymeacoffee.com/hexorbd in your browser.',tone:'error'})); }} style={({ pressed }) => [u.card, { backgroundColor: colors.panel, borderColor: colors.line, opacity: pressed ? .8 : 1 }]}><View style={u.row}><View style={{ width: 32, height: 48, alignItems: 'center', justifyContent: 'center' }}><Icon name="cafe-outline" color={colors.text} size={23} /></View><View style={{ flex: 1, gap: 8 }}><Text style={[u.label, { color: colors.text }]}>Buy me a coffee</Text><Text style={[u.small, { color: colors.secondary }]}>Free to use. Optional support is appreciated.</Text></View><Icon name="open-outline" size={18} color={colors.secondary} /></View></Pressable></View>
     {demo && <Button title="Leave demo" variant="secondary" onPress={() => { setDemo(false); setCache({}); goHome(); }} />}
     <View style={{ gap: 8, paddingHorizontal: 8 }}><Text style={u.small}>Made for the content you bring. No channels or subscriptions are included.</Text><Text style={u.small}>{`GlowTV ${appVersion} · GPL-3.0-only`}</Text></View>
@@ -565,7 +557,7 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       case 'series': case 'details': return page.item.name; case 'external': return 'Choose your player';
       case 'appearance': return 'Appearance'; case 'backup': return 'Backup & transfer'; case 'storage': return 'Library & storage';
       case 'family': return 'Family controls'; case 'channel-options': return 'Channel playback'; case 'item-actions': return 'Options'; case 'guide': return 'TV guide'; case 'guide-settings': return 'Guide source';
-      case 'organize': return 'Library options'; case 'home-ip': return 'Home IP setup'; case 'history': return 'Version history';
+      case 'favorite-categories': return 'Favorite categories'; case 'organize': return 'Library options'; case 'history': return 'Version history';
       case 'browse': return browseTitle(page.view); case 'settings': return 'Settings'; case 'programme': return page.programme.title; default: return 'Privacy & storage';
     }
   }
@@ -580,7 +572,6 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       case 'storage': return <StorageSettings profile={active} onClearRecents={clearProfileRecents} onClearHistory={() => removeViewing()} onCleared={() => setLibraryNotice('Library cache cleared. Refresh when ready.')} />;
       case 'family': return <FamilySettings profile={active} groups={[...new Set(rawItems.map(item => item.group))].sort()} onSave={restrictedGroups => updateVault(current => ({ ...current, profiles: current.profiles.map(profile => profile.id === active?.id ? { ...profile, restrictedGroups } : profile) }))} />;
       case 'history': return <VersionHistory />;
-      case 'home-ip': return <HomeIPSetup onSave={baseline => finishHomeIP(baseline)} onSkip={() => finishHomeIP()} />;
       case 'guide': return active ? renderGuide() : null;
       case 'guide-settings': return active?renderGuide(undefined,true):null;
       case 'organize': {
@@ -596,7 +587,8 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
       case 'profiles': return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><Text style={u.body}>Switch profiles or add a new provider. Your favorites stay separate.</Text>{vault.profiles.map(profile => <View key={profile.id} style={[u.card, { borderWidth: 0, padding: 16 }]}><View style={u.between}><View style={{ flex: 1, gap: 8 }}><H2 style={u.h2}>{profile.provider.name}</H2><Text style={u.small}>{profile.provider.kind === 'xtream' ? 'Xtream Codes' : 'M3U playlist'}{active?.id === profile.id ? ' · Active' : ''}</Text></View><Icon name="server-outline" color={colors.link} /></View><Button title={active?.id === profile.id ? 'Reconnect profile' : 'Use this profile'} busy={connecting} onPress={() => { void connect(profile.provider, undefined, profile); }} /><View style={u.between}><Pressable accessibilityRole="button" disabled={connecting} accessibilityLabel={`Edit details for ${profile.provider.name}`} onPress={() => addProfile(profile)} style={s.textAction}><Text style={u.link}>Edit details</Text></Pressable><Pressable accessibilityRole="button" disabled={connecting} accessibilityLabel={`Remove ${profile.provider.name}`} onPress={() => { setSheetError(''); open({ type: 'delete', profile }); }} style={s.textAction}><Text style={[u.link, { color: colors.danger }]}>Remove</Text></Pressable></View></View>)}{!!sheetError && <Notice danger>{sheetError}</Notice>}{!vault.profiles.length && <Notice>No saved profiles yet. Add your first provider to make this space yours.</Notice>}<Button title="Add a profile" icon="add" disabled={connecting || vault.profiles.length >= 30} onPress={() => addProfile()} /><Text style={u.small}>{Platform.OS === 'web' ? 'Browser preview keeps profiles only for this running session. Use Expo Go for device persistence.' : Platform.OS === 'android' ? 'Protected by Android secure storage on this device. No account, password to remember, or cloud backup.' : 'Protected by iOS secure storage on this device. No account, password to remember, or cloud backup.'}</Text></ScrollView>;
       case 'players': return <PlaybackSettings choice={preferences.player} profile={active} compatibilityAvailable={compatibilityAvailable} error={sheetError} onPlayer={player => { haptic('selection'); void updatePreferences({ player }).catch(() => setSheetError('Could not save your player preference.')); }} onEngine={liveEngine => saveProfile(profile => ({ ...profile, liveEngine }), 'Could not save the playback engine.')} onFormat={liveFormat => saveProfile(profile => ({ ...profile, liveFormat }), 'Could not save the live format.')} />;
       case 'delete': return <View style={u.content}><Text style={u.body}>{page.profile.provider.name} and its saved favorites will be removed from this device. This does not cancel your IPTV subscription.</Text>{!!sheetError && <Notice danger>{sheetError}</Notice>}<Button title="Remove profile" variant="danger" busy={connecting} onPress={() => { void deleteSavedProfile(page.profile); }} /><Button title="Keep profile" variant="secondary" disabled={connecting} onPress={back} /></View>;
-      case 'privacy': return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><H1 style={u.h1}>{'Private by design.\nSimple by choice.'}</H1><Button title="Clear this profile’s viewing history" variant="danger" disabled={!viewing.length} onPress={()=>confirmDestructive("Clear this profile’s viewing history","This deletes viewing history and resume positions for this profile. Saved playlists and favorites remain.",() => removeViewing())} /><View style={u.section}><H2 style={u.h2}>On this device</H2><Text style={u.body}>Server details, passwords, playlist links, and profile favorites use the device’s secure storage. Player preferences, viewing history, and your optional reference IP use local app storage. The browsing cache stores only titles and metadata, without provider passwords or stream URLs. There is no account or cloud sync.</Text></View><View style={u.section}><H2 style={u.h2}>When you connect</H2><Text style={u.body}>Your provider receives the details needed to load and play its content. Artwork loads from URLs supplied by your provider. Prefer HTTPS; HTTP is unencrypted.</Text></View><View style={u.section}><H2 style={u.h2}>The IP check</H2><Text style={u.body}>ipwho.is sees your public IP when you open Home or refresh. We show approximate city/country information, not GPS location. Neither an IP change nor an IP match verifies whether a VPN is on. No IPTV credentials are sent with IP lookups.</Text></View><View style={u.section}><H2 style={u.h2}>External players</H2><Text style={u.body}>Opening VLC or Infuse sends it the complete stream URL, which may include your provider credentials. Only choose apps you trust.</Text></View><Text style={u.small}>Browser preview keeps provider details in memory. Local profiles do not sync to other devices. There is no in-app cloud backup or account recovery. Secure storage availability and uninstall behavior depend on the platform and app build; do not rely on this app as your only copy of provider details. Secure storage does not protect data already visible on an unlocked device.</Text></ScrollView>;
+      case 'favorite-categories': return <FavoriteCategories groups={liveGroups} favorites={favoriteGroups} onToggle={toggleCategoryFavorite}/>;
+      case 'privacy': return <ScrollView contentContainerStyle={u.content} contentInsetAdjustmentBehavior="automatic"><H1 style={u.h1}>{'Private by design.\nSimple by choice.'}</H1><Button title="Clear this profile’s viewing history" variant="danger" disabled={!viewing.length} onPress={()=>confirmDestructive("Clear this profile’s viewing history","This deletes viewing history and resume positions for this profile. Saved playlists and favorites remain.",() => removeViewing())} /><View style={u.section}><H2 style={u.h2}>On this device</H2><Text style={u.body}>Server details, passwords, playlist links, and profile favorites use the device’s secure storage. Player preferences and viewing history use local app storage. The browsing cache stores only titles and metadata, without provider passwords or stream URLs. There is no account or cloud sync.</Text></View><View style={u.section}><H2 style={u.h2}>When you connect</H2><Text style={u.body}>Your provider receives the details needed to load and play its content. Artwork loads from URLs supplied by your provider. Prefer HTTPS; HTTP is unencrypted.</Text></View><View style={u.section}><H2 style={u.h2}>External players</H2><Text style={u.body}>Opening VLC or Infuse sends it the complete stream URL, which may include your provider credentials. Only choose apps you trust.</Text></View><Text style={u.small}>Browser preview keeps provider details in memory. Local profiles do not sync to other devices. There is no in-app cloud backup or account recovery. Secure storage availability and uninstall behavior depend on the platform and app build; do not rely on this app as your only copy of provider details. Secure storage does not protect data already visible on an unlocked device.</Text></ScrollView>;
       case 'item-actions': return <ItemActions key={page.item.id} item={page.item} favorite={favorites.includes(page.item.id)} lists={active?.lists || []} hidden={!!active?.hiddenItems?.includes(page.item.id)}
         onFavorite={() => toggleFavorite(page.item)} onToggleList={listId => patchActive(profile => ({ lists: toggleInList(profile.lists || [], listId, page.item.id) }))}
         onCreateList={name => patchActive(profile => { const id = `list-${Date.now().toString(36)}`; return { lists: toggleInList(createList(profile.lists, name, id), id, page.item.id) }; })}
@@ -622,11 +614,11 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
   return {
     booting, family, message, setMessage, providerDirty,setProviderDirty,providerCloseAllowed, connected: !!provider || demo, active, demo, provider, vault,
     welcome: !preferences.onboarded && !active && !demo && !pages.length,
-    onboardStart: () => { void updatePreferences({ onboarded: true }).then(() => openHomeIP(true)).catch(() => setMessage({text:'Could not save preferences. Try again.',tone:'error'})); },
+    onboardStart: () => { void updatePreferences({ onboarded: true }).then(() => addProfile()).catch(() => setMessage({text:'Could not save preferences. Try again.',tone:'error'})); },
     onboardDemo: () => { void updatePreferences({ onboarded: true }).catch(() => setMessage({text:'Could not save preferences.',tone:'error'})); startDemo(); },
     pages, open, back, retain, release, getPage, restoreDetail,rememberDetail, pageTitle, renderPage, connecting, focused, setFocused,
     renderHome, renderSettings, renderGuide,
-    views, setView, allItems, saved, favorites, hiddenGroups, hiddenItems: active?.hiddenItems || emptyIds, lists: active?.lists || [], patchActive, restrictedGroups: active?.restrictedGroups || emptyIds, familyUnlocked: !family.enabled || family.unlocked, loading, libraryError, refreshing, libraryNotice, updatedAt, scrollMemory: scrollMemory.current,
+    views, setView, allItems, saved, favorites, favoriteGroups, toggleCategoryFavorite, hiddenGroups, hiddenItems: active?.hiddenItems || emptyIds, lists: active?.lists || [], patchActive, restrictedGroups: active?.restrictedGroups || emptyIds, familyUnlocked: !family.enabled || family.unlocked, loading, libraryError, refreshing, libraryNotice, updatedAt, scrollMemory: scrollMemory.current,
     play, toggleFavorite, addProfile, startDemo, refreshLibrary, browse, openSearch, openFavorites, openSettings, openProfiles, goHome,
     player: { element: playerElement, session: playerSession, minimized, fullscreen: playerFullscreen, restore: () => setMinimized(false), close: closePlayer },
   };

@@ -21,10 +21,10 @@ export function GlassButton({ title, onPress, busy, disabled, icon, ...props }: 
 }
 
 /** Animate opacity only: video and control layout never move or remount on idle. */
-export function ChromeLayer({ visible, children, style }: { visible: boolean; children: React.ReactNode; style?: import('react-native').StyleProp<import('react-native').ViewStyle> }) {
+export function ChromeLayer({ visible, children, style, onLayout }: { visible: boolean; children: React.ReactNode; onLayout?: import('react-native').ViewProps['onLayout']; style?: import('react-native').StyleProp<import('react-native').ViewStyle> }) {
   const opacity = React.useRef(new Animated.Value(visible ? 1 : 0)).current;
   const [reduced, setReduced] = React.useState(false);
   React.useEffect(() => { let alive=true; void AccessibilityInfo.isReduceMotionEnabled().then(value => { if(alive)setReduced(value); }); const sub=AccessibilityInfo.addEventListener('reduceMotionChanged',setReduced);return()=>{alive=false;sub.remove();}; }, []);
   React.useEffect(() => { const animation=Animated.timing(opacity,{toValue:visible?1:0,duration:reduced?0:180,useNativeDriver:true});animation.start();return()=>animation.stop(); }, [visible,reduced,opacity]);
-  return <Animated.View pointerEvents={visible?'box-none':'none'} accessibilityElementsHidden={!visible} importantForAccessibility={visible?'auto':'no-hide-descendants'} style={[style,{opacity}]}>{children}</Animated.View>;
+  return <Animated.View onLayout={onLayout} pointerEvents={visible?'box-none':'none'} accessibilityElementsHidden={!visible} importantForAccessibility={visible?'auto':'no-hide-descendants'} style={[style,{opacity}]}>{children}</Animated.View>;
 }

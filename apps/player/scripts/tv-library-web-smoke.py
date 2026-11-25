@@ -31,7 +31,6 @@ with sync_playwright() as p:
  def radio(name):return page.get_by_role('radio',name=name,exact=True)
  def selected(name):assert radio(name).inner_text().startswith('●'),name+' not selected'
  page.goto('http://127.0.0.1:8751');page.wait_for_timeout(3000)
- if button('Not now').count():click('Not now')
  click('Add your playlist')
  for label,value in [('Profile name','TV Library Test'),('Server address','http://127.0.0.1:8751'),('Username','fixture'),('Password','fixture')]:page.get_by_role('textbox',name=label,exact=True).fill(value)
  click('Connect playlist');button('Play Channel 3000').wait_for();button('Grid view').wait_for()

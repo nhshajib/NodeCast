@@ -1,0 +1,63 @@
+# App refinement — November 25, 2026
+
+Baseline: main `db5f56e`, published GlowTV 1.0.1. Changes are app work, not a new published release. Identifiers, signing, installation instructions, screen transitions and persistent IPTV engines remain unchanged.
+
+## Changes
+
+- Phone/iPad Home and library lists use native pull-to-refresh, connected to the existing refresh generation/cache flow. Demo and disconnected views do not fetch.
+- Shared loading skeletons use one native-driven opacity animation per group, stop on unmount, and stay still with Reduce Motion. Cached content stays visible while refreshing.
+- Live TV category pins are per profile, bounded and validated, and travel through the existing encrypted backup format. They reorder only available groups; they do not reveal hidden or restricted categories. Phones expose a management action at the start of the category strip. TV exposes management in Library organization and long-press on categories. Each management row is one remote focus stop.
+- Home features the first available favorite live channel, in saved order. Without one, it greets the user instead of promoting a recent/random title. Continue watching, recent channels, films and the rest of the library remain accessible.
+- Removed the connection/IP screens, onboarding detour, network requests and their unused UI modules. `ipAddress.ts` is a pure validator retained for older saved preferences and backup imports. No live IP lookup remains. Historical release notes are retained.
+- Player presentation uses a quiet top title/action row, centered transport controls and a bottom timeline/secondary actions. Header/footer measurements keep the transport out of their way. Track selection, seeking, fullscreen, external players, next episodes and the custom persistent surfaces remain intact.
+
+## Player reference
+
+Reviewed NuvioMobile's public `cmp-rewrite` source at `0d20af8`, particularly `PlayerControls.kt` and `PlayerOverlayScaffold.kt` in `composeApp/src/commonMain/kotlin/com/nuvio/app/features/player/`:
+https://github.com/NuvioMedia/NuvioMobile/tree/0d20af8/composeApp/src/commonMain/kotlin/com/nuvio/app/features/player
+
+The reference is Kotlin/Compose. GlowTV uses an original React Native implementation of its control hierarchy; no Nuvio branding, content, code or engines were imported. No APK was executed or decompiled.
+
+## Supplied launch artwork
+
+Both owner-supplied H.264 clips are exactly 4 seconds, 30 fps, silent, approximately 200 KB each. Original files are bundled unchanged in `apps/player/assets/launch/`; matching final stills are extracted for accessibility and decoder failure fallback.
+
+The initial viewport chooses portrait or landscape (TV always landscape). Contain sizing preserves the complete artwork on phones/tablets/TV, including its existing wordmark; app text is not overlaid a second time. Rotation during launch does not restart the clip. The native splash releases only after a decoded frame or safe still is ready. The four-second visible launch is followed by a short fade once data is ready; a bounded fallback exposes the app's own loading/recovery UI if storage is delayed. Reduce Motion uses the final still and a short handoff. The dedicated launch player is disposed separately from IPTV playback.
+
+The scope guard explicitly permits this owner-requested splash replacement and retirement of the Home IP route. It still freezes other navigation/animation definitions and persistent engine effects. Native launch background changes require the next native build. No new module is needed (`expo-video` is already installed).
+
+## Design guidance
+
+Applied the repository's Unslop skill (Damir Sokolovsky, CC BY 4.0, https://heydamir.design/unslop), keeping GlowTV's existing Newsreader/Instrument Sans typography, colors and 8px grid. Applied the React best-practices checklist to hooks, stable data, cleanup, control accessibility and avoiding extra dependencies.
+
+## Verification
+
+Results and screenshots are recorded in `verification/glowtv/refinement-2026-11-25/`. Browser checks do not verify native pull gestures, Apple/Android decoder handoff, TV remote focus, VoiceOver/TalkBack or physical-device behavior. Native packages, releases and website downloads have not been updated in this change.
+
+### Unslop polish
+
+- Reduced the phone favorite-channel hero to a compact logo/title/action layout; the live list remains visible sooner. Live logos use contain sizing. Removed its circular heart backplate and unused hero/placeholder styles.
+- Suppressed the duplicate generic live-channel poster shelf when those same channels already appear under Live now. Other library shelves and saved favorites remain.
+- Shortened category-management copy and used a grouped list on phones. TV retains separated rows so its focus ring can expand without clipping.
+- Removed the empty colored greeting panel on TV, preserved contrast in light mode, and widened the expanded rail to 224 dp so Switch playlist fits.
+- Implemented TV category Menu/hold-OK through the existing native remote controller's event bridge, not only a touch long-press callback. The remote-only native smoke suite explicitly checks pin/unpin using Menu.
+- Removed retired onboarding/IP steps from the active native/browser test harnesses. Kept legacy backup validation tests.
+
+### Build and release status
+
+The build candidate is **1.0.2 / 10002**, above the installed 1.0.1 build 10001. No identifiers, signing identity or existing screen transitions changed. The native splash background and TV Menu bridge require fresh native packages. No new dependency or native module was installed.
+
+Physical-device testing remains skipped by the owner's earlier decision. This candidate still needs Android design/full emulator checks (phone and remote-only TV) and the full iPhone/iPad simulator workflow before release approval. No tag or release has been published from this change.
+
+Local verification: **187 app tests**, **22 Python input-driver tests**, TypeScript, UI grid/scope guards, and iOS-style/Android/TV exports pass. Four browser profiles (393×852, 412×915, 1032×1376, 960×540 at 2× scale) verify the greeting, saved-channel hero, category ordering, removed connection UI and decoded VOD transport/timeline placement. Browser TV focus is DOM focus, not proof of native D-pad behavior.
+
+Launch verification checks normal playback on iOS-style, Android and TV previews, correct 1080×1920 / 1920×1080 media, muted playback, Reduce Motion, and blocked-decoder fallback. Clips are four seconds; measured total browser startup includes font/asset load and handoff as recorded in `launch-checks.json`.
+
+Website build and all 27-page accessibility/HTML/runtime/request audits pass; all 9 website tests pass. Website feature/release-note copy is version-aware and will expose 1.0.2 only when real public release metadata selects it. Current download links/checksums and cross-version counters continue to refer to actual published files. Native website/store screenshots are not replaced by browser previews.
+
+Browser evidence (not native certification):
+- [iPhone Home](../verification/glowtv/refinement-2026-11-25/iphone-home.png), [category settings](../verification/glowtv/refinement-2026-11-25/iphone-category-settings.png), [player](../verification/glowtv/refinement-2026-11-25/iphone-player.png).
+- [Android Home](../verification/glowtv/refinement-2026-11-25/android-home.png), [player](../verification/glowtv/refinement-2026-11-25/android-player.png).
+- [iPad Home](../verification/glowtv/refinement-2026-11-25/ipad-home.png), [player](../verification/glowtv/refinement-2026-11-25/ipad-player.png).
+- [TV Home](../verification/glowtv/refinement-2026-11-25/tv-home.png), [category settings](../verification/glowtv/refinement-2026-11-25/tv-category-settings.png), [player](../verification/glowtv/refinement-2026-11-25/tv-player.png).
+- [Flow checks](../verification/glowtv/refinement-2026-11-25/checks.json), [launch checks](../verification/glowtv/refinement-2026-11-25/launch-checks.json).

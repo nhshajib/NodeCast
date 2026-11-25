@@ -22,7 +22,7 @@ with patch('subprocess.check_output', return_value='Physical size: 1080x1920'):
 class InputDriverTests(unittest.TestCase):
     def test_scan_keeps_direction_past_two_controls_to_offscreen_rows(self):
         # Settings scrolled to the bottom: tiles above are offscreen (inverted bounds).
-        order=['Home IP reference','Version history','Add playlist','Buy me a coffee']
+        order=['Library organization','Version history','Add playlist','Buy me a coffee']
         state={'at':3}
         def tree():
             nodes=[]
@@ -35,7 +35,7 @@ class InputDriverTests(unittest.TestCase):
             if code==19:state['at']=max(0,state['at']-1)
             elif code==20:state['at']=min(len(order)-1,state['at']+1)
         with patch.object(remote,'tree',tree),patch.object(remote,'key',key):
-            self.assertEqual(remote.name(remote.focus('Home IP reference',timeout=5)),'Home IP reference')
+            self.assertEqual(remote.name(remote.focus('Library organization',timeout=5)),'Library organization')
 
     def test_reveal_pages_until_offscreen_message_is_on_screen(self):
         state={'downs':0}

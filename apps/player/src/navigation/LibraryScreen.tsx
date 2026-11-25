@@ -1,9 +1,11 @@
+import {categoryList,matchesAny} from '../groups';
+import {orderFavoriteGroups} from '../favoriteGroups';
 import {plural} from '../formatting';
 import {LibrarySkeleton} from '../Skeletons';
 import {useAnnouncement} from '../accessibility';
 import { Text } from '../Typography';
 import React, { useCallback, useDeferredValue, useEffect, useMemo, useRef } from 'react';
-import { useWindowDimensions, ActivityIndicator, FlatList, Keyboard, Platform, ScrollView, TextInput, View } from 'react-native';
+import { useWindowDimensions, RefreshControl, ActivityIndicator, FlatList, Keyboard, Platform, ScrollView, TextInput, View } from 'react-native';
 import type { ListRenderItem } from 'react-native';
 import Pressable from '../FocusPressable';
 import RetainedList from '../RetainedList';
@@ -57,7 +59,7 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   const activeList = favorites && state.list ? c.lists.find(list => list.id === state.list) : undefined;
   const listItems = useMemo(() => activeList ? resolveSaved(activeList.items, c.allItems, c.restrictedGroups, c.familyUnlocked) : null, [activeList, c.allItems, c.restrictedGroups, c.familyUnlocked]);
   const library = useMemo(() => listItems ? listItems.available : favorites ? c.saved : allMediaSearch ? c.allItems : c.allItems.filter(item => item.kind === section), [listItems, favorites, c.saved, allMediaSearch, c.allItems, section]);
-  const groups = useMemo(() => ['All', ...Array.from(new Set(library.filter(item => !c.hiddenGroups.includes(item.group)).map(item => item.group))).sort()], [library, c.hiddenGroups]);
+  const groups = useMemo(() => orderFavoriteGroups(categoryList(library.filter(item => !matchesAny(item.group,c.hiddenGroups)).map(item => item.group)).sort(),section==='live'?c.favoriteGroups:[]), [library, c.hiddenGroups, c.favoriteGroups, section]);
   const index = useMemo(() => createSearchIndex(library), [library]);
   const sort = c.active?.library?.sort?.[section] || 'provider';
   const filtered = useMemo(() => {
@@ -107,15 +109,15 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
         <Pressable accessibilityRole="button" accessibilityLabel="Library options" onPress={() => c.open({ type: 'organize', view })} style={s.iconAction}><Icon name="options-outline" size={20} color={colors.secondary} /></Pressable>
       </View>}
       {searching && <SearchScopeControl value={state.scope} onChange={scope => set({ scope })} includeHidden={state.hidden} onHidden={() => set({ hidden: !state.hidden })} favorites={favorites} />}
-      {!searching && <FlatList horizontal style={{ flexGrow: 0, flexShrink: 0 }} data={groups} keyExtractor={group => group} showsHorizontalScrollIndicator={false} contentContainerStyle={s.categories} initialNumToRender={8} windowSize={5} scrollsToTop={false}
-        renderItem={({ item: group }) => <Pressable accessibilityRole="button" accessibilityState={{ selected: state.category === group }} onPress={() => set({ category: group, scope: 'category' })} style={[s.category, state.category === group && { backgroundColor: colors.selected }]}><Text numberOfLines={2} style={{ color: state.category === group ? colors.selectedText : colors.text, fontSize: 13, fontWeight: '600' }}>{group}</Text></Pressable>} />}
+      {!searching && <FlatList horizontal style={{ flexGrow: 0, flexShrink: 0 }} data={groups} ListHeaderComponent={section==='live'&&!favorites?<Pressable accessibilityRole="button" accessibilityLabel="Favorite categories" onPress={()=>c.open({type:'favorite-categories'})} style={s.iconAction}><Icon name="heart-outline" size={20} color={colors.link}/></Pressable>:undefined} keyExtractor={group => group} showsHorizontalScrollIndicator={false} contentContainerStyle={s.categories} initialNumToRender={8} windowSize={5} scrollsToTop={false}
+        renderItem={({ item: group }) => <Pressable accessibilityRole="button" accessibilityState={{ selected: state.category === group }} accessibilityLabel={`${group}${section==='live'&&c.favoriteGroups.includes(group)?', favorite category':''}`} onLongPress={section==='live'&&group!=='All'?()=>{void c.toggleCategoryFavorite(group).catch(()=>c.setMessage({text:'Couldn’t save this category.',tone:'error'}))}:undefined} onPress={() => set({ category: group, scope: 'category' })} style={[s.category, state.category === group && { backgroundColor: colors.selected }]}>{section==='live'&&c.favoriteGroups.includes(group)&&<Icon name="heart" size={14} color={colors.link}/>}<Text numberOfLines={2} style={{ color: state.category === group ? colors.selectedText : colors.text, fontSize: 13, fontWeight: '600' }}>{group}</Text></Pressable>} />}
       {searching && <Text accessibilityLiveRegion="polite" style={[u.small, { paddingHorizontal: 24, paddingVertical: 8 }]}>{filtered.length} {filtered.length === 1 ? 'result' : 'results'} · {favorites ? 'Your favorites' : `${allMediaSearch ? 'All media' : sections.find(item => item.id === section)?.title}${state.scope === 'category' && state.category !== 'All' ? ` · ${state.category}` : ''}${includeHidden ? ' · Including hidden' : ''}`}</Text>}
       {showFreshness && <View style={[u.between, { paddingHorizontal: 24, paddingBottom: 8, gap: 8 }]}>
         <Text accessibilityLiveRegion="polite" numberOfLines={2} style={[u.small, { flex: 1 }]}>{refreshLabel}</Text>
         <Pressable accessibilityRole="button" accessibilityLabel="Refresh library" disabled={c.refreshing} onPress={c.refreshLibrary} style={[u.row, s.textAction, { gap: 8 }]}>{c.refreshing ? <ActivityIndicator size="small" color={colors.link} /> : <Text style={u.link}>Refresh</Text>}</Pressable>
       </View>}
       {c.loading ? <LibrarySkeleton posters={posterLayout}/> : c.libraryError ? <Empty icon="cloud-offline-outline" title="A little trouble connecting" message={c.libraryError}><Button title="Try again" onPress={c.refreshLibrary} /></Empty> : <RetainedList listRef={list} memory={c.scrollMemory} memoryKey={`${c.demo ? 'demo' : c.active?.id}:${view}:${filterKey}`} keyboardShouldPersistTaps="handled" keyboardDismissMode="on-drag"
-        key={`${view}:${posterLayout}:${numColumns}`} numColumns={posterLayout ? numColumns : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={idleSearch ? [] : filtered} keyExtractor={item => item.id}
+        refreshControl={<RefreshControl refreshing={c.refreshing} onRefresh={c.refreshLibrary} enabled={!c.demo&&!c.loading} tintColor={colors.link} colors={[colors.link]}/>} key={`${view}:${posterLayout}:${numColumns}`} numColumns={posterLayout ? numColumns : 1} columnWrapperStyle={posterLayout ? { gap: 16 } : undefined} data={idleSearch ? [] : filtered} keyExtractor={item => item.id}
         initialNumToRender={posterLayout ? 8 : 12} maxToRenderPerBatch={posterLayout ? 6 : 10} updateCellsBatchingPeriod={30} windowSize={11} removeClippedSubviews={Platform.OS === 'android'}
         contentContainerStyle={[{ paddingHorizontal: 24, paddingBottom: 112 }, (idleSearch || !filtered.length) && { flex: 1 }]}
         ListHeaderComponent={filtered.length && !searching && !idleSearch ? <Text style={[u.small, { paddingBottom: 8 }]}>{plural(filtered.length,section==='live'&&!favorites&&!allMediaSearch?'channel':'title')}</Text> : undefined}

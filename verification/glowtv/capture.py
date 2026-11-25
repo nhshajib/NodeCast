@@ -77,7 +77,7 @@ with sync_playwright() as p:
   if name=='tv':
    button(page,'Movies').click();page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-movies.png'));button(page,'Series').click();page.get_by_role('button',name='Open Tidewater Stories',exact=True).filter(visible=True).last.click();page.wait_for_timeout(800);page.wait_for_timeout(250);page.screenshot(path=str(out/'tv-series.png'));button(page,'Back').click()
   # Every settings destination remains reachable through the redesigned shell.
-  settings_names = ['Appearance','Family controls','Playback' if name=='tv' else 'Default player','Library organization','Backup & transfer','Library & storage','Set home IP reference' if name=='tv' else 'Home IP & connection','Version history']
+  settings_names = ['Appearance','Family controls','Playback' if name=='tv' else 'Default player','Library organization','Backup & transfer','Library & storage','Version history']
   def open_settings():
    if name=='android':page.get_by_test_id('navigation-tab-settings').click()
    else:button(page,'Settings').click()

@@ -33,6 +33,7 @@ export function validateVault(value: unknown): Vault {
     }
     safeHeaders(p.provider.headers);
     if (p.provider.localText !== undefined && (p.provider.kind !== 'm3u' || typeof p.provider.localText !== 'string' || p.provider.localText.length > 400000)) throw new Error('Imported playlist is too large for secure storage. Use a URL for larger playlists.');
+    if (p.library?.favoriteGroups !== undefined && (!Array.isArray(p.library.favoriteGroups) || p.library.favoriteGroups.length > 300 || p.library.favoriteGroups.some(group => typeof group !== 'string' || !group || group.length > 300))) throw new Error('Invalid favorite categories.');
     if (p.library?.tvSearchScope && Object.entries(p.library.tvSearchScope).some(([key,value])=>!['live','movies','series'].includes(key)||!['category','section','all'].includes(value!))) throw new Error('Invalid TV search scope.');
     if (p.library?.tvLiveLayout !== undefined && !['list','grid'].includes(p.library.tvLiveLayout)) throw new Error('Invalid TV channel layout.');
     if (p.library?.tvChannelLogos !== undefined && typeof p.library.tvChannelLogos !== 'boolean') throw new Error('Invalid TV logo preference.');

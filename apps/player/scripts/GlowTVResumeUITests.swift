@@ -78,7 +78,7 @@ final class GlowTVResumeUITests: XCTestCase {
     // iOS exposes nested StaticText nodes for styled headings; their hit-test
     // result is not a visibility test. A real action inside Home verifies both
     // visible content and interaction, rather than only the persistent tab bar.
-    app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@ OR label == %@", "Connect playlist", "Watch live", "Resume")).firstMatch
+    app.buttons.matching(NSPredicate(format: "label == %@ OR label == %@ OR label == %@ OR label BEGINSWITH %@", "Connect playlist", "Watch live", "Resume", "Watch ")).firstMatch
   }
   private func settleHome() {
     let home = element("navigation-tab-home")
@@ -91,9 +91,6 @@ final class GlowTVResumeUITests: XCTestCase {
     XCTAssertFalse(storageError.exists, "Simulator Keychain access failed before Home")
     if start.exists {
       start.tap()
-      let skip = app.buttons["Not now"]
-      XCTAssertTrue(skip.waitForExistence(timeout: 20))
-      skip.tap()
       XCTAssertTrue(app.textFields["Server address"].waitForExistence(timeout: 20))
       // The playlist form is a native form sheet; its Cancel button (top left) closes it.
       tapButton("Cancel")
@@ -102,8 +99,6 @@ final class GlowTVResumeUITests: XCTestCase {
       }, object: nil)
       XCTAssertEqual(XCTWaiter.wait(for: [closed], timeout: 15), .completed, "The native sheet did not dismiss")
     }
-    let skip = app.buttons["Not now"]
-    if skip.exists { skip.tap() }
     XCTAssertTrue(home.waitForExistence(timeout: 20), app.debugDescription)
     home.tap()
     // Inspect content near the top, so small iPhones need no scroll to pass.

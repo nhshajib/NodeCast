@@ -32,7 +32,6 @@ with sync_playwright() as p:
  errors=[];page.on('pageerror',lambda error:errors.append(str(error)))
  page.goto('http://127.0.0.1:8750');page.wait_for_timeout(3500)
  page.get_by_role('button',name='Get started',exact=True).click()
- page.get_by_role('button',name='Not now',exact=True).click()
  for label,value in [('Profile name','Overlay test'),('Server address','http://127.0.0.1:8750'),('Username','fixture'),('Password','fixture')]:page.get_by_role('textbox',name=label,exact=True).fill(value)
  page.get_by_role('button',name='Connect playlist',exact=True).click()
  page.wait_for_timeout(2000)

@@ -28,7 +28,7 @@ def wait_for_pin(label):
  started=time.monotonic();find(label,timeout=180)
  print(f'PIN UI wait ({label}): {time.monotonic()-started:.1f}s',flush=True)
 try:
- click('Get started');click('Not now',True)
+ click('Get started')
  # First-run setup opens the provider form directly; later sessions use Add playlist.
  if not any(n.get('class')=='android.widget.EditText' and n.get('content-desc')=='Profile name' for n in dump().iter('node')):click('Add playlist')
  for label,value in [('Profile name','PhoneTest'),('Server address','http://10.0.2.2:9090'),('Username','example'),('Password','example')]:text(label,value,submit=label!='Password')

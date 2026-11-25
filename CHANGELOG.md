@@ -1,5 +1,14 @@
 # GlowTV changes
 
+## 1.0.2 — November 25, 2026 · Build candidate
+
+- Native pull-to-refresh on Home and library lists, with animated loading placeholders and reduced-motion support.
+- Per-playlist favorite Live TV categories, pinned ahead of other groups and included in backups.
+- Home features a favorite live channel, or a greeting when none is saved.
+- Removed public-IP/connection screens and automatic lookups; older backups remain readable.
+- Reorganized player chrome around centered transport controls and a bottom timeline, keeping existing engines and features.
+- Supplied four-second portrait/landscape launch films, with decoded-frame handoff and still-image fallbacks.
+
 ## 1.0.1 — November 23, 2026 · Fire TV fixes from real-device testing
 
 From hands-on testing on a Hisense Fire TV (Fire OS 8) with an 11,491-channel M3U playlist. See `docs/TV-FIX-1.0.1.md`.
