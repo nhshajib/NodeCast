@@ -136,11 +136,30 @@ final class GlowTVResumeUITests: XCTestCase {
       XCUIDevice.shared.press(.home)
       Thread.sleep(forTimeInterval: delay)
       app.activate()
+      XCTAssertTrue(app.wait(for: .runningForeground, timeout: 15), "GlowTV must return to the foreground")
       // Check before touching navigation: recovery must work without a tap.
       let content = homeContent()
       XCTAssertTrue(content.waitForExistence(timeout: 15))
-      let shown = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in self.onScreen(content) && content.isHittable }, object: nil)
-      XCTAssertEqual(XCTWaiter.wait(for: [shown], timeout: 15), .completed, "Blank Home after background interval \(delay)s")
+      // Resume can replace accessibility element identities. Resolve the live
+      // query on every poll rather than keeping a pre-layout element snapshot.
+      let shown = XCTNSPredicateExpectation(predicate: NSPredicate { _, _ in
+        let current = self.homeContent()
+        return self.onScreen(current) && current.isHittable
+      }, object: nil)
+      let result = XCTWaiter.wait(for: [shown], timeout: 15)
+      if result != .completed {
+        capture("failure-home-background-\(Int(delay))s")
+        let screen = XCTAttachment(screenshot: XCUIDevice.shared.screenshot())
+        screen.name = "failure-device-background-\(Int(delay))s"
+        screen.lifetime = .keepAlways
+        add(screen)
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+        let hierarchy = XCTAttachment(string: "App state: \(app.state.rawValue)\n\(app.debugDescription)\nSpringBoard:\n\(springboard.debugDescription)")
+        hierarchy.name = "failure-resume-hierarchy"
+        hierarchy.lifetime = .keepAlways
+        add(hierarchy)
+      }
+      XCTAssertEqual(result, .completed, "Blank Home after background interval \(delay)s")
       capture("home-after-background-\(Int(delay))s")
       settleHome()
     }
