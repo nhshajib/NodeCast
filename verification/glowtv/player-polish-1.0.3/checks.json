@@ -1,0 +1,59 @@
+{
+  "android": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": false,
+    "pageErrors": []
+  },
+  "iphone": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": false,
+    "pageErrors": []
+  },
+  "ipad": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": false,
+    "pageErrors": []
+  },
+  "tv": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": true,
+    "pageErrors": []
+  },
+  "scope": {
+    "browserEngine": "expo-video; VLC requires native CI",
+    "nativeAndroidSplashResources": "Five generated density variants are fully transparent; splash drawable retained for OS requirements",
+    "nativeChecks": "Pending new 1.0.3 build; browser tests do not certify D-pad, decoder or physical-device frame rate",
+    "tests": 192,
+    "physicalDeviceTested": false,
+    "paletteAndGrid": "existing tokens; grid guard passed",
+    "playerLifecycle": "scope guard passed; original decoding/stop effects unchanged"
+  }
+}

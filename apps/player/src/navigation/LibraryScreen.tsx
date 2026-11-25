@@ -13,7 +13,7 @@ import SearchScopeControl from '../SearchScope';
 import { androidDesign, useThemeChoice } from '../theme';
 import { sortMedia } from '../libraryPreferences';
 import { createSearchIndex, searchIndex } from '../catalog';
-import { rankedSearch } from '../catalogQuery';
+import { createRankedSearch } from '../catalogQuery';
 import { deleteList, resolveSaved, withoutHidden } from '../organization';
 import { confirmDestructive } from '../confirmDestructive';
 import { features } from '../featureFlags';
@@ -60,15 +60,17 @@ export default function LibraryScreen({ view, tab, nativeSearch=false }: { view:
   const listItems = useMemo(() => activeList ? resolveSaved(activeList.items, c.allItems, c.restrictedGroups, c.familyUnlocked) : null, [activeList, c.allItems, c.restrictedGroups, c.familyUnlocked]);
   const library = useMemo(() => listItems ? listItems.available : favorites ? c.saved : allMediaSearch ? c.allItems : c.allItems.filter(item => item.kind === section), [listItems, favorites, c.saved, allMediaSearch, c.allItems, section]);
   const groups = useMemo(() => orderFavoriteGroups(categoryList(library.filter(item => !matchesAny(item.group,c.hiddenGroups)).map(item => item.group)).sort(),section==='live'?c.favoriteGroups:[]), [library, c.hiddenGroups, c.favoriteGroups, section]);
-  const index = useMemo(() => createSearchIndex(library), [library]);
+  const index = useMemo(() => features.rankedSearch?[]:createSearchIndex(library), [library]);
   const sort = c.active?.library?.sort?.[section] || 'provider';
+  const searchable = useMemo(()=>favorites||includeHidden?library:withoutHidden(library,c.hiddenItems),[library,c.hiddenItems,favorites,includeHidden]);
+  const preparedSearch = useMemo(()=>createRankedSearch(searchable),[searchable]);
   const filtered = useMemo(() => {
     const group = deferred.trim() && state.scope !== 'category' ? 'All' : state.category;
     // Hidden titles leave normal browsing and search; favorites and lists keep them.
-    if (features.rankedSearch) return rankedSearch(favorites || includeHidden ? library : withoutHidden(library, c.hiddenItems), deferred, group, c.hiddenGroups, favorites || includeHidden, favorites ? 'provider' : sort);
+    if (features.rankedSearch) return preparedSearch(deferred, group, c.hiddenGroups, favorites || includeHidden, favorites ? 'provider' : sort);
     const found = searchIndex(index, deferred, group, c.hiddenGroups, favorites || includeHidden);
     return favorites ? found : sortMedia(found, sort);
-  }, [index, library, c.hiddenItems, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
+  }, [index, preparedSearch, library, c.hiddenItems, deferred, state.scope, state.category, c.hiddenGroups, favorites, includeHidden, sort]);
   const idleSearch = view === 'search' && !searching;
   const posterLayout = (view === 'watch' || view === 'movies' || view === 'series' || view === 'library') && !favorites && section !== 'live' && !allMediaSearch;
   // A new filter starts at the top. The list itself is not remounted per keystroke.

@@ -1,0 +1,19 @@
+{
+  "titles": 100000,
+  "queries": 5,
+  "rebuildMilliseconds": [
+    254,
+    220,
+    505,
+    203,
+    236
+  ],
+  "preparedMilliseconds": [
+    29,
+    25,
+    26,
+    24,
+    40
+  ],
+  "scope": "Node synthetic catalogue, not physical-device FPS or latency"
+}

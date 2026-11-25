@@ -4,7 +4,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useFonts } from 'expo-font';
 import { fontAssets } from '../Typography';
 import * as SplashScreen from 'expo-splash-screen';
-import { ThemeProvider, isDarkTheme } from '../theme';
+import { ThemeProvider, colors, isDarkTheme } from '../theme';
 import { FamilyProvider } from '../FamilyControls';
 import { PlayerToolsProvider } from '../PlayerToolsContext';
 import { NavigationMotionProvider } from '../NavigationMotion';
@@ -19,14 +19,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [launchComplete, setLaunchComplete] = useState(false);
   const onReady = useCallback(() => setDataReady(true), []);
   const onFinish = useCallback(() => setLaunchComplete(true), []);
-  if (!loaded && !error) return <View style={{ flex: 1, backgroundColor: '#0D4029' }} />;
+  const fontsReady=loaded||!!error;
   return <ThemeProvider><PlayerToolsProvider><FamilyProvider><NavigationMotionProvider><SafeAreaProvider>
     <StatusBar barStyle={isDarkTheme() ? 'light-content' : 'dark-content'} />
     <View style={{ flex: 1 }}>
       <View style={{ flex: 1 }} aria-hidden={!launchComplete} accessibilityElementsHidden={!launchComplete} importantForAccessibility={launchComplete ? 'auto' : 'no-hide-descendants'} pointerEvents={launchComplete ? 'auto' : 'none'}>
-        <NodeCastProvider onReady={onReady} launchComplete={launchComplete}>{children}</NodeCastProvider>
+        {fontsReady?<NodeCastProvider onReady={onReady} launchComplete={launchComplete}>{children}</NodeCastProvider>:<View style={{flex:1,backgroundColor:colors.videoBackdrop}}/>}
       </View>
-      {!launchComplete && <StartupSplash ready={dataReady} onFinish={onFinish} />}
+      {!launchComplete && <StartupSplash ready={fontsReady&&dataReady} onFinish={onFinish} />}
     </View>
   </SafeAreaProvider></NavigationMotionProvider></FamilyProvider></PlayerToolsProvider></ThemeProvider>;
 }

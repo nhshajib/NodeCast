@@ -23,19 +23,29 @@ export type CatalogPage<T extends QueryRow = CatalogRow> = { items: T[]; total: 
 
 export const searchText = (row: Pick<MediaSummary, 'name' | 'group'>) => normalizeSearch(`${row.name} ${row.group}`);
 export const compactName = (name: string) => normalizeSearch(name).replace(/ /g, '');
+// Searchable strings belong to catalogue rows, not keystrokes. Weak keys release
+// retired catalogues and the value check also handles callers editing a row.
+const normalizedRows = new WeakMap<object,{name:string;group:string;normalized:string;text:string;compact:string;words:string[]}>();
+function normalizedRow(row: Pick<MediaSummary,'name'> & {group?:string}) {
+ const old=normalizedRows.get(row);
+ if(old&&old.name===row.name&&old.group===(row.group||''))return old;
+ const normalized=normalizeSearch(row.name);
+ const value={name:row.name,group:row.group||'',normalized,text:searchText({name:row.name,group:row.group||''}),compact:normalized.replace(/ /g,''),words:normalized.split(' ')};
+ normalizedRows.set(row,value);return value;
+}
 
 /** The same matching rules as 0.7.4: every term is a substring, or the joined terms appear in the name without spaces. */
 export function matches(row: Pick<MediaSummary, 'name' | 'group'>, terms: string[]) {
   if (!terms.length) return true;
-  const text = searchText(row);
-  return terms.every(term => text.includes(term)) || compactName(row.name).includes(terms.join(''));
+  const value = normalizedRow(row);
+  return terms.every(term => value.text.includes(term)) || value.compact.includes(terms.join(''));
 }
 /** 0 exact name, 1 name starts with the query, 2 a name word starts with a term, 3 broader match. */
 export function rankOf(row: Pick<MediaSummary, 'name'>, terms: string[]) {
-  const name = normalizeSearch(row.name), query = terms.join(' ');
+  const value=normalizedRow(row), name=value.normalized, query = terms.join(' ');
   if (name === query) return 0;
   if (name.startsWith(query)) return 1;
-  const words = name.split(' ');
+  const words = value.words;
   if (terms.every(term => words.some(word => word.startsWith(term)))) return 2;
   return 3;
 }
@@ -91,7 +101,14 @@ export function runQuery<T extends QueryRow>(rows: T[], q: CatalogQuery, snapsho
  * Without a query the provider (or chosen) order is kept.
  */
 export function rankedSearch<T extends Omit<QueryRow, 'position'>>(items: T[], query: string, group = 'All', hidden: string[] = [], includeHidden = false, sort: CatalogSort = 'provider'): T[] {
+ return createRankedSearch(items)(query,group,hidden,includeHidden,sort);
+}
+/** Prepare once per immutable catalogue/filter snapshot, then reuse per query. */
+export function createRankedSearch<T extends Omit<QueryRow,'position'>>(items:T[]) {
   const rows = items.map((item, position) => ({ item, row: { id: item.id, name: item.name, group: item.group, kind: item.kind, accessGroup: item.accessGroup, added: item.added, position } }));
   const byPosition = rows.map(entry => entry.item);
-  return runQuery(rows.map(entry => entry.row), { profile: '', section: 'live', allSections: true, text: query, category: group, hiddenGroups: hidden, includeHidden, sort, rank: true, limit: 0 }, 'memory').items.map(row => byPosition[row.position]);
+  const queryRows=rows.map(entry=>entry.row);
+  // Normalize outside the first typed query, while the catalogue snapshot mounts.
+  queryRows.forEach(normalizedRow);
+  return (query:string,group='All',hidden:string[]=[],includeHidden=false,sort:CatalogSort='provider'):T[]=>runQuery(queryRows, { profile: '', section: 'live', allSections: true, text: query, category: group, hiddenGroups: hidden, includeHidden, sort, rank: true, limit: 0 }, 'memory').items.map(row => byPosition[row.position]);
 }

@@ -303,6 +303,16 @@ try:
  wait_for_native_video()
  if TV:find('Pause live TV',timeout=20)
  player_pid=adb('shell','pidof',package)
+ # Normal playback must expose channel actions, not only the failure card.
+ if TV:
+  click('Next channel');wait_tv_text(['Wild North']);wait_for_native_video()
+  click('Previous channel');wait_tv_text(['Evening studio']);wait_for_native_video()
+ else:
+  start_native_hierarchy()
+  touch_player('Next channel');find('Wild North',timeout=20);wait_for_native_video()
+  touch_player('Previous channel');find('Evening studio',timeout=20);wait_for_native_video()
+ assert adb('shell','pidof',package)==player_pid,'Visible channel transport changed the app process'
+ (OUT/f'emulator-{TARGET}-channel-transport.json').write_text(json.dumps({'next':True,'previous':True,'decodedOriginalVideo':True,'sameProcess':True,'remoteOnly':TV})+'\n')
  if not TV:
   # Repeated real touch pauses exercise the native prop-update lifecycle.
   # A matching source/options update must not recreate or crash the decoder.

@@ -1,0 +1,54 @@
+[
+  {
+    "edition": "ios",
+    "reducedMotion": false,
+    "decoderBlocked": false,
+    "seconds": 5.34,
+    "video": {
+      "width": 1080,
+      "height": 1920,
+      "muted": true
+    },
+    "passed": true
+  },
+  {
+    "edition": "android",
+    "reducedMotion": false,
+    "decoderBlocked": false,
+    "seconds": 5.25,
+    "video": {
+      "width": 1080,
+      "height": 1920,
+      "muted": true
+    },
+    "passed": true
+  },
+  {
+    "edition": "tv",
+    "reducedMotion": false,
+    "decoderBlocked": false,
+    "seconds": 4.96,
+    "video": {
+      "width": 1920,
+      "height": 1080,
+      "muted": true
+    },
+    "passed": true
+  },
+  {
+    "edition": "ios",
+    "reducedMotion": true,
+    "decoderBlocked": false,
+    "seconds": 1.6,
+    "video": null,
+    "passed": true
+  },
+  {
+    "edition": "ios",
+    "reducedMotion": false,
+    "decoderBlocked": true,
+    "seconds": 5.26,
+    "video": null,
+    "passed": true
+  }
+]

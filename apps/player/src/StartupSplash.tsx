@@ -12,18 +12,20 @@ const portraitVideo=require('../assets/launch/glowtv-launch-portrait.mp4');
 const landscapeVideo=require('../assets/launch/glowtv-launch-landscape.mp4');
 const portraitStill=require('../assets/launch/glowtv-launch-portrait-still.png');
 const landscapeStill=require('../assets/launch/glowtv-launch-landscape-still.png');
+const portraitFirst=require('../assets/launch/glowtv-launch-portrait-first.png');
+const landscapeFirst=require('../assets/launch/glowtv-launch-landscape-first.png');
 
 /** Owns only the bundled launch clip, never the IPTV playback instance. */
-function LaunchVideo({source,onFrame,onDone,onError}:{source:number;onFrame:()=>void;onDone:()=>void;onError:()=>void}) {
+function LaunchVideo({source,active,onFrame,onDone,onError}:{source:number;active:boolean;onFrame:()=>void;onDone:()=>void;onError:()=>void}) {
  const callbacks=useRef({onFrame,onDone,onError});callbacks.current={onFrame,onDone,onError};
  const player=useVideoPlayer(source,instance=>{instance.loop=false;instance.muted=true;instance.audioMixingMode='mixWithOthers';instance.showNowPlayingNotification=false;});
  useEffect(()=>{
-  const start=()=>{try{player.play()}catch{callbacks.current.onError()}};
+  const start=()=>{if(active)try{player.play()}catch{callbacks.current.onError()}};
   const status=player.addListener('statusChange',event=>{if(event.status==='error')callbacks.current.onError();else if(event.status==='readyToPlay')start()});
   const ended=player.addListener('playToEnd',()=>callbacks.current.onDone());
   if(player.status==='readyToPlay')start();
   return()=>{status.remove();ended.remove()};
- },[player]);
+ },[player,active]);
  return <View pointerEvents="none" style={StyleSheet.absoluteFill}><VideoView player={player} style={StyleSheet.absoluteFill} contentFit="contain" nativeControls={false} fullscreenOptions={{enable:false}} allowsPictureInPicture={false} onFirstFrameRender={()=>callbacks.current.onFrame()}/></View>;
 }
 class LaunchBoundary extends React.Component<{onError:()=>void;children:React.ReactNode},{failed:boolean}> {
@@ -53,11 +55,13 @@ export default function StartupSplash({ready,onFinish,nativeHandoff=true}:{ready
   return()=>{alive=false;listener.remove();clearTimeout(barrier)};
  },[]);
  useEffect(()=>{
-  if(reduced!==false||frameReady||failed)return;
+  if(!laidOut||reduced!==false||frameReady||failed)return;
   const timeout=setTimeout(()=>setFailed(true),1800);
   return()=>clearTimeout(timeout);
- },[reduced,frameReady,failed]);
- const canHandoff=layoutReady&&posterReady&&reduced!==null&&(reduced||frameReady||failed);
+ },[laidOut,reduced,frameReady,failed]);
+ // Release the OS layer as soon as our own safe artwork exists. Never play
+ // the beginning of the owner's film invisibly behind an OS logo.
+ const canHandoff=layoutReady&&posterReady&&reduced!==null;
  useEffect(()=>{
   if(!canHandoff)return;
   let alive=true;
@@ -80,9 +84,9 @@ export default function StartupSplash({ready,onFinish,nativeHandoff=true}:{ready
   return()=>{clearTimeout(watchdog);animation.stop()};
  },[laidOut,introDone,ready,expired,reduced,opacity]);
  return <Animated.View testID="startup-splash" accessibilityViewIsModal accessibilityLabel="GlowTV is starting" onLayout={()=>setLayoutReady(true)} style={[s.root,{opacity}]}>
-  <StatusBar barStyle="light-content"/>
-  <Image accessible={false} source={landscape?landscapeStill:portraitStill} resizeMode="contain" style={StyleSheet.absoluteFill} onLoad={()=>setPosterReady(true)} onError={()=>setPosterReady(true)}/>
-  {reduced===false&&!failed&&!videoEnded&&<LaunchBoundary onError={onError}><LaunchVideo source={landscape?landscapeVideo:portraitVideo} onFrame={onFrame} onDone={onDone} onError={onError}/></LaunchBoundary>}
+  <StatusBar hidden/>
+  <Image accessible={false} source={reduced||failed||videoEnded?(landscape?landscapeStill:portraitStill):(landscape?landscapeFirst:portraitFirst)} resizeMode="contain" style={StyleSheet.absoluteFill} onLoad={()=>setPosterReady(true)} onError={()=>setPosterReady(true)}/>
+  {reduced===false&&!failed&&!videoEnded&&<LaunchBoundary onError={onError}><LaunchVideo source={landscape?landscapeVideo:portraitVideo} active={laidOut} onFrame={onFrame} onDone={onDone} onError={onError}/></LaunchBoundary>}
   {introDone&&!ready&&<View style={[s.status,{bottom:Math.max(insets.bottom,24)}]}><ActivityIndicator color={colors.onVideo}/><Text style={{color:colors.onVideo}}>Loading your saved library…</Text></View>}
  </Animated.View>;
 }

@@ -1,3 +1,5 @@
+import {adjacentChannel} from '../channelNavigation';
+import {createRankedSearch} from '../catalogQuery';
 import {categoryList,matchesAny} from '../groups';
 import FavoriteCategories from '../FavoriteCategories';
 import {toggleFavoriteGroup} from '../favoriteGroups';
@@ -604,7 +606,14 @@ function useNodeCastState(launchComplete: boolean, onReady: () => void) {
     }
   }
 
-  const playerElement = playerSession && playerOwner.current === (active?.id || 'demo') ? <BuiltInPlayer recentChannels={playerSession.item.kind === 'live' ? recentChannelPicker(viewing, playerSession.item.id, allItems, { restricted: active?.restrictedGroups, unlocked: !family.enabled || family.unlocked, hidden: active?.hiddenItems }) : undefined} onChannel={item => { void launch(item, false, 'internal'); }} autoplayNext={features.organization && !!active?.autoplayNext} onRegisterStop={stop => { playerStop.current = stop; }} nextEpisode={episodeQueue && episodeQueue.profile === active?.id && followingEpisode(episodeQueue.items, playerSession.item) ? { item: followingEpisode(episodeQueue.items, playerSession.item)!, onPress: () => { const next = followingEpisode(episodeQueue.items, playerSession.item); if (next) { seasonMemory.current.set(`${active?.id}:${episodeQueue.series.id}`, next.group); void launch(next, true, 'internal'); } } } : undefined}
+  const phoneZapChannels=useMemo(()=>{
+    if(playerSession?.item.kind!=='live')return [];
+    const source=liveItems.filter(item=>!active?.hiddenItems?.includes(item.id)&&!matchesAny(item.group,hiddenGroups));
+    const state=views.live;
+    return createRankedSearch(source)(focused==='live'?state.search:'',focused==='live'&&(!state.search.trim()||state.scope==='category')?state.category:'All',hiddenGroups,false,active?.library?.sort?.live||'provider');
+  },[playerSession?.item.kind,liveItems,active?.hiddenItems,hiddenGroups,views.live,focused,active?.library?.sort?.live]);
+  const changeLiveChannel=(direction:1|-1)=>{if(!playerSession)return;const item=adjacentChannel(phoneZapChannels,playerSession.item.id,direction);if(item)void launch(item,false,'internal');};
+  const playerElement = playerSession && playerOwner.current === (active?.id || 'demo') ? <BuiltInPlayer onNextChannel={playerSession.item.kind==='live'&&phoneZapChannels.length>1?()=>changeLiveChannel(1):undefined} onPreviousChannel={playerSession.item.kind==='live'&&phoneZapChannels.length>1?()=>changeLiveChannel(-1):undefined} recentChannels={playerSession.item.kind === 'live' ? recentChannelPicker(viewing, playerSession.item.id, allItems, { restricted: active?.restrictedGroups, unlocked: !family.enabled || family.unlocked, hidden: active?.hiddenItems }) : undefined} onChannel={item => { void launch(item, false, 'internal'); }} autoplayNext={features.organization && !!active?.autoplayNext} onRegisterStop={stop => { playerStop.current = stop; }} nextEpisode={episodeQueue && episodeQueue.profile === active?.id && followingEpisode(episodeQueue.items, playerSession.item) ? { item: followingEpisode(episodeQueue.items, playerSession.item)!, onPress: () => { const next = followingEpisode(episodeQueue.items, playerSession.item); if (next) { seasonMemory.current.set(`${active?.id}:${episodeQueue.series.id}`, next.group); void launch(next, true, 'internal'); } } } : undefined}
     channelOptions={active?.channelPlayback?.[playerSession.item.id]} onSaveOptions={active ? value => saveChannelOptions(playerSession.item, value) : undefined} minimized={minimized} onMinimize={() => { setMinimized(true); setPlayerFullscreen(false); }}
     savedFit={active?.displayFit} onFit={displayFit => saveProfile(profile => ({ ...profile, displayFit }), 'Could not save display choice.', text=>setMessage({text,tone:'error'}))} fullscreen={playerFullscreen} onFullscreenChange={setPlayerFullscreen} liveEngine={resolvePlayback(active, playerSession.item.id, preferences.player).engine}
     onClose={() => { const series = episodeQueue?.series; const episode = playerSession.item.id.startsWith('episode:'); closePlayer(); if (episode && series && !pagesRef.current.some(entry => entry.page.type === 'series' && entry.page.item.id === series.id)) open({ type: 'series', item: series }); }}

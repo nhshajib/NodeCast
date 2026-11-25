@@ -31,3 +31,5 @@ import './playback-assist.test.mjs';
 import './transfer-preview.test.mjs';
 import './tv-fixes.test.mjs';
 import './refresh-home.test.mjs';
+
+import './player-polish.test.mjs';

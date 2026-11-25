@@ -46,13 +46,15 @@ export function previousChannel(history: ViewingEntry[], currentId: string, cata
 }
 /** Recently watched live channels for a quick picker (most recent first, current excluded). */
 export function recentChannelPicker(history: ViewingEntry[], currentId: string, catalogue: Media[], options: ChannelAccess = {}, limit = 8): Media[] {
-  const result: Media[] = [];
-  let remaining = history;
-  while (result.length < limit) {
-    const next = previousChannel(remaining, currentId, catalogue, options);
-    if (!next) break;
-    result.push(next);
-    remaining = remaining.filter(entry => entry.item.id !== next.id);
+  const result: Media[] = [], byId=new Map(catalogue.map(item=>[item.id,item]));
+  const hidden=new Set(options.hidden||[]),seen=new Set<string>([currentId]);
+  const recent=history.filter(entry=>entry.item.kind==='live').sort((a,b)=>Date.parse(b.lastPlayedAt)-Date.parse(a.lastPlayedAt));
+  for(const entry of recent){
+   if(result.length>=limit)break;
+   if(seen.has(entry.item.id)||hidden.has(entry.item.id))continue;
+   const item=byId.get(entry.item.id);if(!item)continue;
+   if(!options.unlocked&&(matchesAny(item.group,options.restricted||[])||!!item.accessGroup&&options.restricted?.includes(item.accessGroup)))continue;
+   seen.add(item.id);result.push(item);
   }
   return result;
 }

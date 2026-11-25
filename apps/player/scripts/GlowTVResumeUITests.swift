@@ -236,6 +236,12 @@ final class GlowTVResumeUITests: XCTestCase {
     let pause = app.buttons["Pause live TV"]
     XCTAssertTrue(pause.waitForExistence(timeout: 30), app.debugDescription)
     waitForOriginalVideoFrame()
+    tapButton("Next channel")
+    XCTAssertTrue(app.staticTexts["Wild North"].firstMatch.waitForExistence(timeout: 20), "Next must change the playing channel")
+    waitForOriginalVideoFrame()
+    tapButton("Previous channel")
+    XCTAssertTrue(app.staticTexts["Evening studio"].firstMatch.waitForExistence(timeout: 20), "Previous must restore the playing channel")
+    waitForOriginalVideoFrame()
     capture("ios-player")
     tapButton("Player options")
     tapButton("Watch while browsing")
