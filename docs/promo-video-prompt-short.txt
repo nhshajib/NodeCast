@@ -1,0 +1,19 @@
+45s 16:9 promo for GlowTV, a calm premium TV player (iPhone, Android, Android TV, Fire TV). Users add their own playlist. Mood: messy TV turns calm; lamp-lit room at dusk.
+
+Brand: green #1EC677, deep green #0D4029, paper #F7F6F1, night #0A0E0C, LIVE badge red #B42320. Font Instrument Sans; tagline in serif Newsreader. Rounded cards, pill buttons. Logo: green rounded-square TV icon with white play triangle + "GlowTV".
+
+UI: Phone: "Watch" title; deep-green hero card "Evening studio" with green "Watch live" pill; channel rows with red LIVE badges; bottom tabs Home/Live/Guide/Library/Search. Guide: timeline, mint "On now" block, green now-line. TV (dark): left icon rail; big hero with "Watch live" (white focus ring), "TV guide", "Browse channels"; channel rows with logos and hearts.
+
+Shots:
+0-3s Dim room, hand clicks remote at a cluttered TV menu. Buzz, dry clicks.
+3-8s Click becomes soft tock; screen goes black; green glow blooms; logo assembles. Glass ting, warm Rhodes + brushed drums start.
+8-15s Over-shoulder phone: paste playlist link, tap Connect; "4,812 channels found" counts up; Home cascades in. Text: "Bring your own playlist."
+15-22s Tap Watch live, card zooms to full-screen player; swipe down to mini player; browse guide. Text: "A real TV guide."
+22-31s TV: D-pad moves the focus ring (soft tk per press), heart a favorite, Left opens channel list, zap. Text: "Made for the remote."
+31-35s 1s cuts: iPad guide, search, family PIN, encrypted backup. Text: "Profiles · Family PIN · Backups"
+35-40s Phone, iPad, TV float in an arc, slow orbit. Serif text: "Your TV. Finally calm."
+40-45s Night end card: logo, "Free download at glowtv.app", "iPhone · Android · Android TV · Fire TV".
+
+Motion: slow dolly/orbit, springy UI, no glitch, neon or flares.
+
+Rules: made-up demo channels only (Evening studio, Wild North, Quiet studio), flat illustrated thumbnails. No real networks, logos, stars, store badges, prices or ratings. Never say "free channels" or "free TV".
