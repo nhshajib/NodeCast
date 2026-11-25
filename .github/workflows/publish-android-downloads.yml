@@ -90,7 +90,11 @@ jobs:
               result=json.loads((root/f'emulator-design-{edition}-result.json').read_text())
               assert result['native'] and result['actualVideoPixels'] and str(result['androidApi'])=='35'
               assert set(result['screens'])=={'home','guide','player','movies','series','playlists','search','settings'}
-              assert len(set(result['settingsDestinations']))==8
+              # Connection/IP screens were deliberately removed in 1.0.2.
+              # Require every remaining destination by name, not a stale count.
+              playback='Default player' if edition=='mobile' else 'Playback'
+              expected={'Appearance','Family controls',playback,'Library organization','Backup & transfer','Library & storage','Version history'}
+              assert set(result['settingsDestinations'])==expected, (edition,result['settingsDestinations'])
           phone=json.loads(Path('native-check/mobile/emulator-mobile-pause-resume.json').read_text())
           assert phone['cycles']==6 and phone['sameProcess'] and phone['originalVideoPixels']
           tv=json.loads(Path('native-check/tv/emulator-tv-initial-pause.json').read_text())
