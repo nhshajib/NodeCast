@@ -316,7 +316,8 @@ try:
  if not TV:
   # Repeated real touch pauses exercise the native prop-update lifecycle.
   # A matching source/options update must not recreate or crash the decoder.
-  start_native_hierarchy()
+  # Reuse the reader that just verified channel switching. Android allows one
+  # UiAutomation connection; a second reader disconnects the first one.
   player_pid=adb('shell','pidof',package)
   for cycle in range(6):
    touch_player('Pause live TV');expect_phone_control('Play live TV')
