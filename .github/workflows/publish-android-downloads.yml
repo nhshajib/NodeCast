@@ -2,6 +2,11 @@ name: Publish verified GlowTV Android downloads
 on:
   workflow_dispatch:
     inputs:
+      edition:
+        description: Publish only the verified edition; both retains the combined release
+        type: choice
+        default: both
+        options: [both, mobile, tv]
       build_run:
         description: Successful Android phone and TV build run ID
         required: true
@@ -28,6 +33,7 @@ jobs:
       run:
         working-directory: apps/player
     env:
+      EDITION: ${{ inputs.edition || 'both' }}
       BUILD_RUN: ${{ inputs.build_run }}
       CHECK_RUN: ${{ inputs.check_run }}
       SOURCE_SHA: ${{ inputs.source_sha }}
@@ -59,7 +65,9 @@ jobs:
           assert build['path']=='.github/workflows/apps-release.yml'
           # Matrix editions can pass in separate runs. Require each exact job,
           # APK build and native result bundle; never accept a failed edition.
+          editions=os.environ['EDITION'];assert editions in ['both','mobile','tv']
           for edition,runfile,jobsfile in [('mobile','check','phone'),('tv','tv-check','tv')]:
+              if editions!='both' and edition!=editions:continue
               run=json.load(open(f'/tmp/glowtv-{runfile}.json'))
               assert run['status']=='completed' and run['path']=='.github/workflows/android-smoke.yml'
               titles=[f"Check {target} design - APK {os.environ['BUILD_RUN']} - API 35" for target in ['both',edition]]
@@ -69,12 +77,14 @@ jobs:
               assert len(matching)==1 and matching[0]['conclusion']=='success',f'{edition} native audit did not pass'
           PY
       - uses: actions/download-artifact@v4
+        if: inputs.edition != 'tv'
         with:
           name: GlowTV-Android-mobile-emulator-check
           path: apps/player/native-check/mobile
           run-id: ${{ inputs.check_run }}
           github-token: ${{ github.token }}
       - uses: actions/download-artifact@v4
+        if: inputs.edition != 'mobile'
         with:
           name: GlowTV-Android-tv-emulator-check
           path: apps/player/native-check/tv
@@ -83,9 +93,11 @@ jobs:
       - name: Require native screen, settings and playback proofs
         run: |
           python3 - <<'PY'
-          import json
+          import json,os
           from pathlib import Path
+          selected=os.environ['EDITION']
           for edition in ['mobile','tv']:
+              if selected!='both' and edition!=selected:continue
               root=Path('native-check')/edition
               result=json.loads((root/f'emulator-design-{edition}-result.json').read_text())
               assert result['native'] and result['actualVideoPixels'] and str(result['androidApi'])=='35'
@@ -95,14 +107,22 @@ jobs:
               playback='Default player' if edition=='mobile' else 'Playback'
               expected={'Appearance','Family controls',playback,'Library organization','Backup & transfer','Library & storage','Version history'}
               assert set(result['settingsDestinations'])==expected, (edition,result['settingsDestinations'])
-          phone=json.loads(Path('native-check/mobile/emulator-mobile-pause-resume.json').read_text())
-          assert phone['cycles']==6 and phone['sameProcess'] and phone['originalVideoPixels']
-          tv=json.loads(Path('native-check/tv/emulator-tv-initial-pause.json').read_text())
-          assert tv['sameProcess'] and tv['remoteSelect'] and tv['dedicatedMediaKeys']
+          if selected in ['both','mobile']:
+              phone=json.loads(Path('native-check/mobile/emulator-mobile-pause-resume.json').read_text())
+              assert phone['cycles']==6 and phone['sameProcess'] and phone['originalVideoPixels']
+          if selected in ['both','tv']:
+              tv=json.loads(Path('native-check/tv/emulator-tv-initial-pause.json').read_text())
+              assert tv['sameProcess'] and tv['remoteSelect'] and tv['dedicatedMediaKeys']
+          if json.loads(Path('app.json').read_text())['expo']['version']=='1.0.3':
+              for edition in ['mobile','tv']:
+                  if selected!='both' and edition!=selected:continue
+                  proof=json.loads((Path('native-check')/edition/f'emulator-{edition}-channel-transport.json').read_text())
+                  assert proof['next'] and proof['previous'] and proof['decodedOriginalVideo'] and proof['sameProcess']
+                  if edition=='tv':assert proof['remoteOnly']
           PY
       - uses: actions/download-artifact@v4
         with:
-          pattern: GlowTV-Android-*
+          pattern: ${{ inputs.edition == 'mobile' && 'GlowTV-Android-mobile' || inputs.edition == 'tv' && 'GlowTV-Android-tv' || 'GlowTV-Android-*' }}
           path: apps/player/apks
           run-id: ${{ inputs.build_run }}
           github-token: ${{ github.token }}
@@ -115,6 +135,7 @@ jobs:
           import hashlib,json,os,re,subprocess,zipfile
           from pathlib import Path
           for edition,filename in [('mobile','GlowTV.apk'),('tv','GlowTV-TV.apk')]:
+              if os.environ['EDITION']!='both' and edition!=os.environ['EDITION']:continue
               files=list(Path('apks').rglob(filename));assert len(files)==1
               apk=files[0];checksum=apk.with_name(filename+'.sha256').read_text().split()[0]
               assert hashlib.sha256(apk.read_bytes()).hexdigest()==checksum
@@ -131,20 +152,23 @@ jobs:
           set -euo pipefail
           VERSION=$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')
           TAG="glowtv-v${VERSION}"
+          if [ "$EDITION" = mobile ]; then TAG="android-v${VERSION}"; fi
           cat > /tmp/glowtv-android-notes.md <<'NOTES'
-          GlowTV for Android phone, Android TV, Google TV and Fire TV. Choose the correct edition:
+          GlowTV 1.0.3: updated live controls and launch animation.
 
-          - `GlowTV.apk`: touch interface for phones and tablets.
-          - `GlowTV-TV.apk`: dedicated D-pad and remote interface.
+          - Visible Previous and Next channel controls on native and VLC playback.
+          - Quieter header, centered transport and bottom playback actions.
+          - Only the supplied launch film, with the old native splash logo removed.
+          - Reused search data and fewer catalogue rebuilds.
 
-          New GlowTV name, launcher artwork, leaf-green styling and Inter typography. Native phone navigation and on-screen playback settings are retained. TV has an icon rail, featured live content and a compact guide. IMPORTANT: Android signing has moved from the public test key to the private GlowTV release key. Export an encrypted backup BEFORE uninstalling the testing APK, install this edition, then import the backup. A one-time uninstall is required for devices with the old test-signed build; uninstalling without a backup removes local profiles and settings. Future releases using the same private key can update normally.
+          This release contains only the verified edition(s) attached below. GlowTV.apk is for Android phones/tablets; GlowTV-TV.apk is for Android TV and Fire TV remotes. Installation instructions remain in the existing edition folders.
 
-          Both APKs include JavaScript and VLC and work without Expo Go or a computer. SHA-256 files and release-metadata.json describe these exact builds. Original application IDs and the owner-pinned private signing certificate were verified. Native emulator audits passed for both editions; physical-device/provider compatibility still depends on the device and stream.
+          Exact private-key-signed APKs passed native emulator design, decoded-video and playback checks. Original app identifiers and the owner-pinned signing certificate are retained. Physical-device checks were skipped by owner decision. SHA-256 files and release-metadata.json describe these exact assets.
 
-          These are direct-download APKs, not Play Store or Amazon Appstore releases. GlowTV provides no channels, playlists or subscriptions. See the repository CHANGELOG.md and apps/player/android-mobile or apps/player/android-tv for installation and version details.
+          GlowTV is a player only and supplies no channels or subscriptions. Playback depends on your provider, stream and connection.
           NOTES
           if ! gh release view "$TAG" >/dev/null 2>&1; then
-            gh release create "$TAG" --target "$SOURCE_SHA" --draft --title "GlowTV ${VERSION} — Android phone and TV" --notes-file /tmp/glowtv-android-notes.md
+            gh release create "$TAG" --target "$SOURCE_SHA" --draft --title "GlowTV ${VERSION} — Android ${EDITION}" --notes-file /tmp/glowtv-android-notes.md
           fi
           # Replacing the existing test-signed pre-release is the one-time migration.
           # Never silently overwrite a stable release.
