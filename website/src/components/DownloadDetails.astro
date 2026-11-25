@@ -1,7 +1,7 @@
 ---
 import release from '../data/release';
 import type {DownloadPlatform} from '../data/release';
-import {features,editionFolders,versionHighlights} from '../data/downloads';
+import {editionFeatures,editionFolders,versionHighlights} from '../data/downloads';
 import {disclaimer} from '../data/site';
 import Icon from './Icon.astro';
 const {platform}=Astro.props as {platform:DownloadPlatform};
@@ -11,7 +11,7 @@ const guide=platform==='ios'?'iphone':platform==='tv'?'android-tv':'android';
 ---
 <section class="content download-content">
  <h2>Everything you need to settle in</h2>
- <div class="download-features">{features[platform].map(([title,text])=><article><h3>{title}</h3><p>{text}</p></article>)}</div>
+ <div class="download-features">{editionFeatures(platform,item?.version||'0').map(([title,text])=><article><h3>{title}</h3><p>{text}</p></article>)}</div>
  <section class="release-panel" aria-labelledby="release-details"><p class="eyebrow">Know what you are installing</p><h2 id="release-details">Version and download details</h2>
  {item?<><dl class="release-grid"><div><dt class="release-label">Version</dt><dd>{item.version} · {item.prerelease?'Testing release':'Stable release'}</dd></div><div><dt class="release-label">Published</dt><dd>{new Date(item.publishedAt).toLocaleDateString('en',{year:'numeric',month:'long',day:'numeric',timeZone:'UTC'})}</dd></div><div><dt class="release-label">Download size</dt><dd>{(item.size/1048576).toFixed(1)} MiB ({item.size.toLocaleString('en')} bytes)</dd></div><div><dt class="release-label">Minimum OS</dt><dd>{item.minimumOS||'Not listed in the published release'}</dd></div><div class="release-wide"><dt class="release-label">File</dt><dd><code>{item.file}</code></dd></div><div class="release-wide"><dt class="release-label">SHA-256</dt><dd><code>{item.sha256}</code></dd></div></dl><div class="release-links"><a href={item.url}>Direct GitHub download <Icon name="arrow-down" size={16}/></a>{item.checksumUrl&&<a href={item.checksumUrl}>Checksum file</a>}<a href={item.source}>GitHub release page <Icon name="external" size={15}/></a></div></>:<p>No published download is available for this edition yet.</p>}
  </section>

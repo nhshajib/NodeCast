@@ -1,15 +1,20 @@
 ---
 import release from '../data/release';
+import type {DownloadPlatform} from '../data/release';
+import {versionHighlights} from '../data/downloads';
 import Icon from './Icon.astro';
-const glow=Object.values(release.platforms).find(item=>item&&!item.legacy);
+const names={ios:'iPhone and iPad',android:'Android phone and tablet',tv:'Android TV and Fire TV'};
+const editions=Object.entries(release.platforms) as [DownloadPlatform,typeof release.platforms.ios][];
 ---
 <article class="content">
- <p class="eyebrow">{glow?`GlowTV ${glow.version} · Published release`:'In development · GlowTV rebrand'}</p>
- <h2>What’s new in GlowTV</h2>
- <ul><li>GlowTV display name, supplied launcher artwork and leaf-green styling.</li><li>Native phone navigation, sheets and accessible press feedback.</li><li>A dedicated TV rail, featured live content and compact guide.</li><li>App and website separated into independent projects.</li><li>Original demo scenes, platform guides and provider help.</li><li>Existing profiles, playback engines, backups and transition settings retained.</li></ul>
- <p>{glow?'Published GlowTV downloads are listed by platform below. Each release links to its exact version notes and files.':'These are source changes; the new GlowTV binaries are not published yet.'}</p>
- <a class="text-link" href="/changelog/rss.xml">Subscribe to the updates feed (RSS)</a>
- <h2>Published releases</h2><p>Choose an edition for its version-specific release notes.</p>
- <div class="release-links">{Object.entries(release.platforms).map(([edition,item])=>item&&<a href={item.source}>{edition==='ios'?'iPhone':edition==='tv'?'TV':'Android'} {item.version} release notes <Icon name="external" size={15}/></a>)}</div>
+ <p class="eyebrow">Published releases</p>
+ <h2>Latest changes by edition</h2>
+ <p>Each edition links to its published release and the exact files available to download.</p>
+ {editions.map(([edition,item])=>item&&!item.legacy&&<section>
+  <h3>{names[edition]} · {item.version}</h3>
+  <ul>{versionHighlights(edition,item.version).map(change=><li>{change}</li>)}</ul>
+  <a class="text-link" href={item.source}>{names[edition]} {item.version} release notes <Icon name="external" size={15}/></a>
+ </section>)}
+ <p><a class="text-link" href="/changelog/rss.xml">Subscribe to the updates feed (RSS)</a></p>
  <a href="https://github.com/nhshajib/NodeCast/releases">View the complete project release history <Icon name="external" size={15}/></a>
 </article>

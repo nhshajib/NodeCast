@@ -419,7 +419,7 @@
       ],
       [
         "Network and public IP checks",
-        "Public IP and location checks contact an external IP service. They reveal your public address to that service. A home-IP comparison does not verify that a VPN is connected or that traffic is encrypted."
+        "If your installed version includes public IP and location checks, they contact an external service and reveal your public address to it. An IP comparison does not verify that a VPN is connected or that traffic is encrypted."
       ],
       [
         "Backup and transfer",

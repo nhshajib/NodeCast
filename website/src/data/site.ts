@@ -7,7 +7,7 @@ export const faqs = [
  ['Do I need a GlowTV account?', 'No. Your provider profiles and settings stay on your device. You can transfer them with an encrypted backup protected by a password you choose.'],
  ['How do I load the TV guide?', 'Add your provider’s XMLTV URL in the Guide. Programme information depends on your provider and matching channel IDs. Empty schedules do not mean the player is broken.'],
  ['Can I watch past programmes?', 'Catch-up is available for completed programmes when your Xtream provider explicitly supports it and the programme is inside its archive window.'],
- ['Does a different public IP prove my VPN is connected?', 'No. GlowTV can compare your public IP with a home reference. A changed address is not proof of a VPN or a secure connection.'],
+ ['Can I organize my channels?', 'Yes. Save favorites, create your own lists and hide titles separately for each playlist. Family restrictions still apply.'],
  ['Can I cast to another screen?', 'Compatible native playback on iOS supports AirPlay and picture-in-picture. Availability depends on the stream and playback engine. Chromecast is not currently supported.'],
 ];
 export const features: [string, string, string][] = [

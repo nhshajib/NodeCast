@@ -13,7 +13,19 @@ export const features:Record<DownloadPlatform,string[][]>={
  android:[...shared],
  tv:[['Made for your remote','Browse with D-pad, Select and Back on Android TV, Google TV and Fire TV.'],...shared.slice(0,3),['A lighter channel library','Use the default text list, enable grid or logos when you want them, and organize each media library separately.'],shared[5]],
 };
+export function editionFeatures(platform:DownloadPlatform,version:string):string[][] {
+ if(version.localeCompare('1.0.2',undefined,{numeric:true})<0)return features[platform];
+ return features[platform].map(([title,text])=>title==='Favorites, lists and history'?['Your favorites first','Keep a favorite live channel on Home, pin Live TV categories, build lists and resume recent viewing.']:title==='Playback your way'?['Playback, in focus','Centered transport controls and a bottom timeline keep the picture clear. Audio, subtitles and supported player options stay close.']:title==='Your playlists, together'?[title,text+(platform==='tv'?'':' Pull to refresh Home or a library without leaving the screen.')]:[title,text]);
+}
 export function versionHighlights(platform:DownloadPlatform,version:string):string[]{
+ if(version==='1.0.2')return [
+  "Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.",
+  "Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.",
+  "Home features an available favorite live channel; without one, it shows a greeting.",
+  "Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.",
+  "Public-IP/connection screens and lookups removed; older settings and backups remain readable.",
+  "Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks.",
+ ];
  if(version==='1.0.1')return platform==='tv'?[
   'The on-screen keyboard now opens when you select a text box with the remote.',
   'Streams that never start show a clear card after 15 seconds with Retry, Try other player and Next channel, instead of spinning forever.',
