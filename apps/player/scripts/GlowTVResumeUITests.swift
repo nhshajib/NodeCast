@@ -185,11 +185,15 @@ final class GlowTVResumeUITests: XCTestCase {
     fill("Password", "example", secure: true)
     app.swipeUp()
     tapButton("Connect playlist", scroll: true)
-    XCTAssertTrue(app.staticTexts["Evening studio"].firstMatch.waitForExistence(timeout: 30))
+    // With no favorite, Home greets the user and exposes each Live now row
+    // as one accessible button, including channel name, LIVE and category.
+    let homeChannel = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Watch Evening studio, live,")).firstMatch
+    XCTAssertTrue(homeChannel.waitForExistence(timeout: 30), app.debugDescription)
     // Imported content can appear behind a sheet before UIKit finishes dismissal.
     let sheetDeadline = Date().addingTimeInterval(15)
     while app.staticTexts["Add a playlist"].exists && Date() < sheetDeadline { Thread.sleep(forTimeInterval: 0.2) }
     XCTAssertFalse(app.staticTexts["Add a playlist"].exists, "The playlist sheet did not finish dismissing")
+    XCTAssertTrue(homeChannel.isHittable, "The imported live channel must be tappable after the sheet closes")
     capture("ios-home")
     element("navigation-tab-guide").tap()
     app.buttons["Add full TV guide"].tap()
