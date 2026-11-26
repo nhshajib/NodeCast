@@ -33,8 +33,32 @@ The supplied launch films remain unchanged.
 - Browser screenshots are previews, not native-device captures. Font-scale
   fixtures temporarily instrument the installed RN Web Dimensions module and
   restore it immediately; no test hook is shipped in the app.
+- Passing browser scenarios: iPhone 393×852/light, Android 412×915/dark,
+  iPad 1032×1376/light plus landscape Home, small iPhone 360×740/light,
+  iPhone/dark at 2× text, Android 360×740/light at 2× text, and TV
+  960×540 logical at 2×/4× pixel density (1080p/4K output).
+- Each walkthrough exercises favorite/no-favorite Home, category pin ordering,
+  Guide import, series episodes, all seven Settings destinations, live
+  Next/Previous, VOD transport geometry, decoded fixture video, and chrome
+  hide/reveal. No browser page errors or public-IP requests were observed.
+- Changed text pairs measure 5.05:1–15.32:1, including player controls
+  composited over a pure-white video frame.
 - Native verification and publication are pending for build 10005. Existing
   public downloads remain untouched until the relevant native gate passes.
+
+### Review screenshots
+
+| Layout | Before | Updated |
+| --- | --- | --- |
+| iPhone Home | [1.0.3 preview](../verification/glowtv/player-polish-1.0.3/iphone-home.png) | [Home](../verification/glowtv/design-polish-1.0.4/default/iphone-home.png), [Guide](../verification/glowtv/design-polish-1.0.4/default/iphone-guide.png), [Series](../verification/glowtv/design-polish-1.0.4/default/iphone-series.png) |
+| Android player | [1.0.3 preview](../verification/glowtv/player-polish-1.0.3/android-live-player.png) | [Live player](../verification/glowtv/design-polish-1.0.4/default/android-live-player.png), [Settings](../verification/glowtv/design-polish-1.0.4/default/android-settings.png) |
+| iPad | [1.0.3 Home](../verification/glowtv/player-polish-1.0.3/ipad-home.png) | [Movies](../verification/glowtv/design-polish-1.0.4/default/ipad-movies.png), [Landscape Home](../verification/glowtv/design-polish-1.0.4/default/ipad-landscape-home.png) |
+| TV | [1.0.3 Home](../verification/glowtv/player-polish-1.0.3/tv-home.png) | [Home](../verification/glowtv/design-polish-1.0.4/tv-4k/tv-home.png), [Guide](../verification/glowtv/design-polish-1.0.4/tv-4k/tv-guide.png) |
+| Large text | — | [Dark iPhone Guide](../verification/glowtv/design-polish-1.0.4/iphone-dark-large-text/iphone-guide.png), [Light Android Live](../verification/glowtv/design-polish-1.0.4/android-light-large-text/android-live.png) |
+
+Build source: `792bd9c9fc55e6a0fc3b32f953600634c448f340`.
+[Android build](https://github.com/nhshajib/NodeCast/actions/runs/45828787534).
+[iPhone/iPad build](https://github.com/nhshajib/NodeCast/actions/runs/45828793220).
 
 The preceding iPhone run 45726368221 passed its cold-start/background-resume
 test. Its design test failed because XCUITest spent longer than the four-second

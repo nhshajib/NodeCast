@@ -1,0 +1,53 @@
+{
+  "method": "WCAG relative luminance; 90%-opaque night controls composited over pure white as the video worst case",
+  "pairs": {
+    "primary action": {
+      "foreground": "#0D4029",
+      "background": "#1EC677",
+      "ratio": 5.27,
+      "pass": true
+    },
+    "light body": {
+      "foreground": "#646B67",
+      "background": "#F7F6F1",
+      "ratio": 5.05,
+      "pass": true
+    },
+    "light link": {
+      "foreground": "#0B7A47",
+      "background": "#FFFFFF",
+      "ratio": 5.4,
+      "pass": true
+    },
+    "dark body": {
+      "foreground": "#A3ADA7",
+      "background": "#0F1412",
+      "ratio": 8.05,
+      "pass": true
+    },
+    "light selection": {
+      "foreground": "#0D4029",
+      "background": "#DDF4E7",
+      "ratio": 10.19,
+      "pass": true
+    },
+    "dark selection": {
+      "foreground": "#C9F5DD",
+      "background": "#1F4A36",
+      "ratio": 8.41,
+      "pass": true
+    },
+    "video white on worst-case control composite": {
+      "foreground": "#FFFFFF",
+      "background": "#222624",
+      "ratio": 15.32,
+      "pass": true
+    },
+    "video secondary on worst-case control composite": {
+      "foreground": "#A3ADA7",
+      "background": "#222624",
+      "ratio": 6.63,
+      "pass": true
+    }
+  }
+}

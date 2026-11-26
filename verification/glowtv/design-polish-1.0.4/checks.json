@@ -1,0 +1,1436 @@
+{
+  "sourceCommit": "792bd9c9fc55e6a0fc3b32f953600634c448f340",
+  "version": "1.0.4",
+  "build": 10005,
+  "typecheck": "passed",
+  "appTests": {
+    "passed": 192,
+    "failed": 0
+  },
+  "grid": "passed: 524 properties",
+  "protectedScope": "passed",
+  "exports": [
+    "ios",
+    "android",
+    "tv"
+  ],
+  "variants": {
+    "default": {
+      "iphone": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "light",
+        "viewport": [
+          393,
+          852
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      },
+      "android": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "dark",
+        "viewport": [
+          412,
+          915
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      },
+      "ipad": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "light",
+        "viewport": [
+          1032,
+          1376
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      },
+      "tv": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": true,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "dark",
+        "viewport": [
+          960,
+          540
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Playback",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      }
+    },
+    "small-light": {
+      "iphone": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "light",
+        "viewport": [
+          360,
+          740
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      }
+    },
+    "iphone-dark-large-text": {
+      "iphone": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 2.0,
+        "theme": "dark",
+        "viewport": [
+          393,
+          852
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      }
+    },
+    "android-light-large-text": {
+      "android": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": false,
+        "pageErrors": [],
+        "fontScale": 2.0,
+        "theme": "light",
+        "viewport": [
+          360,
+          740
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Default player",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      }
+    },
+    "tv-4k": {
+      "tv": {
+        "greetingWithoutFavorite": true,
+        "favoriteLiveHero": true,
+        "categoryPinAndOrder": true,
+        "noConnectionSettings": true,
+        "noPublicIPRequests": true,
+        "centeredPlayer": true,
+        "visibleNextAndPrevious": true,
+        "videoShadeFollowsControls": true,
+        "categorySettingsUsesCachedCatalog": true,
+        "pageErrors": [],
+        "fontScale": 1.0,
+        "theme": "dark",
+        "viewport": [
+          960,
+          540
+        ],
+        "scope": "Browser platform preview, not a native device test",
+        "settingsDestinations": [
+          "Appearance",
+          "Family controls",
+          "Playback",
+          "Library organization",
+          "Backup & transfer",
+          "Library & storage",
+          "Version history"
+        ],
+        "guideAndSeries": true
+      }
+    }
+  },
+  "screenshots": {
+    "android-light-large-text/android-add-playlist.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 104964
+    },
+    "android-light-large-text/android-category-settings.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 56636
+    },
+    "android-light-large-text/android-greeting.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 72805
+    },
+    "android-light-large-text/android-guide.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 86845
+    },
+    "android-light-large-text/android-home.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 89160
+    },
+    "android-light-large-text/android-live-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 87420
+    },
+    "android-light-large-text/android-live.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 103962
+    },
+    "android-light-large-text/android-movie-detail.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 58516
+    },
+    "android-light-large-text/android-movies.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 91454
+    },
+    "android-light-large-text/android-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 74878
+    },
+    "android-light-large-text/android-series.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 103290
+    },
+    "android-light-large-text/android-settings-appearance.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 48986
+    },
+    "android-light-large-text/android-settings-backup-&-transfer.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 115515
+    },
+    "android-light-large-text/android-settings-default-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 95382
+    },
+    "android-light-large-text/android-settings-family-controls.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 106475
+    },
+    "android-light-large-text/android-settings-library-&-storage.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 113499
+    },
+    "android-light-large-text/android-settings-library-organization.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 101269
+    },
+    "android-light-large-text/android-settings-version-history.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 109058
+    },
+    "android-light-large-text/android-settings.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 107329
+    },
+    "default/android-add-playlist.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 133833
+    },
+    "default/android-category-settings.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 40300
+    },
+    "default/android-greeting.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 53078
+    },
+    "default/android-guide.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 74787
+    },
+    "default/android-home.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 72049
+    },
+    "default/android-live-player.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 67497
+    },
+    "default/android-live.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 81868
+    },
+    "default/android-movie-detail.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 49052
+    },
+    "default/android-movies.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 63472
+    },
+    "default/android-player-options.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 77868
+    },
+    "default/android-player.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 67931
+    },
+    "default/android-search.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 61909
+    },
+    "default/android-series.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 85481
+    },
+    "default/android-settings-appearance.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 37172
+    },
+    "default/android-settings-backup-&-transfer.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 162322
+    },
+    "default/android-settings-default-player.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 117724
+    },
+    "default/android-settings-family-controls.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 88628
+    },
+    "default/android-settings-library-&-storage.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 63993
+    },
+    "default/android-settings-library-organization.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 104971
+    },
+    "default/android-settings-version-history.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 176276
+    },
+    "default/android-settings.png": {
+      "pixels": [
+        824,
+        1830
+      ],
+      "bytes": 143430
+    },
+    "default/ipad-add-playlist.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 154919
+    },
+    "default/ipad-category-settings.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 55342
+    },
+    "default/ipad-greeting.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 78923
+    },
+    "default/ipad-guide.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 134867
+    },
+    "default/ipad-home.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 98197
+    },
+    "default/ipad-landscape-home.png": {
+      "pixels": [
+        2752,
+        2064
+      ],
+      "bytes": 98455
+    },
+    "default/ipad-live-player.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 83686
+    },
+    "default/ipad-live.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 87619
+    },
+    "default/ipad-movie-detail.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 62978
+    },
+    "default/ipad-movies.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 123273
+    },
+    "default/ipad-player-options.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 101654
+    },
+    "default/ipad-player.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 83866
+    },
+    "default/ipad-search.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 89769
+    },
+    "default/ipad-series.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 101478
+    },
+    "default/ipad-settings-appearance.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 50380
+    },
+    "default/ipad-settings-backup-&-transfer.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 169606
+    },
+    "default/ipad-settings-default-player.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 130964
+    },
+    "default/ipad-settings-family-controls.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 99038
+    },
+    "default/ipad-settings-library-&-storage.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 74918
+    },
+    "default/ipad-settings-library-organization.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 187777
+    },
+    "default/ipad-settings-version-history.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 235398
+    },
+    "default/ipad-settings.png": {
+      "pixels": [
+        2064,
+        2752
+      ],
+      "bytes": 206677
+    },
+    "default/iphone-add-playlist.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 114906
+    },
+    "default/iphone-category-settings.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 39765
+    },
+    "default/iphone-greeting.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 63733
+    },
+    "default/iphone-guide.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 77078
+    },
+    "default/iphone-home.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 82100
+    },
+    "default/iphone-live-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 65340
+    },
+    "default/iphone-live.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 70748
+    },
+    "default/iphone-movie-detail.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 47653
+    },
+    "default/iphone-movies.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 62887
+    },
+    "default/iphone-player-options.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 73894
+    },
+    "default/iphone-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 65409
+    },
+    "default/iphone-search.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 71899
+    },
+    "default/iphone-series.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 81453
+    },
+    "default/iphone-settings-appearance.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 35439
+    },
+    "default/iphone-settings-backup-&-transfer.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 154834
+    },
+    "default/iphone-settings-default-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 116266
+    },
+    "default/iphone-settings-family-controls.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 90866
+    },
+    "default/iphone-settings-library-&-storage.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 61375
+    },
+    "default/iphone-settings-library-organization.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 86227
+    },
+    "default/iphone-settings-version-history.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 163821
+    },
+    "default/iphone-settings.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 129242
+    },
+    "default/tv-add-playlist.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 90076
+    },
+    "default/tv-category-from-settings.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 72257
+    },
+    "default/tv-category-settings.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 72257
+    },
+    "default/tv-greeting.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 68623
+    },
+    "default/tv-guide.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 166929
+    },
+    "default/tv-home.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 87225
+    },
+    "default/tv-live-player.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 61153
+    },
+    "default/tv-live.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 97191
+    },
+    "default/tv-player-options.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 64050
+    },
+    "default/tv-player.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 71842
+    },
+    "default/tv-search.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 76102
+    },
+    "default/tv-series.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 82263
+    },
+    "default/tv-settings-appearance.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 59937
+    },
+    "default/tv-settings-backup-&-transfer.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 148795
+    },
+    "default/tv-settings-family-controls.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 97846
+    },
+    "default/tv-settings-library-&-storage.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 95151
+    },
+    "default/tv-settings-library-organization.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 114635
+    },
+    "default/tv-settings-playback.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 101661
+    },
+    "default/tv-settings-version-history.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 144512
+    },
+    "default/tv-settings.png": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "bytes": 91418
+    },
+    "iphone-dark-large-text/iphone-add-playlist.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 122705
+    },
+    "iphone-dark-large-text/iphone-category-settings.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 58777
+    },
+    "iphone-dark-large-text/iphone-greeting.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 91646
+    },
+    "iphone-dark-large-text/iphone-guide.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 92766
+    },
+    "iphone-dark-large-text/iphone-home.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 112083
+    },
+    "iphone-dark-large-text/iphone-live-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 98631
+    },
+    "iphone-dark-large-text/iphone-live.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 98324
+    },
+    "iphone-dark-large-text/iphone-movie-detail.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 72715
+    },
+    "iphone-dark-large-text/iphone-movies.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 111073
+    },
+    "iphone-dark-large-text/iphone-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 98218
+    },
+    "iphone-dark-large-text/iphone-series.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 115921
+    },
+    "iphone-dark-large-text/iphone-settings-appearance.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 52284
+    },
+    "iphone-dark-large-text/iphone-settings-backup-&-transfer.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 150823
+    },
+    "iphone-dark-large-text/iphone-settings-default-player.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 128981
+    },
+    "iphone-dark-large-text/iphone-settings-family-controls.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 126580
+    },
+    "iphone-dark-large-text/iphone-settings-library-&-storage.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 117507
+    },
+    "iphone-dark-large-text/iphone-settings-library-organization.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 123688
+    },
+    "iphone-dark-large-text/iphone-settings-version-history.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 140139
+    },
+    "iphone-dark-large-text/iphone-settings.png": {
+      "pixels": [
+        786,
+        1704
+      ],
+      "bytes": 124319
+    },
+    "small-light/iphone-add-playlist.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 94990
+    },
+    "small-light/iphone-category-settings.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 38580
+    },
+    "small-light/iphone-greeting.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 62076
+    },
+    "small-light/iphone-guide.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 69768
+    },
+    "small-light/iphone-home.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 80337
+    },
+    "small-light/iphone-live-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 63777
+    },
+    "small-light/iphone-live.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 69023
+    },
+    "small-light/iphone-movie-detail.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 45802
+    },
+    "small-light/iphone-movies.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 55511
+    },
+    "small-light/iphone-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 62735
+    },
+    "small-light/iphone-series.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 78182
+    },
+    "small-light/iphone-settings-appearance.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 34283
+    },
+    "small-light/iphone-settings-backup-&-transfer.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 128971
+    },
+    "small-light/iphone-settings-default-player.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 109350
+    },
+    "small-light/iphone-settings-family-controls.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 91656
+    },
+    "small-light/iphone-settings-library-&-storage.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 60488
+    },
+    "small-light/iphone-settings-library-organization.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 76633
+    },
+    "small-light/iphone-settings-version-history.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 129951
+    },
+    "small-light/iphone-settings.png": {
+      "pixels": [
+        720,
+        1480
+      ],
+      "bytes": 109007
+    },
+    "tv-4k/tv-add-playlist.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 200185
+    },
+    "tv-4k/tv-category-from-settings.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 160368
+    },
+    "tv-4k/tv-category-settings.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 160368
+    },
+    "tv-4k/tv-greeting.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 150523
+    },
+    "tv-4k/tv-guide.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 349143
+    },
+    "tv-4k/tv-home.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 187887
+    },
+    "tv-4k/tv-live-player.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 138021
+    },
+    "tv-4k/tv-live.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 208260
+    },
+    "tv-4k/tv-player.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 159534
+    },
+    "tv-4k/tv-series.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 177104
+    },
+    "tv-4k/tv-settings-appearance.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 133111
+    },
+    "tv-4k/tv-settings-backup-&-transfer.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 311978
+    },
+    "tv-4k/tv-settings-family-controls.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 215065
+    },
+    "tv-4k/tv-settings-library-&-storage.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 200736
+    },
+    "tv-4k/tv-settings-library-organization.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 249067
+    },
+    "tv-4k/tv-settings-playback.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 219834
+    },
+    "tv-4k/tv-settings-version-history.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 295525
+    },
+    "tv-4k/tv-settings.png": {
+      "pixels": [
+        3840,
+        2160
+      ],
+      "bytes": 196488
+    }
+  },
+  "contrast": {
+    "method": "WCAG relative luminance; 90%-opaque night controls composited over pure white as the video worst case",
+    "pairs": {
+      "primary action": {
+        "foreground": "#0D4029",
+        "background": "#1EC677",
+        "ratio": 5.27,
+        "pass": true
+      },
+      "light body": {
+        "foreground": "#646B67",
+        "background": "#F7F6F1",
+        "ratio": 5.05,
+        "pass": true
+      },
+      "light link": {
+        "foreground": "#0B7A47",
+        "background": "#FFFFFF",
+        "ratio": 5.4,
+        "pass": true
+      },
+      "dark body": {
+        "foreground": "#A3ADA7",
+        "background": "#0F1412",
+        "ratio": 8.05,
+        "pass": true
+      },
+      "light selection": {
+        "foreground": "#0D4029",
+        "background": "#DDF4E7",
+        "ratio": 10.19,
+        "pass": true
+      },
+      "dark selection": {
+        "foreground": "#C9F5DD",
+        "background": "#1F4A36",
+        "ratio": 8.41,
+        "pass": true
+      },
+      "video white on worst-case control composite": {
+        "foreground": "#FFFFFF",
+        "background": "#222624",
+        "ratio": 15.32,
+        "pass": true
+      },
+      "video secondary on worst-case control composite": {
+        "foreground": "#A3ADA7",
+        "background": "#222624",
+        "ratio": 6.63,
+        "pass": true
+      }
+    }
+  },
+  "native": {
+    "androidBuild": 45828787534,
+    "iPhoneBuild": 45828793220,
+    "status": "running; not yet verified",
+    "physicalDeviceTested": false
+  },
+  "installationInstructionsChanged": false
+}

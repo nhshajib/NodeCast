@@ -1,0 +1,31 @@
+{
+  "tv": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": true,
+    "pageErrors": [],
+    "fontScale": 1.0,
+    "theme": "dark",
+    "viewport": [
+      960,
+      540
+    ],
+    "scope": "Browser platform preview, not a native device test",
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Playback",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Version history"
+    ],
+    "guideAndSeries": true
+  }
+}

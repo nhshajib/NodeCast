@@ -1,0 +1,31 @@
+{
+  "iphone": {
+    "greetingWithoutFavorite": true,
+    "favoriteLiveHero": true,
+    "categoryPinAndOrder": true,
+    "noConnectionSettings": true,
+    "noPublicIPRequests": true,
+    "centeredPlayer": true,
+    "visibleNextAndPrevious": true,
+    "videoShadeFollowsControls": true,
+    "categorySettingsUsesCachedCatalog": false,
+    "pageErrors": [],
+    "fontScale": 1.0,
+    "theme": "light",
+    "viewport": [
+      360,
+      740
+    ],
+    "scope": "Browser platform preview, not a native device test",
+    "settingsDestinations": [
+      "Appearance",
+      "Family controls",
+      "Default player",
+      "Library organization",
+      "Backup & transfer",
+      "Library & storage",
+      "Version history"
+    ],
+    "guideAndSeries": true
+  }
+}
