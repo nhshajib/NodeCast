@@ -264,7 +264,9 @@ try:
   click('Live TV');click('Save favorite: Evening studio');home();click('Settings');click('Library organization',True)
   # Logos default to On. Set that state explicitly rather than blindly
   # toggling it Off and publishing an initials-only view of the normal UI.
-  find('Channel logos in list view',scroll=True)
+  # The remote reveal may use most of find()'s short deadline to scroll; read
+  # the switch after it returns instead of timing out before the next dump.
+  h.remote.reveal('Channel logos in list view',timeout=60)
   def logos_enabled():
    node=next(n for n in h.dump().iter('node')if n.get('content-desc')=='Channel logos in list view')
    return node.get('checked')=='true'or any(n.get('text')=='On'for n in node.iter())
