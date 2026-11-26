@@ -261,7 +261,16 @@ try:
   find('Evening studio',timeout=45)
   assert not any(n.get('content-desc')=='Connect playlist' for n in h.dump().iter('node')),'Playlist form must close before checking the first native tab selection'
  if TV:
-  click('Live TV');click('Save favorite: Evening studio');home();click('Settings');click('Library organization',True);click('Channel logos in list view',True);back();home();time.sleep(3)
+  click('Live TV');click('Save favorite: Evening studio');home();click('Settings');click('Library organization',True)
+  # Logos default to On. Set that state explicitly rather than blindly
+  # toggling it Off and publishing an initials-only view of the normal UI.
+  find('Channel logos in list view',scroll=True)
+  def logos_enabled():
+   node=next(n for n in h.dump().iter('node')if n.get('content-desc')=='Channel logos in list view')
+   return node.get('checked')=='true'or any(n.get('text')=='On'for n in node.iter())
+  if not logos_enabled():click('Channel logos in list view',True)
+  assert logos_enabled(),'Channel logos must be enabled for native captures'
+  back();home();time.sleep(3)
  capture('home')
  if TV:
   start_native_hierarchy()

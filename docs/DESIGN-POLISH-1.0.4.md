@@ -60,6 +60,12 @@ Build source: `792bd9c9fc55e6a0fc3b32f953600634c448f340`.
 [Android build](https://github.com/nhshajib/NodeCast/actions/runs/45828787534).
 [iPhone/iPad build](https://github.com/nhshajib/NodeCast/actions/runs/45828793220).
 
+Capture maintenance: the Android importer accepts the verified package version
+to place its scene-color probe below 1.0.4's wider transport controls. The
+original color ranges and >50% scene threshold are unchanged (the new clear
+probe measures 100%; a black surface still fails). TV capture setup now sets
+logos explicitly On instead of blindly toggling the current default Off.
+
 The preceding iPhone run 45726368221 passed its cold-start/background-resume
 test. Its design test failed because XCUITest spent longer than the four-second
 chrome timeout re-resolving a Back tap after restoring the mini player. The test
