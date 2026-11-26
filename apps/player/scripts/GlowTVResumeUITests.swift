@@ -253,7 +253,13 @@ final class GlowTVResumeUITests: XCTestCase {
     } else { XCTAssertLessThan(mini.frame.maxY, app.frame.maxY) }
     capture("ios-mini-player")
     mini.tap()
-    tapButton("Back to library")
+    // The simulator can spend longer than the four-second chrome timeout
+    // re-resolving button.tap()'s scroll-to-visible snapshot. Restore the
+    // chrome if needed and tap its verified visible coordinates immediately.
+    let playerBack = app.buttons["Back to library"]
+    if !playerBack.isHittable { tapButton("Show player controls") }
+    XCTAssertTrue(playerBack.isHittable, "Restored player must expose Back")
+    playerBack.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5)).tap()
     element("navigation-tab-library").tap()
     tapLibrarySegment("Movies")
     XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", "Open Tidewater,")).firstMatch.waitForExistence(timeout: 30))

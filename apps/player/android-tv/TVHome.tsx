@@ -3,7 +3,7 @@ import {HomeSkeleton} from '../src/Skeletons';
 import {H2} from '../src/ui';
 import { Text } from '../src/Typography';
 import React from 'react';
-import { ActivityIndicator, Image, ScrollView, View, useWindowDimensions } from 'react-native';
+import { ActivityIndicator, Image, ScrollView, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Pressable from '../src/FocusPressable';
 import { Button, Icon, colors, u } from '../src/ui';
@@ -18,7 +18,7 @@ function Artwork({ item, logos, height }: { item: Media; logos: boolean; height:
   const logo = item.kind === 'live' ? (logos ? item.logo : undefined) : item.logo;
   return <View style={{ height, borderRadius: 12, backgroundColor: colors.pale, alignItems: 'center', justifyContent: 'center', overflow: 'hidden', padding: item.kind === 'live' ? 16 : 0 }}>
     {logo ? <Image source={{ uri: logo }} resizeMode={item.kind === 'live' ? 'contain' : 'cover'} resizeMethod="resize" style={{ width: '100%', height: '100%' }} />
-      : <Text style={{ fontSize: 28, fontWeight: '700', color: colors.link }}>{item.name.trim().slice(0, 2).toUpperCase()}</Text>}
+      : <Text style={{ fontSize: 24, fontWeight: '500', color: colors.link }}>{item.name.trim().slice(0, 2).toUpperCase()}</Text>}
   </View>;
 }
 function Row({ title, entries, logos, onPlay }: { title: string; entries: { item: Media; entry?: ViewingEntry }[]; logos: boolean; onPlay: (item: Media) => void }) {
@@ -35,7 +35,6 @@ function Row({ title, entries, logos, onPlay }: { title: string; entries: { item
 }
 /** Content-only TV landing page. Provider, history and playback still belong to TVApp. */
 export default function TVHome(p: Props) {
-  const { height } = useWindowDimensions();
   const recent = p.recent.filter(entry => !entry.completed).slice(0, 12);
   const item=favoriteLiveChannel(p.items,p.favorites.map(item=>item.id));
   const heroLogo=item&&p.showChannelLogos?(item.artwork||(item.logo?{uri:item.logo}:undefined)):undefined;
@@ -43,16 +42,16 @@ export default function TVHome(p: Props) {
   const playlist = p.items.filter(row => !recentIds.has(row.id)).slice(0, 12);
   const loading = p.busy && !p.items.length;
   return <View style={{ flex: 1 }}>
-    <ScrollView nativeID="tv-scope:home" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 48, gap: 16 }}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', paddingTop: 8 }}><Pressable accessibilityRole="button" accessibilityLabel="Manage playlists" onPress={p.onProfiles} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 44, paddingHorizontal: 16, borderRadius: 999 }}><Text numberOfLines={1} style={u.small}>{p.profileName || 'Your playlists'}</Text><Icon name="person-circle-outline" color={colors.text} size={28} /></Pressable></View>
-      {loading?<HomeSkeleton/>:<View style={{ minHeight: item?Math.max(220, Math.min(340, height * .4)):0, borderRadius: item?16:0, overflow: 'hidden', backgroundColor: item?colors.featured:'transparent', justifyContent: 'center' }}>
-        {!!heroLogo&&<Image source={heroLogo} resizeMode="contain" resizeMethod="resize" style={{position:'absolute',top:32,bottom:32,right:48,width:'28%'}}/>}
-        <View style={{ padding: 24, maxWidth: 720, gap: 16 }}>
-          {item&&<View style={[u.row, { gap: 8 }]}>{item?.kind === 'live' && <View style={{ backgroundColor: colors.live, paddingHorizontal: 8, borderRadius: 4 }}><Text style={{ color: colors.onVideo, fontWeight: '600', fontSize: 16, lineHeight: 32 }}>Live</Text></View>}<Text style={{ color: colors.videoLink, fontSize: 18, fontWeight: '600' }}>{item?'Your favorite channel':''}</Text></View>}
-          <Text numberOfLines={2} style={{ color: item?colors.onVideo:colors.text, fontFamily: 'Display-500', fontWeight: '500', fontSize: 44, lineHeight: 52 }}>{item?.name || homeGreeting(new Date().getHours())}</Text>
+    <ScrollView nativeID="tv-scope:home" showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8, paddingBottom: 48, gap: 24 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between',alignItems:'center' }}><H2>Watch</H2><Pressable accessibilityRole="button" accessibilityLabel="Manage playlists" onPress={p.onProfiles} style={{ flexDirection: 'row', alignItems: 'center', gap: 8, minHeight: 44, paddingHorizontal: 16, borderRadius: 999 }}><Text numberOfLines={1} style={u.small}>{p.profileName || 'Your playlists'}</Text><Icon name="person-circle-outline" color={colors.text} size={28} /></Pressable></View>
+      {loading?<HomeSkeleton/>:<View style={{ minHeight: item?200:0, borderRadius: item?16:0, overflow: 'hidden', backgroundColor: item?colors.featured:'transparent', justifyContent: 'center' }}>
+        {!!heroLogo&&<Image source={heroLogo} resizeMode="contain" resizeMethod="resize" style={{position:'absolute',top:24,bottom:88,right:32,width:'24%'}}/>}
+        <View style={{ padding: 24, paddingBottom:8, maxWidth:heroLogo?'68%':'100%', gap: 8 }}>
+          {item&&<View style={[u.row, { gap: 8 }]}>{item?.kind === 'live' && <View style={{ backgroundColor: 'transparent', paddingHorizontal: 0, borderRadius: 0 }}><Text style={{ color: colors.onVideo, fontWeight: '500', fontSize: 16, lineHeight: 24 }}>Live</Text></View>}<Text style={{ color: colors.videoLink, fontSize: 16, fontWeight: '500' }}>{item?'Favorite channel':''}</Text></View>}
+          <Text numberOfLines={2} style={{ color: item?colors.onVideo:colors.text, fontFamily: item?'Display-500':'Sans-400', fontWeight: '500', fontSize: item?36:24, lineHeight:item?44:32 }}>{item?.name || homeGreeting(new Date().getHours())}</Text>
           {item&&<Text numberOfLines={2} style={{ color: colors.onVideoSecondary, fontSize: 16, lineHeight: 23 }}>{groupLabel(item.group)}</Text>}
-          {(!item&&p.profileName)?null:<View style={[u.row, { flexWrap: 'wrap', marginTop: 8 }]}><Button nativeID="tv-preferred:home-watch-live" title={item?'Watch live':p.profileName?'Browse channels':'Add your playlist'} icon={item ? 'play' : 'add'} onPress={() => item ? p.onPlay(item) : p.profileName?p.onLive():p.onAdd()} /><Button title="TV guide" variant="secondary" onPress={p.onGuide} /><Button title="Browse channels" variant="secondary" onPress={p.onLive} /></View>}
         </View>
+          {(!item&&p.profileName)?null:<View style={[u.row, { flexWrap: 'wrap', paddingHorizontal:24,paddingBottom:24,paddingTop:8 }]}><Button nativeID="tv-preferred:home-watch-live" title={item?'Watch live':p.profileName?'Browse channels':'Add your playlist'} icon={item ? 'play' : 'add'} onPress={() => item ? p.onPlay(item) : p.profileName?p.onLive():p.onAdd()} /><Button title="TV guide" variant="secondary" onPress={p.onGuide} /><Button title="Browse channels" variant="secondary" onPress={p.onLive} /></View>}
       </View>}
       {p.busy&&!loading&&<View accessibilityLiveRegion="polite" style={[u.row,{gap:8}]}><ActivityIndicator color={colors.link}/><Text style={u.small}>{p.loadStep||'Updating your library…'}</Text></View>}
       {!!p.error && <View style={{ gap: 16 }}><Text accessibilityRole="alert" style={u.errorText}>{p.error}</Text><Button title="Try again" onPress={p.onRetry} /><Button title="Manage playlists" variant="secondary" onPress={p.onProfiles} /></View>}

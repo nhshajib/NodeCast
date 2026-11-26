@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { ActivityIndicator, StyleSheet, TextInput, View, useWindowDimensions, Platform } from 'react-native';
 import { AppIcon } from './icons';
 import type { IconName } from './icons';
-import { space, control, tvType } from './designTokens';
+import { space, control, tvType, typeScale, layout } from './designTokens';
 export type { IconName } from './icons';
 export { colors } from './theme';
 import { colors, themedStyles, isDarkTheme, androidDesign, tvDesign } from './theme';
@@ -54,19 +54,19 @@ export function SectionHeading({ title, action, onAction }: { title: string; act
 }
 export const u = themedStyles(() => ({
   root: { flex: 1, backgroundColor: colors.bg }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', gap: 16 },
-  body: { color: colors.secondary, fontSize: 15, lineHeight: 23 }, small: { color: colors.secondary, fontSize: 13, lineHeight: 20 },
-  h1: { fontSize: 32, lineHeight: 40, fontFamily: 'Sans-600', fontWeight: '600', color: colors.text, letterSpacing: -.4 }, display: { fontSize: 34, lineHeight: 40, fontFamily: 'Display-500', fontWeight: '500', color: colors.text, letterSpacing: -.2 }, h2: { fontSize: 19, lineHeight: 25, color: colors.text, fontWeight: '600', letterSpacing: -.2 },
-  label: { fontSize: 16, lineHeight: 22, color: colors.text, fontWeight: '600' }, eyebrow: { fontSize: 13, lineHeight: 18, fontWeight: '600', letterSpacing: 0, color: colors.secondary },
+  body: { color: colors.secondary, fontSize: typeScale.body, lineHeight: 22 }, small: { color: colors.secondary, fontSize: typeScale.caption, lineHeight: 19 },
+  h1: { fontSize: typeScale.title, lineHeight: 34, fontFamily: 'Sans-600', fontWeight: '600', color: colors.text, letterSpacing: -.4 }, display: { fontSize: typeScale.contentTitle, lineHeight: 32, fontFamily: 'Display-500', fontWeight: '500', color: colors.text, letterSpacing: -.2 }, h2: { fontSize: typeScale.section, lineHeight: 24, color: colors.text, fontWeight: '600', letterSpacing: 0 },
+  label: { fontSize: typeScale.label, lineHeight: 21, color: colors.text, fontWeight: '500' }, eyebrow: { fontSize: 13, lineHeight: 18, fontWeight: '500', letterSpacing: 0, color: colors.secondary },
   between: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 16 }, row: { flexDirection: 'row', alignItems: 'center', gap: 16 },
   section: { gap: space.sm },
   card: { backgroundColor: colors.panel, borderRadius: 16, padding: 16, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.line, gap: space.sm },
-  button: { minHeight: control.input, paddingVertical: space.sm, paddingHorizontal: space.md, backgroundColor: colors.primary, borderRadius: 999, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: space.xs },
-  buttonText: { fontSize: tvDesign ? tvType.button : 15, color: colors.primaryText, fontWeight: '600', textAlign: 'center', flexShrink: 1 }, secondaryButton: { backgroundColor: colors.panel, borderWidth: 1, borderColor: colors.line },
+  button: { minHeight: tvDesign?control.input:control.touch, paddingVertical: space.xs, paddingHorizontal: space.sm, backgroundColor: colors.primary, borderRadius: tvDesign?16:12, justifyContent: 'center', alignItems: 'center', flexDirection: 'row', gap: space.xs },
+  buttonText: { fontSize: tvDesign ? tvType.button : 15, color: colors.primaryText, fontWeight: '600', textAlign: 'center', flexShrink: 1 }, secondaryButton: { backgroundColor: colors.surface, borderWidth: 0, borderColor: colors.line },
   iconButton: { width: control.touch, height: control.touch, borderRadius: 12, backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'center' },
   input: { outlineWidth: 0, backgroundColor: colors.panel, borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 16, color: colors.text, fontSize: tvDesign?18:16, minHeight: control.input },
   fieldLabel: { fontSize: tvDesign ? tvType.small : 13, fontWeight: '600', color: colors.text }, link: { color: colors.link, fontSize: tvDesign ? tvType.small : 13, fontWeight: '700' },
   empty: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: space.md, gap: 16 }, emptyIcon: { width: 48, height: 48, alignItems: 'center', justifyContent: 'center', backgroundColor: 'transparent' },
   notice: { paddingVertical: space.xs, gap: space.xs }, divider: { height: 1, backgroundColor: colors.line },
   modalHeader: { paddingHorizontal: 24, paddingTop: 8, paddingBottom: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', gap: 16 },
-  content: { maxWidth: 720, alignSelf: 'center', width: '100%', paddingHorizontal: space.md, paddingTop: space.sm, paddingBottom: 128, gap: 24 }, errorText: { color: colors.danger, fontSize: 13, lineHeight: 20 },
+  content: { maxWidth: 720, alignSelf: 'center', width: '100%', paddingHorizontal: layout.phoneGutter, paddingTop: space.sm, paddingBottom: 128, gap: layout.sectionGap }, errorText: { color: colors.danger, fontSize: 13, lineHeight: 20 },
 }));

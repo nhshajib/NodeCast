@@ -1,5 +1,15 @@
 # GlowTV changes
 
+## 1.0.4 — November 26, 2026 (verification in progress)
+
+- A consistent type hierarchy, 16-point phone gutters, 24-point tablet gutters, compact channel rows and grouped Settings.
+- Poster favorite actions below the artwork, one series title, visible series option states, and readable rows at large text sizes.
+- Dark contrast surfaces behind video controls and a compact two-column phone player-options layout.
+- Aligned guide/channel row heights, explicit On now text and selected-day styling.
+- TV Home actions share a row beneath a shorter hero; Settings leaves clearance for focus rings.
+- Existing native navigation, transitions, playback engines, profiles, backups and installation instructions are preserved.
+
+
 ## 1.0.3 — November 26, 2026
 
 Android mobile is published first as a stable release. TV and iPhone/iPad verification remains in progress; their downloads retain their previous verified versions.

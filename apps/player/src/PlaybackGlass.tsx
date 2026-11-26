@@ -8,12 +8,12 @@ import { AccessibilityInfo, ActivityIndicator, Animated, StyleSheet } from 'reac
 import Pressable from './FocusPressable';
 import { usePlaybackChrome } from './PlaybackChrome';
 export const glass = StyleSheet.create({
-  panel: { backgroundColor: colors.videoScrim, borderColor: colors.videoBorder, borderWidth: 1, borderRadius: 24, overflow: 'hidden' },
+  panel: { backgroundColor: colors.videoScrim, borderColor: colors.videoBorder, borderWidth: StyleSheet.hairlineWidth, borderRadius: 16, overflow: 'hidden' },
   content: { padding: 16, gap: 16 },
   title: { color: colors.onVideo, fontSize: tvDesign?24:21, fontWeight: '600' },
   text: { color: colors.videoCopy, fontSize: tvDesign?18:14, lineHeight: 20 },
-  label: { color: colors.primary, fontSize: tvDesign?18:13, fontWeight: '600', marginTop: 8 },
-  button: { minHeight: 48, paddingHorizontal: 16, paddingVertical: 16, borderRadius: 14, backgroundColor: colors.videoChip, borderWidth: 1, borderColor: colors.videoControlBorder, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 8 },
+  label: { color: colors.videoMuted, fontSize: tvDesign?18:13, fontWeight: '500', marginTop: 8 },
+  button: { minHeight: 48, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 12, backgroundColor: colors.videoChip, borderWidth: 0, borderColor: colors.videoControlBorder, justifyContent: 'center', flexDirection: 'row', alignItems: 'center', gap: 8 },
 });
 export function GlassButton({ title, onPress, busy, disabled, icon, ...props }: { title: string; onPress: () => void; busy?: boolean; disabled?: boolean; icon?: IconName } & Omit<React.ComponentProps<typeof Pressable>, 'onPress' | 'children'>) {
   const chrome = usePlaybackChrome();

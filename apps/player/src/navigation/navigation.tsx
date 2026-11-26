@@ -31,7 +31,7 @@ export function useHeaderOptions() {
   const reduced = useReducedMotion();
   return {
     headerStyle: { backgroundColor: colors.bg }, headerShadowVisible: false, headerTintColor: colors.link,
-    headerTitleStyle: { color: colors.text, fontFamily: 'Sans-600', fontWeight: '700' as const },
+    headerTitleStyle: { color: colors.text, fontFamily: 'Sans-600', fontSize:androidDesign?20:18,fontWeight: '600' as const },
     headerBackButtonDisplayMode: 'minimal' as const, contentStyle: { backgroundColor: colors.bg },
     animation: reduced ? 'none' as const : 'default' as const,
   };
@@ -116,7 +116,7 @@ export function TabsNavigator() {
   // Only this platform's tabs are visible; the other platform's routes stay hidden and unreachable.
   const ordered = [...tabs.map(tab => tab.name), ...allTabNames.filter(name => !visible.has(name))];
   // The browser preview has no native tab bar; it uses Expo Router's bottom tabs with the same routes.
-  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line, height:64, paddingBottom:8, paddingTop:8 }, tabBarLabelStyle: { fontFamily: 'Sans-600', fontSize: 11 } }}>
+  if (Platform.OS === 'web') return <Tabs screenOptions={{ headerShown: false, tabBarActiveTintColor: colors.link, tabBarInactiveTintColor: colors.secondary, tabBarStyle: { backgroundColor: colors.bg, borderTopColor: colors.line, height:72, paddingBottom:8, paddingTop:8 }, tabBarLabelStyle: { fontFamily: 'Sans-600', fontSize: 11 } }}>
     {ordered.map(name => {
       const spec = tabs.find(tab => tab.name === name);
       return <Tabs.Screen key={name} name={name} listeners={{ tabPress: () => tabPressed(name) }} options={spec ? { title: spec.title, tabBarButtonTestID: `navigation-tab-${name}`, tabBarIcon: ({ focused, color }) => <Icon name={focused ? spec.selected : spec.icon} color={String(color)} size={22} /> } : { href: null }} />;

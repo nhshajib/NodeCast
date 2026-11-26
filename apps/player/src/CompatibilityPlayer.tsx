@@ -44,10 +44,13 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
   const chrome = usePlaybackChrome();
   const controls = chrome.visible;
   const [stageHeight,setStageHeight]=useState(0);
+  const [chromeBounds,setChromeBounds]=useState({headerBottom:0,footerTop:0});
   const compact=!isTVBuild&&width<600;
   const topInset=Math.max(isTVBuild?tvSafe.v:8,fullscreen?insets.top:8);
   const bottomInset=Math.max(isTVBuild?tvSafe.v:8,fullscreen?insets.bottom:8);
-  const transportTop=stageHeight?Math.max(topInset+48,(stageHeight-56)/2):'42%';
+  const transportHeight=isTVBuild?72:compact?48:64;
+  const transportRoom=chromeBounds.footerTop-chromeBounds.headerBottom;
+  const transportTop=transportRoom>0?chromeBounds.headerBottom+Math.max(8,(transportRoom-transportHeight)/2):stageHeight?Math.max(topInset+48,(stageHeight-transportHeight)/2):'42%';
   function setControls(value: boolean | ((previous: boolean) => boolean)) { if (typeof value === 'function') chrome.toggle(); else if (value) chrome.show(); }
   const mediaOptions = useMemo(() => compatibilityOptions(item), [item.headers]);
   const urls = useMemo(() => compatibilityURLs(item), [item.url, item.externalURL, item.playbackURLs]);
@@ -187,7 +190,7 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
   return <LivePlayerLayout fullscreen={true} video={<StableVlcSurface key={generation} ref={attachVideo} source={source} options={mediaOptions} autoplay contentFit={displayFit} style={videoStyle} tracks={tracks} {...nativeEvents}/>} overlay={!minimized && <View onLayout={event=>setStageHeight(event.nativeEvent.layout.height)} pointerEvents="box-none" style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}>
     <VideoScrim visible={controls || failed || status !== 'playing'}/>
     <Pressable noFeedback accessibilityRole="button" accessibilityLabel={controls ? 'Hide player controls' : 'Show player controls'} nativeID={!controls || (isTVBuild && waiting) ? 'tv-preferred:reveal-controls' : undefined} focusable={isTVBuild && (!controls || waiting)} onPress={() => setControls(value => !value)} style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }} />
-    <ChromeLayer visible={controls || failed || status !== 'playing'} style={{position:'absolute',top:0,bottom:0,left:0,right:0}}><View style={{position:'absolute',top:topInset,left:isTVBuild?tvSafe.h:16,right:isTVBuild?tvSafe.h:16,flexDirection:'row',alignItems:'center',gap:8}}>
+    <ChromeLayer visible={controls || failed || status !== 'playing'} style={{position:'absolute',top:0,bottom:0,left:0,right:0}}><View onLayout={e=>{const bottom=e.nativeEvent.layout.y+e.nativeEvent.layout.height;setChromeBounds(v=>v.headerBottom===bottom?v:{...v,headerBottom:bottom})}} style={{position:'absolute',top:topInset,left:isTVBuild?tvSafe.h:16,right:isTVBuild?tvSafe.h:16,flexDirection:'row',alignItems:'center',gap:8,paddingHorizontal:8,borderRadius:12,backgroundColor:colors.videoControl}}>
       <Pressable accessibilityRole="button" accessibilityLabel={isTVBuild || !fullscreen?'Back to library':'Exit full screen'} onPress={()=>{setControls(true);if(isTVBuild||!fullscreen)onClose();else orientation.exit()}} style={{minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><Icon name="chevron-back" color={colors.onVideo}/>{isTVBuild&&<Text style={{color:colors.onVideo,fontSize:14}}>Back</Text>}</Pressable>
       <View style={{flex:1,minWidth:0,gap:0}}><Text numberOfLines={1} ellipsizeMode="tail" style={{color:colors.onVideo,fontWeight:'600',fontSize:isTVBuild?28:16}}>{item.name}</Text><Text numberOfLines={1} style={{color:colors.videoMuted,fontSize:isTVBuild?16:12}}>{channelInfo||groupLabel(item.group)}</Text></View>
       <Pressable accessibilityRole="button" accessibilityLabel="Player options" onPress={onOptions} style={{minWidth:44,minHeight:44,justifyContent:'center',alignItems:'center'}}><Icon name="ellipsis-horizontal" color={colors.onVideo}/>{isTVBuild&&<Text style={{color:colors.onVideo,fontSize:14}}>Player options</Text>}</Pressable>
@@ -197,7 +200,7 @@ export default function CompatibilityPlayer({ item, onProgress, onClose, onExter
     {showTracks && isTVBuild&&renderTracks()}
     {showTracks && !isTVBuild && <ScrollView style={{ position: 'absolute', top: Math.max(insets.top, isTVBuild ? tvSafe.v : 16) + 56, bottom: Math.max(insets.bottom, isTVBuild ? tvSafe.v : 16) + 72, right: Math.max(insets.right, isTVBuild ? tvSafe.h : 16), width: 350, maxWidth: '85%' }}>{renderTracks()}</ScrollView>}
     {!showTracks&&!blocked&&!waiting&&status!=='loading'&&!reconnecting&&<View style={{position:'absolute',top:transportTop,left:isTVBuild?tvSafe.h:16,right:isTVBuild?tvSafe.h:16,alignItems:'center'}}><ChannelTransport compact={compact} playing={status==='playing'} onToggle={()=>{setControls(true);void toggle()}} onPrevious={onPreviousChannel} onNext={onNextChannel}/></View>}
-    <View style={{position:'absolute',bottom:bottomInset,left:isTVBuild?tvSafe.h:16,right:isTVBuild?tvSafe.h:16,flexDirection:'row',alignItems:'center',gap:8}}>
+    <View onLayout={e=>{const top=e.nativeEvent.layout.y;setChromeBounds(v=>v.footerTop===top?v:{...v,footerTop:top})}} style={{position:'absolute',bottom:bottomInset,left:isTVBuild?tvSafe.h:16,right:isTVBuild?tvSafe.h:16,flexDirection:'row',alignItems:'center',gap:8}}>
       <View style={{flex:1,minWidth:0}}><Text style={{color:colors.onVideo,fontSize:isTVBuild?18:12}}>Live</Text>{!!orientation.notice&&<Text numberOfLines={2} style={{color:colors.videoMuted,fontSize:12}}>{orientation.notice}</Text>}</View>
       <Pressable accessibilityRole="button" accessibilityLabel="Audio and subtitles" onPress={()=>{setControls(true);setShowTracks(value=>!value)}} style={{minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><Icon name="headset-outline" color={colors.onVideo}/>{isTVBuild&&<Text style={{color:colors.onVideo,fontSize:14}}>Audio and subtitles</Text>}</Pressable>
       <Pressable accessibilityRole="button" accessibilityLabel="Choose another player" onPress={onExternal} style={{minWidth:44,minHeight:44,alignItems:'center',justifyContent:'center'}}><Icon name="open-outline" color={colors.onVideo}/>{isTVBuild&&<Text style={{color:colors.onVideo,fontSize:14}}>Other player</Text>}</Pressable>
