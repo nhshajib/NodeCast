@@ -149,7 +149,7 @@ final class GlowTVResumeUITests: XCTestCase {
       let result = XCTWaiter.wait(for: [shown], timeout: 15)
       if result != .completed {
         capture("failure-home-background-\(Int(delay))s")
-        let screen = XCTAttachment(screenshot: XCUIDevice.shared.screenshot())
+        let screen = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
         screen.name = "failure-device-background-\(Int(delay))s"
         screen.lifetime = .keepAlways
         add(screen)
