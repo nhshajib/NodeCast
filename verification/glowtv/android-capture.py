@@ -273,6 +273,10 @@ try:
   if not logos_enabled():click('Channel logos in list view',True)
   assert logos_enabled(),'Channel logos must be enabled for native captures'
   back();home();time.sleep(3)
+  # Home remembers its last focused shelf. For the marketing Home capture,
+  # use real remote navigation via the top profile control, then the primary
+  # action, so the hero title is fully visible rather than scrolled offscreen.
+  h.remote.focus('Manage playlists');h.remote.focus('Watch live')
  capture('home')
  if TV:
   start_native_hierarchy()
