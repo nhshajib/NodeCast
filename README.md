@@ -14,7 +14,7 @@ GlowTV is available for iPhone/iPad, Android phone and Android TV/Fire TV. The I
 | Your device | Direct GitHub download | Setup and features | Project |
 | --- | --- | --- | --- |
 | iPhone / iPad | [IPA · 1.0.1](https://github.com/nhshajib/NodeCast/releases/download/ios-v1.0.1/GlowTV-1.0.1-unsigned.ipa) | [Download details](https://glowtv.app/download/iphone/) · [Instructions](apps/player/iphone/README.md) | [iPhone / iPad project](apps/player/iphone/) |
-| Android phone | [APK · 1.0.2](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
+| Android phone | [APK · 1.0.3](https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk) | [Download details](https://glowtv.app/download/android/) · [Instructions](apps/player/android-mobile/README.md) | [Android phone project](apps/player/android-mobile/) |
 | Android TV / Fire TV | [TV APK · 1.0.2](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV-TV.apk) | [Download details](https://glowtv.app/download/tv/) · [Instructions](apps/player/android-tv/README.md) | [Android TV / Fire TV project](apps/player/android-tv/) |
 <!-- downloads:end -->
 

@@ -1,5 +1,15 @@
 # Android mobile version history
 
+## 1.0.3 · 2026-11-26 · Stable release
+
+- Removed the old native splash logo; the supplied launch film starts after the system handoff while fonts load alongside it.
+- Previous and Next channel controls are visible during normal playback on native and VLC players.
+- VLC now uses a quiet header, centered transport and bottom audio/fullscreen actions.
+- Search reuses prepared data between queries; recent channels use one catalogue lookup.
+- Native screen/playback checks, six pause/resume cycles and encrypted-backup export/restore passed on Android API 35. Physical-device checks were skipped by owner decision.
+
+[Verified mobile release and checksum](https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3)
+
 ## 1.0.2 · 2026-11-25 · Stable release
 
 - Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.

@@ -1,3 +1,18 @@
+# GlowTV 1.0.3 · Android mobile · build 10004
+
+[Stable mobile release](https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3) · [Direct APK](https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk)
+
+- Removed the old native splash logo; the supplied film starts after handoff while fonts load alongside it.
+- Visible Previous/Next channel controls on native and VLC playback, a quiet header and bottom player actions.
+- Prepared search data and a single recent-channel lookup reduce repeated catalogue work.
+- Android API 24 or later; identifiers, private signing identity, profiles and backups retained.
+
+242,149,257 bytes. SHA-256: `2ef3ca5349b84c4b4a69676ac3e7a1add0121fc2ddc119e8579e98ce257bee49`.
+
+Verified [native screens/playback](https://github.com/nhshajib/NodeCast/actions/runs/45723583990), [full features/backup](https://github.com/nhshajib/NodeCast/actions/runs/45722739853) and [publication](https://github.com/nhshajib/NodeCast/actions/runs/45725139671). Physical-device checks were skipped by owner decision. TV and Apple downloads will be updated separately after their own checks.
+
+## Earlier 1.0.2 notes
+
 GlowTV 1.0.2 · build 10003, for Android phones/tablets and Android TV, Google TV and Fire TV.
 
 - Pull to refresh Home and library lists on phones and tablets, with animated loading placeholders that respect reduced motion.

@@ -48,12 +48,13 @@
     "pageErrors": []
   },
   "scope": {
-    "browserEngine": "expo-video; VLC requires native CI",
+    "browserEngine": "expo-video on web; native VLC mobile checks are recorded separately in mobile-package.json",
     "nativeAndroidSplashResources": "Five generated density variants are fully transparent; splash drawable retained for OS requirements",
-    "nativeChecks": "Pending new 1.0.3 build; browser tests do not certify D-pad, decoder or physical-device frame rate",
+    "nativeChecks": "Mobile passed API35 design/playback and full feature/backup checks; TV and Apple 1.0.3 remain pending.",
     "tests": 192,
     "physicalDeviceTested": false,
     "paletteAndGrid": "existing tokens; grid guard passed",
-    "playerLifecycle": "scope guard passed; original decoding/stop effects unchanged"
+    "playerLifecycle": "scope guard passed; original decoding/stop effects unchanged",
+    "website": "27-page axe/HTML/runtime/request audit passed; build/typecheck passed; 10 website tests passed"
   }
 }

@@ -29,4 +29,17 @@ Screenshots: [Android live](../verification/glowtv/player-polish-1.0.3/android-l
 
 ## Build status
 
-Candidate **1.0.3 / 10004**. Existing public 1.0.2 Android downloads are not overwritten, and the iPhone download remains on its last verified release until the replacement passes CI. The superseded 1.0.2 iPhone attempt was cancelled because it does not include these corrections.
+**1.0.3 / 10004**, now published for Android mobile. TV and iPhone builds remain candidates pending their native checks. Existing public 1.0.2 Android downloads are not overwritten, and the iPhone download remains on its last verified release until the replacement passes CI. The superseded 1.0.2 iPhone attempt was cancelled because it does not include these corrections.
+
+
+## Mobile-first publication
+
+Android mobile build 10004 passed [native design/playback](https://github.com/nhshajib/NodeCast/actions/runs/45723583990) and [full features / encrypted backup](https://github.com/nhshajib/NodeCast/actions/runs/45722739853). [Publication](https://github.com/nhshajib/NodeCast/actions/runs/45725139671) passed on its second attempt; GitHub's workflow token could not create the new historical-source tag, so the connected repository owner account created the exact-source draft/tag before the workflow attached and verified the files. No verification was bypassed.
+
+[Stable mobile APK release](https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3), source `cff547e8884f2ce0abc93930c401eef56f5443c7`, 242,149,257 bytes, SHA-256 `2ef3ca5349b84c4b4a69676ac3e7a1add0121fc2ddc119e8579e98ce257bee49`. The actual compiled splash resource maps to five fully transparent PNGs; both original launch films and the previous private signing certificate are verified in the APK.
+
+The first design attempt proved channel switching but started a second UiAutomation reader before pause/resume; the duplicate reader was removed without changing the app or weakening assertions. The replacement run verifies all eight screens, seven Settings destinations, decoded fixture video, Next/Previous and six pause/resume cycles in the same process.
+
+Native evidence: [player](../verification/glowtv/native/android-player.png), [Home](../verification/glowtv/native/android-home.png), [native capture audit](../verification/glowtv/native/android-audit.json), [package](../verification/glowtv/player-polish-1.0.3/mobile-package.json), [full feature/backup checks](../verification/glowtv/player-polish-1.0.3/mobile-full-checks.json). Native screenshots now replace the Android gallery only. TV and iPhone remain pending their own checks; existing installation instructions and cumulative download baselines are retained.
+
+The mobile website build and typecheck passed with zero diagnostics; all 27 pages passed the axe/HTML/runtime/request audit and all 10 website tests passed. The existing installation pages and signing script retain their exact hashes.

@@ -1,0 +1,27 @@
+{
+  "version": "1.0.3",
+  "build": 10004,
+  "sourceCommit": "cff547e8884f2ce0abc93930c401eef56f5443c7",
+  "buildRun": 45720844655,
+  "file": "GlowTV.apk",
+  "bytes": 242149257,
+  "sha256": "2ef3ca5349b84c4b4a69676ac3e7a1add0121fc2ddc119e8579e98ce257bee49",
+  "signingCertificateSha256": "574b336bbb5343852e5c72612d2ed436c9bf4a9966fa8725bf4964a15d1b168c",
+  "samePrivateCertificateAsPreviousRelease": true,
+  "transparentNativeSplashImages": 5,
+  "splashResourceTablePaths": [
+    "res/gV.png",
+    "res/Zt.png",
+    "res/42.png",
+    "res/St.png",
+    "res/S7.png"
+  ],
+  "originalFilmsBundled": true,
+  "embeddedJavaScriptAndVLC": true,
+  "nativeChecks": "passed",
+  "physicalDeviceTested": false,
+  "nativeDesignRun": 45723583990,
+  "nativeFullRun": 45722739853,
+  "publishRun": 45725139671,
+  "release": "https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3"
+}

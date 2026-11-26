@@ -2,16 +2,16 @@
 
 [← Edition guide](README.md) · [All version history](CHANGELOG.md)
 
-## Current published version: 1.0.2
+## Current published version: 1.0.3
 
-- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk)
-- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2)
-- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk.sha256)
-- Published: 2026-11-25
+- [**Direct GitHub download — GlowTV.apk**](https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk)
+- [Release page and version-specific changelog](https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3)
+- [Checksum file](https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk.sha256)
+- Published: 2026-11-26
 - Status: Stable release
-- Size: 242,198,297 bytes (231.0 MiB)
+- Size: 242,149,257 bytes (230.9 MiB)
 - Minimum OS: Android API 24 or later
-- SHA-256: `98b3bda440e3bd7deb985d6d03c2866bec0a9504df166e33ed583bb9c5a51fc0`
+- SHA-256: `2ef3ca5349b84c4b4a69676ac3e7a1add0121fc2ddc119e8579e98ce257bee49`
 
 This is a published GlowTV binary.
 
@@ -24,14 +24,13 @@ This is a published GlowTV binary.
 - **Playback, in focus:** Centered transport controls and a bottom timeline keep the picture clear. Audio, subtitles and supported player options stay close.
 - **Take your settings with you:** Export and import an encrypted backup of profiles and preferences. Use family controls for protected categories.
 
-## What changed in 1.0.2
+## What changed in 1.0.3
 
-- Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.
-- Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.
-- Home features an available favorite live channel; without one, it shows a greeting.
-- Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.
-- Public-IP/connection screens and lookups removed; older settings and backups remain readable.
-- Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks.
+- The old native splash logo is removed. GlowTV’s launch film starts after the system handoff, while fonts load alongside it.
+- Previous and Next channel controls are visible during normal playback on both native and VLC players.
+- VLC uses a quieter header, centered transport and bottom audio, player and fullscreen actions.
+- Prepared search data is reused between queries, with fewer catalogue rebuilds for recent channels.
+- Existing playlists, favorites, signing, backups and playback engines are retained.
 
 Install the correct edition over your existing app to retain local profiles. Android does not require weekly signing renewal.
 

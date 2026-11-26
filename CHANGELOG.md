@@ -1,13 +1,15 @@
 # GlowTV changes
 
-## 1.0.3 — November 25, 2026 · Native verification pending
+## 1.0.3 — November 26, 2026
+
+Android mobile is published first as a stable release. TV and iPhone/iPad verification remains in progress; their downloads retain their previous verified versions.
 
 - Removed the old native launch logo. Only the supplied intro artwork/film is shown, with playback starting after the OS handoff.
 - Visible Previous and Next channel controls during normal playback on both native and VLC players, respecting filtered-channel access rules.
 - VLC player layout now uses the quieter header, centered transport and bottom actions, sized to the actual video area.
 - Reused prepared search rows between queries and replaced repeated recent-channel catalogue rebuilds with one lookup.
 - Stabilized the native video-view callback to avoid redundant view updates on clock ticks.
-- Build 10004 retains app identifiers, signing, profiles, backups and existing playback lifecycle/animations. Fresh native checks are required before updating downloads.
+- Build 10004 retains app identifiers, signing, profiles, backups and existing playback lifecycle/animations. Native mobile design/playback and full feature/backup checks passed before publication. TV and Apple downloads await their own checks.
 
 ## 1.0.2 — November 25, 2026
 

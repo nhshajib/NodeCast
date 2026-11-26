@@ -1,20 +1,20 @@
 {
-  "assetId": 793455139,
+  "assetId": 793634374,
   "downloadCount": 0,
-  "version": "1.0.2",
-  "tag": "glowtv-v1.0.2",
-  "publishedAt": "2026-11-25T22:52:36Z",
-  "source": "https://github.com/nhshajib/NodeCast/releases/tag/glowtv-v1.0.2",
+  "version": "1.0.3",
+  "tag": "android-v1.0.3",
+  "publishedAt": "2026-11-26T00:00:07Z",
+  "source": "https://github.com/nhshajib/NodeCast/releases/tag/android-v1.0.3",
   "prerelease": false,
   "legacy": false,
   "file": "GlowTV.apk",
-  "url": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk",
-  "size": 242198297,
-  "sha256": "98b3bda440e3bd7deb985d6d03c2866bec0a9504df166e33ed583bb9c5a51fc0",
-  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/glowtv-v1.0.2/GlowTV.apk.sha256",
+  "url": "https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk",
+  "size": 242149257,
+  "sha256": "2ef3ca5349b84c4b4a69676ac3e7a1add0121fc2ddc119e8579e98ce257bee49",
+  "checksumUrl": "https://github.com/nhshajib/NodeCast/releases/download/android-v1.0.3/GlowTV.apk.sha256",
   "minimumOS": "Android API 24 or later",
-  "previousDownloadCount": 42,
-  "checkedAt": "2026-11-25T22:54:12.478Z",
+  "previousDownloadCount": 44,
+  "checkedAt": "2026-11-26T00:00:49.177Z",
   "edition": "android",
   "features": [
     {
@@ -43,11 +43,10 @@
     }
   ],
   "changes": [
-    "Pull to refresh on Home and library lists, with animated loading placeholders and reduced-motion support.",
-    "Favorite Live TV categories stay at the start of the category list, separately for each playlist, and transfer with encrypted backups.",
-    "Home features an available favorite live channel; without one, it shows a greeting.",
-    "Centered playback controls, a bottom timeline and quieter actions preserve the existing player engines.",
-    "Public-IP/connection screens and lookups removed; older settings and backups remain readable.",
-    "Four-second portrait and landscape launch films, with decoded-frame handoff and still-image fallbacks."
+    "The old native splash logo is removed. GlowTV’s launch film starts after the system handoff, while fonts load alongside it.",
+    "Previous and Next channel controls are visible during normal playback on both native and VLC players.",
+    "VLC uses a quieter header, centered transport and bottom audio, player and fullscreen actions.",
+    "Prepared search data is reused between queries, with fewer catalogue rebuilds for recent channels.",
+    "Existing playlists, favorites, signing, backups and playback engines are retained."
   ]
 }

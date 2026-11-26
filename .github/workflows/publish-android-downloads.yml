@@ -20,7 +20,7 @@ on:
         description: Full source commit built by the build run
         required: true
       make_public:
-        description: Publish after verifying both signed APKs
+        description: Publish after verifying the selected signed APKs
         type: boolean
         default: false
 permissions:
@@ -113,7 +113,7 @@ jobs:
           if selected in ['both','tv']:
               tv=json.loads(Path('native-check/tv/emulator-tv-initial-pause.json').read_text())
               assert tv['sameProcess'] and tv['remoteSelect'] and tv['dedicatedMediaKeys']
-          if json.loads(Path('app.json').read_text())['expo']['version']=='1.0.3':
+          if tuple(map(int,json.loads(Path('app.json').read_text())['expo']['version'].split('.'))) >= (1,0,3):
               for edition in ['mobile','tv']:
                   if selected!='both' and edition!=selected:continue
                   proof=json.loads((Path('native-check')/edition/f'emulator-{edition}-channel-transport.json').read_text())
@@ -153,8 +153,9 @@ jobs:
           VERSION=$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')
           TAG="glowtv-v${VERSION}"
           if [ "$EDITION" = mobile ]; then TAG="android-v${VERSION}"; fi
+          if [ "$EDITION" = tv ]; then TAG="glowtv-android-v${VERSION}"; fi
           cat > /tmp/glowtv-android-notes.md <<'NOTES'
-          GlowTV 1.0.3: updated live controls and launch animation.
+          GlowTV: updated live controls and launch animation.
 
           - Visible Previous and Next channel controls on native and VLC playback.
           - Quieter header, centered transport and bottom playback actions.
