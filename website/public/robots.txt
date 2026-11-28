@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://glowtv.app/sitemap.xml
+Content-Signal: search=yes, ai-input=yes

@@ -44,9 +44,9 @@
   },
   {
     "path": "download/tv",
-    "title": "GlowTV for TV: Android TV, Fire TV, Apple TV",
+    "title": "GlowTV for TV: Android TV & Fire TV",
     "h1": "The sofa is calling",
-    "description": "Explore GlowTV for Android TV and Fire TV, with a remote-first guide and clear focus. Check APK availability and the current Apple TV status here.",
+    "description": "Explore GlowTV for Android TV and Fire TV, with a remote-first guide and clear focus. Check APK availability - the Apple TV app is not out yet.",
     "intro": "A dedicated layout for Android TV, Google TV and Fire TV. Every core action is designed for a remote.",
     "kind": "platform",
     "platform": "tv"

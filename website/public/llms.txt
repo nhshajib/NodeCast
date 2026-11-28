@@ -1,0 +1,22 @@
+# GlowTV
+
+> GlowTV is a free, open-source IPTV player for iPhone, Android, Android TV, Google TV and Fire TV. It plays playlists you bring yourself — M3U/M3U8 links and files, or an Xtream Codes login — with an XMLTV TV guide, movies and series library, catch-up and favorites. GlowTV provides no channels, subscriptions or content. No account is needed; profiles and settings stay on your device. There is no Apple TV (tvOS) app yet.
+
+- [GlowTV home](https://glowtv.app/): Free IPTV player for iPhone, Android and TV
+- [Download GlowTV](https://glowtv.app/download/): iPhone, Android and TV downloads
+- [GlowTV for iPhone and iPad](https://glowtv.app/download/iphone/)
+- [GlowTV for Android](https://glowtv.app/download/android/)
+- [GlowTV for TV: Android TV and Fire TV](https://glowtv.app/download/tv/)
+- [How to install GlowTV](https://glowtv.app/install/)
+- [Install GlowTV on Fire TV and Firestick](https://glowtv.app/install/fire-tv/)
+- [Install GlowTV on Android TV and Google TV](https://glowtv.app/install/android-tv/)
+- [GlowTV guides](https://glowtv.app/guides/): playlists, TV guide and playback
+- [How to add an M3U playlist in GlowTV](https://glowtv.app/guides/add-m3u-playlist/)
+- [How to log in with Xtream Codes in GlowTV](https://glowtv.app/guides/xtream-codes-login/)
+- [How to load the TV guide (EPG) in GlowTV](https://glowtv.app/guides/tv-guide-epg/)
+- [How to fix IPTV buffering and freezing in GlowTV](https://glowtv.app/guides/fix-buffering/)
+- [M3U vs Xtream Codes: which IPTV login should you use?](https://glowtv.app/guides/m3u-vs-xtream-codes/)
+- [GlowTV support](https://glowtv.app/support/)
+- [GlowTV FAQ](https://glowtv.app/support/faq/)
+- [GlowTV changelog](https://glowtv.app/changelog/)
+- [Source code](https://github.com/nhshajib/NodeCast)
